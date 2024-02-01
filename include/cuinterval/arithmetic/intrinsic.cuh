@@ -3,6 +3,7 @@
 
 namespace intrinsic
 {
+// clang-format off
     template<typename T> __device__ T fma_down  (T x, T y, T z);
     template<typename T> __device__ T fma_up    (T x, T y, T z);
     template<typename T> __device__ T add_down  (T x, T y);
@@ -22,7 +23,7 @@ namespace intrinsic
     template<typename T> __device__ T sqrt_up   (T x);
     template<typename T> __device__ T int_down  (T x);
     template<typename T> __device__ T int_up    (T x);
-    template<typename T> __device__ T nan();
+    template<typename T> __device__ __host__ T nan();
     template<typename T> __device__ T pos_inf();
     template<typename T> __device__ T neg_inf();
     template<typename T> __device__ T int_nearest(T x);
@@ -46,7 +47,7 @@ namespace intrinsic
     template<> __device__ double sqrt_up  (double x)           { return __dsqrt_ru(x); }
     template<> __device__ double int_down (double x)           { return floor(x); }
     template<> __device__ double int_up   (double x)           { return ceil(x); }
-    template<> __device__ double nan()                         { return ::nan(""); }
+    template<> __device__ __host__ double nan()                { return ::nan(""); }
     template<> __device__ double neg_inf() { return __longlong_as_double(0xfff0000000000000ull); }
     template<> __device__ double pos_inf() { return __longlong_as_double(0x7ff0000000000000ull); }
     template<> __device__ double int_nearest (double x)        { return rint(x); }
@@ -70,10 +71,11 @@ namespace intrinsic
     template<> __device__ float sqrt_up    (float x)            { return __fsqrt_ru(x); }
     template<> __device__ float int_down   (float x)            { return floorf(x); }
     template<> __device__ float int_up     (float x)            { return ceilf(x); }
-    template<> __device__ float nan()                           { return nanf(""); }
+    template<> __device__ __host__ float nan()                  { return nanf(""); }
     template<> __device__ float neg_inf() { return __int_as_float(0xff800000); }
     template<> __device__ float pos_inf() { return __int_as_float(0x7f800000); }
     template<> __device__ float int_nearest (float x)           { return rintf(x); }
-}
+// clang-format on
+} // namespace intrinsic
 
 #endif // CUINTERVAL_ARITHMETIC_ROUNDED_CUH
