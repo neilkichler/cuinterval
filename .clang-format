@@ -1,0 +1,19 @@
+---
+BasedOnStyle: WebKit
+AccessModifierOffset: -4
+AlignAfterOpenBracket: Align
+AlignConsecutiveMacros: true
+AlignConsecutiveAssignments: true
+AlignTrailingComments: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: true
+  AfterStruct: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterUnion: true
+  SplitEmptyFunction: false
+FixNamespaceComments: true
+PointerAlignment: Right
+SpaceAfterTemplateKeyword: false
+...
