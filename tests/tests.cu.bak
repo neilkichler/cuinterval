@@ -1,0 +1,305 @@
+
+#include <cuinterval/cuinterval.h>
+
+#include "test_ops.cuh"
+
+#include <span>
+#include <ostream>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// compiler bug fix; TODO: remove when fixed
+#ifdef __CUDACC__
+#pragma push_macro("__cpp_consteval")
+#define consteval constexpr
+#include <boost/ut.hpp>
+#undef consteval
+#pragma pop_macro("__cpp_consteval")
+#else
+#include <boost/ut.hpp>
+#endif
+
+#define CUDA_CHECK(x)                                                                \
+    do {                                                                             \
+        cudaError_t err = x;                                                         \
+        if (err != cudaSuccess) {                                                    \
+            fprintf(stderr, "CUDA error in %s at %s:%d: %s (%s=%d)\n", __FUNCTION__, \
+                    __FILE__, __LINE__, cudaGetErrorString(err),                     \
+                    cudaGetErrorName(err), err);                                     \
+            abort();                                                                 \
+        }                                                                            \
+    } while (0)
+
+template<typename T, int N>
+void check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref)
+{
+    using namespace boost::ut;
+
+    for (size_t i = 0; i < h_xs.size(); ++i) {
+        expect(eq(h_xs[i], h_ref[i]));
+    }
+}
+
+template<typename T>
+auto &operator<<(std::ostream &os, const interval<T> &x)
+{
+    return (os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']');
+}
+
+template<typename T>
+void tests() {
+    using namespace boost::ut;
+
+    using I = interval<T>;
+
+    I empty         = ::empty<T>();
+    I entire        = ::entire<T>();
+    T infinity = std::numeric_limits<T>::infinity();
+
+    const int n         = 50;
+    const int n_bytes   = n * sizeof(I);
+    const int blockSize = 256;
+    const int numBlocks = (n + blockSize - 1) / blockSize;
+
+    interval<T> *d_xs, *d_ys;
+    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
+
+    #if 0
+    "neg"_test = [&] {
+        std::array<I, n> h_xs {
+            empty,
+            entire,
+            { 0, 1 },
+            { 1, 2 },
+            { 0, 2 },
+            { -0, 2 },
+            { -2, 0 },
+            { -2, -0 },
+            { 0, 0 },
+            { -0, 0 },
+            { 1, infinity },
+            { -infinity, 1 },
+        };
+
+        std::array<I, n> h_ref {
+            empty,
+            entire,
+            { -1, -0 },
+            { -2, -1 },
+            { -2, 0 },
+            { -2, 0 },
+            { 0, 2 },
+            { 0, 2 },
+            { 0, 0 },
+            { 0, 0 },
+            { -infinity, -1 },
+            { -1, infinity },
+        };
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        test_neg<<<numBlocks, blockSize>>>(n, d_xs);
+        CUDA_CHECK(cudaMemcpy(h_xs.data(), d_xs, n_bytes, cudaMemcpyDeviceToHost));
+        check_all_equal<I, n>(h_xs, h_ref);
+    };
+    "add"_test = [&] {
+        std::array<I, n> h_xs {
+            empty,
+            { -1.0, 1.0 },
+            empty,
+            empty,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            { -infinity, 1.0 },
+            { -1.0, 1.0 },
+            { -1.0, infinity },
+            { -infinity, 2.0 },
+            { -infinity, 2.0 },
+            { -infinity, 2.0 },
+            { 1.0, 2.0 },
+            { 1.0, 2.0 },
+            { 1.0, 2.0 },
+        };
+
+        std::array<I, n> h_ys {
+            empty,
+            empty,
+            { -1.0, 1.0 },
+            entire,
+            empty,
+            { -infinity, 1.0 },
+            { -1.0, 1.0 },
+            { -1.0, infinity },
+            entire,
+            entire,
+            entire,
+            entire,
+            { -infinity, 4.0 },
+            { 3.0, 4.0 },
+            { 3.0, infinity },
+            { -infinity, 4.0 },
+            { 3.0, 4.0 },
+            { 3.0, infinity },
+        };
+
+        std::array<I, n> h_ref {
+            empty,
+            empty,
+            empty,
+            empty,
+            empty,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            { -infinity, 6.0 },
+            { -infinity, 6.0 },
+            entire,
+            { -infinity, 6.0 },
+            { 4.0, 6.0 },
+            { 4.0, infinity },
+        };
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        test_add<<<numBlocks, blockSize>>>(n, d_xs, d_ys);
+        CUDA_CHECK(cudaMemcpy(h_xs.data(), d_xs, n_bytes, cudaMemcpyDeviceToHost));
+        check_all_equal<I, n>(h_xs, h_ref);
+    };
+#endif
+
+    "add2"_test = [&] {
+        std::array<I, n> h_xs {
+            empty,
+            {-1.0,1.0},
+            empty,
+            empty,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            {-infinity,1.0},
+            {-1.0,1.0},
+            {-1.0,infinity},
+            {-infinity,2.0},
+            {-infinity,2.0},
+            {-infinity,2.0},
+            {1.0,2.0},
+            {1.0,2.0},
+            {1.0,2.0},
+            {1.0,infinity},
+            {1.0,infinity},
+            {1.0,infinity},
+            {1.0,std::numeric_limits<T>::max()},
+            {std::numeric_limits<T>::lowest(),2.0},
+            {std::numeric_limits<T>::lowest(),2.0},
+            {1.0,std::numeric_limits<T>::max()},
+            {1.0,std::numeric_limits<T>::max()},
+            {0.0,0.0},
+            {-0.0,-0.0},
+            {0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0},
+            {0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0},
+            {-0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0},
+        };
+
+        std::array<I, n> h_ys {
+            empty,
+            empty,
+            {-1.0,1.0},
+            entire,
+            empty,
+            {-infinity,1.0},
+            {-1.0,1.0},
+            {-1.0,infinity},
+            entire,
+            entire,
+            entire,
+            entire,
+            {-infinity,4.0},
+            {3.0,4.0},
+            {3.0,infinity},
+            {-infinity,4.0},
+            {3.0,4.0},
+            {3.0,infinity},
+            {-infinity,4.0},
+            {3.0,4.0},
+            {3.0,infinity},
+            {3.0,4.0},
+            {-3.0,4.0},
+            {-3.0,std::numeric_limits<T>::max()},
+            {0.0,0.0},
+            {-0.0,-0.0},
+            {-3.0,4.0},
+            {-3.0,std::numeric_limits<T>::max()},
+            {0X1.999999999999AP-4,0X1.999999999999AP-4},
+            {-0X1.999999999999AP-4,-0X1.999999999999AP-4},
+            {0X1.999999999999AP-4,0X1.999999999999AP-4},
+        };
+
+        std::array<I, n> h_ref {
+            empty,
+            empty,
+            empty,
+            empty,
+            empty,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            {-infinity,6.0},
+            {-infinity,6.0},
+            entire,
+            {-infinity,6.0},
+            {4.0,6.0},
+            {4.0,infinity},
+            entire,
+            {4.0,infinity},
+            {4.0,infinity},
+            {4.0,infinity},
+            {-infinity,6.0},
+            entire,
+            {1.0,std::numeric_limits<T>::max()},
+            {1.0,std::numeric_limits<T>::max()},
+            {-3.0,4.0},
+            {-3.0,std::numeric_limits<T>::max()},
+            {0X1.0CCCCCCCCCCC4P+1,0X1.0CCCCCCCCCCC5P+1},
+            {0X1.E666666666656P+0,0X1.E666666666657P+0},
+            {-0X1.E666666666657P+0,0X1.0CCCCCCCCCCC5P+1},
+        };
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        test_add<<<numBlocks, blockSize>>>(n, d_xs, d_ys);
+        CUDA_CHECK(cudaMemcpy(h_xs.data(), d_xs, n_bytes, cudaMemcpyDeviceToHost));
+        check_all_equal<I, n>(h_xs, h_ref);
+    };
+
+
+    CUDA_CHECK(cudaFree(d_xs));
+    CUDA_CHECK(cudaFree(d_ys));
+}
+
+int main()
+{
+    tests<float>();
+    // tests<double>();
+    printf("test number: %e\n", 0x1.FFFFFFFFFFFFFp1023);
+    printf("test number: %a\n", 0x1.FFFFFFFFFFFFFp1023);
+    printf("test number: %a\n", (float)0x1.FFFFFFFFFFFFFp1023);
+
+    printf("number %e\n%e\n%e\n%e\n%e\n%e\n", 0X1.0CCCCCCCCCCC4P+1,0X1.0CCCCCCCCCCC5P+1,0X1.E666666666656P+0,0X1.E666666666657P+0,-0X1.E666666666657P+0,0X1.0CCCCCCCCCCC5P+1);
+
+    printf("test number: %a\n", std::numeric_limits<double>::max());
+    return 0;
+}
