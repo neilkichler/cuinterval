@@ -59,65 +59,68 @@ int main()
 
     using I = interval<double>;
 
-    suite arith_tests = [] {
-        I empty = ::empty<double>();
-        // I entire = ::entire<double>();
+    I empty = ::empty<double>();
+    I entire = ::entire<double>();
+    double infinity = std::numeric_limits<double>::infinity();
 
-        const int n = 8;
-        int n_bytes = n * sizeof(I);
+    const int n = 12;
+    int n_bytes = n * sizeof(I);
 
-        interval<double> *d_vec;
-        CUDA_CHECK(cudaMalloc(&d_vec, n_bytes));
+    interval<double> *d_vec;
+    CUDA_CHECK(cudaMalloc(&d_vec, n_bytes));
 
-        "neg"_test = [&] {
-            I h_xs[n] = {
-                { 0, 1 },
-                { 1, 2 },
-                // empty,
-                { 0, 2 },
-                { -0, 2 },
-                { -2, 0 },
-                { -2, -0 },
-                { 0, 0 },
-                { -0, 0 },
-            };
-
-            I h_ref[n] = {
-                { -1, -0 },
-                { -2, -1 },
-                // empty,
-                { -2, 0 },
-                { -2, 0 },
-                { 0, 2 },
-                { 0, 2 },
-                { 0, 0 },
-                { 0, 0 },
-            };
-
-            CUDA_CHECK(cudaMemcpy(d_vec, h_xs, n_bytes, cudaMemcpyHostToDevice));
-
-            int blockSize = 256;
-            int numBlocks = (n + blockSize - 1) / blockSize;
-
-            test_neg<<<numBlocks, blockSize>>>(n, d_vec);
-
-            CUDA_CHECK(cudaMemcpy(h_xs, d_vec, n_bytes, cudaMemcpyDeviceToHost));
-
-            for (int i = 0; i < n; ++i) {
-                expect(h_xs[i] == h_ref[i]);
-                // printf("h_in: %lf, h_ref: %lf\n", h_xs[i].lb, h_ref[i].lb);
-                // printf("h_in: %lf, h_ref: %lf\n", h_xs[i].ub, h_ref[i].ub);
-            }
+    "neg"_test = [&] {
+        I h_xs[n] = {
+            { 0, 1 },
+            { 1, 2 },
+            empty,
+            { 0, 2 },
+            { -0, 2 },
+            { -2, 0 },
+            { -2, -0 },
+            { 0, 0 },
+            { -0, 0 },
+            entire,
+            { 1, infinity },
+            { -infinity, 1 },
         };
 
-        // "add"_test = [&] {
-        //     for (int i = 0; i < n; ++i) {
-        //         expect(h_xs[i] == h_ref[i]);
-        //     }
-        // };
+        I h_ref[n] = {
+            { -1, -0 },
+            { -2, -1 },
+            empty,
+            { -2, 0 },
+            { -2, 0 },
+            { 0, 2 },
+            { 0, 2 },
+            { 0, 0 },
+            { 0, 0 },
+            entire,
+            { -infinity, -1 },
+            { -1, infinity },
+        };
 
-        CUDA_CHECK(cudaFree(d_vec));
+        CUDA_CHECK(cudaMemcpy(d_vec, h_xs, n_bytes, cudaMemcpyHostToDevice));
+
+        int blockSize = 256;
+        int numBlocks = (n + blockSize - 1) / blockSize;
+
+        test_neg<<<numBlocks, blockSize>>>(n, d_vec);
+
+        CUDA_CHECK(cudaMemcpy(h_xs, d_vec, n_bytes, cudaMemcpyDeviceToHost));
+
+        for (int i = 0; i < n; ++i) {
+            expect(h_xs[i] == h_ref[i]);
+        }
     };
+
+    // "add"_test = [&] {
+    //     for (int i = 0; i < n; ++i) {
+    //         expect(h_xs[i] == h_ref[i]);
+    //     }
+    // };
+
+    CUDA_CHECK(cudaFree(d_vec));
 
     return 0;
 }

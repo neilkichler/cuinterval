@@ -23,11 +23,12 @@ __device__ __host__ interval<T> empty()
 template<typename T>
 __device__ __host__ interval<T> entire()
 {
-    return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
+    // return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
+    return { -std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity() };
 }
 
 template<typename T>
-__device__ bool empty(interval<T> x)
+__device__ __host__ bool empty(interval<T> x)
 {
     return isnan(x.lb) || isnan(x.ub);
 }
