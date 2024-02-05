@@ -57,7 +57,7 @@ void tests() {
     I entire        = ::entire<T>();
     T infinity = std::numeric_limits<T>::infinity();
 
-    const int n         = 100;
+    const int n = 116; // count of largest test array
     const int n_bytes   = n * sizeof(I);
     const int blockSize = 256;
     const int numBlocks = (n + blockSize - 1) / blockSize;
@@ -67,6 +67,7 @@ void tests() {
     CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
 
     "pos"_test = [&] {
+        constexpr int n = 11;
         std::array<I, n> h_xs {{
             {1.0,2.0},
             empty,
@@ -102,6 +103,7 @@ void tests() {
     };
 
     "neg"_test = [&] {
+        constexpr int n = 11;
         std::array<I, n> h_xs {{
             {1.0,2.0},
             empty,
@@ -137,6 +139,7 @@ void tests() {
     };
 
     "add"_test = [&] {
+        constexpr int n = 31;
         std::array<I, n> h_xs {{
             empty,
             {-1.0,1.0},
@@ -247,6 +250,7 @@ void tests() {
     };
 
     "sub"_test = [&] {
+        constexpr int n = 31;
         std::array<I, n> h_xs {{
             empty,
             {-1.0,1.0},
@@ -357,6 +361,7 @@ void tests() {
     };
 
     "mul"_test = [&] {
+        constexpr int n = 116;
         std::array<I, n> h_xs {{
             empty,
             {-1.0,1.0},
@@ -722,6 +727,7 @@ void tests() {
     };
 
     "recip"_test = [&] {
+        constexpr int n = 18;
         std::array<I, n> h_xs {{
             {-50.0,-10.0},
             {10.0,50.0},

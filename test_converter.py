@@ -64,16 +64,6 @@ void tests() {
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
     T infinity = std::numeric_limits<T>::infinity();
-
-    const int n         = 50;
-    const int n_bytes   = n * sizeof(I);
-    const int blockSize = 256;
-    const int numBlocks = (n + blockSize - 1) / blockSize;
-
-    interval<T> *d_xs, *d_ys;
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-
 '''
 
             code_postamble ='''
@@ -89,6 +79,7 @@ int main()
 }
 '''
             indent = ' ' * 4
+            largest_n = 0
 
             for test in tests:
                 # get the first word as the name of the test
@@ -116,8 +107,10 @@ int main()
                 float_min = '-0x1.FFFFFFFFFFFFFp1023'
 
                 # for op in sorted(ops, reverse=True):
+                n = len(ops)
                 for op in ops:
                     if op == '' or '//' in op:
+                        n -= 1
                         continue
                     
                     el = op.replace('=', ' ')[:-1].split()
@@ -189,9 +182,22 @@ int main()
                 cuda_code += indent + '    check_all_equal<I, n>(h_xs, h_ref);\n'
                 cuda_code += indent + '};\n\n'
 
-                test_code += xs_code + ys_code + ref_code + cuda_code 
+                largest_n = max(n, largest_n)
+                size_code = indent + f'    constexpr int n = {n};\n'
+                test_code += size_code + xs_code + ys_code + ref_code + cuda_code 
                 code += test_code
-            return code_preamble + code + code_postamble
+
+            code_constants = f'''
+    const int n = {largest_n}; // count of largest test array
+    const int n_bytes   = n * sizeof(I);
+    const int blockSize = 256;
+    const int numBlocks = (n + blockSize - 1) / blockSize;
+
+    interval<T> *d_xs, *d_ys;
+    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));\n\n'''
+
+            return code_preamble + code_constants + code + code_postamble
 
     except FileNotFoundError:
         return f"File '{file_path}' not found."
