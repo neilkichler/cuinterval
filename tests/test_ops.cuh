@@ -80,3 +80,12 @@ __global__ void test_div(int n, interval<T> *x, interval<T> *y)
         x[i] = x[i] / y[i];
     }
 }
+
+template<typename T>
+__global__ void test_fma(int n, interval<T> *x, interval<T> *y, interval<T> *z)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        x[i] = fma(x[i], y[i], z[i]);
+    }
+}

@@ -69,6 +69,7 @@ void tests() {
             code_postamble ='''
     CUDA_CHECK(cudaFree(d_xs));
     CUDA_CHECK(cudaFree(d_ys));
+    CUDA_CHECK(cudaFree(d_zs));
 }
 
 int main()
@@ -93,12 +94,18 @@ int main()
 
                 instr = ops[0].split()[0]
 
-                instr_len  = len(ops[0].replace('=', ' ')[:-1].split())
-                binary_op = instr_len == 4
+                instr_len  = len(ops[0].replace('=', ' ')[:-1].split()) - 2
+                unary_op = instr_len == 1
+                binary_op = instr_len == 2
+                ternary_op = instr_len == 3
+
+                def at_least_binary():
+                    return instr_len >= 2
 
                 test_code = indent + f'"{instr}"_test = [&] {{\n'
                 xs_code   = indent + '    std::array<I, n> h_xs {{\n'
-                ys_code   = indent + '    std::array<I, n> h_ys {{\n' if binary_op else ''
+                ys_code   = indent + '    std::array<I, n> h_ys {{\n' if at_least_binary() else ''
+                zs_code   = indent + '    std::array<I, n> h_zs {{\n' if ternary_op else ''
                 ref_code  = indent + '    std::array<I, n> h_ref {{\n'
                 empty = '{empty}'
                 entire = '{entire}'
@@ -125,7 +132,7 @@ int main()
                         vals = ['std::numeric_limits<T>::max()' if v == float_max else 'std::numeric_limits<T>::lowest()' if v == float_min else v for v in vals]
                         el[i] = f'{{{vals[0]},{vals[1]}}}'
 
-                    if not binary_op: # unary op
+                    if unary_op:
                         x, ref = el
 
                         if x == empty:
@@ -141,7 +148,7 @@ int main()
                         else:
                             ref_code += indent + f'        {ref},\n'
 
-                    if binary_op: # binary op
+                    if binary_op:
                         x, y, ref = el
 
                         if x == empty:
@@ -165,17 +172,57 @@ int main()
                         else:
                             ys_code += indent + f'        {y},\n'
 
+                    if ternary_op:
+                        x, y, z, ref = el
+
+                        if x == empty:
+                            xs_code += indent + '        empty,\n'
+                        elif x == entire:
+                            xs_code += indent + '        entire,\n'
+                        else:
+                            xs_code += indent + f'        {x},\n'
+
+                        if y == empty:
+                            ys_code += indent + '        empty,\n'
+                        elif y == entire:
+                            ys_code += indent + '        entire,\n'
+                        else:
+                            ys_code += indent + f'        {y},\n'
+
+                        if z == empty:
+                            zs_code += indent + '        empty,\n'
+                        elif y == entire:
+                            zs_code += indent + '        entire,\n'
+                        else:
+                            zs_code += indent + f'        {z},\n'
+
+                        if ref == empty:
+                            ref_code += indent + '        empty,\n'
+                        elif ref == entire:
+                            ref_code += indent + '        entire,\n'
+                        else:
+                            ref_code += indent + f'        {ref},\n'
+
 
                 xs_code += indent + '    }};\n\n'
                 ref_code += indent + '    }};\n\n'
 
-                if binary_op:
+                if at_least_binary():
                     ys_code += indent + '    }};\n\n'
+                if ternary_op:
+                    zs_code += indent + '    }};\n\n'
 
                 cuda_code =  indent + '    CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));\n'
-                if binary_op:
+                if at_least_binary():
                     cuda_code += indent + '    CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));\n'
-                addon = ', d_ys' if binary_op else ''
+                if ternary_op:
+                    cuda_code += indent + '    CUDA_CHECK(cudaMemcpy(d_zs, h_zs.data(), n_bytes, cudaMemcpyHostToDevice));\n'
+                addon = ''
+                if at_least_binary():
+                    addon += ', d_ys'
+                if ternary_op:
+                    addon += ', d_zs'
+
                 cuda_code += indent + f'    test_{instr}<<<numBlocks, blockSize>>>(n, d_xs{addon});\n'
                 cuda_code += indent + '    CUDA_CHECK(cudaMemcpy(h_xs.data(), d_xs, n_bytes, cudaMemcpyDeviceToHost));\n'
                 cuda_code += indent + '    check_all_equal<I, n>(h_xs, h_ref);\n'
@@ -183,7 +230,7 @@ int main()
 
                 largest_n = max(n, largest_n)
                 size_code = indent + f'    constexpr int n = {n};\n'
-                test_code += size_code + xs_code + ys_code + ref_code + cuda_code 
+                test_code += size_code + xs_code + ys_code + zs_code + ref_code + cuda_code 
                 code += test_code
 
             code_constants = f'''
@@ -192,9 +239,10 @@ int main()
     const int blockSize = 256;
     const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    interval<T> *d_xs, *d_ys;
+    interval<T> *d_xs, *d_ys, *d_zs;
     CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));\n\n'''
+    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));\n\n'''
 
             return code_preamble + code_constants + code + code_postamble
 
