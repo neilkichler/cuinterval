@@ -23,14 +23,26 @@ __device__ __host__ interval<T> empty()
 template<typename T>
 __device__ __host__ interval<T> entire()
 {
-    // return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
     return { -std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity() };
 }
+
+// template<typename T>
+// __device__ /*__host__*/ interval<T> entire()
+// {
+//     return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
+//     // return { -std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity() };
+// }
 
 template<typename T>
 __device__ __host__ bool empty(interval<T> x)
 {
     return isnan(x.lb) || isnan(x.ub);
+}
+
+template<typename T>
+__device__ bool just_zero(interval<T> x)
+{
+    return x.lb == 0 && x.ub == 0;
 }
 
 // Basic operations
@@ -56,6 +68,14 @@ __device__ interval<T> sub(interval<T> a, interval<T> b)
 template<typename T>
 __device__ interval<T> mul(interval<T> a, interval<T> b)
 {
+    if (empty(a) || empty(b)) {
+        return empty<T>();
+    }
+
+    if (just_zero(a) || just_zero(b)) {
+        return {};
+    }
+
     interval<T> c;
     c.lb = min(
         min(intrinsic::mul_down(a.lb, b.lb), intrinsic::mul_down(a.lb, b.ub)),

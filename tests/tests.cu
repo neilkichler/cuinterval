@@ -32,12 +32,12 @@
     } while (0)
 
 template<typename T, int N>
-void check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref)
+void check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref, const std::source_location location = std::source_location::current())
 {
     using namespace boost::ut;
 
     for (size_t i = 0; i < h_xs.size(); ++i) {
-        expect(eq(h_xs[i], h_ref[i]));
+        expect(eq(h_xs[i], h_ref[i]), location);
     }
 }
 
@@ -775,7 +775,6 @@ void tests() {
         CUDA_CHECK(cudaMemcpy(h_xs.data(), d_xs, n_bytes, cudaMemcpyDeviceToHost));
         check_all_equal<I, n>(h_xs, h_ref);
     };
-
 
     CUDA_CHECK(cudaFree(d_xs));
     CUDA_CHECK(cudaFree(d_ys));
