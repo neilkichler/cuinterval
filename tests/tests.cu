@@ -1855,6 +1855,46 @@ void tests() {
         check_all_equal<I, n>(h_xs, h_ref);
     };
 
+    "sqrt"_test = [&] {
+        constexpr int n = 13;
+        std::array<I, n> h_xs {{
+            empty,
+            entire,
+            {-infinity,-0x0.0000000000001p-1022},
+            {-1.0,1.0},
+            {0.0,1.0},
+            {-0.0,1.0},
+            {-5.0,25.0},
+            {0.0,25.0},
+            {-0.0,25.0},
+            {-5.0,infinity},
+            {0X1.999999999999AP-4,0X1.999999999999AP-4},
+            {-0X1.FFFFFFFFFFFFP+0,0X1.999999999999AP-4},
+            {0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0},
+        }};
+
+        std::array<I, n> h_ref {{
+            empty,
+            {0.0,infinity},
+            empty,
+            {0.0,1.0},
+            {0.0,1.0},
+            {0.0,1.0},
+            {0.0,5.0},
+            {0.0,5.0},
+            {0.0,5.0},
+            {0.0,infinity},
+            {0X1.43D136248490FP-2,0X1.43D136248491P-2},
+            {0.0,0X1.43D136248491P-2},
+            {0X1.43D136248490FP-2,0X1.6A09E667F3BC7P+0},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        test_sqrt<<<numBlocks, blockSize>>>(n, d_xs);
+        CUDA_CHECK(cudaMemcpy(h_xs.data(), d_xs, n_bytes, cudaMemcpyDeviceToHost));
+        check_all_equal<I, n>(h_xs, h_ref);
+    };
+
 
     CUDA_CHECK(cudaFree(d_xs));
     CUDA_CHECK(cudaFree(d_ys));
