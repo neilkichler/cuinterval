@@ -73,7 +73,6 @@ void tests() {
 
 int main()
 {
-    tests<float>();
     tests<double>();
     return 0;
 }

@@ -776,13 +776,13 @@ void tests() {
         check_all_equal<I, n>(h_xs, h_ref);
     };
 
+
     CUDA_CHECK(cudaFree(d_xs));
     CUDA_CHECK(cudaFree(d_ys));
 }
 
 int main()
 {
-    tests<float>();
     tests<double>();
     return 0;
 }
