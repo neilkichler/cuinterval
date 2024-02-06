@@ -1,5 +1,6 @@
 import glob
 import sys
+import os
 
 from collections import defaultdict
 
@@ -156,31 +157,9 @@ void tests_''' + test_name + '''() {
 
 
 if __name__ == '__main__':
-
-    # get input file path from command line
-    # if len(sys.argv) > 1:
-    #     file_path = sys.argv[1]
-    # else:
-    #     file_path = 'libieeep1788_elem.itl'
-
-    # get output file path from command line (default: stdout)
-    # if len(sys.argv) > 2:
-    #     out_file = sys.argv[2]
-    # else:
-    #     out_file = None
-
-    # out_file = 'tests_' + file_path.rsplit('.', 1)[0] + '.cu'
-    #
-    # test_code = convert_to_test(file_path)
-    #
-    # if out_file:
-    #     with open(out_file, 'w') as f:
-    #         f.write(test_code)
-    # else:
-    #     f = sys.stdout
-    #     f.write(test_code)
-
+    os.chdir(os.path.dirname(__file__) + '/itl')
     files = glob.glob('*.itl', recursive=True)
+    print(files)
     main_includes = ''
     main_tests = ''
     for f in files:
@@ -194,6 +173,10 @@ if __name__ == '__main__':
         main_tests += indent + tests_name + '<double>();\n'
         print('generated ' + out_file)
 
+    for f in glob.glob('*.cu'):
+        os.rename(f, "../" + f)
+
+    os.chdir(os.path.dirname(__file__))
 
     with open('tests.cu', 'w') as f:
         main_body = f'\nint main()\n{{\n{main_tests}\n    return 0;\n}}\n'
