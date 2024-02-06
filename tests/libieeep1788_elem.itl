@@ -1,0 +1,1406 @@
+/*
+
+Unit tests from libieeep1788 for elementary interval functions
+(Original author: Marco Nehmeier)
+converted into portable ITL format by Oliver Heimlich.
+
+Copyright 2013-2015 Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
+Copyright 2015-2017 Oliver Heimlich (oheim@posteo.de)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+*/
+
+testcase minimal_pos_test {
+    pos [1.0,2.0] = [1.0,2.0];
+    pos [empty] = [empty];
+    pos [entire] = [entire];
+    pos [1.0,infinity] = [1.0,infinity];
+    pos [-infinity,-1.0] = [-infinity,-1.0];
+    pos [0.0,2.0] = [0.0,2.0];
+    pos [-0.0,2.0] = [0.0,2.0];
+    pos [-2.5,-0.0] = [-2.5,0.0];
+    pos [-2.5,0.0] = [-2.5,0.0];
+    pos [-0.0,-0.0] = [0.0,0.0];
+    pos [0.0,0.0] = [0.0,0.0];
+}
+
+testcase minimal_pos_dec_test {
+    pos [nai] = [nai];
+    pos [empty]_trv = [empty]_trv;
+    pos [entire]_dac = [entire]_dac;
+    pos [1.0, 2.0]_com = [1.0, 2.0]_com;
+}
+
+testcase minimal_neg_test {
+    neg [1.0,2.0] = [-2.0,-1.0];
+    neg [empty] = [empty];
+    neg [entire] = [entire];
+    neg [1.0,infinity] = [-infinity,-1.0];
+    neg [-infinity,1.0] = [-1.0,infinity];
+    neg [0.0,2.0] = [-2.0,0.0];
+    neg [-0.0,2.0] = [-2.0,0.0];
+    neg [-2.0,0.0] = [0.0,2.0];
+    neg [-2.0,-0.0] = [0.0,2.0];
+    neg [0.0,-0.0] = [0.0,0.0];
+    neg [-0.0,-0.0] = [0.0,0.0];
+}
+
+testcase minimal_neg_dec_test {
+    neg [nai] = [nai];
+    neg [empty]_trv = [empty]_trv;
+    neg [entire]_dac = [entire]_dac;
+    neg [1.0, 2.0]_com = [-2.0, -1.0]_com;
+}
+
+testcase minimal_add_test {
+    add [empty] [empty] = [empty];
+    add [-1.0,1.0] [empty] = [empty];
+    add [empty] [-1.0,1.0] = [empty];
+    add [empty] [entire] = [empty];
+    add [entire] [empty] = [empty];
+
+    add [entire] [-infinity,1.0] = [entire];
+    add [entire] [-1.0,1.0] = [entire];
+
+    add [entire] [-1.0,infinity] = [entire];
+    add [entire] [entire] = [entire];
+    add [-infinity,1.0] [entire] = [entire];
+    add [-1.0,1.0] [entire] = [entire];
+    add [-1.0,infinity] [entire] = [entire];
+
+    add [-infinity,2.0] [-infinity,4.0] = [-infinity,6.0];
+    add [-infinity,2.0] [3.0,4.0] = [-infinity,6.0];
+    add [-infinity,2.0] [3.0,infinity] = [entire];
+
+    add [1.0,2.0] [-infinity,4.0] = [-infinity,6.0];
+    add [1.0,2.0] [3.0,4.0] = [4.0,6.0];
+    add [1.0,2.0] [3.0,infinity] = [4.0,infinity];
+
+    add [1.0,infinity] [-infinity,4.0] = [entire];
+    add [1.0,infinity] [3.0,4.0] = [4.0,infinity];
+    add [1.0,infinity] [3.0,infinity] = [4.0,infinity];
+
+    add [1.0,0x1.FFFFFFFFFFFFFp1023] [3.0,4.0] = [4.0,infinity];
+    add [-0x1.FFFFFFFFFFFFFp1023,2.0] [-3.0,4.0] = [-infinity,6.0];
+    add [-0x1.FFFFFFFFFFFFFp1023,2.0] [-3.0,0x1.FFFFFFFFFFFFFp1023] = [entire];
+
+    add [1.0,0x1.FFFFFFFFFFFFFp1023] [0.0,0.0] = [1.0,0x1.FFFFFFFFFFFFFp1023];
+    add [1.0,0x1.FFFFFFFFFFFFFp1023] [-0.0,-0.0] = [1.0,0x1.FFFFFFFFFFFFFp1023];
+    add [0.0,0.0] [-3.0,4.0] = [-3.0,4.0];
+    add [-0.0,-0.0] [-3.0,0x1.FFFFFFFFFFFFFp1023] = [-3.0,0x1.FFFFFFFFFFFFFp1023];
+
+    add [0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0] [0X1.999999999999AP-4,0X1.999999999999AP-4] = [0X1.0CCCCCCCCCCC4P+1,0X1.0CCCCCCCCCCC5P+1];
+    add [0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0] [-0X1.999999999999AP-4,-0X1.999999999999AP-4] = [0X1.E666666666656P+0,0X1.E666666666657P+0];
+    add [-0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0] [0X1.999999999999AP-4,0X1.999999999999AP-4] = [-0X1.E666666666657P+0,0X1.0CCCCCCCCCCC5P+1];
+}
+
+testcase minimal_add_dec_test {
+    add [1.0,2.0]_com [5.0,7.0]_com = [6.0,9.0]_com;
+    add [1.0,2.0]_com [5.0,7.0]_def = [6.0,9.0]_def;
+    add [1.0,2.0]_com [5.0,0x1.FFFFFFFFFFFFFp1023]_com = [6.0,infinity]_dac;
+    add [-0x1.FFFFFFFFFFFFFp1023,2.0]_com [-0.1, 5.0]_com = [-infinity,7.0]_dac;
+    add [1.0,2.0]_trv [empty]_trv = [empty]_trv;
+    add [nai] [1.0,2.0]_trv = [nai];
+}
+
+testcase minimal_sub_test {
+    sub [empty] [empty] = [empty];
+    sub [-1.0,1.0] [empty] = [empty];
+    sub [empty] [-1.0,1.0] = [empty];
+    sub [empty] [entire] = [empty];
+    sub [entire] [empty] = [empty];
+
+    sub [entire] [-infinity,1.0] = [entire];
+    sub [entire] [-1.0,1.0] = [entire];
+    sub [entire] [-1.0,infinity] = [entire];
+    sub [entire] [entire] = [entire];
+    sub [-infinity,1.0] [entire] = [entire];
+    sub [-1.0,1.0] [entire] = [entire];
+    sub [-1.0,infinity] [entire] = [entire];
+
+    sub [-infinity,2.0] [-infinity,4.0] = [entire];
+    sub [-infinity,2.0] [3.0,4.0] = [-infinity,-1.0];
+    sub [-infinity,2.0] [3.0,infinity] = [-infinity,-1.0];
+
+    sub [1.0,2.0] [-infinity,4.0] = [-3.0,infinity];
+    sub [1.0,2.0] [3.0,4.0] = [-3.0,-1.0];
+    sub [1.0,2.0] [3.0,infinity] = [-infinity,-1.0];
+
+    sub [1.0,infinity] [-infinity,4.0] = [-3.0,infinity];
+    sub [1.0,infinity] [3.0,4.0] = [-3.0,infinity];
+    sub [1.0,infinity] [3.0,infinity] = [entire];
+
+    sub [1.0,0x1.FFFFFFFFFFFFFp1023] [-3.0,4.0] = [-3.0,infinity];
+    sub [-0x1.FFFFFFFFFFFFFp1023,2.0] [3.0,4.0] = [-infinity,-1.0];
+    sub [-0x1.FFFFFFFFFFFFFp1023,2.0] [-0x1.FFFFFFFFFFFFFp1023,4.0] = [entire];
+
+    sub [1.0,0x1.FFFFFFFFFFFFFp1023] [0.0,0.0] = [1.0,0x1.FFFFFFFFFFFFFp1023];
+    sub [1.0,0x1.FFFFFFFFFFFFFp1023] [-0.0,-0.0] = [1.0,0x1.FFFFFFFFFFFFFp1023];
+    sub [0.0,0.0] [-3.0,4.0] = [-4.0,3.0];
+    sub [-0.0,-0.0] [-3.0,0x1.FFFFFFFFFFFFFp1023] = [-0x1.FFFFFFFFFFFFFp1023,3.0];
+
+    sub [0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0] [0X1.999999999999AP-4,0X1.999999999999AP-4] = [0X1.E666666666656P+0,0X1.E666666666657P+0];
+    sub [0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0] [-0X1.999999999999AP-4,-0X1.999999999999AP-4] = [0X1.0CCCCCCCCCCC4P+1,0X1.0CCCCCCCCCCC5P+1];
+    sub [-0X1.FFFFFFFFFFFFP+0,0X1.FFFFFFFFFFFFP+0] [0X1.999999999999AP-4,0X1.999999999999AP-4] = [-0X1.0CCCCCCCCCCC5P+1,0X1.E666666666657P+0];
+}
+
+testcase minimal_sub_dec_test {
+    sub [1.0,2.0]_com [5.0,7.0]_com = [-6.0,-3.0]_com;
+    sub [1.0,2.0]_com [5.0,7.0]_def = [-6.0,-3.0]_def;
+    sub [-1.0,2.0]_com [5.0,0x1.FFFFFFFFFFFFFp1023]_com = [-infinity,-3.0]_dac;
+    sub [-0x1.FFFFFFFFFFFFFp1023,2.0]_com [-1.0, 5.0]_com = [-infinity,3.0]_dac;
+    sub [1.0,2.0]_trv [empty]_trv = [empty]_trv;
+    sub [nai] [1.0,2.0]_trv = [nai];
+}
+
+testcase minimal_mul_test {
+    mul [empty] [empty] = [empty];
+    mul [-1.0,1.0] [empty] = [empty];
+    mul [empty] [-1.0,1.0] = [empty];
+    mul [empty] [entire] = [empty];
+    mul [entire] [empty] = [empty];
+    mul [0.0,0.0] [empty] = [empty];
+    mul [empty] [0.0,0.0] = [empty];
+    mul [-0.0,-0.0] [empty] = [empty];
+    mul [empty] [-0.0,-0.0] = [empty];
+
+    mul [entire] [0.0,0.0] = [0.0,0.0];
+    mul [entire] [-0.0,-0.0] = [0.0,0.0];
+    mul [entire] [-5.0, -1.0] = [entire];
+    mul [entire] [-5.0, 3.0] = [entire];
+    mul [entire] [1.0, 3.0] = [entire];
+    mul [entire] [-infinity, -1.0] = [entire];
+    mul [entire] [-infinity, 3.0] = [entire];
+    mul [entire] [-5.0, infinity] = [entire];
+    mul [entire] [1.0, infinity] = [entire];
+    mul [entire] [entire] = [entire];
+
+    mul [1.0,infinity] [0.0,0.0] = [0.0,0.0];
+    mul [1.0,infinity] [-0.0,-0.0] = [0.0,0.0];
+    mul [1.0,infinity] [-5.0, -1.0] = [-infinity,-1.0];
+    mul [1.0,infinity] [-5.0, 3.0] = [entire];
+    mul [1.0,infinity] [1.0, 3.0] = [1.0,infinity];
+    mul [1.0,infinity] [-infinity, -1.0] = [-infinity,-1.0];
+    mul [1.0,infinity] [-infinity, 3.0] = [entire];
+    mul [1.0,infinity] [-5.0, infinity] = [entire];
+    mul [1.0,infinity] [1.0, infinity] = [1.0,infinity];
+    mul [1.0,infinity] [entire] = [entire];
+
+    mul [-1.0,infinity] [0.0,0.0] = [0.0,0.0];
+    mul [-1.0,infinity] [-0.0,-0.0] = [0.0,0.0];
+    mul [-1.0,infinity] [-5.0, -1.0] = [-infinity,5.0];
+    mul [-1.0,infinity] [-5.0, 3.0] = [entire];
+    mul [-1.0,infinity] [1.0, 3.0] = [-3.0,infinity];
+    mul [-1.0,infinity] [-infinity, -1.0] = [entire];
+    mul [-1.0,infinity] [-infinity, 3.0] = [entire];
+    mul [-1.0,infinity] [-5.0, infinity] = [entire];
+    mul [-1.0,infinity] [1.0, infinity] = [entire];
+    mul [-1.0,infinity] [entire] = [entire];
+
+    mul [-infinity,3.0] [0.0,0.0] = [0.0,0.0];
+    mul [-infinity,3.0] [-0.0,-0.0] = [0.0,0.0];
+    mul [-infinity,3.0] [-5.0, -1.0] = [-15.0,infinity];
+    mul [-infinity,3.0] [-5.0, 3.0] = [entire];
+    mul [-infinity,3.0] [1.0, 3.0] = [-infinity,9.0];
+    mul [-infinity,3.0] [-infinity, -1.0] = [entire];
+    mul [-infinity,3.0] [-infinity, 3.0] = [entire];
+    mul [-infinity,3.0] [-5.0, infinity] = [entire];
+    mul [-infinity,3.0] [1.0, infinity] = [entire];
+    mul [-infinity,3.0] [entire] = [entire];
+
+    mul [-infinity,-3.0] [0.0,0.0] = [0.0,0.0];
+    mul [-infinity,-3.0] [-0.0,-0.0] = [0.0,0.0];
+    mul [-infinity,-3.0] [-5.0, -1.0] = [3.0,infinity];
+    mul [-infinity,-3.0] [-5.0, 3.0] = [entire];
+    mul [-infinity,-3.0] [1.0, 3.0] = [-infinity,-3.0];
+    mul [-infinity,-3.0] [-infinity, -1.0] = [3.0,infinity];
+    mul [-infinity,-3.0] [-infinity, 3.0] = [entire];
+    mul [-infinity,-3.0] [-5.0, infinity] = [entire];
+    mul [-infinity,-3.0] [1.0, infinity] = [-infinity,-3.0];
+    mul [-infinity,-3.0] [entire] = [entire];
+
+    mul [0.0,0.0] [0.0,0.0] = [0.0,0.0];
+    mul [0.0,0.0] [-0.0,-0.0] = [0.0,0.0];
+    mul [0.0,0.0] [-5.0, -1.0] = [0.0,0.0];
+    mul [0.0,0.0] [-5.0, 3.0] = [0.0,0.0];
+    mul [0.0,0.0] [1.0, 3.0] = [0.0,0.0];
+    mul [0.0,0.0] [-infinity, -1.0] = [0.0,0.0];
+    mul [0.0,0.0] [-infinity, 3.0] = [0.0,0.0];
+    mul [0.0,0.0] [-5.0, infinity] = [0.0,0.0];
+    mul [0.0,0.0] [1.0, infinity] = [0.0,0.0];
+    mul [0.0,0.0] [entire] = [0.0,0.0];
+
+    mul [-0.0,-0.0] [0.0,0.0] = [0.0,0.0];
+    mul [-0.0,-0.0] [-0.0,-0.0] = [0.0,0.0];
+    mul [-0.0,-0.0] [-5.0, -1.0] = [0.0,0.0];
+    mul [-0.0,-0.0] [-5.0, 3.0] = [0.0,0.0];
+    mul [-0.0,-0.0] [1.0, 3.0] = [0.0,0.0];
+    mul [-0.0,-0.0] [-infinity, -1.0] = [0.0,0.0];
+    mul [-0.0,-0.0] [-infinity, 3.0] = [0.0,0.0];
+    mul [-0.0,-0.0] [-5.0, infinity] = [0.0,0.0];
+    mul [-0.0,-0.0] [1.0, infinity] = [0.0,0.0];
+    mul [-0.0,-0.0] [entire] = [0.0,0.0];
+
+    mul [1.0,5.0] [0.0,0.0] = [0.0,0.0];
+    mul [1.0,5.0] [-0.0,-0.0] = [0.0,0.0];
+    mul [1.0,5.0] [-5.0, -1.0] = [-25.0,-1.0];
+    mul [1.0,5.0] [-5.0, 3.0] = [-25.0,15.0];
+    mul [1.0,5.0] [1.0, 3.0] = [1.0,15.0];
+    mul [1.0,5.0] [-infinity, -1.0] = [-infinity,-1.0];
+    mul [1.0,5.0] [-infinity, 3.0] = [-infinity,15.0];
+    mul [1.0,5.0] [-5.0, infinity] = [-25.0,infinity];
+    mul [1.0,5.0] [1.0, infinity] = [1.0,infinity];
+    mul [1.0,5.0] [entire] = [entire];
+
+
+    mul [-1.0,5.0] [0.0,0.0] = [0.0,0.0];
+    mul [-1.0,5.0] [-0.0,-0.0] = [0.0,0.0];
+    mul [-1.0,5.0] [-5.0, -1.0] = [-25.0,5.0];
+
+    //min max
+    mul [-1.0,5.0] [-5.0, 3.0] = [-25.0,15.0];
+    mul [-10.0,2.0] [-5.0, 3.0] = [-30.0,50.0];
+    mul [-1.0,5.0] [-1.0, 10.0] = [-10.0,50.0];
+    mul [-2.0,2.0] [-5.0, 3.0] = [-10.0,10.0];
+    //end min max
+
+    mul [-1.0,5.0] [1.0, 3.0] = [-3.0,15.0];
+    mul [-1.0,5.0] [-infinity, -1.0] = [entire];
+    mul [-1.0,5.0] [-infinity, 3.0] = [entire];
+    mul [-1.0,5.0] [-5.0, infinity] = [entire];
+    mul [-1.0,5.0] [1.0, infinity] = [entire];
+    mul [-1.0,5.0] [entire] = [entire];
+
+    mul [-10.0,-5.0] [0.0,0.0] = [0.0,0.0];
+    mul [-10.0,-5.0] [-0.0,-0.0] = [0.0,0.0];
+    mul [-10.0,-5.0] [-5.0, -1.0] = [5.0,50.0];
+    mul [-10.0,-5.0] [-5.0, 3.0] = [-30.0,50.0];
+    mul [-10.0,-5.0] [1.0, 3.0] = [-30.0,-5.0];
+    mul [-10.0,-5.0] [-infinity, -1.0] = [5.0,infinity];
+    mul [-10.0,-5.0] [-infinity, 3.0] = [-30.0,infinity];
+    mul [-10.0,-5.0] [-5.0, infinity] = [-infinity,50.0];
+    mul [-10.0,-5.0] [1.0, infinity] = [-infinity,-5.0];
+    mul [-10.0,-5.0] [entire] = [entire];
+
+    mul [0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0] [-0X1.FFFFFFFFFFFFP+0, infinity] = [-0X1.FFFFFFFFFFFE1P+1,infinity];
+    mul [-0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0] [-0X1.FFFFFFFFFFFFP+0,-0X1.999999999999AP-4] = [-0X1.FFFFFFFFFFFE1P+1,0X1.999999999998EP-3];
+    mul [-0X1.999999999999AP-4,0X1.999999999999AP-4] [-0X1.FFFFFFFFFFFFP+0,0X1.999999999999AP-4] = [-0X1.999999999998EP-3,0X1.999999999998EP-3];
+    mul [-0X1.FFFFFFFFFFFFP+0,-0X1.999999999999AP-4] [0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0] = [-0X1.FFFFFFFFFFFE1P+1,-0X1.47AE147AE147BP-7];
+}
+
+testcase minimal_mul_dec_test {
+    mul [1.0,2.0]_com [5.0,7.0]_com = [5.0,14.0]_com;
+    mul [1.0,2.0]_com [5.0,7.0]_def = [5.0,14.0]_def;
+    mul [1.0,2.0]_com [5.0,0x1.FFFFFFFFFFFFFp1023]_com = [5.0,infinity]_dac;
+    mul [-0x1.FFFFFFFFFFFFFp1023,2.0]_com [-1.0, 5.0]_com = [-infinity,0x1.FFFFFFFFFFFFFp1023]_dac;
+    mul [1.0,2.0]_trv [empty]_trv = [empty]_trv;
+    mul [nai] [1.0,2.0]_trv = [nai];
+}
+
+testcase minimal_div_test {
+    div [empty] [empty] = [empty];
+    div [-1.0,1.0] [empty] = [empty];
+    div [empty] [-1.0,1.0] = [empty];
+    div [empty] [0.1,1.0] = [empty];
+    div [empty] [-1.0,-0.1] = [empty];
+    div [empty] [entire] = [empty];
+    div [entire] [empty] = [empty];
+    div [0.0,0.0] [empty] = [empty];
+    div [empty] [0.0,0.0] = [empty];
+    div [-0.0,-0.0] [empty] = [empty];
+    div [empty] [-0.0,-0.0] = [empty];
+
+    div [entire] [-5.0, -3.0] = [entire];
+    div [entire] [3.0, 5.0] = [entire];
+    div [entire] [-infinity, -3.0] = [entire];
+    div [entire] [3.0,infinity] = [entire];
+    div [entire] [0.0,0.0] = [empty];
+    div [entire] [-0.0,-0.0] = [empty];
+    div [entire] [-3.0, 0.0] = [entire];
+    div [entire] [-3.0, -0.0] = [entire];
+    div [entire] [-3.0, 3.0] = [entire];
+    div [entire] [0.0, 3.0] = [entire];
+    div [entire] [-infinity, 0.0] = [entire];
+    div [entire] [-0.0, 3.0] = [entire];
+    div [entire] [-infinity, -0.0] = [entire];
+    div [entire] [-infinity, 3.0] = [entire];
+    div [entire] [-3.0, infinity] = [entire];
+    div [entire] [0.0, infinity] = [entire];
+    div [entire] [-0.0, infinity] = [entire];
+    div [entire] [entire] = [entire];
+
+    div [-30.0,-15.0] [-5.0, -3.0] = [3.0,10.0];
+    div [-30.0,-15.0] [3.0, 5.0] = [-10.0,-3.0];
+    div [-30.0,-15.0] [-infinity, -3.0] = [0.0,10.0];
+    div [-30.0,-15.0] [3.0,infinity] = [-10.0,0.0];
+    div [-30.0,-15.0] [0.0,0.0] = [empty];
+    div [-30.0,-15.0] [-3.0, 0.0] = [5.0,infinity];
+    div [-30.0,-15.0] [-0.0,-0.0] = [empty];
+    div [-30.0,-15.0] [-3.0, -0.0] = [5.0,infinity];
+    div [-30.0,-15.0] [-3.0, 3.0] = [entire];
+    div [-30.0,-15.0] [0.0, 3.0] = [-infinity,-5.0];
+    div [-30.0,-15.0] [-infinity, 0.0] = [0.0,infinity];
+    div [-30.0,-15.0] [-0.0, 3.0] = [-infinity,-5.0];
+    div [-30.0,-15.0] [-infinity, -0.0] = [0.0,infinity];
+    div [-30.0,-15.0] [-infinity, 3.0] = [entire];
+    div [-30.0,-15.0] [-3.0, infinity] = [entire];
+    div [-30.0,-15.0] [0.0, infinity] = [-infinity,0.0];
+    div [-30.0,-15.0] [-0.0, infinity] = [-infinity,0.0];
+    div [-30.0,-15.0] [entire] = [entire];
+
+    div [-30.0,15.0] [-5.0, -3.0] = [-5.0,10.0];
+    div [-30.0,15.0] [3.0, 5.0] = [-10.0,5.0];
+    div [-30.0,15.0] [-infinity, -3.0] = [-5.0,10.0];
+    div [-30.0,15.0] [3.0,infinity] = [-10.0,5.0];
+    div [-30.0,15.0] [0.0,0.0] = [empty];
+    div [-30.0,15.0] [-0.0,-0.0] = [empty];
+    div [-30.0,15.0] [-3.0, 0.0] = [entire];
+    div [-30.0,15.0] [-3.0, -0.0] = [entire];
+    div [-30.0,15.0] [-3.0, 3.0] = [entire];
+    div [-30.0,15.0] [0.0, 3.0] = [entire];
+    div [-30.0,15.0] [-infinity, 0.0] = [entire];
+    div [-30.0,15.0] [-0.0, 3.0] = [entire];
+    div [-30.0,15.0] [-infinity, -0.0] = [entire];
+    div [-30.0,15.0] [-infinity, 3.0] = [entire];
+    div [-30.0,15.0] [-3.0, infinity] = [entire];
+    div [-30.0,15.0] [0.0, infinity] = [entire];
+    div [-30.0,15.0] [-0.0, infinity] = [entire];
+    div [-30.0,15.0] [entire] = [entire];
+
+    div [15.0,30.0] [-5.0, -3.0] = [-10.0,-3.0];
+    div [15.0,30.0] [3.0, 5.0] = [3.0,10.0];
+    div [15.0,30.0] [-infinity, -3.0] = [-10.0,0.0];
+    div [15.0,30.0] [3.0,infinity] = [0.0,10.0];
+    div [15.0,30.0] [0.0,0.0] = [empty];
+    div [15.0,30.0] [-3.0, 0.0] = [-infinity,-5.0];
+    div [15.0,30.0] [-0.0,-0.0] = [empty];
+    div [15.0,30.0] [-3.0, -0.0] = [-infinity,-5.0];
+    div [15.0,30.0] [-3.0, 3.0] = [entire];
+    div [15.0,30.0] [0.0, 3.0] = [5.0,infinity];
+    div [15.0,30.0] [-infinity, 0.0] = [-infinity,0.0];
+    div [15.0,30.0] [-0.0, 3.0] = [5.0,infinity];
+    div [15.0,30.0] [-infinity, -0.0] = [-infinity,0.0];
+    div [15.0,30.0] [-infinity, 3.0] = [entire];
+    div [15.0,30.0] [-3.0, infinity] = [entire];
+    div [15.0,30.0] [0.0, infinity] = [0.0,infinity];
+    div [15.0,30.0] [-0.0, infinity] = [0.0,infinity];
+    div [15.0,30.0] [entire] = [entire];
+
+    div [0.0,0.0] [-5.0, -3.0] = [0.0,0.0];
+    div [0.0,0.0] [3.0, 5.0] = [0.0,0.0];
+    div [0.0,0.0] [-infinity, -3.0] = [0.0,0.0];
+    div [0.0,0.0] [3.0,infinity] = [0.0,0.0];
+    div [0.0,0.0] [0.0,0.0] = [empty];
+    div [0.0,0.0] [-3.0, 0.0] = [0.0,0.0];
+    div [0.0,0.0] [-0.0,-0.0] = [empty];
+    div [0.0,0.0] [-3.0, -0.0] = [0.0,0.0];
+    div [0.0,0.0] [-3.0, 3.0] = [0.0,0.0];
+    div [0.0,0.0] [0.0, 3.0] = [0.0,0.0];
+    div [0.0,0.0] [-infinity, 0.0] = [0.0,0.0];
+    div [0.0,0.0] [-0.0, 3.0] = [0.0,0.0];
+    div [0.0,0.0] [-infinity, -0.0] = [0.0,0.0];
+    div [0.0,0.0] [-infinity, 3.0] = [0.0,0.0];
+    div [0.0,0.0] [-3.0, infinity] = [0.0,0.0];
+    div [0.0,0.0] [0.0, infinity] = [0.0,0.0];
+    div [0.0,0.0] [-0.0, infinity] = [0.0,0.0];
+    div [0.0,0.0] [entire] = [0.0,0.0];
+
+    div [-0.0,-0.0] [-5.0, -3.0] = [0.0,0.0];
+    div [-0.0,-0.0] [3.0, 5.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-infinity, -3.0] = [0.0,0.0];
+    div [-0.0,-0.0] [3.0,infinity] = [0.0,0.0];
+    div [-0.0,-0.0] [0.0,0.0] = [empty];
+    div [-0.0,-0.0] [-3.0, 0.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-0.0,-0.0] = [empty];
+    div [-0.0,-0.0] [-3.0, -0.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-3.0, 3.0] = [0.0,0.0];
+    div [-0.0,-0.0] [0.0, 3.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-infinity, 0.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-0.0, 3.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-infinity, -0.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-infinity, 3.0] = [0.0,0.0];
+    div [-0.0,-0.0] [-3.0, infinity] = [0.0,0.0];
+    div [-0.0,-0.0] [0.0, infinity] = [0.0,0.0];
+    div [-0.0,-0.0] [-0.0, infinity] = [0.0,0.0];
+    div [-0.0,-0.0] [entire] = [0.0,0.0];
+
+    div [-infinity,-15.0] [-5.0, -3.0] = [3.0,infinity];
+    div [-infinity,-15.0] [3.0, 5.0] = [-infinity,-3.0];
+    div [-infinity,-15.0] [-infinity, -3.0] = [0.0,infinity];
+    div [-infinity,-15.0] [3.0,infinity] = [-infinity,0.0];
+    div [-infinity,-15.0] [0.0,0.0] = [empty];
+    div [-infinity,-15.0] [-3.0, 0.0] = [5.0,infinity];
+    div [-infinity,-15.0] [-0.0,-0.0] = [empty];
+    div [-infinity,-15.0] [-3.0, -0.0] = [5.0,infinity];
+    div [-infinity,-15.0] [-3.0, 3.0] = [entire];
+    div [-infinity,-15.0] [0.0, 3.0] = [-infinity,-5.0];
+    div [-infinity,-15.0] [-infinity, 0.0] = [0.0,infinity];
+    div [-infinity,-15.0] [-0.0, 3.0] = [-infinity,-5.0];
+    div [-infinity,-15.0] [-infinity, -0.0] = [0.0,infinity];
+    div [-infinity,-15.0] [-infinity, 3.0] = [entire];
+    div [-infinity,-15.0] [-3.0, infinity] = [entire];
+    div [-infinity,-15.0] [0.0, infinity] = [-infinity,0.0];
+    div [-infinity,-15.0] [-0.0, infinity] = [-infinity,0.0];
+    div [-infinity,-15.0] [entire] = [entire];
+
+    div [-infinity,15.0] [-5.0, -3.0] = [-5.0,infinity];
+    div [-infinity,15.0] [3.0, 5.0] = [-infinity,5.0];
+    div [-infinity,15.0] [-infinity, -3.0] = [-5.0,infinity];
+    div [-infinity,15.0] [3.0,infinity] = [-infinity,5.0];
+    div [-infinity,15.0] [0.0,0.0] = [empty];
+    div [-infinity,15.0] [-3.0, 0.0] = [entire];
+    div [-infinity,15.0] [-0.0,-0.0] = [empty];
+    div [-infinity,15.0] [-3.0, -0.0] = [entire];
+    div [-infinity,15.0] [-3.0, 3.0] = [entire];
+    div [-infinity,15.0] [0.0, 3.0] = [entire];
+    div [-infinity,15.0] [-infinity, 0.0] = [entire];
+    div [-infinity,15.0] [-0.0, 3.0] = [entire];
+    div [-infinity,15.0] [-infinity, -0.0] = [entire];
+    div [-infinity,15.0] [-infinity, 3.0] = [entire];
+    div [-infinity,15.0] [-3.0, infinity] = [entire];
+    div [-infinity,15.0] [0.0, infinity] = [entire];
+    div [-infinity,15.0] [-0.0, infinity] = [entire];
+    div [-infinity,15.0] [entire] = [entire];
+
+    div [-15.0,infinity] [-5.0, -3.0] = [-infinity,5.0];
+    div [-15.0,infinity] [3.0, 5.0] = [-5.0,infinity];
+    div [-15.0,infinity] [-infinity, -3.0] = [-infinity,5.0];
+    div [-15.0,infinity] [3.0,infinity] = [-5.0,infinity];
+    div [-15.0,infinity] [0.0,0.0] = [empty];
+    div [-15.0,infinity] [-3.0, 0.0] = [entire];
+    div [-15.0,infinity] [-0.0,-0.0] = [empty];
+    div [-15.0,infinity] [-3.0, -0.0] = [entire];
+    div [-15.0,infinity] [-3.0, 3.0] = [entire];
+    div [-15.0,infinity] [0.0, 3.0] = [entire];
+    div [-15.0,infinity] [-infinity, 0.0] = [entire];
+    div [-15.0,infinity] [-0.0, 3.0] = [entire];
+    div [-15.0,infinity] [-infinity, -0.0] = [entire];
+    div [-15.0,infinity] [-infinity, 3.0] = [entire];
+    div [-15.0,infinity] [-3.0, infinity] = [entire];
+    div [-15.0,infinity] [0.0, infinity] = [entire];
+    div [-15.0,infinity] [-0.0, infinity] = [entire];
+    div [-15.0,infinity] [entire] = [entire];
+
+    div [15.0,infinity] [-5.0, -3.0] = [-infinity,-3.0];
+    div [15.0,infinity] [3.0, 5.0] = [3.0,infinity];
+    div [15.0,infinity] [-infinity, -3.0] = [-infinity,0.0];
+    div [15.0,infinity] [3.0,infinity] = [0.0,infinity];
+    div [15.0,infinity] [0.0,0.0] = [empty];
+    div [15.0,infinity] [-3.0, 0.0] = [-infinity,-5.0];
+    div [15.0,infinity] [-0.0,-0.0] = [empty];
+    div [15.0,infinity] [-3.0, -0.0] = [-infinity,-5.0];
+    div [15.0,infinity] [-3.0, 3.0] = [entire];
+    div [15.0,infinity] [0.0, 3.0] = [5.0,infinity];
+    div [15.0,infinity] [-infinity, 0.0] = [-infinity,0.0];
+    div [15.0,infinity] [-0.0, 3.0] = [5.0,infinity];
+    div [15.0,infinity] [-infinity, -0.0] = [-infinity,0.0];
+    div [15.0,infinity] [-infinity, 3.0] = [entire];
+    div [15.0,infinity] [-3.0, infinity] = [entire];
+    div [15.0,infinity] [0.0, infinity] = [0.0,infinity];
+    div [15.0,infinity] [-0.0, infinity] = [0.0,infinity];
+    div [15.0,infinity] [entire] = [entire];
+
+    div [-30.0,0.0] [-5.0, -3.0] = [0.0,10.0];
+    div [-30.0,0.0] [3.0, 5.0] = [-10.0,0.0];
+    div [-30.0,0.0] [-infinity, -3.0] = [0.0,10.0];
+    div [-30.0,0.0] [3.0,infinity] = [-10.0,0.0];
+    div [-30.0,0.0] [0.0,0.0] = [empty];
+    div [-30.0,0.0] [-3.0, 0.0] = [0.0,infinity];
+    div [-30.0,0.0] [-0.0,-0.0] = [empty];
+    div [-30.0,0.0] [-3.0, -0.0] = [0.0,infinity];
+    div [-30.0,0.0] [-3.0, 3.0] = [entire];
+    div [-30.0,0.0] [0.0, 3.0] = [-infinity,0.0];
+    div [-30.0,0.0] [-infinity, 0.0] = [0.0,infinity];
+    div [-30.0,0.0] [-0.0, 3.0] = [-infinity,0.0];
+    div [-30.0,0.0] [-infinity, -0.0] = [0.0,infinity];
+    div [-30.0,0.0] [-infinity, 3.0] = [entire];
+    div [-30.0,0.0] [-3.0, infinity] = [entire];
+    div [-30.0,0.0] [0.0, infinity] = [-infinity,0.0];
+    div [-30.0,0.0] [-0.0, infinity] = [-infinity,0.0];
+    div [-30.0,0.0] [entire] = [entire];
+
+    div [-30.0,-0.0] [-5.0, -3.0] = [0.0,10.0];
+    div [-30.0,-0.0] [3.0, 5.0] = [-10.0,0.0];
+    div [-30.0,-0.0] [-infinity, -3.0] = [0.0,10.0];
+    div [-30.0,-0.0] [3.0,infinity] = [-10.0,0.0];
+    div [-30.0,-0.0] [0.0,0.0] = [empty];
+    div [-30.0,-0.0] [-3.0, 0.0] = [0.0,infinity];
+    div [-30.0,-0.0] [-0.0,-0.0] = [empty];
+    div [-30.0,-0.0] [-3.0, -0.0] = [0.0,infinity];
+    div [-30.0,-0.0] [-3.0, 3.0] = [entire];
+    div [-30.0,-0.0] [0.0, 3.0] = [-infinity,0.0];
+    div [-30.0,-0.0] [-infinity, 0.0] = [0.0,infinity];
+    div [-30.0,-0.0] [-0.0, 3.0] = [-infinity,0.0];
+    div [-30.0,-0.0] [-infinity, -0.0] = [0.0,infinity];
+    div [-30.0,-0.0] [-infinity, 3.0] = [entire];
+    div [-30.0,-0.0] [-3.0, infinity] = [entire];
+    div [-30.0,-0.0] [0.0, infinity] = [-infinity,0.0];
+    div [-30.0,-0.0] [-0.0, infinity] = [-infinity,0.0];
+    div [-30.0,-0.0] [entire] = [entire];
+
+    div [0.0,30.0] [-5.0, -3.0] = [-10.0,0.0];
+    div [0.0,30.0] [3.0, 5.0] = [0.0,10.0];
+    div [0.0,30.0] [-infinity, -3.0] = [-10.0,0.0];
+    div [0.0,30.0] [3.0,infinity] = [0.0,10.0];
+    div [0.0,30.0] [0.0,0.0] = [empty];
+    div [0.0,30.0] [-3.0, 0.0] = [-infinity,0.0];
+    div [0.0,30.0] [-0.0,-0.0] = [empty];
+    div [0.0,30.0] [-3.0, -0.0] = [-infinity,0.0];
+    div [0.0,30.0] [-3.0, 3.0] = [entire];
+    div [0.0,30.0] [0.0, 3.0] = [0.0,infinity];
+    div [0.0,30.0] [-infinity, 0.0] = [-infinity,0.0];
+    div [0.0,30.0] [-0.0, 3.0] = [0.0,infinity];
+    div [0.0,30.0] [-infinity, -0.0] = [-infinity,0.0];
+    div [0.0,30.0] [-infinity, 3.0] = [entire];
+    div [0.0,30.0] [-3.0, infinity] = [entire];
+    div [0.0,30.0] [0.0, infinity] = [0.0,infinity];
+    div [0.0,30.0] [-0.0, infinity] = [0.0,infinity];
+    div [0.0,30.0] [entire] = [entire];
+
+    div [-0.0,30.0] [-5.0, -3.0] = [-10.0,0.0];
+    div [-0.0,30.0] [3.0, 5.0] = [0.0,10.0];
+    div [-0.0,30.0] [-infinity, -3.0] = [-10.0,0.0];
+    div [-0.0,30.0] [3.0,infinity] = [0.0,10.0];
+    div [-0.0,30.0] [0.0,0.0] = [empty];
+    div [-0.0,30.0] [-3.0, 0.0] = [-infinity,0.0];
+    div [-0.0,30.0] [-0.0,-0.0] = [empty];
+    div [-0.0,30.0] [-3.0, -0.0] = [-infinity,0.0];
+    div [-0.0,30.0] [-3.0, 3.0] = [entire];
+    div [-0.0,30.0] [0.0, 3.0] = [0.0,infinity];
+    div [-0.0,30.0] [-infinity, 0.0] = [-infinity,0.0];
+    div [-0.0,30.0] [-0.0, 3.0] = [0.0,infinity];
+    div [-0.0,30.0] [-infinity, -0.0] = [-infinity,0.0];
+    div [-0.0,30.0] [-infinity, 3.0] = [entire];
+    div [-0.0,30.0] [-3.0, infinity] = [entire];
+    div [-0.0,30.0] [0.0, infinity] = [0.0,infinity];
+    div [-0.0,30.0] [-0.0, infinity] = [0.0,infinity];
+    div [-0.0,30.0] [entire] = [entire];
+
+    div [-infinity,0.0] [-5.0, -3.0] = [0.0,infinity];
+    div [-infinity,0.0] [3.0, 5.0] = [-infinity,0.0];
+    div [-infinity,0.0] [-infinity, -3.0] = [0.0,infinity];
+    div [-infinity,0.0] [3.0,infinity] = [-infinity,0.0];
+    div [-infinity,0.0] [0.0,0.0] = [empty];
+    div [-infinity,0.0] [-3.0, 0.0] = [0.0,infinity];
+    div [-infinity,0.0] [-0.0,-0.0] = [empty];
+    div [-infinity,0.0] [-3.0, -0.0] = [0.0,infinity];
+    div [-infinity,0.0] [-3.0, 3.0] = [entire];
+    div [-infinity,0.0] [0.0, 3.0] = [-infinity,0.0];
+    div [-infinity,0.0] [-infinity, 0.0] = [0.0,infinity];
+    div [-infinity,0.0] [-0.0, 3.0] = [-infinity,0.0];
+    div [-infinity,0.0] [-infinity, -0.0] = [0.0,infinity];
+    div [-infinity,0.0] [-infinity, 3.0] = [entire];
+    div [-infinity,0.0] [-3.0, infinity] = [entire];
+    div [-infinity,0.0] [0.0, infinity] = [-infinity,0.0];
+    div [-infinity,0.0] [-0.0, infinity] = [-infinity,0.0];
+    div [-infinity,0.0] [entire] = [entire];
+
+    div [-infinity,-0.0] [-5.0, -3.0] = [0.0,infinity];
+    div [-infinity,-0.0] [3.0, 5.0] = [-infinity,0.0];
+    div [-infinity,-0.0] [-infinity, -3.0] = [0.0,infinity];
+    div [-infinity,-0.0] [3.0,infinity] = [-infinity,0.0];
+    div [-infinity,-0.0] [0.0,0.0] = [empty];
+    div [-infinity,-0.0] [-3.0, 0.0] = [0.0,infinity];
+    div [-infinity,-0.0] [-0.0,-0.0] = [empty];
+    div [-infinity,-0.0] [-3.0, -0.0] = [0.0,infinity];
+    div [-infinity,-0.0] [-3.0, 3.0] = [entire];
+    div [-infinity,-0.0] [0.0, 3.0] = [-infinity,0.0];
+    div [-infinity,-0.0] [-infinity, 0.0] = [0.0,infinity];
+    div [-infinity,-0.0] [-0.0, 3.0] = [-infinity,0.0];
+    div [-infinity,-0.0] [-infinity, -0.0] = [0.0,infinity];
+    div [-infinity,-0.0] [-infinity, 3.0] = [entire];
+    div [-infinity,-0.0] [-3.0, infinity] = [entire];
+    div [-infinity,-0.0] [0.0, infinity] = [-infinity,0.0];
+    div [-infinity,-0.0] [-0.0, infinity] = [-infinity,0.0];
+    div [-infinity,-0.0] [entire] = [entire];
+
+    div [0.0,infinity] [-5.0, -3.0] = [-infinity,0.0];
+    div [0.0,infinity] [3.0, 5.0] = [0.0,infinity];
+    div [0.0,infinity] [-infinity, -3.0] = [-infinity,0.0];
+    div [0.0,infinity] [3.0,infinity] = [0.0,infinity];
+    div [0.0,infinity] [0.0,0.0] = [empty];
+    div [0.0,infinity] [-3.0, 0.0] = [-infinity,0.0];
+    div [0.0,infinity] [-0.0,-0.0] = [empty];
+    div [0.0,infinity] [-3.0, -0.0] = [-infinity,0.0];
+    div [0.0,infinity] [-3.0, 3.0] = [entire];
+    div [0.0,infinity] [0.0, 3.0] = [0.0,infinity];
+    div [0.0,infinity] [-infinity, 0.0] = [-infinity,0.0];
+    div [0.0,infinity] [-0.0, 3.0] = [0.0,infinity];
+    div [0.0,infinity] [-infinity, -0.0] = [-infinity,0.0];
+    div [0.0,infinity] [-infinity, 3.0] = [entire];
+    div [0.0,infinity] [-3.0, infinity] = [entire];
+    div [0.0,infinity] [0.0, infinity] = [0.0,infinity];
+    div [0.0,infinity] [-0.0, infinity] = [0.0,infinity];
+    div [0.0,infinity] [entire] = [entire];
+
+    div [-0.0,infinity] [-5.0, -3.0] = [-infinity,0.0];
+    div [-0.0,infinity] [3.0, 5.0] = [0.0,infinity];
+    div [-0.0,infinity] [-infinity, -3.0] = [-infinity,0.0];
+    div [-0.0,infinity] [3.0,infinity] = [0.0,infinity];
+    div [-0.0,infinity] [0.0,0.0] = [empty];
+    div [-0.0,infinity] [-3.0, 0.0] = [-infinity,0.0];
+    div [-0.0,infinity] [-0.0,-0.0] = [empty];
+    div [-0.0,infinity] [-3.0, -0.0] = [-infinity,0.0];
+    div [-0.0,infinity] [-3.0, 3.0] = [entire];
+    div [-0.0,infinity] [0.0, 3.0] = [0.0,infinity];
+    div [-0.0,infinity] [-infinity, 0.0] = [-infinity,0.0];
+    div [-0.0,infinity] [-0.0, 3.0] = [0.0,infinity];
+    div [-0.0,infinity] [-infinity, -0.0] = [-infinity,0.0];
+    div [-0.0,infinity] [-infinity, 3.0] = [entire];
+    div [-0.0,infinity] [-3.0, infinity] = [entire];
+    div [-0.0,infinity] [0.0, infinity] = [0.0,infinity];
+    div [-0.0,infinity] [-0.0, infinity] = [0.0,infinity];
+    div [-0.0,infinity] [entire] = [entire];
+
+    div [-2.0,-1.0] [-10.0, -3.0] = [0X1.9999999999999P-4,0X1.5555555555556P-1];
+    div [-2.0,-1.0] [0.0, 10.0] = [-infinity,-0X1.9999999999999P-4];
+    div [-2.0,-1.0] [-0.0, 10.0] = [-infinity,-0X1.9999999999999P-4];
+    div [-1.0,2.0] [10.0,infinity] = [-0X1.999999999999AP-4,0X1.999999999999AP-3];
+    div [1.0,3.0] [-infinity, -10.0] = [-0X1.3333333333334P-2,0.0];
+    div [-infinity,-1.0] [1.0, 3.0] = [-infinity,-0X1.5555555555555P-2];
+}
+
+testcase minimal_div_dec_test {
+    div [-2.0,-1.0]_com [-10.0, -3.0]_com = [0X1.9999999999999P-4,0X1.5555555555556P-1]_com;
+    div [-200.0,-1.0]_com [0x0.0000000000001p-1022, 10.0]_com = [-infinity,-0X1.9999999999999P-4]_dac;
+    div [-2.0,-1.0]_com [0.0, 10.0]_com = [-infinity,-0X1.9999999999999P-4]_trv;
+    div [1.0,3.0]_def [-infinity, -10.0]_dac = [-0X1.3333333333334P-2,0.0]_def;
+    div [1.0,2.0]_trv [empty]_trv = [empty]_trv;
+    div [nai] [1.0,2.0]_trv = [nai];
+}
+
+testcase minimal_recip_test {
+    recip [-50.0, -10.0] = [-0X1.999999999999AP-4,-0X1.47AE147AE147AP-6];
+    recip [10.0, 50.0] = [0X1.47AE147AE147AP-6,0X1.999999999999AP-4];
+    recip [-infinity, -10.0] = [-0X1.999999999999AP-4,0.0];
+    recip [10.0,infinity] = [0.0,0X1.999999999999AP-4];
+    recip [0.0,0.0] = [empty];
+    recip [-0.0,-0.0] = [empty];
+    recip [-10.0, 0.0] = [-infinity,-0X1.9999999999999P-4];
+    recip [-10.0, -0.0] = [-infinity,-0X1.9999999999999P-4];
+    recip [-10.0, 10.0] = [entire];
+    recip [0.0, 10.0] = [0X1.9999999999999P-4,infinity];
+    recip [-0.0, 10.0] = [0X1.9999999999999P-4,infinity];
+    recip [-infinity, 0.0] = [-infinity,0.0];
+    recip [-infinity, -0.0] = [-infinity,0.0];
+    recip [-infinity, 10.0] = [entire];
+    recip [-10.0, infinity] = [entire];
+    recip [0.0, infinity] = [0.0,infinity];
+    recip [-0.0, infinity] = [0.0,infinity];
+    recip [entire] = [entire];
+}
+
+testcase minimal_recip_dec_test {
+    recip [10.0, 50.0]_com = [0X1.47AE147AE147AP-6,0X1.999999999999AP-4]_com;
+    recip [-infinity, -10.0]_dac = [-0X1.999999999999AP-4,0.0]_dac;
+    recip [-0x1.FFFFFFFFFFFFFp1023, -0x0.0000000000001p-1022]_def = [-infinity,-0X0.4P-1022]_def;
+    recip [0.0,0.0]_com = [empty]_trv;
+    recip [-10.0, 0.0]_com = [-infinity,-0X1.9999999999999P-4]_trv;
+    recip [-10.0, infinity]_dac = [entire]_trv;
+    recip [-0.0, infinity]_dac = [0.0,infinity]_trv;
+    recip [entire]_dac = [entire]_trv;
+}
+
+testcase minimal_sqr_test {
+    sqr [empty] = [empty];
+    sqr [entire] = [0.0,infinity];
+    sqr [-infinity,-0x0.0000000000001p-1022] = [0.0,infinity];
+    sqr [-1.0,1.0] = [0.0,1.0];
+    sqr [0.0,1.0] = [0.0,1.0];
+    sqr [-0.0,1.0] = [0.0,1.0];
+    sqr [-5.0,3.0] = [0.0,25.0];
+    sqr [-5.0,0.0] = [0.0,25.0];
+    sqr [-5.0,-0.0] = [0.0,25.0];
+    sqr [0X1.999999999999AP-4,0X1.999999999999AP-4] = [0X1.47AE147AE147BP-7,0X1.47AE147AE147CP-7];
+    sqr [-0X1.FFFFFFFFFFFFP+0,0X1.999999999999AP-4] = [0.0,0X1.FFFFFFFFFFFE1P+1];
+    sqr [-0X1.FFFFFFFFFFFFP+0,-0X1.FFFFFFFFFFFFP+0] = [0X1.FFFFFFFFFFFEP+1,0X1.FFFFFFFFFFFE1P+1];
+}
+
+testcase minimal_sqr_dec_test {
+    sqr [-0x1.FFFFFFFFFFFFFp1023,-0x0.0000000000001p-1022]_com = [0.0,infinity]_dac;
+    sqr [-1.0,1.0]_def = [0.0,1.0]_def;
+    sqr [-5.0,3.0]_com = [0.0,25.0]_com;
+    sqr [0X1.999999999999AP-4,0X1.999999999999AP-4]_com = [0X1.47AE147AE147BP-7,0X1.47AE147AE147CP-7]_com;
+}
+
+testcase minimal_sqrt_test {
+    sqrt [empty] = [empty];
+    sqrt [entire] = [0.0,infinity];
+    sqrt [-infinity,-0x0.0000000000001p-1022] = [empty];
+    sqrt [-1.0,1.0] = [0.0,1.0];
+    sqrt [0.0,1.0] = [0.0,1.0];
+    sqrt [-0.0,1.0] = [0.0,1.0];
+    sqrt [-5.0,25.0] = [0.0,5.0];
+    sqrt [0.0,25.0] = [0.0,5.0];
+    sqrt [-0.0,25.0] = [0.0,5.0];
+    sqrt [-5.0,infinity] = [0.0,infinity];
+    sqrt [0X1.999999999999AP-4,0X1.999999999999AP-4] = [0X1.43D136248490FP-2,0X1.43D136248491P-2];
+    sqrt [-0X1.FFFFFFFFFFFFP+0,0X1.999999999999AP-4] = [0.0,0X1.43D136248491P-2];
+    sqrt [0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0] = [0X1.43D136248490FP-2,0X1.6A09E667F3BC7P+0];
+}
+
+testcase minimal_sqrt_dec_test {
+    sqrt [1.0,4.0]_com = [1.0,2.0]_com;
+    sqrt [-5.0,25.0]_com = [0.0,5.0]_trv;
+    sqrt [0.0,25.0]_def = [0.0,5.0]_def;
+
+    sqrt [-5.0,infinity]_dac = [0.0,infinity]_trv;
+}
+
+testcase minimal_fma_test {
+    fma [empty] [empty] [empty] = [empty];
+    fma [-1.0,1.0] [empty] [empty] = [empty];
+    fma [empty] [-1.0,1.0] [empty] = [empty];
+    fma [empty] [entire] [empty] = [empty];
+    fma [entire] [empty] [empty] = [empty];
+    fma [0.0,0.0] [empty] [empty] = [empty];
+    fma [-0.0,-0.0] [empty] [empty] = [empty];
+    fma [empty] [0.0,0.0] [empty] = [empty];
+    fma [empty] [-0.0,-0.0] [empty] = [empty];
+
+    fma [entire] [0.0,0.0] [empty] = [empty];
+    fma [entire] [-0.0,-0.0] [empty] = [empty];
+    fma [entire] [-5.0, -1.0] [empty] = [empty];
+    fma [entire] [-5.0, 3.0] [empty] = [empty];
+    fma [entire] [1.0, 3.0] [empty] = [empty];
+    fma [entire] [-infinity, -1.0] [empty] = [empty];
+    fma [entire] [-infinity, 3.0] [empty] = [empty];
+    fma [entire] [-5.0, infinity] [empty] = [empty];
+    fma [entire] [1.0, infinity] [empty] = [empty];
+    fma [entire] [entire] [empty] = [empty];
+
+    fma [1.0,infinity] [0.0,0.0] [empty] = [empty];
+    fma [1.0,infinity] [-0.0,-0.0] [empty] = [empty];
+    fma [1.0,infinity] [-5.0, -1.0] [empty] = [empty];
+    fma [1.0,infinity] [-5.0, 3.0] [empty] = [empty];
+    fma [1.0,infinity] [1.0, 3.0] [empty] = [empty];
+    fma [1.0,infinity] [-infinity, -1.0] [empty] = [empty];
+    fma [1.0,infinity] [-infinity, 3.0] [empty] = [empty];
+    fma [1.0,infinity] [-5.0, infinity] [empty] = [empty];
+    fma [1.0,infinity] [1.0, infinity] [empty] = [empty];
+    fma [1.0,infinity] [entire] [empty] = [empty];
+
+    fma [-1.0,infinity] [0.0,0.0] [empty] = [empty];
+    fma [-1.0,infinity] [-0.0,-0.0] [empty] = [empty];
+    fma [-1.0,infinity] [-5.0, -1.0] [empty] = [empty];
+    fma [-1.0,infinity] [-5.0, 3.0] [empty] = [empty];
+    fma [-1.0,infinity] [1.0, 3.0] [empty] = [empty];
+    fma [-1.0,infinity] [-infinity, -1.0] [empty] = [empty];
+    fma [-1.0,infinity] [-infinity, 3.0] [empty] = [empty];
+    fma [-1.0,infinity] [-5.0, infinity] [empty] = [empty];
+    fma [-1.0,infinity] [1.0, infinity] [empty] = [empty];
+    fma [-1.0,infinity] [entire] [empty] = [empty];
+
+    fma [-infinity,3.0] [0.0,0.0] [empty] = [empty];
+    fma [-infinity,3.0] [-0.0,-0.0] [empty] = [empty];
+    fma [-infinity,3.0] [-5.0, -1.0] [empty] = [empty];
+    fma [-infinity,3.0] [-5.0, 3.0] [empty] = [empty];
+    fma [-infinity,3.0] [1.0, 3.0] [empty] = [empty];
+    fma [-infinity,3.0] [-infinity, -1.0] [empty] = [empty];
+    fma [-infinity,3.0] [-infinity, 3.0] [empty] = [empty];
+    fma [-infinity,3.0] [-5.0, infinity] [empty] = [empty];
+    fma [-infinity,3.0] [1.0, infinity] [empty] = [empty];
+    fma [-infinity,3.0] [entire] [empty] = [empty];
+
+    fma [-infinity,-3.0] [0.0,0.0] [empty] = [empty];
+    fma [-infinity,-3.0] [-0.0,-0.0] [empty] = [empty];
+    fma [-infinity,-3.0] [-5.0, -1.0] [empty] = [empty];
+    fma [-infinity,-3.0] [-5.0, 3.0] [empty] = [empty];
+    fma [-infinity,-3.0] [1.0, 3.0] [empty] = [empty];
+    fma [-infinity,-3.0] [-infinity, -1.0] [empty] = [empty];
+    fma [-infinity,-3.0] [-infinity, 3.0] [empty] = [empty];
+    fma [-infinity,-3.0] [-5.0, infinity] [empty] = [empty];
+    fma [-infinity,-3.0] [1.0, infinity] [empty] = [empty];
+    fma [-infinity,-3.0] [entire] [empty] = [empty];
+
+    fma [0.0,0.0] [0.0,0.0] [empty] = [empty];
+    fma [0.0,0.0] [-0.0,-0.0] [empty] = [empty];
+    fma [0.0,0.0] [-5.0, -1.0] [empty] = [empty];
+    fma [0.0,0.0] [-5.0, 3.0] [empty] = [empty];
+    fma [0.0,0.0] [1.0, 3.0] [empty] = [empty];
+    fma [0.0,0.0] [-infinity, -1.0] [empty] = [empty];
+    fma [0.0,0.0] [-infinity, 3.0] [empty] = [empty];
+    fma [0.0,0.0] [-5.0, infinity] [empty] = [empty];
+    fma [0.0,0.0] [1.0, infinity] [empty] = [empty];
+    fma [0.0,0.0] [entire] [empty] = [empty];
+
+    fma [-0.0,-0.0] [0.0,0.0] [empty] = [empty];
+    fma [-0.0,-0.0] [-0.0,-0.0] [empty] = [empty];
+    fma [-0.0,-0.0] [-5.0, -1.0] [empty] = [empty];
+    fma [-0.0,-0.0] [-5.0, 3.0] [empty] = [empty];
+    fma [-0.0,-0.0] [1.0, 3.0] [empty] = [empty];
+    fma [-0.0,-0.0] [-infinity, -1.0] [empty] = [empty];
+    fma [-0.0,-0.0] [-infinity, 3.0] [empty] = [empty];
+    fma [-0.0,-0.0] [-5.0, infinity] [empty] = [empty];
+    fma [-0.0,-0.0] [1.0, infinity] [empty] = [empty];
+    fma [-0.0,-0.0] [entire] [empty] = [empty];
+
+    fma [1.0,5.0] [0.0,0.0] [empty] = [empty];
+    fma [1.0,5.0] [-0.0,-0.0] [empty] = [empty];
+    fma [1.0,5.0] [-5.0, -1.0] [empty] = [empty];
+    fma [1.0,5.0] [-5.0, 3.0] [empty] = [empty];
+    fma [1.0,5.0] [1.0, 3.0] [empty] = [empty];
+    fma [1.0,5.0] [-infinity, -1.0] [empty] = [empty];
+    fma [1.0,5.0] [-infinity, 3.0] [empty] = [empty];
+    fma [1.0,5.0] [-5.0, infinity] [empty] = [empty];
+    fma [1.0,5.0] [1.0, infinity] [empty] = [empty];
+    fma [1.0,5.0] [entire] [empty] = [empty];
+
+    fma [-1.0,5.0] [0.0,0.0] [empty] = [empty];
+    fma [-1.0,5.0] [-0.0,-0.0] [empty] = [empty];
+    fma [-1.0,5.0] [-5.0, -1.0] [empty] = [empty];
+    //min max
+    fma [-1.0,5.0] [-5.0, 3.0] [empty] = [empty];
+    fma [-10.0,2.0] [-5.0, 3.0] [empty] = [empty];
+    fma [-1.0,5.0] [-1.0, 10.0] [empty] = [empty];
+    fma [-2.0,2.0] [-5.0, 3.0] [empty] = [empty];
+    //end min max
+    fma [-1.0,5.0] [1.0, 3.0] [empty] = [empty];
+    fma [-1.0,5.0] [-infinity, -1.0] [empty] = [empty];
+    fma [-1.0,5.0] [-infinity, 3.0] [empty] = [empty];
+    fma [-1.0,5.0] [-5.0, infinity] [empty] = [empty];
+    fma [-1.0,5.0] [1.0, infinity] [empty] = [empty];
+    fma [-1.0,5.0] [entire] [empty] = [empty];
+
+    fma [-10.0,-5.0] [0.0,0.0] [empty] = [empty];
+    fma [-10.0,-5.0] [-0.0,-0.0] [empty] = [empty];
+    fma [-10.0,-5.0] [-5.0, -1.0] [empty] = [empty];
+    fma [-10.0,-5.0] [-5.0, 3.0] [empty] = [empty];
+    fma [-10.0,-5.0] [1.0, 3.0] [empty] = [empty];
+    fma [-10.0,-5.0] [-infinity, -1.0] [empty] = [empty];
+    fma [-10.0,-5.0] [-infinity, 3.0] [empty] = [empty];
+    fma [-10.0,-5.0] [-5.0, infinity] [empty] = [empty];
+    fma [-10.0,-5.0] [1.0, infinity] [empty] = [empty];
+    fma [-10.0,-5.0] [entire] [empty] = [empty];
+
+
+
+    fma [empty] [empty] [-infinity,2.0] = [empty];
+    fma [-1.0,1.0] [empty] [-infinity,2.0] = [empty];
+    fma [empty] [-1.0,1.0] [-infinity,2.0] = [empty];
+    fma [empty] [entire] [-infinity,2.0] = [empty];
+    fma [entire] [empty] [-infinity,2.0] = [empty];
+    fma [0.0,0.0] [empty] [-infinity,2.0] = [empty];
+    fma [-0.0,-0.0] [empty] [-infinity,2.0] = [empty];
+    fma [empty] [0.0,0.0] [-infinity,2.0] = [empty];
+    fma [empty] [-0.0,-0.0] [-infinity,2.0] = [empty];
+
+    fma [entire] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [entire] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [entire] [-5.0, -1.0] [-infinity,2.0] = [entire];
+    fma [entire] [-5.0, 3.0] [-infinity,2.0] = [entire];
+    fma [entire] [1.0, 3.0] [-infinity,2.0] = [entire];
+    fma [entire] [-infinity, -1.0] [-infinity,2.0] = [entire];
+    fma [entire] [-infinity, 3.0] [-infinity,2.0] = [entire];
+    fma [entire] [-5.0, infinity] [-infinity,2.0] = [entire];
+    fma [entire] [1.0, infinity] [-infinity,2.0] = [entire];
+    fma [entire] [entire] [-infinity,2.0] = [entire];
+
+    fma [1.0,infinity] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [1.0,infinity] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [1.0,infinity] [-5.0, -1.0] [-infinity,2.0] = [-infinity,1.0];
+    fma [1.0,infinity] [-5.0, 3.0] [-infinity,2.0] = [entire];
+    fma [1.0,infinity] [1.0, 3.0] [-infinity,2.0] = [entire];
+    fma [1.0,infinity] [-infinity, -1.0] [-infinity,2.0] = [-infinity,1.0];
+    fma [1.0,infinity] [-infinity, 3.0] [-infinity,2.0] = [entire];
+    fma [1.0,infinity] [-5.0, infinity] [-infinity,2.0] = [entire];
+    fma [1.0,infinity] [1.0, infinity] [-infinity,2.0] = [entire];
+    fma [1.0,infinity] [entire] [-infinity,2.0] = [entire];
+
+    fma [-1.0,infinity] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-1.0,infinity] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-1.0,infinity] [-5.0, -1.0] [-infinity,2.0] = [-infinity,7.0];
+    fma [-1.0,infinity] [-5.0, 3.0] [-infinity,2.0] = [entire];
+    fma [-1.0,infinity] [1.0, 3.0] [-infinity,2.0] = [entire];
+    fma [-1.0,infinity] [-infinity, -1.0] [-infinity,2.0] = [entire];
+    fma [-1.0,infinity] [-infinity, 3.0] [-infinity,2.0] = [entire];
+    fma [-1.0,infinity] [-5.0, infinity] [-infinity,2.0] = [entire];
+    fma [-1.0,infinity] [1.0, infinity] [-infinity,2.0] = [entire];
+    fma [-1.0,infinity] [entire] [-infinity,2.0] = [entire];
+
+    fma [-infinity,3.0] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-infinity,3.0] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-infinity,3.0] [-5.0, -1.0] [-infinity,2.0] = [entire];
+    fma [-infinity,3.0] [-5.0, 3.0] [-infinity,2.0] = [entire];
+    fma [-infinity,3.0] [1.0, 3.0] [-infinity,2.0] = [-infinity,11.0];
+    fma [-infinity,3.0] [-infinity, -1.0] [-infinity,2.0] = [entire];
+    fma [-infinity,3.0] [-infinity, 3.0] [-infinity,2.0] = [entire];
+    fma [-infinity,3.0] [-5.0, infinity] [-infinity,2.0] = [entire];
+    fma [-infinity,3.0] [1.0, infinity] [-infinity,2.0] = [entire];
+    fma [-infinity,3.0] [entire] [-infinity,2.0] = [entire];
+
+    fma [-infinity,-3.0] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-infinity,-3.0] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-infinity,-3.0] [-5.0, -1.0] [-infinity,2.0] = [entire];
+    fma [-infinity,-3.0] [-5.0, 3.0] [-infinity,2.0] = [entire];
+    fma [-infinity,-3.0] [1.0, 3.0] [-infinity,2.0] = [-infinity,-1.0];
+    fma [-infinity,-3.0] [-infinity, -1.0] [-infinity,2.0] = [entire];
+    fma [-infinity,-3.0] [-infinity, 3.0] [-infinity,2.0] = [entire];
+    fma [-infinity,-3.0] [-5.0, infinity] [-infinity,2.0] = [entire];
+    fma [-infinity,-3.0] [1.0, infinity] [-infinity,2.0] = [-infinity,-1.0];
+    fma [-infinity,-3.0] [entire] [-infinity,2.0] = [entire];
+
+    fma [0.0,0.0] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [-5.0, -1.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [-5.0, 3.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [1.0, 3.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [-infinity, -1.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [-infinity, 3.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [-5.0, infinity] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [1.0, infinity] [-infinity,2.0] = [-infinity,2.0];
+    fma [0.0,0.0] [entire] [-infinity,2.0] = [-infinity,2.0];
+
+    fma [-0.0,-0.0] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [-5.0, -1.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [-5.0, 3.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [1.0, 3.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [-infinity, -1.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [-infinity, 3.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [-5.0, infinity] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [1.0, infinity] [-infinity,2.0] = [-infinity,2.0];
+    fma [-0.0,-0.0] [entire] [-infinity,2.0] = [-infinity,2.0];
+
+    fma [1.0,5.0] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [1.0,5.0] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [1.0,5.0] [-5.0, -1.0] [-infinity,2.0] = [-infinity,1.0];
+    fma [1.0,5.0] [-5.0, 3.0] [-infinity,2.0] = [-infinity,17.0];
+    fma [1.0,5.0] [1.0, 3.0] [-infinity,2.0] = [-infinity,17.0];
+    fma [1.0,5.0] [-infinity, -1.0] [-infinity,2.0] = [-infinity,1.0];
+    fma [1.0,5.0] [-infinity, 3.0] [-infinity,2.0] = [-infinity,17.0];
+    fma [1.0,5.0] [-5.0, infinity] [-infinity,2.0] = [entire];
+    fma [1.0,5.0] [1.0, infinity] [-infinity,2.0] = [entire];
+    fma [1.0,5.0] [entire] [-infinity,2.0] = [entire];
+
+    fma [-1.0,5.0] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-1.0,5.0] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-1.0,5.0] [-5.0, -1.0] [-infinity,2.0] = [-infinity,7.0];
+    //min max
+    fma [-1.0,5.0] [-5.0, 3.0] [-infinity,2.0] = [-infinity,17.0];
+    fma [-10.0,2.0] [-5.0, 3.0] [-infinity,2.0] = [-infinity,52.0];
+    fma [-1.0,5.0] [-1.0, 10.0] [-infinity,2.0] = [-infinity,52.0];
+    fma [-2.0,2.0] [-5.0, 3.0] [-infinity,2.0] = [-infinity,12.0];
+    //end min max
+    fma [-1.0,5.0] [1.0, 3.0] [-infinity,2.0] = [-infinity,17.0];
+    fma [-1.0,5.0] [-infinity, -1.0] [-infinity,2.0] = [entire];
+    fma [-1.0,5.0] [-infinity, 3.0] [-infinity,2.0] = [entire];
+    fma [-1.0,5.0] [-5.0, infinity] [-infinity,2.0] = [entire];
+    fma [-1.0,5.0] [1.0, infinity] [-infinity,2.0] = [entire];
+    fma [-1.0,5.0] [entire] [-infinity,2.0] = [entire];
+
+    fma [-10.0,-5.0] [0.0,0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-10.0,-5.0] [-0.0,-0.0] [-infinity,2.0] = [-infinity,2.0];
+    fma [-10.0,-5.0] [-5.0, -1.0] [-infinity,2.0] = [-infinity,52.0];
+    fma [-10.0,-5.0] [-5.0, 3.0] [-infinity,2.0] = [-infinity,52.0];
+    fma [-10.0,-5.0] [1.0, 3.0] [-infinity,2.0] = [-infinity,-3.0];
+    fma [-10.0,-5.0] [-infinity, -1.0] [-infinity,2.0] = [entire];
+    fma [-10.0,-5.0] [-infinity, 3.0] [-infinity,2.0] = [entire];
+    fma [-10.0,-5.0] [-5.0, infinity] [-infinity,2.0] = [-infinity,52.0];
+    fma [-10.0,-5.0] [1.0, infinity] [-infinity,2.0] = [-infinity,-3.0];
+    fma [-10.0,-5.0] [entire] [-infinity,2.0] = [entire];
+
+
+
+    fma [empty] [empty] [-2.0,2.0] = [empty];
+    fma [-1.0,1.0] [empty] [-2.0,2.0] = [empty];
+    fma [empty] [-1.0,1.0] [-2.0,2.0] = [empty];
+    fma [empty] [entire] [-2.0,2.0] = [empty];
+    fma [entire] [empty] [-2.0,2.0] = [empty];
+    fma [0.0,0.0] [empty] [-2.0,2.0] = [empty];
+    fma [-0.0,-0.0] [empty] [-2.0,2.0] = [empty];
+    fma [empty] [0.0,0.0] [-2.0,2.0] = [empty];
+    fma [empty] [-0.0,-0.0] [-2.0,2.0] = [empty];
+
+    fma [entire] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [entire] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [entire] [-5.0, -1.0] [-2.0,2.0] = [entire];
+    fma [entire] [-5.0, 3.0] [-2.0,2.0] = [entire];
+    fma [entire] [1.0, 3.0] [-2.0,2.0] = [entire];
+    fma [entire] [-infinity, -1.0] [-2.0,2.0] = [entire];
+    fma [entire] [-infinity, 3.0] [-2.0,2.0] = [entire];
+    fma [entire] [-5.0, infinity] [-2.0,2.0] = [entire];
+    fma [entire] [1.0, infinity] [-2.0,2.0] = [entire];
+    fma [entire] [entire] [-2.0,2.0] = [entire];
+
+    fma [1.0,infinity] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [1.0,infinity] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [1.0,infinity] [-5.0, -1.0] [-2.0,2.0] = [-infinity,1.0];
+    fma [1.0,infinity] [-5.0, 3.0] [-2.0,2.0] = [entire];
+    fma [1.0,infinity] [1.0, 3.0] [-2.0,2.0] = [-1.0,infinity];
+    fma [1.0,infinity] [-infinity, -1.0] [-2.0,2.0] = [-infinity,1.0];
+    fma [1.0,infinity] [-infinity, 3.0] [-2.0,2.0] = [entire];
+    fma [1.0,infinity] [-5.0, infinity] [-2.0,2.0] = [entire];
+    fma [1.0,infinity] [1.0, infinity] [-2.0,2.0] = [-1.0,infinity];
+    fma [1.0,infinity] [entire] [-2.0,2.0] = [entire];
+
+    fma [-1.0,infinity] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-1.0,infinity] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-1.0,infinity] [-5.0, -1.0] [-2.0,2.0] = [-infinity,7.0];
+    fma [-1.0,infinity] [-5.0, 3.0] [-2.0,2.0] = [entire];
+    fma [-1.0,infinity] [1.0, 3.0] [-2.0,2.0] = [-5.0,infinity];
+    fma [-1.0,infinity] [-infinity, -1.0] [-2.0,2.0] = [entire];
+    fma [-1.0,infinity] [-infinity, 3.0] [-2.0,2.0] = [entire];
+    fma [-1.0,infinity] [-5.0, infinity] [-2.0,2.0] = [entire];
+    fma [-1.0,infinity] [1.0, infinity] [-2.0,2.0] = [entire];
+    fma [-1.0,infinity] [entire] [-2.0,2.0] = [entire];
+
+    fma [-infinity,3.0] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-infinity,3.0] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-infinity,3.0] [-5.0, -1.0] [-2.0,2.0] = [-17.0,infinity];
+    fma [-infinity,3.0] [-5.0, 3.0] [-2.0,2.0] = [entire];
+    fma [-infinity,3.0] [1.0, 3.0] [-2.0,2.0] = [-infinity,11.0];
+    fma [-infinity,3.0] [-infinity, -1.0] [-2.0,2.0] = [entire];
+    fma [-infinity,3.0] [-infinity, 3.0] [-2.0,2.0] = [entire];
+    fma [-infinity,3.0] [-5.0, infinity] [-2.0,2.0] = [entire];
+    fma [-infinity,3.0] [1.0, infinity] [-2.0,2.0] = [entire];
+    fma [-infinity,3.0] [entire] [-2.0,2.0] = [entire];
+
+    fma [-infinity,-3.0] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-infinity,-3.0] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-infinity,-3.0] [-5.0, -1.0] [-2.0,2.0] = [1.0,infinity];
+    fma [-infinity,-3.0] [-5.0, 3.0] [-2.0,2.0] = [entire];
+    fma [-infinity,-3.0] [1.0, 3.0] [-2.0,2.0] = [-infinity,-1.0];
+    fma [-infinity,-3.0] [-infinity, -1.0] [-2.0,2.0] = [1.0,infinity];
+    fma [-infinity,-3.0] [-infinity, 3.0] [-2.0,2.0] = [entire];
+    fma [-infinity,-3.0] [-5.0, infinity] [-2.0,2.0] = [entire];
+    fma [-infinity,-3.0] [1.0, infinity] [-2.0,2.0] = [-infinity,-1.0];
+    fma [-infinity,-3.0] [entire] [-2.0,2.0] = [entire];
+
+    fma [0.0,0.0] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [-5.0, -1.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [-5.0, 3.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [1.0, 3.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [-infinity, -1.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [-infinity, 3.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [-5.0, infinity] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [1.0, infinity] [-2.0,2.0] = [-2.0,2.0];
+    fma [0.0,0.0] [entire] [-2.0,2.0] = [-2.0,2.0];
+
+    fma [-0.0,-0.0] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [-5.0, -1.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [-5.0, 3.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [1.0, 3.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [-infinity, -1.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [-infinity, 3.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [-5.0, infinity] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [1.0, infinity] [-2.0,2.0] = [-2.0,2.0];
+    fma [-0.0,-0.0] [entire] [-2.0,2.0] = [-2.0,2.0];
+
+    fma [1.0,5.0] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [1.0,5.0] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [1.0,5.0] [-5.0, -1.0] [-2.0,2.0] = [-27.0,1.0];
+    fma [1.0,5.0] [-5.0, 3.0] [-2.0,2.0] = [-27.0,17.0];
+    fma [1.0,5.0] [1.0, 3.0] [-2.0,2.0] = [-1.0,17.0];
+    fma [1.0,5.0] [-infinity, -1.0] [-2.0,2.0] = [-infinity,1.0];
+    fma [1.0,5.0] [-infinity, 3.0] [-2.0,2.0] = [-infinity,17.0];
+    fma [1.0,5.0] [-5.0, infinity] [-2.0,2.0] = [-27.0,infinity];
+    fma [1.0,5.0] [1.0, infinity] [-2.0,2.0] = [-1.0,infinity];
+    fma [1.0,5.0] [entire] [-2.0,2.0] = [entire];
+
+    fma [-1.0,5.0] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-1.0,5.0] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-1.0,5.0] [-5.0, -1.0] [-2.0,2.0] = [-27.0,7.0];
+    //min max
+    fma [-1.0,5.0] [-5.0, 3.0] [-2.0,2.0] = [-27.0,17.0];
+    fma [-10.0,2.0] [-5.0, 3.0] [-2.0,2.0] = [-32.0,52.0];
+    fma [-1.0,5.0] [-1.0, 10.0] [-2.0,2.0] = [-12.0,52.0];
+    fma [-2.0,2.0] [-5.0, 3.0] [-2.0,2.0] = [-12.0,12.0];
+    //end min max
+    fma [-1.0,5.0] [1.0, 3.0] [-2.0,2.0] = [-5.0,17.0];
+    fma [-1.0,5.0] [-infinity, -1.0] [-2.0,2.0] = [entire];
+    fma [-1.0,5.0] [-infinity, 3.0] [-2.0,2.0] = [entire];
+    fma [-1.0,5.0] [-5.0, infinity] [-2.0,2.0] = [entire];
+    fma [-1.0,5.0] [1.0, infinity] [-2.0,2.0] = [entire];
+    fma [-1.0,5.0] [entire] [-2.0,2.0] = [entire];
+
+    fma [-10.0,-5.0] [0.0,0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-10.0,-5.0] [-0.0,-0.0] [-2.0,2.0] = [-2.0,2.0];
+    fma [-10.0,-5.0] [-5.0, -1.0] [-2.0,2.0] = [3.0,52.0];
+    fma [-10.0,-5.0] [-5.0, 3.0] [-2.0,2.0] = [-32.0,52.0];
+    fma [-10.0,-5.0] [1.0, 3.0] [-2.0,2.0] = [-32.0,-3.0];
+    fma [-10.0,-5.0] [-infinity, -1.0] [-2.0,2.0] = [3.0,infinity];
+    fma [-10.0,-5.0] [-infinity, 3.0] [-2.0,2.0] = [-32.0,infinity];
+    fma [-10.0,-5.0] [-5.0, infinity] [-2.0,2.0] = [-infinity,52.0];
+    fma [-10.0,-5.0] [1.0, infinity] [-2.0,2.0] = [-infinity,-3.0];
+    fma [-10.0,-5.0] [entire] [-2.0,2.0] = [entire];
+
+
+
+    fma [empty] [empty] [-2.0,infinity] = [empty];
+    fma [-1.0,1.0] [empty] [-2.0,infinity] = [empty];
+    fma [empty] [-1.0,1.0] [-2.0,infinity] = [empty];
+    fma [empty] [entire] [-2.0,infinity] = [empty];
+    fma [entire] [empty] [-2.0,infinity] = [empty];
+    fma [0.0,0.0] [empty] [-2.0,infinity] = [empty];
+    fma [-0.0,-0.0] [empty] [-2.0,infinity] = [empty];
+    fma [empty] [0.0,0.0] [-2.0,infinity] = [empty];
+    fma [empty] [-0.0,-0.0] [-2.0,infinity] = [empty];
+
+    fma [entire] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [entire] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [entire] [-5.0, -1.0] [-2.0,infinity] = [entire];
+    fma [entire] [-5.0, 3.0] [-2.0,infinity] = [entire];
+    fma [entire] [1.0, 3.0] [-2.0,infinity] = [entire];
+    fma [entire] [-infinity, -1.0] [-2.0,infinity] = [entire];
+    fma [entire] [-infinity, 3.0] [-2.0,infinity] = [entire];
+    fma [entire] [-5.0, infinity] [-2.0,infinity] = [entire];
+    fma [entire] [1.0, infinity] [-2.0,infinity] = [entire];
+    fma [entire] [entire] [-2.0,infinity] = [entire];
+
+    fma [1.0,infinity] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [1.0,infinity] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [1.0,infinity] [-5.0, -1.0] [-2.0,infinity] = [entire];
+    fma [1.0,infinity] [-5.0, 3.0] [-2.0,infinity] = [entire];
+    fma [1.0,infinity] [1.0, 3.0] [-2.0,infinity] = [-1.0,infinity];
+    fma [1.0,infinity] [-infinity, -1.0] [-2.0,infinity] = [entire];
+    fma [1.0,infinity] [-infinity, 3.0] [-2.0,infinity] = [entire];
+    fma [1.0,infinity] [-5.0, infinity] [-2.0,infinity] = [entire];
+    fma [1.0,infinity] [1.0, infinity] [-2.0,infinity] = [-1.0,infinity];
+    fma [1.0,infinity] [entire] [-2.0,infinity] = [entire];
+
+    fma [-1.0,infinity] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-1.0,infinity] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-1.0,infinity] [-5.0, -1.0] [-2.0,infinity] = [entire];
+    fma [-1.0,infinity] [-5.0, 3.0] [-2.0,infinity] = [entire];
+    fma [-1.0,infinity] [1.0, 3.0] [-2.0,infinity] = [-5.0,infinity];
+    fma [-1.0,infinity] [-infinity, -1.0] [-2.0,infinity] = [entire];
+    fma [-1.0,infinity] [-infinity, 3.0] [-2.0,infinity] = [entire];
+    fma [-1.0,infinity] [-5.0, infinity] [-2.0,infinity] = [entire];
+    fma [-1.0,infinity] [1.0, infinity] [-2.0,infinity] = [entire];
+    fma [-1.0,infinity] [entire] [-2.0,infinity] = [entire];
+
+    fma [-infinity,3.0] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-infinity,3.0] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-infinity,3.0] [-5.0, -1.0] [-2.0,infinity] = [-17.0,infinity];
+    fma [-infinity,3.0] [-5.0, 3.0] [-2.0,infinity] = [entire];
+    fma [-infinity,3.0] [1.0, 3.0] [-2.0,infinity] = [entire];
+    fma [-infinity,3.0] [-infinity, -1.0] [-2.0,infinity] = [entire];
+    fma [-infinity,3.0] [-infinity, 3.0] [-2.0,infinity] = [entire];
+    fma [-infinity,3.0] [-5.0, infinity] [-2.0,infinity] = [entire];
+    fma [-infinity,3.0] [1.0, infinity] [-2.0,infinity] = [entire];
+    fma [-infinity,3.0] [entire] [-2.0,infinity] = [entire];
+
+    fma [-infinity,-3.0] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-infinity,-3.0] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-infinity,-3.0] [-5.0, -1.0] [-2.0,infinity] = [1.0,infinity];
+    fma [-infinity,-3.0] [-5.0, 3.0] [-2.0,infinity] = [entire];
+    fma [-infinity,-3.0] [1.0, 3.0] [-2.0,infinity] = [entire];
+    fma [-infinity,-3.0] [-infinity, -1.0] [-2.0,infinity] = [1.0,infinity];
+    fma [-infinity,-3.0] [-infinity, 3.0] [-2.0,infinity] = [entire];
+    fma [-infinity,-3.0] [-5.0, infinity] [-2.0,infinity] = [entire];
+    fma [-infinity,-3.0] [1.0, infinity] [-2.0,infinity] = [entire];
+    fma [-infinity,-3.0] [entire] [-2.0,infinity] = [entire];
+
+    fma [0.0,0.0] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [-5.0, -1.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [-5.0, 3.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [1.0, 3.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [-infinity, -1.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [-infinity, 3.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [-5.0, infinity] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [1.0, infinity] [-2.0,infinity] = [-2.0,infinity];
+    fma [0.0,0.0] [entire] [-2.0,infinity] = [-2.0,infinity];
+
+    fma [-0.0,-0.0] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [-5.0, -1.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [-5.0, 3.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [1.0, 3.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [-infinity, -1.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [-infinity, 3.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [-5.0, infinity] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [1.0, infinity] [-2.0,infinity] = [-2.0,infinity];
+    fma [-0.0,-0.0] [entire] [-2.0,infinity] = [-2.0,infinity];
+
+    fma [1.0,5.0] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [1.0,5.0] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [1.0,5.0] [-5.0, -1.0] [-2.0,infinity] = [-27.0,infinity];
+    fma [1.0,5.0] [-5.0, 3.0] [-2.0,infinity] = [-27.0,infinity];
+    fma [1.0,5.0] [1.0, 3.0] [-2.0,infinity] = [-1.0,infinity];
+    fma [1.0,5.0] [-infinity, -1.0] [-2.0,infinity] = [entire];
+    fma [1.0,5.0] [-infinity, 3.0] [-2.0,infinity] = [entire];
+    fma [1.0,5.0] [-5.0, infinity] [-2.0,infinity] = [-27.0,infinity];
+    fma [1.0,5.0] [1.0, infinity] [-2.0,infinity] = [-1.0,infinity];
+    fma [1.0,5.0] [entire] [-2.0,infinity] = [entire];
+
+    fma [-1.0,5.0] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-1.0,5.0] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-1.0,5.0] [-5.0, -1.0] [-2.0,infinity] = [-27.0,infinity];
+    //min max
+    fma [-1.0,5.0] [-5.0, 3.0] [-2.0,infinity] = [-27.0,infinity];
+    fma [-10.0,2.0] [-5.0, 3.0] [-2.0,infinity] = [-32.0,infinity];
+    fma [-1.0,5.0] [-1.0, 10.0] [-2.0,infinity] = [-12.0,infinity];
+    fma [-2.0,2.0] [-5.0, 3.0] [-2.0,infinity] = [-12.0,infinity];
+    //end min max
+    fma [-1.0,5.0] [1.0, 3.0] [-2.0,infinity] = [-5.0,infinity];
+    fma [-1.0,5.0] [-infinity, -1.0] [-2.0,infinity] = [entire];
+    fma [-1.0,5.0] [-infinity, 3.0] [-2.0,infinity] = [entire];
+    fma [-1.0,5.0] [-5.0, infinity] [-2.0,infinity] = [entire];
+    fma [-1.0,5.0] [1.0, infinity] [-2.0,infinity] = [entire];
+    fma [-1.0,5.0] [entire] [-2.0,infinity] = [entire];
+
+    fma [-10.0,-5.0] [0.0,0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-10.0,-5.0] [-0.0,-0.0] [-2.0,infinity] = [-2.0,infinity];
+    fma [-10.0,-5.0] [-5.0, -1.0] [-2.0,infinity] = [3.0,infinity];
+    fma [-10.0,-5.0] [-5.0, 3.0] [-2.0,infinity] = [-32.0,infinity];
+    fma [-10.0,-5.0] [1.0, 3.0] [-2.0,infinity] = [-32.0,infinity];
+    fma [-10.0,-5.0] [-infinity, -1.0] [-2.0,infinity] = [3.0,infinity];
+    fma [-10.0,-5.0] [-infinity, 3.0] [-2.0,infinity] = [-32.0,infinity];
+    fma [-10.0,-5.0] [-5.0, infinity] [-2.0,infinity] = [entire];
+    fma [-10.0,-5.0] [1.0, infinity] [-2.0,infinity] = [entire];
+    fma [-10.0,-5.0] [entire] [-2.0,infinity] = [entire];
+
+
+
+    fma [empty] [empty] [entire] = [empty];
+    fma [-1.0,1.0] [empty] [entire] = [empty];
+    fma [empty] [-1.0,1.0] [entire] = [empty];
+    fma [empty] [entire] [entire] = [empty];
+    fma [entire] [empty] [entire] = [empty];
+    fma [0.0,0.0] [empty] [entire] = [empty];
+    fma [-0.0,-0.0] [empty] [entire] = [empty];
+    fma [empty] [0.0,0.0] [entire] = [empty];
+    fma [empty] [-0.0,-0.0] [entire] = [empty];
+
+    fma [entire] [0.0,0.0] [entire] = [entire];
+    fma [entire] [-0.0,-0.0] [entire] = [entire];
+    fma [entire] [-5.0, -1.0] [entire] = [entire];
+    fma [entire] [-5.0, 3.0] [entire] = [entire];
+    fma [entire] [1.0, 3.0] [entire] = [entire];
+    fma [entire] [-infinity, -1.0] [entire] = [entire];
+    fma [entire] [-infinity, 3.0] [entire] = [entire];
+    fma [entire] [-5.0, infinity] [entire] = [entire];
+    fma [entire] [1.0, infinity] [entire] = [entire];
+    fma [entire] [entire] [entire] = [entire];
+
+    fma [1.0,infinity] [0.0,0.0] [entire] = [entire];
+    fma [1.0,infinity] [-0.0,-0.0] [entire] = [entire];
+    fma [1.0,infinity] [-5.0, -1.0] [entire] = [entire];
+    fma [1.0,infinity] [-5.0, 3.0] [entire] = [entire];
+    fma [1.0,infinity] [1.0, 3.0] [entire] = [entire];
+    fma [1.0,infinity] [-infinity, -1.0] [entire] = [entire];
+    fma [1.0,infinity] [-infinity, 3.0] [entire] = [entire];
+    fma [1.0,infinity] [-5.0, infinity] [entire] = [entire];
+    fma [1.0,infinity] [1.0, infinity] [entire] = [entire];
+    fma [1.0,infinity] [entire] [entire] = [entire];
+
+    fma [-1.0,infinity] [0.0,0.0] [entire] = [entire];
+    fma [-1.0,infinity] [-0.0,-0.0] [entire] = [entire];
+    fma [-1.0,infinity] [-5.0, -1.0] [entire] = [entire];
+    fma [-1.0,infinity] [-5.0, 3.0] [entire] = [entire];
+    fma [-1.0,infinity] [1.0, 3.0] [entire] = [entire];
+    fma [-1.0,infinity] [-infinity, -1.0] [entire] = [entire];
+    fma [-1.0,infinity] [-infinity, 3.0] [entire] = [entire];
+    fma [-1.0,infinity] [-5.0, infinity] [entire] = [entire];
+    fma [-1.0,infinity] [1.0, infinity] [entire] = [entire];
+    fma [-1.0,infinity] [entire] [entire] = [entire];
+
+    fma [-infinity,3.0] [0.0,0.0] [entire] = [entire];
+    fma [-infinity,3.0] [-0.0,-0.0] [entire] = [entire];
+    fma [-infinity,3.0] [-5.0, -1.0] [entire] = [entire];
+    fma [-infinity,3.0] [-5.0, 3.0] [entire] = [entire];
+    fma [-infinity,3.0] [1.0, 3.0] [entire] = [entire];
+    fma [-infinity,3.0] [-infinity, -1.0] [entire] = [entire];
+    fma [-infinity,3.0] [-infinity, 3.0] [entire] = [entire];
+    fma [-infinity,3.0] [-5.0, infinity] [entire] = [entire];
+    fma [-infinity,3.0] [1.0, infinity] [entire] = [entire];
+    fma [-infinity,3.0] [entire] [entire] = [entire];
+
+    fma [-infinity,-3.0] [0.0,0.0] [entire] = [entire];
+    fma [-infinity,-3.0] [-0.0,-0.0] [entire] = [entire];
+    fma [-infinity,-3.0] [-5.0, -1.0] [entire] = [entire];
+    fma [-infinity,-3.0] [-5.0, 3.0] [entire] = [entire];
+    fma [-infinity,-3.0] [1.0, 3.0] [entire] = [entire];
+    fma [-infinity,-3.0] [-infinity, -1.0] [entire] = [entire];
+    fma [-infinity,-3.0] [-infinity, 3.0] [entire] = [entire];
+    fma [-infinity,-3.0] [-5.0, infinity] [entire] = [entire];
+    fma [-infinity,-3.0] [1.0, infinity] [entire] = [entire];
+    fma [-infinity,-3.0] [entire] [entire] = [entire];
+
+    fma [0.0,0.0] [0.0,0.0] [entire] = [entire];
+    fma [0.0,0.0] [-0.0,-0.0] [entire] = [entire];
+    fma [0.0,0.0] [-5.0, -1.0] [entire] = [entire];
+    fma [0.0,0.0] [-5.0, 3.0] [entire] = [entire];
+    fma [0.0,0.0] [1.0, 3.0] [entire] = [entire];
+    fma [0.0,0.0] [-infinity, -1.0] [entire] = [entire];
+    fma [0.0,0.0] [-infinity, 3.0] [entire] = [entire];
+    fma [0.0,0.0] [-5.0, infinity] [entire] = [entire];
+    fma [0.0,0.0] [1.0, infinity] [entire] = [entire];
+    fma [0.0,0.0] [entire] [entire] = [entire];
+
+    fma [-0.0,-0.0] [0.0,0.0] [entire] = [entire];
+    fma [-0.0,-0.0] [-0.0,-0.0] [entire] = [entire];
+    fma [-0.0,-0.0] [-5.0, -1.0] [entire] = [entire];
+    fma [-0.0,-0.0] [-5.0, 3.0] [entire] = [entire];
+    fma [-0.0,-0.0] [1.0, 3.0] [entire] = [entire];
+    fma [-0.0,-0.0] [-infinity, -1.0] [entire] = [entire];
+    fma [-0.0,-0.0] [-infinity, 3.0] [entire] = [entire];
+    fma [-0.0,-0.0] [-5.0, infinity] [entire] = [entire];
+    fma [-0.0,-0.0] [1.0, infinity] [entire] = [entire];
+    fma [-0.0,-0.0] [entire] [entire] = [entire];
+
+    fma [1.0,5.0] [0.0,0.0] [entire] = [entire];
+    fma [1.0,5.0] [-0.0,-0.0] [entire] = [entire];
+    fma [1.0,5.0] [-5.0, -1.0] [entire] = [entire];
+    fma [1.0,5.0] [-5.0, 3.0] [entire] = [entire];
+    fma [1.0,5.0] [1.0, 3.0] [entire] = [entire];
+    fma [1.0,5.0] [-infinity, -1.0] [entire] = [entire];
+    fma [1.0,5.0] [-infinity, 3.0] [entire] = [entire];
+    fma [1.0,5.0] [-5.0, infinity] [entire] = [entire];
+    fma [1.0,5.0] [1.0, infinity] [entire] = [entire];
+    fma [1.0,5.0] [entire] [entire] = [entire];
+
+    fma [-1.0,5.0] [0.0,0.0] [entire] = [entire];
+    fma [-1.0,5.0] [-0.0,-0.0] [entire] = [entire];
+    fma [-1.0,5.0] [-5.0, -1.0] [entire] = [entire];
+    //min max
+    fma [-1.0,5.0] [-5.0, 3.0] [entire] = [entire];
+    fma [-10.0,2.0] [-5.0, 3.0] [entire] = [entire];
+    fma [-1.0,5.0] [-1.0, 10.0] [entire] = [entire];
+    fma [-2.0,2.0] [-5.0, 3.0] [entire] = [entire];
+    //end min max
+    fma [-1.0,5.0] [1.0, 3.0] [entire] = [entire];
+    fma [-1.0,5.0] [-infinity, -1.0] [entire] = [entire];
+    fma [-1.0,5.0] [-infinity, 3.0] [entire] = [entire];
+    fma [-1.0,5.0] [-5.0, infinity] [entire] = [entire];
+    fma [-1.0,5.0] [1.0, infinity] [entire] = [entire];
+    fma [-1.0,5.0] [entire] [entire] = [entire];
+
+    fma [-10.0,-5.0] [0.0,0.0] [entire] = [entire];
+    fma [-10.0,-5.0] [-0.0,-0.0] [entire] = [entire];
+    fma [-10.0,-5.0] [-5.0, -1.0] [entire] = [entire];
+    fma [-10.0,-5.0] [-5.0, 3.0] [entire] = [entire];
+    fma [-10.0,-5.0] [1.0, 3.0] [entire] = [entire];
+    fma [-10.0,-5.0] [-infinity, -1.0] [entire] = [entire];
+    fma [-10.0,-5.0] [-infinity, 3.0] [entire] = [entire];
+    fma [-10.0,-5.0] [-5.0, infinity] [entire] = [entire];
+    fma [-10.0,-5.0] [1.0, infinity] [entire] = [entire];
+    fma [-10.0,-5.0] [entire] [entire] = [entire];
+
+
+    fma [0.1,0.5] [-5.0, 3.0] [-0.1,0.1] = [-0X1.4CCCCCCCCCCCDP+1,0X1.999999999999AP+0];
+    fma [-0.5,0.2] [-5.0, 3.0] [-0.1,0.1] = [-0X1.999999999999AP+0,0X1.4CCCCCCCCCCCDP+1];
+    fma [-0.5,-0.1] [2.0, 3.0] [-0.1,0.1] = [-0X1.999999999999AP+0,-0X1.999999999999AP-4];
+    fma [-0.5,-0.1] [-infinity, 3.0] [-0.1,0.1] = [-0X1.999999999999AP+0,infinity];
+}
+
+testcase minimal_fma_dec_test {
+    fma [-0.5,-0.1]_com [-infinity, 3.0]_dac [-0.1,0.1]_com = [-0X1.999999999999AP+0,infinity]_dac;
+    fma [1.0,2.0]_com [1.0, 0x1.FFFFFFFFFFFFFp1023]_com [0.0,1.0]_com = [1.0,infinity]_dac;
+    fma [1.0,2.0]_com [1.0, 2.0]_com [2.0,5.0]_com = [3.0,9.0]_com;
+}

@@ -40,13 +40,20 @@ def convert_to_test(file_path):
     } while (0)
 
 template<typename T, int N>
-void check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref, const std::source_location location = std::source_location::current())
+std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref, const std::source_location location = std::source_location::current())
 {
     using namespace boost::ut;
 
+    std::vector<size_t> failed_ids;
+
     for (size_t i = 0; i < h_xs.size(); ++i) {
+        if (h_xs[i] != h_ref[i])
+            failed_ids.push_back(i);
+
         expect(eq(h_xs[i], h_ref[i]), location);
     }
+
+    return failed_ids;
 }
 
 template<typename T>
@@ -94,35 +101,31 @@ int main()
 
                 instr = ops[0].split()[0]
 
-                instr_len  = len(ops[0].replace('=', ' ')[:-1].split()) - 2
-                unary_op = instr_len == 1
-                binary_op = instr_len == 2
-                ternary_op = instr_len == 3
-
-                def at_least_binary():
-                    return instr_len >= 2
+                instr_len  = len(ops[0].replace('=', ' ')[:-1].split()) - 1
+                vars = ['ref', 'xs', 'ys', 'zs'][:instr_len]
+                n_vars = len(vars)
+                n_ops = len(ops)
+                var_codes = [''] * n_ops
 
                 test_code = indent + f'"{instr}"_test = [&] {{\n'
-                xs_code   = indent + '    std::array<I, n> h_xs {{\n'
-                ys_code   = indent + '    std::array<I, n> h_ys {{\n' if at_least_binary() else ''
-                zs_code   = indent + '    std::array<I, n> h_zs {{\n' if ternary_op else ''
-                ref_code  = indent + '    std::array<I, n> h_ref {{\n'
+
+                for i in range(n_vars):
+                    ii = (i+1) % n_vars
+                    var_codes[i] = indent + f'    std::array<I, n> h_{vars[ii]} {{{{\n'
+
                 empty = '{empty}'
                 entire = '{entire}'
                 float_max = '0x1.FFFFFFFFFFFFFp1023'
                 float_min = '-0x1.FFFFFFFFFFFFFp1023'
 
-                # for op in sorted(ops, reverse=True):
-                n = len(ops)
                 for op in ops:
                     if op == '' or '//' in op:
-                        n -= 1
+                        n_ops -= 1
                         continue
                     
                     el = op.replace('=', ' ')[:-1].split()
                     _, *el = el
 
-                    # print(el)
                     for i, e in enumerate(el):
                         # check for double max
                         if e == empty or e == entire:
@@ -132,105 +135,52 @@ int main()
                         vals = ['std::numeric_limits<T>::max()' if v == float_max else 'std::numeric_limits<T>::lowest()' if v == float_min else v for v in vals]
                         el[i] = f'{{{vals[0]},{vals[1]}}}'
 
-                    if unary_op:
-                        x, ref = el
-
-                        if x == empty:
-                            xs_code += indent + '        empty,\n'
-                        elif x == entire:
-                            xs_code += indent + '        entire,\n'
+                    # for i in [(i+1) % n_vars for i in range(n_vars)]:
+                    for i in range(n_vars):
+                        e = el[i]
+                        if e == empty:
+                            var_codes[i] += indent + '        empty,\n'
+                        elif e == entire:
+                            var_codes[i] += indent + '        entire,\n'
                         else:
-                            xs_code += indent + f'        {x},\n'
-                        if ref == empty:
-                            ref_code += indent + '        empty,\n'
-                        elif ref == entire:
-                            ref_code += indent + '        entire,\n'
-                        else:
-                            ref_code += indent + f'        {ref},\n'
+                            var_codes[i] += indent + f'        {e},\n'
 
-                    if binary_op:
-                        x, y, ref = el
+                cuda_code = ''
+                for i in range(n_vars):
+                    var_codes[i] += indent + '    }};\n\n'
 
-                        if x == empty:
-                            xs_code += indent + '        empty,\n'
+                for i in range(1, n_vars):
+                    cuda_code += indent + f'    CUDA_CHECK(cudaMemcpy(d_{vars[i]}, h_{vars[i]}.data(), n_bytes, cudaMemcpyHostToDevice));\n'
 
-                        elif x == entire:
-                            xs_code += indent + '        entire,\n'
-                        else:
-                            xs_code += indent + f'        {x},\n'
-                        if ref == empty:
-                            ref_code += indent + '        empty,\n'
-                        elif ref == entire:
-                            ref_code += indent + '        entire,\n'
-                        else:
-                            ref_code += indent + f'        {ref},\n'
+                device_vars = ''
+                for v in vars[1:]:
+                    device_vars += f', d_{v}'
 
-                        if y == empty:
-                            ys_code += indent + '        empty,\n'
-                        elif y == entire:
-                            ys_code += indent + '        entire,\n'
-                        else:
-                            ys_code += indent + f'        {y},\n'
+                cuda_code += indent + f'    test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
+                cuda_code += indent + f'    CUDA_CHECK(cudaMemcpy(h_{vars[1]}.data(), d_{vars[1]}, n_bytes, cudaMemcpyDeviceToHost));\n'
+                cuda_code += indent + f'    auto failed = check_all_equal<I, n>(h_{vars[1]}, h_ref);\n'
+                cuda_code += indent + '    for (auto fail_id : failed) {\n'
+                cuda_code += indent + '        printf("failed at case %zu:\\n", fail_id);\n'
+                cuda_code += indent + '        printf("'
+                
+                params_code = ''
+                for i in range(1, n_vars):
+                    cuda_code += f'{vars[i][0]} = [%a, %a]\\n'
+                    params_code += f', h_{vars[i]}[fail_id].lb, h_{vars[i]}[fail_id].ub'
 
-                    if ternary_op:
-                        x, y, z, ref = el
-
-                        if x == empty:
-                            xs_code += indent + '        empty,\n'
-                        elif x == entire:
-                            xs_code += indent + '        entire,\n'
-                        else:
-                            xs_code += indent + f'        {x},\n'
-
-                        if y == empty:
-                            ys_code += indent + '        empty,\n'
-                        elif y == entire:
-                            ys_code += indent + '        entire,\n'
-                        else:
-                            ys_code += indent + f'        {y},\n'
-
-                        if z == empty:
-                            zs_code += indent + '        empty,\n'
-                        elif y == entire:
-                            zs_code += indent + '        entire,\n'
-                        else:
-                            zs_code += indent + f'        {z},\n'
-
-                        if ref == empty:
-                            ref_code += indent + '        empty,\n'
-                        elif ref == entire:
-                            ref_code += indent + '        entire,\n'
-                        else:
-                            ref_code += indent + f'        {ref},\n'
-
-
-                xs_code += indent + '    }};\n\n'
-                ref_code += indent + '    }};\n\n'
-
-                if at_least_binary():
-                    ys_code += indent + '    }};\n\n'
-                if ternary_op:
-                    zs_code += indent + '    }};\n\n'
-
-                cuda_code =  indent + '    CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));\n'
-                if at_least_binary():
-                    cuda_code += indent + '    CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));\n'
-                if ternary_op:
-                    cuda_code += indent + '    CUDA_CHECK(cudaMemcpy(d_zs, h_zs.data(), n_bytes, cudaMemcpyHostToDevice));\n'
-                addon = ''
-                if at_least_binary():
-                    addon += ', d_ys'
-                if ternary_op:
-                    addon += ', d_zs'
-
-                cuda_code += indent + f'    test_{instr}<<<numBlocks, blockSize>>>(n, d_xs{addon});\n'
-                cuda_code += indent + '    CUDA_CHECK(cudaMemcpy(h_xs.data(), d_xs, n_bytes, cudaMemcpyDeviceToHost));\n'
-                cuda_code += indent + '    check_all_equal<I, n>(h_xs, h_ref);\n'
+                cuda_code += '"'
+                cuda_code += params_code
+                cuda_code += ');\n'
+                cuda_code += indent + '    }\n'
                 cuda_code += indent + '};\n\n'
 
-                largest_n = max(n, largest_n)
-                size_code = indent + f'    constexpr int n = {n};\n'
-                test_code += size_code + xs_code + ys_code + zs_code + ref_code + cuda_code 
+                largest_n = max(n_ops, largest_n)
+                size_code = indent + f'    constexpr int n = {n_ops};\n'
+                test_code += size_code
+                for var_code in var_codes:
+                    test_code += var_code
+
+                test_code += cuda_code 
                 code += test_code
 
             code_constants = f'''
