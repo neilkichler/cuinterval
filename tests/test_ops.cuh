@@ -1,3 +1,6 @@
+#ifndef TEST_OPS_CUH
+#define TEST_OPS_CUH
+
 #include <cuinterval/cuinterval.h>
 
 template<typename T>
@@ -89,3 +92,4 @@ __global__ void test_fma(int n, interval<T> *x, interval<T> *y, interval<T> *z)
         x[i] = fma(x[i], y[i], z[i]);
     }
 }
+#endif // TEST_OPS_CUH

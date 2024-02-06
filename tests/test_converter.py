@@ -1,70 +1,27 @@
+import glob
 import sys
+
 from collections import defaultdict
+
+indent = ' ' * 4
 
 def convert_to_test(file_path):
     try:
         with open(file_path, 'r') as file:
             tests = file.read().split('testcase')[1:] # ignore comment with 1:
+            test_name = file_path.rsplit('.', 1)[0].replace('-', '_')
 
             code = ''
             code_preamble = r'''
 #include <cuinterval/cuinterval.h>
 
+#include "tests.h"
 #include "test_ops.cuh"
 
-#include <span>
-#include <ostream>
-
 #include <stdio.h>
-#include <stdlib.h>
-
-// compiler bug fix; TODO: remove when fixed
-#ifdef __CUDACC__
-#pragma push_macro("__cpp_consteval")
-#define consteval constexpr
-#include <boost/ut.hpp>
-#undef consteval
-#pragma pop_macro("__cpp_consteval")
-#else
-#include <boost/ut.hpp>
-#endif
-
-#define CUDA_CHECK(x)                                                                \
-    do {                                                                             \
-        cudaError_t err = x;                                                         \
-        if (err != cudaSuccess) {                                                    \
-            fprintf(stderr, "CUDA error in %s at %s:%d: %s (%s=%d)\n", __FUNCTION__, \
-                    __FILE__, __LINE__, cudaGetErrorString(err),                     \
-                    cudaGetErrorName(err), err);                                     \
-            abort();                                                                 \
-        }                                                                            \
-    } while (0)
-
-template<typename T, int N>
-std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref, const std::source_location location = std::source_location::current())
-{
-    using namespace boost::ut;
-
-    std::vector<size_t> failed_ids;
-
-    for (size_t i = 0; i < h_xs.size(); ++i) {
-        if (h_xs[i] != h_ref[i])
-            failed_ids.push_back(i);
-
-        expect(eq(h_xs[i], h_ref[i]), location);
-    }
-
-    return failed_ids;
-}
 
 template<typename T>
-auto &operator<<(std::ostream &os, const interval<T> &x)
-{
-    return (os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']');
-}
-
-template<typename T>
-void tests() {
+void tests_''' + test_name + '''() {
     using namespace boost::ut;
 
     using I = interval<T>;
@@ -79,14 +36,7 @@ void tests() {
     CUDA_CHECK(cudaFree(d_ys));
     CUDA_CHECK(cudaFree(d_zs));
 }
-
-int main()
-{
-    tests<double>();
-    return 0;
-}
 '''
-            indent = ' ' * 4
             largest_n = 0
             supported = ['pos', 'neg', 'add', 'sub', 'mul', 'div', 'sqr', 'sqrt', 'fma']
             empty = '{empty}'
@@ -97,10 +47,10 @@ int main()
             for test in tests:
                 # get the first word as the name prefix of the test
                 name, body = test.split(maxsplit=1)
+                name = name.strip("test").strip('_')
                 if name.endswith('dec'): # ignore decorated interval tests
                     continue
 
-                name = name.strip("test").strip('_')
                 body = body.replace('[', '{').replace(']', '}').replace(', ', ',').replace('=', ' ')
                 ops = body.splitlines()[1:-2]
                 ops = [op.lstrip() for op in sorted(ops)]
@@ -208,24 +158,44 @@ int main()
 if __name__ == '__main__':
 
     # get input file path from command line
-    if len(sys.argv) > 1:
-        file_path = sys.argv[1]
-    else:
-        file_path = 'libieeep1788_elem.itl'
+    # if len(sys.argv) > 1:
+    #     file_path = sys.argv[1]
+    # else:
+    #     file_path = 'libieeep1788_elem.itl'
 
     # get output file path from command line (default: stdout)
-    if len(sys.argv) > 2:
-        out_file = sys.argv[2]
-    else:
-        out_file = None
+    # if len(sys.argv) > 2:
+    #     out_file = sys.argv[2]
+    # else:
+    #     out_file = None
 
-    test_code = convert_to_test(file_path)
+    # out_file = 'tests_' + file_path.rsplit('.', 1)[0] + '.cu'
+    #
+    # test_code = convert_to_test(file_path)
+    #
+    # if out_file:
+    #     with open(out_file, 'w') as f:
+    #         f.write(test_code)
+    # else:
+    #     f = sys.stdout
+    #     f.write(test_code)
 
-    if out_file:
+    files = glob.glob('*.itl', recursive=True)
+    main_includes = ''
+    main_tests = ''
+    for f in files:
+        test_code = convert_to_test(f)
+        f = f.replace('-', '_')
+        tests_name = 'tests_' + f.rsplit('.', 1)[0]
+        out_file = tests_name + '.cu'
         with open(out_file, 'w') as f:
             f.write(test_code)
-    else:
-        f = sys.stdout
-        f.write(test_code)
+        main_includes += f'#include "{out_file}"\n'
+        main_tests += indent + tests_name + '<double>();\n'
+        print('generated ' + out_file)
 
 
+    with open('tests.cu', 'w') as f:
+        main_body = f'\nint main()\n{{\n{main_tests}\n    return 0;\n}}\n'
+        main_code = main_includes + main_body
+        f.write(main_code)
