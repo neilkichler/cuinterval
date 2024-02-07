@@ -1,4 +1,5 @@
 import glob
+import re
 import sys
 import os
 
@@ -9,7 +10,15 @@ indent = ' ' * 4
 def convert_to_test(file_path):
     try:
         with open(file_path, 'r') as file:
-            tests = file.read().split('testcase')[1:] # ignore comment with 1:
+            tests = file.read()
+
+            # remove C++ style block comments
+            comments = re.compile(r'(/\*.*?\*/)', re.DOTALL)
+
+            tests = comments.sub('', tests)
+            tests = tests.split('testcase')
+            print(tests)
+
             test_name = file_path.rsplit('.', 1)[0].replace('-', '_')
 
             code = ''
@@ -46,6 +55,8 @@ void tests_''' + test_name + '''() {
             float_min = '-0x1.FFFFFFFFFFFFFp1023'
 
             for test in tests:
+                if test[0] == '\n':
+                    continue
                 # get the first word as the name prefix of the test
                 name, body = test.split(maxsplit=1)
                 name = name.strip("test").strip('_')
@@ -159,10 +170,12 @@ void tests_''' + test_name + '''() {
 if __name__ == '__main__':
     os.chdir(os.path.dirname(__file__) + '/itl')
     files = glob.glob('*.itl', recursive=True)
-    print(files)
     main_includes = ''
     main_tests = ''
+
     for f in files:
+        # if f == 'pow_rev.itl':
+        #     continue
         test_code = convert_to_test(f)
         f = f.replace('-', '_')
         tests_name = 'tests_' + f.rsplit('.', 1)[0]
