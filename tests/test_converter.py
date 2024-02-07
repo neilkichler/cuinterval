@@ -15,9 +15,7 @@ def convert_to_test(file_path):
             # remove C++ style block comments
             comments = re.compile(r'(/\*.*?\*/)', re.DOTALL)
 
-            tests = comments.sub('', tests)
-            tests = tests.split('testcase')
-            print(tests)
+            tests = comments.sub('', tests).split('testcase')
 
             test_name = file_path.rsplit('.', 1)[0].replace('-', '_')
 
@@ -174,8 +172,6 @@ if __name__ == '__main__':
     main_tests = ''
 
     for f in files:
-        # if f == 'pow_rev.itl':
-        #     continue
         test_code = convert_to_test(f)
         f = f.replace('-', '_')
         tests_name = 'tests_' + f.rsplit('.', 1)[0]
@@ -195,3 +191,5 @@ if __name__ == '__main__':
         main_body = f'\nint main()\n{{\n{main_tests}\n    return 0;\n}}\n'
         main_code = main_includes + main_body
         f.write(main_code)
+
+    print('Done!')

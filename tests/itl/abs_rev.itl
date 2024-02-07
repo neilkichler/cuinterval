@@ -1,0 +1,39 @@
+/*
+
+Test cases for reverse interval absolute value function.
+
+Copyright 2015-2016 Oliver Heimlich (oheim@posteo.de)
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.  This file is offered as-is,
+without any warranty.
+
+*/
+
+testcase minimal.absRevBin_test {
+	absRevBin [empty] [entire] = [empty];
+	absRevBin [0.0, 1.0] [empty] = [empty];
+	absRevBin [0.0, 1.0] [7.0, 9.0] = [empty];
+	absRevBin [empty] [0.0, 1.0] = [empty];
+	absRevBin [-2.0, -1.0] [entire] = [empty];
+	absRevBin [1.0, 1.0] [entire] = [-1.0, 1.0];
+	absRevBin [0.0, 0.0] [entire] = [0.0, 0.0];
+	absRevBin [-1.0, -1.0] [entire] = [empty];
+	absRevBin [0x1.FFFFFFFFFFFFFp1023, 0x1.FFFFFFFFFFFFFp1023] [entire] = [-0x1.FFFFFFFFFFFFFp1023, 0x1.FFFFFFFFFFFFFp1023];
+	absRevBin [0x1p-1022, 0x1p-1022] [entire] = [-0x1p-1022, 0x1p-1022];
+	absRevBin [-0x1p-1022, -0x1p-1022] [entire] = [empty];
+	absRevBin [-0x1.FFFFFFFFFFFFFp1023, -0x1.FFFFFFFFFFFFFp1023] [entire] = [empty];
+	absRevBin [1.0, 2.0] [entire] = [-2.0, 2.0];
+	absRevBin [1.0, 2.0] [0.0, 2.0] = [1.0, 2.0];
+	absRevBin [0.0, 1.0] [-0.5, 2.0] = [-0.5, 1.0];
+	absRevBin [-1.0, 1.0] [entire] = [-1.0, 1.0];
+	absRevBin [-1.0, 0.0] [entire] = [0.0, 0.0];
+	absRevBin [0.0, infinity] [entire] = [entire];
+	absRevBin [entire] [entire] = [entire];
+	absRevBin [-infinity, 0.0] [entire] = [0.0, 0.0];
+	absRevBin [1.0, infinity] [-infinity, 0.0] = [-infinity, -1.0];
+	absRevBin [-1.0, infinity] [entire] = [entire];
+	absRevBin [-infinity, -1.0] [entire] = [empty];
+	absRevBin [-infinity, 1.0] [entire] = [-1.0, 1.0];
+}
