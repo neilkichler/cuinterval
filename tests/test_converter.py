@@ -183,7 +183,7 @@ if __name__ == '__main__':
         print('generated ' + out_file)
 
     for f in glob.glob('*.cu'):
-        os.rename(f, "../" + f)
+        os.replace(f, "../" + f)
 
     os.chdir(os.path.dirname(__file__))
 
