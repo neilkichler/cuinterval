@@ -46,11 +46,14 @@ void tests_''' + test_name + '''() {
 }
 '''
             largest_n = 0
-            supported = ['pos', 'neg', 'add', 'sub', 'mul', 'div', 'sqr', 'sqrt', 'fma']
+            supported = ['pos', 'neg', 'add', 'sub', 'mul', 'div', 'sqr', 'sqrt', 'fma', 'inf']
             empty = '{empty}'
             entire = '{entire}'
             float_max = '0x1.FFFFFFFFFFFFFp1023'
             float_min = '-0x1.FFFFFFFFFFFFFp1023'
+            
+            def replace_min_and_max(v):
+                return 'std::numeric_limits<T>::max()' if v == float_max else 'std::numeric_limits<T>::lowest()' if v == float_min else v
 
             for test in tests:
                 if test[0] == '\n':
@@ -97,9 +100,12 @@ void tests_''' + test_name + '''() {
                             if interval == empty or interval == entire:
                                 continue
 
-                            vals = interval[1:-1].split(',')
-                            vals = ['std::numeric_limits<T>::max()' if v == float_max else 'std::numeric_limits<T>::lowest()' if v == float_min else v for v in vals]
-                            intervals[i] = f'{{{vals[0]},{vals[1]}}}'
+                            if interval[0] == '{': # check if it actually is an interval
+                                vals = interval[1:-1].split(',')
+                                vals = [replace_min_and_max(v) for v in vals]
+                                intervals[i] = f'{{{vals[0]},{vals[1]}}}'
+                            else: # or scalar
+                                intervals[i] = replace_min_and_max(interval)
 
                         for i in range(n_vars):
                             interval = intervals[i]
