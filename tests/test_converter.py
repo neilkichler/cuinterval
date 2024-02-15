@@ -61,6 +61,8 @@ void tests_''' + test_name + '''() {
                 "mig": "T",
                 "mag": "T",
                 "wid": "T",
+                "inf": "T",
+                "sup": "T",
             }
 
             empty = '{empty}'

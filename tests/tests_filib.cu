@@ -108,7 +108,7 @@ void tests_filib() {
         auto failed = check_all_equal<I, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("y = [%a, %a]\nr = [%a, %a]\n", h_ys[fail_id].lb, h_ys[fail_id].ub, h_ref[fail_id].lb, h_ref[fail_id].ub);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
         }
     };
 
@@ -191,7 +191,7 @@ void tests_filib() {
         auto failed = check_all_equal<I, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("y = [%a, %a]\nr = [%a, %a]\n", h_ys[fail_id].lb, h_ys[fail_id].ub, h_ref[fail_id].lb, h_ref[fail_id].ub);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
         }
     };
 
@@ -355,7 +355,7 @@ void tests_filib() {
         auto failed = check_all_equal<I, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("y = [%a, %a]\nr = [%a, %a]\n", h_ys[fail_id].lb, h_ys[fail_id].ub, h_ref[fail_id].lb, h_ref[fail_id].ub);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
         }
     };
 
@@ -444,7 +444,7 @@ void tests_filib() {
         auto failed = check_all_equal<I, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("y = [%a, %a]\nr = [%a, %a]\n", h_ys[fail_id].lb, h_ys[fail_id].ub, h_ref[fail_id].lb, h_ref[fail_id].ub);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
         }
     };
 
@@ -524,7 +524,7 @@ void tests_filib() {
         auto failed = check_all_equal<I, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("r = [%a, %a]\n", h_ref[fail_id].lb, h_ref[fail_id].ub);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
         }
     };
 
@@ -606,7 +606,7 @@ void tests_filib() {
         auto failed = check_all_equal<I, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("r = [%a, %a]\n", h_ref[fail_id].lb, h_ref[fail_id].ub);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
         }
     };
 

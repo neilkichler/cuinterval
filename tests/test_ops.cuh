@@ -121,7 +121,7 @@ __global__ void test_inf(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_sup(int n, interval<T> *x, interval<T> *res)
+__global__ void test_sup(int n, interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {

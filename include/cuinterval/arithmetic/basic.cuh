@@ -17,7 +17,9 @@ __device__ interval<T> pos_inf()
 template<typename T>
 __device__ __host__ interval<T> empty()
 {
-    return { intrinsic::nan<T>(), intrinsic::nan<T>() };
+    // return { intrinsic::nan<T>(), intrinsic::nan<T>() };
+    // return { intrinsic::pos_inf<T>(), intrinsic::neg_inf<T>() };
+    return { std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity() };
 }
 
 template<typename T>
@@ -36,7 +38,9 @@ __device__ __host__ interval<T> entire()
 template<typename T>
 __device__ __host__ bool empty(interval<T> x)
 {
-    return isnan(x.lb) || isnan(x.ub);
+    // return isnan(x.lb) || isnan(x.ub);
+    return !(x.lb <= x.ub);
+    // return (x.lb == std::numeric_limits<T>::infinity() && x.ub == -std::numeric_limits<T>::infinity());
 }
 
 template<typename T>
@@ -106,15 +110,13 @@ __device__ interval<T> fma(interval<T> x, interval<T> y, interval<T> z)
 template<typename T>
 __device__ interval<T> sqr(interval<T> x)
 {
-    if (x.lb >= 0) {
+    if (empty(x)) {
+        return x;
+    } else if (x.lb >= 0) {
         return { intrinsic::mul_down(x.lb, x.lb), intrinsic::mul_up(x.ub, x.ub) };
     } else if (x.ub <= 0) {
         return { intrinsic::mul_down(x.ub, x.ub), intrinsic::mul_up(x.lb, x.lb) };
     } else {
-        if (empty(x)) {
-            return x;
-        }
-
         return { 0,
                  max(intrinsic::mul_up(x.lb, x.lb), intrinsic::mul_up(x.ub, x.ub)) };
     }
@@ -218,12 +220,19 @@ __device__ interval<T> div(interval<T> x, interval<T> y)
 template<typename T>
 __device__ T mag(interval<T> x)
 {
+    if (empty(x)) {
+        return intrinsic::nan<T>();
+    }
     return max(abs(x.lb), abs(x.ub));
 }
 
 template<typename T>
 __device__ T mig(interval<T> x)
 {
+    // TODO: we might want to split up the function into the bare interval operation and this part.
+    if (empty(x)) {
+        return intrinsic::nan<T>();
+    }
 
     if (contains(x, static_cast<T>(0))) {
         return {};
@@ -236,7 +245,7 @@ template<typename T>
 __device__ T rad(interval<T> x)
 {
     if (empty(x)) {
-        return intrinsic::nan;
+        return intrinsic::nan<T>();
     } else if (entire(x)) {
         return intrinsic::pos_inf<T>();
     } else {
@@ -318,6 +327,9 @@ __device__ bool bounded(interval<T> x)
 template<typename T>
 __device__ T width(interval<T> x)
 {
+    if (empty(x)) {
+        return intrinsic::nan<T>();
+    }
     return intrinsic::sub_up(x.ub, x.lb);
 }
 
