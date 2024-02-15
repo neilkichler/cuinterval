@@ -249,7 +249,6 @@ __device__ T rad(interval<T> x)
     } else if (entire(x)) {
         return intrinsic::pos_inf<T>();
     } else {
-        // return (x.ub - x.lb) * 0.5;
         auto m = mid(x);
         return max(m - x.lb, x.ub - m);
     }

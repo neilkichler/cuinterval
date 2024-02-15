@@ -65,6 +65,7 @@ void tests_''' + test_name + '''() {
                 "inf": "T",
                 "sup": "T",
                 "mid": "T",
+                "rad": "T",
             }
 
             empty = '{empty}'

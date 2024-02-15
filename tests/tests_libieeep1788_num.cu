@@ -175,6 +175,46 @@ void tests_libieeep1788_num() {
         }
     };
 
+    "minimal_rad_rad"_test = [&] {
+        constexpr int n = 9;
+        std::array<I, n> h_xs {{
+            {-0X0.0000000000002P-1022,0X0.0000000000001P-1022},
+            {-infinity,+infinity},
+            {-infinity,1.2},
+            {0.0,2.0},
+            {0.0,infinity},
+            {0X0.0000000000001P-1022,0X0.0000000000002P-1022},
+            {0X1P+0,0X1.0000000000003P+0},
+            {2.0,2.0},
+            empty,
+        }};
+
+        std::array<T, n> h_res{};
+        T *d_res = (T *)d_res_;
+        int n_result_bytes = n * sizeof(T);
+        std::array<T, n> h_ref {{
+            0X0.0000000000002P-1022,
+            infinity,
+            infinity,
+            1.0,
+            infinity,
+            0X0.0000000000001P-1022,
+            0X1P-51,
+            0.0,
+            NaN,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_rad<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<T, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "minimal_wid_wid"_test = [&] {
         constexpr int n = 8;
         std::array<I, n> h_xs {{
