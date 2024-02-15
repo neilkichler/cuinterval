@@ -55,6 +55,7 @@ void tests_''' + test_name + '''() {
                 "sub": "I",
                 "mul": "I",
                 "div": "I",
+                "recip": "I",
                 "sqr": "I",
                 "sqrt": "I",
                 "fma": "I",

@@ -1778,6 +1778,64 @@ void tests_libieeep1788_elem() {
         }
     };
 
+    "minimal_recip_recip"_test = [&] {
+        constexpr int n = 18;
+        std::array<I, n> h_xs {{
+            {-0.0,-0.0},
+            {-0.0,10.0},
+            {-0.0,infinity},
+            {-10.0,-0.0},
+            {-10.0,0.0},
+            {-10.0,10.0},
+            {-10.0,infinity},
+            {-50.0,-10.0},
+            {-infinity,-0.0},
+            {-infinity,-10.0},
+            {-infinity,0.0},
+            {-infinity,10.0},
+            {0.0,0.0},
+            {0.0,10.0},
+            {0.0,infinity},
+            {10.0,50.0},
+            {10.0,infinity},
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            empty,
+            {0X1.9999999999999P-4,infinity},
+            {0.0,infinity},
+            {-infinity,-0X1.9999999999999P-4},
+            {-infinity,-0X1.9999999999999P-4},
+            entire,
+            entire,
+            {-0X1.999999999999AP-4,-0X1.47AE147AE147AP-6},
+            {-infinity,0.0},
+            {-0X1.999999999999AP-4,0.0},
+            {-infinity,0.0},
+            entire,
+            empty,
+            {0X1.9999999999999P-4,infinity},
+            {0.0,infinity},
+            {0X1.47AE147AE147AP-6,0X1.999999999999AP-4},
+            {0.0,0X1.999999999999AP-4},
+            entire,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_recip<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<I, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "minimal_sqr_sqr"_test = [&] {
         constexpr int n = 12;
         std::array<I, n> h_xs {{
