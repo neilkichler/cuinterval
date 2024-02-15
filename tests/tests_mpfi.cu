@@ -388,7 +388,7 @@ void tests_mpfi() {
         auto failed = check_all_equal<T, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a]\n", h_xs[fail_id]);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
         }
     };
 
@@ -909,7 +909,51 @@ void tests_mpfi() {
         auto failed = check_all_equal<T, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a]\n", h_xs[fail_id]);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "mpfi_mid_mid"_test = [&] {
+        constexpr int n = 11;
+        std::array<I, n> h_xs {{
+            {-0x1921fb54442d19p-51,-0x1921fb54442d18p-51},
+            {-0x1fffffffffffffp-53,2.0},
+            {-34.0,-17.0},
+            {-34.0,17.0},
+            {-4.0,-0x7fffffffffffdp-51},
+            {-8.0,-0x7fffffffffffbp-51},
+            {-8.0,0.0},
+            {0.0,+0x123456789abcdp-2},
+            {0.0,0.0},
+            {0.0,5.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+        }};
+
+        std::array<T, n> h_res{};
+        T *d_res = (T *)d_res_;
+        int n_result_bytes = n * sizeof(T);
+        std::array<T, n> h_ref {{
+            -0x1921fb54442d18p-51,
+            0.5,
+            -0x33p-1,
+            -8.5,
+            -0x27fffffffffffbp-52,
+            -0x47fffffffffffbp-52,
+            -4,
+            +0x123456789abcdp-3,
+            +0,
+            +2.5,
+            0x1921fb54442d18p-51,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_mid<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<T, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
         }
     };
 
@@ -951,7 +995,7 @@ void tests_mpfi() {
         auto failed = check_all_equal<T, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a]\n", h_xs[fail_id]);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
         }
     };
 

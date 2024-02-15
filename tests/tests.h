@@ -30,6 +30,12 @@
         }                                                                            \
     } while (0)
 
+template<typename T>
+std::ostream &operator<<(std::ostream &os, const interval<T> &x)
+{
+    return (os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']');
+}
+
 template<typename T, int N>
 std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref, const std::source_location location = std::source_location::current())
 {
@@ -41,19 +47,15 @@ std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref,
         if (h_xs[i] != h_xs[i] && h_ref[i] != h_ref[i]) // both are NaN
             continue;
 
-        if (h_xs[i] != h_ref[i])
+        if (h_xs[i] != h_ref[i]) {
             failed_ids.push_back(i);
+            printf("FAILED: %a != %a\n", h_xs[i], h_ref[i]);
+        }
 
         expect(eq(h_xs[i], h_ref[i]), location);
     }
 
     return failed_ids;
-}
-
-template<typename T>
-std::ostream &operator<<(std::ostream &os, const interval<T> &x)
-{
-    return (os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']');
 }
 
 #endif // CUDA_INTERVAL_TESTS_H

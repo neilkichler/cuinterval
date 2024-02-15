@@ -249,7 +249,9 @@ __device__ T rad(interval<T> x)
     } else if (entire(x)) {
         return intrinsic::pos_inf<T>();
     } else {
-        return (x.ub - x.lb) / 2;
+        // return (x.ub - x.lb) * 0.5;
+        auto m = mid(x);
+        return max(m - x.lb, x.ub - m);
     }
 }
 
@@ -342,15 +344,21 @@ __device__ T sup(interval<T> x) { return x.ub; }
 template<typename T>
 __device__ T mid(interval<T> x)
 {
-    // if (x.lb == x.ub) {
-    //     return x.lb;
-    // } else if (abs(x.lb) == abs(x.ub)) {
-    //     return 0;
-    // } else {
-    //     return 0.5 * x.lb + 0.5 * x.ub;
-    // }
+    if (empty(x)) {
+        return intrinsic::nan<T>();
+    } else if (entire(x)) {
+        return static_cast<T>(0);
+    } else if (x.lb == intrinsic::neg_inf<T>()) {
+        // return std::numeric_limits<T>::lowest();
+        return -0x1.fffffffffffffp+1023;
+    } else if (x.ub == intrinsic::pos_inf<T>()) {
+        // return std::numeric_limits<T>::max();
+        return 0x1.fffffffffffffp+1023;
+    } else {
+        return __dmul_rd(0.5, x.lb) + __dmul_ru(0.5, x.ub);
+    }
 
-    return (x.lb == x.ub) * x.lb + (abs(x.lb) != abs(x.ub)) * (0.5 * x.lb + 0.5 * x.ub);
+    // return (x.lb == x.ub) * x.lb + (abs(x.lb) != abs(x.ub)) * (0.5 * (x.lb + x.ub));
 }
 
 template<typename T>

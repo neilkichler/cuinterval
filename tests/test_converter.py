@@ -64,6 +64,7 @@ void tests_''' + test_name + '''() {
                 "wid": "T",
                 "inf": "T",
                 "sup": "T",
+                "mid": "T",
             }
 
             empty = '{empty}'
@@ -77,7 +78,7 @@ void tests_''' + test_name + '''() {
                     'I': 'h_{}[fail_id].lb, h_{}[fail_id].ub'
                 },
                 'cuda': {
-                    'T': '{} = [%a]\\n',
+                    'T': '{} = %a\\n',
                     'I': '{} = [%a, %a]\\n'
                 }
             }
@@ -171,8 +172,8 @@ void tests_''' + test_name + '''() {
 
                     for i in range(n_vars - 1):
                         var = vars[i]
-                        cuda_code += failed_code['cuda'][result_type].format(var[0])
-                        params_code += ', ' + failed_code['params'][result_type].format(var, var)
+                        cuda_code += failed_code['cuda']['I'].format(var[0])
+                        params_code += ', ' + failed_code['params']['I'].format(var, var)
 
                     cuda_code += '"'
                     cuda_code += params_code
@@ -217,7 +218,8 @@ if __name__ == '__main__':
     for f in files:
         # if f != 'mpfi.itl':
         # if f != 'libieeep1788_elem.itl':
-            # continue
+        # if f != 'libieeep1788_num.itl':
+        #     continue
         test_code = convert_to_test(f)
         f = f.replace('-', '_')
         tests_name = 'tests_' + f.rsplit('.', 1)[0]
