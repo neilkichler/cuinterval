@@ -67,6 +67,17 @@ void tests_''' + test_name + '''() {
             entire = '{entire}'
             float_max = '0x1.FFFFFFFFFFFFFp1023'
             float_min = '-0x1.FFFFFFFFFFFFFp1023'
+
+            failed_code = {
+                'params': {
+                    'T': 'h_{}[fail_id]',
+                    'I': 'h_{}[fail_id].lb, h_{}[fail_id].ub'
+                },
+                'cuda': {
+                    'T': '{} = [%a]\\n',
+                    'I': '{} = [%a, %a]\\n'
+                }
+            }
             
             def replace_min_and_max(v):
                 return 'std::numeric_limits<T>::max()' if v == float_max else 'std::numeric_limits<T>::lowest()' if v == float_min else v
@@ -155,14 +166,10 @@ void tests_''' + test_name + '''() {
                     
                     params_code = ''
 
-                    if result_type == 'T':
-                        for i in range(1, n_vars):
-                            cuda_code += f'{vars[i][0]} = [%a]\\n'
-                            params_code += f', h_{vars[i]}[fail_id]'
-                    elif result_type == 'I':
-                        for i in range(1, n_vars):
-                            cuda_code += f'{vars[i][0]} = [%a, %a]\\n'
-                            params_code += f', h_{vars[i]}[fail_id].lb, h_{vars[i]}[fail_id].ub'
+                    for i in range(n_vars - 1):
+                        var = vars[i]
+                        cuda_code += failed_code['cuda'][result_type].format(var[0])
+                        params_code += ', ' + failed_code['params'][result_type].format(var, var)
 
                     cuda_code += '"'
                     cuda_code += params_code
