@@ -7,17 +7,17 @@ from collections import defaultdict
 
 indent = ' ' * 4
 
+# TODO: figure out how to represent d_res generically for all test cases,
+#       it can be an interval, a number or boolean
 def convert_to_test(file_path):
     try:
         with open(file_path, 'r') as file:
+            test_name = file_path.rsplit('.', 1)[0].replace('-', '_')
             tests = file.read()
 
             # remove C++ style block comments
             comments = re.compile(r'(/\*.*?\*/)', re.DOTALL)
-
             tests = comments.sub('', tests).split('testcase')
-
-            test_name = file_path.rsplit('.', 1)[0].replace('-', '_')
 
             code = ''
             code_preamble = r'''
@@ -37,16 +37,32 @@ void tests_''' + test_name + '''() {
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
     T infinity = std::numeric_limits<T>::infinity();
+    T NaN = ::nan("");
 '''
 
             code_postamble ='''
     CUDA_CHECK(cudaFree(d_xs));
     CUDA_CHECK(cudaFree(d_ys));
     CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_res_));
 }
 '''
             largest_n = 0
-            supported = ['pos', 'neg', 'add', 'sub', 'mul', 'div', 'sqr', 'sqrt', 'fma', 'inf']
+            supported = {
+                "pos": "I",
+                "neg": "I",
+                "add": "I",
+                "sub": "I",
+                "mul": "I",
+                "div": "I",
+                "sqr": "I",
+                "sqrt": "I",
+                "fma": "I",
+                "mig": "T",
+                "mag": "T",
+                "wid": "T",
+            }
+
             empty = '{empty}'
             entire = '{entire}'
             float_max = '0x1.FFFFFFFFFFFFFp1023'
@@ -74,7 +90,7 @@ void tests_''' + test_name + '''() {
                         continue
                     new_op, body = op.split(maxsplit=1)
                     subtests[new_op].append(body[:-1].split())
-                
+
                 for instr, ops in subtests.items():
                     instr_len = len(ops[0])
                     vars = ['ref', 'xs', 'ys', 'zs'][:instr_len]
@@ -87,34 +103,33 @@ void tests_''' + test_name + '''() {
                         print(f'Skipping unsupported instruction: {instr}', file=sys.stderr)
                         continue
 
+                    result_type = supported[instr]
                     test_code = indent + f'"{name}_{instr}"_test = [&] {{\n'
 
-                    for i in range(n_vars):
-                        var_codes[i] = indent + f'    std::array<I, n> h_{vars[i]} {{{{\n'
+                    for i in range(n_vars - 1):
+                        var_codes[i] = indent*2 + f'std::array<I, n> h_{vars[i]} {{{{\n'
 
-                    for op in ops:
-                        intervals = op
+                    var_codes[n_vars-1] = indent*2 + f'std::array<{result_type}, n> h_res{{}};\n'
+                    var_codes[n_vars-1] += indent*2 + f'{result_type} *d_res = ({result_type} *)d_res_;\n'
+                    var_codes[n_vars-1] += indent*2 + f'int n_result_bytes = n * sizeof({result_type});\n'
 
-                        for i, interval in enumerate(intervals):
-                            # check for double max
-                            if interval == empty or interval == entire:
-                                continue
+                    var_codes[n_vars-1] += indent*2 + f'std::array<{result_type}, n> h_ref {{{{\n'
 
-                            if interval[0] == '{': # check if it actually is an interval
-                                vals = interval[1:-1].split(',')
-                                vals = [replace_min_and_max(v) for v in vals]
-                                intervals[i] = f'{{{vals[0]},{vals[1]}}}'
-                            else: # or scalar
-                                intervals[i] = replace_min_and_max(interval)
-
-                        for i in range(n_vars):
-                            interval = intervals[i]
-                            if interval == empty:
-                                var_codes[i] += indent*3 + 'empty,\n'
-                            elif interval == entire:
-                                var_codes[i] += indent*3 + 'entire,\n'
+                    for elements in ops:
+                        for i, el in enumerate(elements):
+                            var_codes[i] += indent*3
+                            if el == empty:
+                                var_codes[i] += 'empty,\n'
+                            elif el == entire:
+                                var_codes[i] += 'entire,\n'
+                            elif el[0] != '{':
+                                var_codes[i] += f'{el},\n'
                             else:
-                                var_codes[i] += indent*3 + f'{interval},\n'
+                                vals = el[1:-1].split(',')
+                                vals = [replace_min_and_max(v) for v in vals]
+                                elements[i] = f'{{{vals[0]},{vals[1]}}}'
+
+                                var_codes[i] += f'{el},\n'
 
                     cuda_code = ''
                     for i in range(n_vars):
@@ -122,22 +137,32 @@ void tests_''' + test_name + '''() {
 
                     for i in range(n_vars - 1):
                         cuda_code += indent*2 + f'CUDA_CHECK(cudaMemcpy(d_{vars[i]}, h_{vars[i]}.data(), n_bytes, cudaMemcpyHostToDevice));\n'
+                    
+                    cuda_code += indent*2 + 'CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));\n'
 
                     device_vars = ''
                     for v in vars[:-1]:
                         device_vars += f', d_{v}'
 
+                    device_vars += ', d_res'
+
                     cuda_code += indent*2 + f'test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
-                    cuda_code += indent*2 + f'CUDA_CHECK(cudaMemcpy(h_{vars[0]}.data(), d_{vars[0]}, n_bytes, cudaMemcpyDeviceToHost));\n'
-                    cuda_code += indent*2 + f'auto failed = check_all_equal<I, n>(h_{vars[0]}, h_ref);\n'
+                    cuda_code += indent*2 + 'CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));\n'
+                    cuda_code += indent*2 + f'auto failed = check_all_equal<{result_type}, n>(h_res, h_ref);\n'
                     cuda_code += indent*2 + 'for (auto fail_id : failed) {\n'
                     cuda_code += indent*3 + 'printf("failed at case %zu:\\n", fail_id);\n'
                     cuda_code += indent*3 + 'printf("'
                     
                     params_code = ''
-                    for i in range(1, n_vars):
-                        cuda_code += f'{vars[i][0]} = [%a, %a]\\n'
-                        params_code += f', h_{vars[i]}[fail_id].lb, h_{vars[i]}[fail_id].ub'
+
+                    if result_type == 'T':
+                        for i in range(1, n_vars):
+                            cuda_code += f'{vars[i][0]} = [%a]\\n'
+                            params_code += f', h_{vars[i]}[fail_id]'
+                    elif result_type == 'I':
+                        for i in range(1, n_vars):
+                            cuda_code += f'{vars[i][0]} = [%a, %a]\\n'
+                            params_code += f', h_{vars[i]}[fail_id].lb, h_{vars[i]}[fail_id].ub'
 
                     cuda_code += '"'
                     cuda_code += params_code
@@ -158,12 +183,14 @@ void tests_''' + test_name + '''() {
     const int n = {largest_n}; // count of largest test array
     const int n_bytes   = n * sizeof(I);
     const int blockSize = 256;
-    const int numBlocks = (n + blockSize - 1) / blockSize;
+    [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    interval<T> *d_xs, *d_ys, *d_zs;
+    I *d_xs, *d_ys, *d_zs, *d_res_;
+
     CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));\n\n'''
+    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));\n\n'''
 
             return code_preamble + code_constants + code + code_postamble
 
@@ -178,6 +205,9 @@ if __name__ == '__main__':
     main_tests = ''
 
     for f in files:
+        # if f != 'mpfi.itl':
+        # if f != 'libieeep1788_elem.itl':
+            # continue
         test_code = convert_to_test(f)
         f = f.replace('-', '_')
         tests_name = 'tests_' + f.rsplit('.', 1)[0]

@@ -15,19 +15,23 @@ void tests_libieeep1788_set() {
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
     T infinity = std::numeric_limits<T>::infinity();
+    T NaN = ::nan("");
 
     const int n = 0; // count of largest test array
     const int n_bytes   = n * sizeof(I);
     const int blockSize = 256;
-    const int numBlocks = (n + blockSize - 1) / blockSize;
+    [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    interval<T> *d_xs, *d_ys, *d_zs;
+    I *d_xs, *d_ys, *d_zs, *d_res_;
+
     CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
 
     CUDA_CHECK(cudaFree(d_xs));
     CUDA_CHECK(cudaFree(d_ys));
     CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_res_));
 }

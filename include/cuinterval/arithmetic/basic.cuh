@@ -216,16 +216,16 @@ __device__ interval<T> div(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-__device__ interval<T> mag(interval<T> x)
+__device__ T mag(interval<T> x)
 {
     return max(abs(x.lb), abs(x.ub));
 }
 
 template<typename T>
-__device__ interval<T> mig(interval<T> x)
+__device__ T mig(interval<T> x)
 {
 
-    if (contains(x, 0)) {
+    if (contains(x, static_cast<T>(0))) {
         return {};
     }
 
@@ -318,9 +318,6 @@ __device__ bool bounded(interval<T> x)
 template<typename T>
 __device__ T width(interval<T> x)
 {
-    if (empty(x))
-        return {};
-
     return intrinsic::sub_up(x.ub, x.lb);
 }
 

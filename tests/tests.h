@@ -38,6 +38,9 @@ std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref,
     std::vector<size_t> failed_ids;
 
     for (size_t i = 0; i < h_xs.size(); ++i) {
+        if (h_xs[i] != h_xs[i] && h_ref[i] != h_ref[i]) // both are NaN
+            continue;
+
         if (h_xs[i] != h_ref[i])
             failed_ids.push_back(i);
 
