@@ -29,6 +29,52 @@ void tests_mpfi() {
     CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
+    "mpfi_ab_abs"_test = [&] {
+        constexpr int n = 12;
+        std::array<I, n> h_xs {{
+            {-0x123456789p-16,0x123456799p-16},
+            {-infinity,+8.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {-infinity,0.0},
+            {0.0,+8.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0x123456789p-16,0x123456799p-16},
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0.0,0x123456799p-16},
+            {0.0,+infinity},
+            {+7.0,+infinity},
+            {0.0,+infinity},
+            {0.0,+infinity},
+            {0.0,+8.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0x123456789p-16,0x123456799p-16},
+            {0.0,+infinity},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_abs<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<I, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "mpfi_add_add"_test = [&] {
         constexpr int n = 19;
         std::array<I, n> h_xs {{

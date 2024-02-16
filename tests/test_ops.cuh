@@ -174,4 +174,76 @@ __global__ void test_wid(int n, interval<T> *x, T *res)
     }
 }
 
+template<typename T>
+__global__ void test_floor(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = floor(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_ceil(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = ceil(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_trunc(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = trunc(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_sign(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = sign(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_abs(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = abs(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_min(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = min(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_max(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = max(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_intersection(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = intersection(x[i], y[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

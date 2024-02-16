@@ -263,18 +263,26 @@ __device__ T rad(interval<T> x)
 template<typename T>
 __device__ interval<T> abs(interval<T> x)
 {
-    return { mig(x.lb), mag(x.ub) };
+    return { mig(x), mag(x) };
 }
 
 template<typename T>
 __device__ interval<T> max(interval<T> x, interval<T> y)
 {
+    if (empty(x) || empty(y)) {
+        return empty<T>();
+    }
+
     return { max(x.lb, y.lb), max(x.ub, y.ub) };
 }
 
 template<typename T>
 __device__ interval<T> min(interval<T> x, interval<T> y)
 {
+    if (empty(x) || empty(y)) {
+        return empty<T>();
+    }
+
     return { min(x.lb, y.lb), min(x.ub, y.ub) };
 }
 
@@ -409,7 +417,7 @@ __device__ interval<T> intersection(interval<T> x, interval<T> y)
 {
     // extended
     if (empty(x) || empty(y)) {
-        return interval<T>::empty();
+        return empty<T>();
     }
 
     return { max(x.lb, y.lb), min(x.ub, y.ub) };
@@ -443,7 +451,18 @@ __device__ interval<T> floor(interval<T> x)
 template<typename T>
 __device__ interval<T> trunc(interval<T> x)
 {
-    return { intrinsic::int_nearest(x.lb), intrinsic::int_nearest(x.ub) };
+    return { intrinsic::trunc(x.lb), intrinsic::trunc(x.ub) };
+}
+
+template<typename T>
+__device__ interval<T> sign(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::copy_sign(static_cast<T>(1), x.lb), intrinsic::copy_sign(static_cast<T>(1), x.ub) };
+    // return { signbit(x.lb), signbit(x.ub) };
 }
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

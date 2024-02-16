@@ -17,6 +17,7 @@ namespace intrinsic
     template<typename T> __device__ T median    (T x, T y);
     template<typename T> __device__ T min       (T x, T y);
     template<typename T> __device__ T max       (T x, T y);
+    template<typename T> __device__ T copy_sign (T x, T y);
     template<typename T> __device__ T rcp_down  (T x);
     template<typename T> __device__ T rcp_up    (T x);
     template<typename T> __device__ T sqrt_down (T x);
@@ -26,7 +27,7 @@ namespace intrinsic
     template<typename T> __device__ __host__ T nan();
     template<typename T> __device__ T pos_inf();
     template<typename T> __device__ T neg_inf();
-    template<typename T> __device__ T int_nearest(T x);
+    template<typename T> __device__ T trunc(T x);
 
     template<> __device__ double fma_down (double x, double y, double z) { return __fma_rd(x, y, z); }    
     template<> __device__ double fma_up   (double x, double y, double z) { return __fma_ru(x, y, z); }    
@@ -41,6 +42,7 @@ namespace intrinsic
     template<> __device__ double median   (double x, double y) { return (x + y) * .5; }
     template<> __device__ double min      (double x, double y) { return fmin(x, y); }
     template<> __device__ double max      (double x, double y) { return fmax(x, y); }
+    template<> __device__ double copy_sign(double x, double y) { return copysign(x, y); }
     template<> __device__ double rcp_down (double x)           { return __drcp_rd(x); }
     template<> __device__ double rcp_up   (double x)           { return __drcp_ru(x); }
     template<> __device__ double sqrt_down(double x)           { return __dsqrt_rd(x); }
@@ -50,7 +52,7 @@ namespace intrinsic
     template<> __device__ __host__ double nan()                { return ::nan(""); }
     template<> __device__ double neg_inf() { return __longlong_as_double(0xfff0000000000000ull); }
     template<> __device__ double pos_inf() { return __longlong_as_double(0x7ff0000000000000ull); }
-    template<> __device__ double int_nearest (double x)        { return rint(x); }
+    template<> __device__ double trunc (double x)        { return trunc(x); }
 
     template<> __device__ float fma_down   (float x, float y, float z) { return __fmaf_rd(x, y, z); }    
     template<> __device__ float fma_up     (float x, float y, float z) { return __fmaf_ru(x, y, z); } 
@@ -65,6 +67,7 @@ namespace intrinsic
     template<> __device__ float median     (float x, float y)   { return (x + y) * .5f; }
     template<> __device__ float min        (float x, float y)   { return fminf(x, y); }
     template<> __device__ float max        (float x, float y)   { return fmaxf(x, y); }
+    template<> __device__ float copy_sign  (float x, float y)   { return copysignf(x, y); }
     template<> __device__ float rcp_down   (float x)            { return __frcp_rd(x); }
     template<> __device__ float rcp_up     (float x)            { return __frcp_ru(x); }
     template<> __device__ float sqrt_down  (float x)            { return __fsqrt_rd(x); }
@@ -74,7 +77,7 @@ namespace intrinsic
     template<> __device__ __host__ float nan()                  { return nanf(""); }
     template<> __device__ float neg_inf() { return __int_as_float(0xff800000); }
     template<> __device__ float pos_inf() { return __int_as_float(0x7f800000); }
-    template<> __device__ float int_nearest (float x)           { return rintf(x); }
+    template<> __device__ float trunc (float x)           { return truncf(x); }
 // clang-format on
 } // namespace intrinsic
 

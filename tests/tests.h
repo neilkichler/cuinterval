@@ -50,6 +50,7 @@ std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref,
         if (h_xs[i] != h_ref[i]) {
             failed_ids.push_back(i);
             printf("FAILED: %a != %a\n", h_xs[i], h_ref[i]);
+            printf("FAILED: %.16e != %.16e\n", h_xs[i], h_ref[i]);
         }
 
         expect(eq(h_xs[i], h_ref[i]), location);
