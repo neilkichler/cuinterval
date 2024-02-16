@@ -246,4 +246,13 @@ __global__ void test_intersection(int n, interval<T> *x, interval<T> *y, interva
     }
 }
 
+template<typename T>
+__global__ void test_convexHull(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = convex_hull(x[i], y[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

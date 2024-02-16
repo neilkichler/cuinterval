@@ -24,10 +24,10 @@ namespace intrinsic
     template<typename T> __device__ T sqrt_up   (T x);
     template<typename T> __device__ T int_down  (T x);
     template<typename T> __device__ T int_up    (T x);
+    template<typename T> __device__ T trunc     (T x);
     template<typename T> __device__ __host__ T nan();
     template<typename T> __device__ T pos_inf();
     template<typename T> __device__ T neg_inf();
-    template<typename T> __device__ T trunc(T x);
 
     template<> __device__ double fma_down (double x, double y, double z) { return __fma_rd(x, y, z); }    
     template<> __device__ double fma_up   (double x, double y, double z) { return __fma_ru(x, y, z); }    
@@ -49,10 +49,10 @@ namespace intrinsic
     template<> __device__ double sqrt_up  (double x)           { return __dsqrt_ru(x); }
     template<> __device__ double int_down (double x)           { return floor(x); }
     template<> __device__ double int_up   (double x)           { return ceil(x); }
+    template<> __device__ double trunc    (double x)           { return ::trunc(x); }
     template<> __device__ __host__ double nan()                { return ::nan(""); }
     template<> __device__ double neg_inf() { return __longlong_as_double(0xfff0000000000000ull); }
     template<> __device__ double pos_inf() { return __longlong_as_double(0x7ff0000000000000ull); }
-    template<> __device__ double trunc (double x)        { return trunc(x); }
 
     template<> __device__ float fma_down   (float x, float y, float z) { return __fmaf_rd(x, y, z); }    
     template<> __device__ float fma_up     (float x, float y, float z) { return __fmaf_ru(x, y, z); } 
@@ -74,10 +74,10 @@ namespace intrinsic
     template<> __device__ float sqrt_up    (float x)            { return __fsqrt_ru(x); }
     template<> __device__ float int_down   (float x)            { return floorf(x); }
     template<> __device__ float int_up     (float x)            { return ceilf(x); }
+    template<> __device__ float trunc      (float x)            { return truncf(x); }
     template<> __device__ __host__ float nan()                  { return nanf(""); }
     template<> __device__ float neg_inf() { return __int_as_float(0xff800000); }
     template<> __device__ float pos_inf() { return __int_as_float(0x7f800000); }
-    template<> __device__ float trunc (float x)           { return truncf(x); }
 // clang-format on
 } // namespace intrinsic
 

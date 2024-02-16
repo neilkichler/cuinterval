@@ -71,9 +71,10 @@ void tests_''' + test_name + '''() {
                 "abs": "I",
                 "min": "I",
                 "max": "I",
-                # "trunc": "I",
-                # "sign": "I",
-                # "intersection": "I",
+                "trunc": "I",
+                "sign": "I",
+                "intersection": "I",
+                "convexHull": "I",
             }
 
             empty = '{empty}'

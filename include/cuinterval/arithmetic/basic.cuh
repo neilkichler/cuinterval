@@ -451,6 +451,10 @@ __device__ interval<T> floor(interval<T> x)
 template<typename T>
 __device__ interval<T> trunc(interval<T> x)
 {
+    if (empty(x)) {
+        return x;
+    }
+
     return { intrinsic::trunc(x.lb), intrinsic::trunc(x.ub) };
 }
 
@@ -461,8 +465,8 @@ __device__ interval<T> sign(interval<T> x)
         return x;
     }
 
-    return { intrinsic::copy_sign(static_cast<T>(1), x.lb), intrinsic::copy_sign(static_cast<T>(1), x.ub) };
-    // return { signbit(x.lb), signbit(x.ub) };
+    return { (x.lb != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.lb), 
+             (x.ub != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.ub) };
 }
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH
