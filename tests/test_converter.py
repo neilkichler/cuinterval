@@ -33,6 +33,7 @@ void tests_''' + test_name + '''() {
     using namespace boost::ut;
 
     using I = interval<T>;
+    using B = bool;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
@@ -75,6 +76,16 @@ void tests_''' + test_name + '''() {
                 "sign": "I",
                 "intersection": "I",
                 "convexHull": "I",
+                "equal": "B",
+                "subset": "B",
+                "interior": "B",
+                "disjoint": "B",
+                "isEmpty": "B",
+                "isEntire": "B",
+                "less": "B",
+                "strictLess": "B",
+                "precedes": "B",
+                "strictPrecedes": "B",
             }
 
             empty = '{empty}'
@@ -89,6 +100,7 @@ void tests_''' + test_name + '''() {
                 },
                 'cuda': {
                     'T': '{} = %a\\n',
+                    'B': '{} = %d\\n',
                     'I': '{} = [%a, %a]\\n'
                 }
             }

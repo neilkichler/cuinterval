@@ -255,4 +255,94 @@ __global__ void test_convexHull(int n, interval<T> *x, interval<T> *y, interval<
     }
 }
 
+template<typename T>
+__global__ void test_equal(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = equal(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_subset(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = subset(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_interior(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = interior(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_disjoint(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = disjoint(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_isEmpty(int n, interval<T> *x, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = empty(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_isEntire(int n, interval<T> *x, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = entire(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_less(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = less(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_strictLess(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = strict_less(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_precedes(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = precedes(x[i], y[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_strictPrecedes(int n, interval<T> *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = strict_precedes(x[i], y[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

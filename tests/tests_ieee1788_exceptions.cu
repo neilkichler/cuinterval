@@ -11,6 +11,7 @@ void tests_ieee1788_exceptions() {
     using namespace boost::ut;
 
     using I = interval<T>;
+    using B = bool;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();

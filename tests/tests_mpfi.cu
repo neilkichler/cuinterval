@@ -11,6 +11,7 @@ void tests_mpfi() {
     using namespace boost::ut;
 
     using I = interval<T>;
+    using B = bool;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
@@ -982,6 +983,450 @@ void tests_mpfi() {
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
             printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "mpfi_is_neg_precedes"_test = [&] {
+        constexpr int n = 16;
+        std::array<I, n> h_xs {{
+            {+0x1fffffffffffffp-53,2.0},
+            {+8.0,+0x7fffffffffffbp+51},
+            {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {-34.0,-17.0},
+            {-34.0,17.0},
+            {-8.0,-1.0},
+            {-8.0,0.0},
+            {-infinity,-8.0},
+            {-infinity,0.0},
+            {-infinity,5.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,5.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {5.0,+infinity},
+            entire,
+        }};
+
+        std::array<I, n> h_ys {{
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            false,
+            false,
+            false,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_precedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "mpfi_is_nonneg_less"_test = [&] {
+        constexpr int n = 16;
+        std::array<I, n> h_xs {{
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {+0x1fffffffffffffp-53,2.0},
+            {+8.0,+0x7fffffffffffbp+51},
+            {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {-34.0,-17.0},
+            {-34.0,17.0},
+            {-8.0,-1.0},
+            {-8.0,0.0},
+            {-infinity,-8.0},
+            {-infinity,0.0},
+            {-infinity,5.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,5.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {5.0,+infinity},
+            entire,
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_less<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "mpfi_is_nonpo_less"_test = [&] {
+        constexpr int n = 16;
+        std::array<I, n> h_xs {{
+            {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {-34.0,-17.0},
+            {-34.0,17.0},
+            {-8.0,-1.0},
+            {-8.0,0.0},
+            {-infinity,-8.0},
+            {-infinity,0.0},
+            {-infinity,5.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,5.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {0x1fffffffffffffp-53,2.0},
+            {5.0,+infinity},
+            {8.0,0x7fffffffffffbp+51},
+            entire,
+        }};
+
+        std::array<I, n> h_ys {{
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            false,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_less<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "mpfi_is_po_precedes"_test = [&] {
+        constexpr int n = 16;
+        std::array<I, n> h_xs {{
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {+0x1fffffffffffffp-53,2.0},
+            {+8.0,+0x7fffffffffffbp+51},
+            {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {-34.0,-17.0},
+            {-34.0,17.0},
+            {-8.0,-1.0},
+            {-8.0,0.0},
+            {-infinity,-8.0},
+            {-infinity,0.0},
+            {-infinity,5.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,5.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {5.0,+infinity},
+            entire,
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_precedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "mpfi_is_strictly_neg_strictPrecedes"_test = [&] {
+        constexpr int n = 16;
+        std::array<I, n> h_xs {{
+            {+0x1fffffffffffffp-53,2.0},
+            {+8.0,+0x7fffffffffffbp+51},
+            {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {-34.0,-17.0},
+            {-34.0,17.0},
+            {-8.0,-1.0},
+            {-8.0,0.0},
+            {-infinity,-8.0},
+            {-infinity,0.0},
+            {-infinity,5.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,5.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {5.0,+infinity},
+            entire,
+        }};
+
+        std::array<I, n> h_ys {{
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            false,
+            false,
+            false,
+            true,
+            false,
+            true,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_strictPrecedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "mpfi_is_strictly_po_strictPrecedes"_test = [&] {
+        constexpr int n = 16;
+        std::array<I, n> h_xs {{
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {+0x1fffffffffffffp-53,2.0},
+            {+8.0,+0x7fffffffffffbp+51},
+            {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {-34.0,-17.0},
+            {-34.0,17.0},
+            {-8.0,-1.0},
+            {-8.0,0.0},
+            {-infinity,-8.0},
+            {-infinity,0.0},
+            {-infinity,5.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,5.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {5.0,+infinity},
+            entire,
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_strictPrecedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
         }
     };
 

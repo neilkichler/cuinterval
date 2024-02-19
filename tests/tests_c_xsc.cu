@@ -11,6 +11,7 @@ void tests_c_xsc() {
     using namespace boost::ut;
 
     using I = interval<T>;
+    using B = bool;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
@@ -536,6 +537,369 @@ void tests_c_xsc() {
         test_convexHull<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         auto failed = check_all_equal<I, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "cxsc.intervalsetcompop_equal"_test = [&] {
+        constexpr int n = 7;
+        std::array<I, n> h_xs {{
+            {-1.0,2.0},
+            {-2.0,1.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {-1.0,2.0},
+            {-3.0,2.0},
+            {-1.0,1.0},
+            {-1.0,2.0},
+            {-2.0,1.0},
+            {-2.0,3.0},
+            {-3.0,2.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_equal<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "cxsc.intervalsetcompop_interior"_test = [&] {
+        constexpr int n = 14;
+        std::array<I, n> h_xs {{
+            {-1.0,1.0},
+            {-1.0,2.0},
+            {-1.0,2.0},
+            {-1.0,2.0},
+            {-2.0,1.0},
+            {-2.0,1.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,3.0},
+            {-3.0,2.0},
+            {-3.0,2.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {-2.0,2.0},
+            {-1.0,2.0},
+            {-1.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-3.0,2.0},
+            {-1.0,1.0},
+            {-1.0,2.0},
+            {-2.0,1.0},
+            {-2.0,3.0},
+            {-3.0,2.0},
+            {-2.0,2.0},
+            {-2.0,1.0},
+            {-2.0,2.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_interior<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "cxsc.intervalsetcompop_subset"_test = [&] {
+        constexpr int n = 13;
+        std::array<I, n> h_xs {{
+            {-1.0,1.0},
+            {-1.0,2.0},
+            {-1.0,2.0},
+            {-2.0,1.0},
+            {-2.0,1.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,3.0},
+            {-3.0,2.0},
+            {-3.0,2.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {-2.0,2.0},
+            {-1.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-3.0,2.0},
+            {-1.0,1.0},
+            {-1.0,2.0},
+            {-2.0,1.0},
+            {-2.0,3.0},
+            {-3.0,2.0},
+            {-2.0,2.0},
+            {-2.0,1.0},
+            {-2.0,2.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_subset<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "cxsc.intervalscalarsetcompop_equal"_test = [&] {
+        constexpr int n = 7;
+        std::array<I, n> h_xs {{
+            {-1.0,-1.0},
+            {-1.0,-1.0},
+            {-1.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {-1.0,-1.0},
+            {1.0,1.0},
+            {-2.0,-2.0},
+            {-2.0,-2.0},
+            {0.0,0.0},
+            {2.0,2.0},
+            {3.0,3.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_equal<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "cxsc.intervalscalarsetcompop_interior"_test = [&] {
+        constexpr int n = 14;
+        std::array<I, n> h_xs {{
+            {-1.0,-1.0},
+            {-1.0,-1.0},
+            {-1.0,-1.0},
+            {-1.0,2.0},
+            {-2.0,-2.0},
+            {-2.0,-2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {0.0,0.0},
+            {1.0,1.0},
+            {2.0,2.0},
+            {3.0,3.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {-1.0,-1.0},
+            {-1.0,-1.0},
+            {1.0,1.0},
+            {-2.0,-2.0},
+            {-1.0,2.0},
+            {-2.0,2.0},
+            {-2.0,-2.0},
+            {0.0,0.0},
+            {2.0,2.0},
+            {3.0,3.0},
+            {-2.0,2.0},
+            {-1.0,-1.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_interior<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
+    "cxsc.intervalscalarsetcompop_subset"_test = [&] {
+        constexpr int n = 14;
+        std::array<I, n> h_xs {{
+            {-1.0,-1.0},
+            {-1.0,-1.0},
+            {-1.0,-1.0},
+            {-1.0,2.0},
+            {-2.0,-2.0},
+            {-2.0,-2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+            {0.0,0.0},
+            {1.0,1.0},
+            {2.0,2.0},
+            {3.0,3.0},
+        }};
+
+        std::array<I, n> h_ys {{
+            {-1.0,-1.0},
+            {-1.0,-1.0},
+            {1.0,1.0},
+            {-2.0,-2.0},
+            {-1.0,2.0},
+            {-2.0,2.0},
+            {-2.0,-2.0},
+            {0.0,0.0},
+            {2.0,2.0},
+            {3.0,3.0},
+            {-2.0,2.0},
+            {-1.0,-1.0},
+            {-2.0,2.0},
+            {-2.0,2.0},
+        }};
+
+        std::array<B, n> h_res{};
+        B *d_res = (B *)d_res_;
+        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_ref {{
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            true,
+            false,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_subset<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        auto failed = check_all_equal<B, n>(h_res, h_ref);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
             printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);

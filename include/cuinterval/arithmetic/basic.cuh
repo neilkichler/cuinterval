@@ -375,21 +375,51 @@ __device__ bool equal(interval<T> a, interval<T> b)
 }
 
 template<typename T>
+__device__ bool strict_less_or_both_inf(T x, T y)
+{
+    return (x < y) || (isinf(x) && isinf(y));
+}
+
+template<typename T>
 __device__ bool subset(interval<T> a, interval<T> b)
 {
-    return empty(a) || ((a.lb <= b.lb) && (b.ub <= a.ub));
+    return empty(a) || ((b.lb <= a.lb) && (a.ub <= b.ub));
 }
 
 template<typename T>
 __device__ bool interior(interval<T> a, interval<T> b)
 {
-    return empty(a) || ((a.lb < b.lb) && (b.ub < a.ub));
+    return empty(a) || (strict_less_or_both_inf(b.lb, a.lb) && strict_less_or_both_inf(a.ub, b.ub));
 }
 
 template<typename T>
 __device__ bool disjoint(interval<T> a, interval<T> b)
 {
     return !(a.lb <= b.ub && b.lb <= a.ub);
+}
+
+template<typename T>
+__device__ bool less(interval<T> a, interval<T> b)
+{
+    return (a.lb <= b.lb && a.ub <= b.ub);
+}
+
+template<typename T>
+__device__ bool strict_less(interval<T> a, interval<T> b)
+{
+    return strict_less_or_both_inf(a.lb, b.lb) && strict_less_or_both_inf(a.ub, b.ub);
+}
+
+template<typename T>
+__device__ bool precedes(interval<T> a, interval<T> b)
+{
+    return a.ub <= b.lb;
+}
+
+template<typename T>
+__device__ bool strict_precedes(interval<T> a, interval<T> b)
+{
+    return empty(a) || empty(b) || a.ub < b.lb;
 }
 
 template<typename T>
@@ -465,7 +495,7 @@ __device__ interval<T> sign(interval<T> x)
         return x;
     }
 
-    return { (x.lb != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.lb), 
+    return { (x.lb != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.lb),
              (x.ub != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.ub) };
 }
 

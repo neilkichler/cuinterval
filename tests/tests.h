@@ -19,6 +19,8 @@
 #include <source_location>
 #include <ostream>
 
+#include <stdio.h>
+
 #define CUDA_CHECK(x)                                                                \
     do {                                                                             \
         cudaError_t err = x;                                                         \

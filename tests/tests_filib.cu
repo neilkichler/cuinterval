@@ -11,6 +11,7 @@ void tests_filib() {
     using namespace boost::ut;
 
     using I = interval<T>;
+    using B = bool;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
