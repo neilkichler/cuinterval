@@ -86,8 +86,12 @@ void tests_''' + test_name + '''() {
                 "strictLess": "B",
                 "precedes": "B",
                 "strictPrecedes": "B",
+                "isSingleton": "B",
+                "isCommonInterval": "B",
                 "cancelMinus": "I",
                 "cancelPlus": "I",
+                "roundTiesToEven": "I",
+                "roundTiesToAway": "I",
             }
 
             empty = '{empty}'

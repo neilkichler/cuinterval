@@ -446,7 +446,7 @@ __device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
         T w_lb = intrinsic::add_down(y.lb, z.lb);
         T w_ub = intrinsic::add_up(y.ub, z.ub);
 
-        if (width(x) == width(y) && (nextafter(x.lb, intrinsic::neg_inf<T>()) > w_lb || nextafter(x.ub, intrinsic::pos_inf<T>()) < w_ub)) {
+        if (width(x) == width(y) && (intrinsic::next_after(x.lb, intrinsic::neg_inf<T>()) > w_lb || intrinsic::next_after(x.ub, intrinsic::pos_inf<T>()) < w_ub)) {
             return entire<T>();
         }
 
@@ -515,6 +515,36 @@ __device__ interval<T> sign(interval<T> x)
 
     return { (x.lb != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.lb),
              (x.ub != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.ub) };
+}
+
+template<typename T>
+__device__ interval<T> is_member(T x, interval<T> y)
+{
+    return inf(y) <= x && x <= sup(y);
+}
+
+template<typename T>
+__device__ bool is_singleton(interval<T> x)
+{
+    return x.lb == x.ub;
+}
+
+template<typename T>
+__device__ bool is_common_interval(interval<T> x)
+{
+    return !empty(x) && bounded(x);
+}
+
+template<typename T>
+__device__ interval<T> round_to_nearest_even(interval<T> x)
+{
+    return { intrinsic::round_even(x.lb), intrinsic::round_even(x.ub) };
+}
+
+template<typename T>
+__device__ interval<T> round_ties_to_away(interval<T> x)
+{
+    return { intrinsic::round_away(x.lb), intrinsic::round_away(x.ub) };
 }
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

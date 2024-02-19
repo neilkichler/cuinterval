@@ -345,4 +345,40 @@ __global__ void test_strictPrecedes(int n, interval<T> *x, interval<T> *y, bool 
     }
 }
 
+template<typename T>
+__global__ void test_isSingleton(int n, interval<T> *x, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = is_singleton(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_isCommonInterval(int n, interval<T> *x, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = is_common_interval(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_roundTiesToEven(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = round_to_nearest_even(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_roundTiesToAway(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = round_ties_to_away(x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH
