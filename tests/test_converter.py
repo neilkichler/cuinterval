@@ -4,8 +4,13 @@ import sys
 import os
 
 from collections import defaultdict
+from enum import Enum
 
-indent = ' ' * 4
+ParamType = Enum('ParamType', ['I','B', 'T'])
+
+indent_one = ' ' * 4
+indent_two = ' ' * 8
+indent_three = ' ' * 12
 
 def convert_to_test(file_path):
     try:
@@ -47,51 +52,53 @@ void tests_''' + test_name + '''() {
 }
 '''
             largest_n = 0
-            # TODO: create enum for "I", "B", and "T"
+            I = ParamType.I
+            B = ParamType.B
+            T = ParamType.T
             supported = {
-                "pos": {"args": ["I"], "ret": "I"},
-                "neg": {"args": ["I"], "ret": "I"},
-                "add": {"args": ["I", "I"], "ret": "I"},
-                "sub": {"args": ["I", "I"], "ret": "I"},
-                "mul": {"args": ["I", "I"], "ret": "I"},
-                "div": {"args": ["I", "I"], "ret": "I"},
-                "recip": {"args": ["I"], "ret": "I"},
-                "sqr": {"args": ["I"], "ret": "I"},
-                "sqrt": {"args": ["I"], "ret": "I"},
-                "fma": {"args": ["I", "I", "I"], "ret": "I"},
-                "mig": {"args": ["I", "I"], "ret": "T"},
-                "mag": {"args": ["I", "I"], "ret": "T"},
-                "wid": {"args": ["I", "I"], "ret": "T"},
-                "inf": {"args": ["I"], "ret": "T"},
-                "sup": {"args": ["I"], "ret": "T"},
-                "mid": {"args": ["I", "I"], "ret": "T"},
-                "rad": {"args": ["I"], "ret": "T"},
-                "floor": {"args": ["I"], "ret": "I"},
-                "ceil": {"args": ["I"], "ret": "I"},
-                "abs": {"args": ["I"], "ret": "I"},
-                "min": {"args": ["I", "I"], "ret": "I"},
-                "max": {"args": ["I", "I"], "ret": "I"},
-                "trunc": {"args": ["I"], "ret": "I"},
-                "sign": {"args": ["I"], "ret": "I"},
-                "intersection": {"args": ["I", "I"], "ret": "I"},
-                "convexHull": {"args": ["I", "I"], "ret": "I"},
-                "equal": {"args": ["I", "I"], "ret": "B"},
-                "subset": {"args": ["I", "I"], "ret": "B"},
-                "interior": {"args": ["I", "I"], "ret": "B"},
-                "disjoint": {"args": ["I", "I"], "ret": "B"},
-                "isEmpty": {"args": ["I"], "ret": "B"},
-                "isEntire": {"args": ["I"], "ret": "B"},
-                "less": {"args": ["I", "I"], "ret": "B"},
-                "strictLess": {"args": ["I", "I"], "ret": "B"},
-                "precedes": {"args": ["I", "I"], "ret": "B"},
-                "strictPrecedes": {"args": ["I", "I"], "ret": "B"},
-                "isMember": {"args": ["T", "I"], "ret": "B"},
-                "isSingleton": {"args": ["I"], "ret": "B"},
-                "isCommonInterval": {"args": ["I", "I"], "ret": "B"},
-                "cancelMinus": {"args": ["I", "I"], "ret": "I"},
-                "cancelPlus": {"args": ["I", "I"], "ret": "I"},
-                "roundTiesToEven": {"args": ["I"], "ret": "I"},
-                "roundTiesToAway": {"args": ["I"], "ret": "I"},
+                "pos": {"args": [I], "ret": I},
+                "neg": {"args": [I], "ret": I},
+                "add": {"args": [I, I], "ret": I},
+                "sub": {"args": [I, I], "ret": I},
+                "mul": {"args": [I, I], "ret": I},
+                "div": {"args": [I, I], "ret": I},
+                "recip": {"args": [I], "ret": I},
+                "sqr": {"args": [I], "ret": I},
+                "sqrt": {"args": [I], "ret": I},
+                "fma": {"args": [I, I, I], "ret": I},
+                "mig": {"args": [I, I], "ret": T},
+                "mag": {"args": [I, I], "ret": T},
+                "wid": {"args": [I, I], "ret": T},
+                "inf": {"args": [I], "ret": T},
+                "sup": {"args": [I], "ret": T},
+                "mid": {"args": [I, I], "ret": T},
+                "rad": {"args": [I], "ret": T},
+                "floor": {"args": [I], "ret": I},
+                "ceil": {"args": [I], "ret": I},
+                "abs": {"args": [I], "ret": I},
+                "min": {"args": [I, I], "ret": I},
+                "max": {"args": [I, I], "ret": I},
+                "trunc": {"args": [I], "ret": I},
+                "sign": {"args": [I], "ret": I},
+                "intersection": {"args": [I, I], "ret": I},
+                "convexHull": {"args": [I, I], "ret": I},
+                "equal": {"args": [I, I], "ret": B},
+                "subset": {"args": [I, I], "ret": B},
+                "interior": {"args": [I, I], "ret": B},
+                "disjoint": {"args": [I, I], "ret": B},
+                "isEmpty": {"args": [I], "ret": B},
+                "isEntire": {"args": [I], "ret": B},
+                "less": {"args": [I, I], "ret": B},
+                "strictLess": {"args": [I, I], "ret": B},
+                "precedes": {"args": [I, I], "ret": B},
+                "strictPrecedes": {"args": [I, I], "ret": B},
+                "isMember": {"args": [T, I], "ret": B},
+                "isSingleton": {"args": [I], "ret": B},
+                "isCommonInterval": {"args": [I, I], "ret": B},
+                "cancelMinus": {"args": [I, I], "ret": I},
+                "cancelPlus": {"args": [I, I], "ret": I},
+                "roundTiesToEven": {"args": [I], "ret": I},
+                "roundTiesToAway": {"args": [I], "ret": I},
             }
 
             empty = '{empty}'
@@ -101,13 +108,13 @@ void tests_''' + test_name + '''() {
 
             failed_code = {
                 'params': {
-                    'T': 'h_{}[fail_id]',
-                    'I': 'h_{}[fail_id].lb, h_{}[fail_id].ub'
+                    T: 'h_{}[fail_id]',
+                    I: 'h_{}[fail_id].lb, h_{}[fail_id].ub'
                 },
                 'cuda': {
-                    'T': '{} = %a\\n',
-                    'B': '{} = %d\\n',
-                    'I': '{} = [%a, %a]\\n'
+                    T: '{} = %a\\n',
+                    B: '{} = %d\\n',
+                    I: '{} = [%a, %a]\\n'
                 }
             }
             
@@ -147,25 +154,25 @@ void tests_''' + test_name + '''() {
                         continue
 
                     arg_types = supported[instr]['args']
-                    result_type = supported[instr]['ret']
-                    test_code = indent + f'"{name}_{instr}"_test = [&] {{\n'
+                    result_type = supported[instr]['ret'].name
+                    test_code = indent_one + f'"{name}_{instr}"_test = [&] {{\n'
 
-                    for i in range(n_vars - 1):
-                        var_codes[i] = indent*2 + f'std::array<{arg_types[i]}, n> h_{vars[i]} {{{{\n'
+                    n_args = n_vars - 1
+                    for i in range(n_args):
+                        var_codes[i] = indent_two + f'std::array<{arg_types[i].name}, n> h_{vars[i]} {{{{\n'
 
-                    var_codes[n_vars-1] = indent*2 + f'std::array<{result_type}, n> h_res{{}};\n'
-                    var_codes[n_vars-1] += indent*2 + f'{result_type} *d_res = ({result_type} *)d_res_;\n'
+                    var_codes[n_args] = indent_two + f'std::array<{result_type}, n> h_res{{}};\n'
+                    var_codes[n_args] += indent_two + f'{result_type} *d_res = ({result_type} *)d_res_;\n'
 
-                    for i in range(n_vars - 1):
-                        var_codes[n_vars-1] += indent*2 + f'{arg_types[i]} *d_{vars[i]} = ({arg_types[i]} *)d_{vars[i]}_;\n'
+                    for i in range(n_args):
+                        var_codes[n_args] += indent_two + f'{arg_types[i].name} *d_{vars[i]} = ({arg_types[i].name} *)d_{vars[i]}_;\n'
 
-                    var_codes[n_vars-1] += indent*2 + f'int n_result_bytes = n * sizeof({result_type});\n'
-
-                    var_codes[n_vars-1] += indent*2 + f'std::array<{result_type}, n> h_ref {{{{\n'
+                    var_codes[n_args] += indent_two + f'int n_result_bytes = n * sizeof({result_type});\n'
+                    var_codes[n_args] += indent_two + f'std::array<{result_type}, n> h_ref {{{{\n'
 
                     for elements in ops:
                         for i, el in enumerate(elements):
-                            var_codes[i] += indent*3
+                            var_codes[i] += indent_three
                             if el == empty:
                                 var_codes[i] += 'empty,\n'
                             elif el == entire:
@@ -181,12 +188,12 @@ void tests_''' + test_name + '''() {
 
                     cuda_code = ''
                     for i in range(n_vars):
-                        var_codes[i] += indent*2 + '}};\n\n'
+                        var_codes[i] += indent_two + '}};\n\n'
 
-                    for i in range(n_vars - 1):
-                        cuda_code += indent*2 + f'CUDA_CHECK(cudaMemcpy(d_{vars[i]}, h_{vars[i]}.data(), n_bytes, cudaMemcpyHostToDevice));\n'
+                    for i in range(n_args):
+                        cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpy(d_{vars[i]}, h_{vars[i]}.data(), n_bytes, cudaMemcpyHostToDevice));\n'
                     
-                    cuda_code += indent*2 + 'CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));\n'
+                    cuda_code += indent_two + 'CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));\n'
 
                     device_vars = ''
                     for v in vars[:-1]:
@@ -194,16 +201,16 @@ void tests_''' + test_name + '''() {
 
                     device_vars += ', d_res'
 
-                    cuda_code += indent*2 + f'test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
-                    cuda_code += indent*2 + 'CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));\n'
-                    cuda_code += indent*2 + f'auto failed = check_all_equal<{result_type}, n>(h_res, h_ref);\n'
-                    cuda_code += indent*2 + 'for (auto fail_id : failed) {\n'
-                    cuda_code += indent*3 + 'printf("failed at case %zu:\\n", fail_id);\n'
-                    cuda_code += indent*3 + 'printf("'
+                    cuda_code += indent_two + f'test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
+                    cuda_code += indent_two + 'CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));\n'
+                    cuda_code += indent_two + f'auto failed = check_all_equal<{result_type}, n>(h_res, h_ref);\n'
+                    cuda_code += indent_two + 'for (auto fail_id : failed) {\n'
+                    cuda_code += indent_three + 'printf("failed at case %zu:\\n", fail_id);\n'
+                    cuda_code += indent_three + 'printf("'
                     
                     params_code = ''
 
-                    for i in range(n_vars - 1):
+                    for i in range(n_args):
                         var = vars[i]
                         cuda_code += failed_code['cuda'][arg_types[i]].format(var[0])
                         params_code += ', ' + failed_code['params'][arg_types[i]].format(var, var)
@@ -211,11 +218,11 @@ void tests_''' + test_name + '''() {
                     cuda_code += '"'
                     cuda_code += params_code
                     cuda_code += ');\n'
-                    cuda_code += indent*2 + '}\n'
-                    cuda_code += indent + '};\n\n'
+                    cuda_code += indent_two + '}\n'
+                    cuda_code += indent_one + '};\n\n'
 
                     largest_n = max(n_ops, largest_n)
-                    size_code = indent*2 + f'constexpr int n = {n_ops};\n'
+                    size_code = indent_two + f'constexpr int n = {n_ops};\n'
                     test_code += size_code
                     for var_code in var_codes:
                         test_code += var_code
@@ -249,10 +256,6 @@ if __name__ == '__main__':
     main_tests = ''
 
     for f in files:
-        # if f != 'mpfi.itl':
-        # if f != 'libieeep1788_elem.itl':
-        # if f != 'libieeep1788_num.itl':
-        #     continue
         test_code = convert_to_test(f)
         f = f.replace('-', '_')
         tests_name = 'tests_' + f.rsplit('.', 1)[0]
@@ -260,7 +263,7 @@ if __name__ == '__main__':
         with open(out_file, 'w') as f:
             f.write(test_code)
         main_includes += f'#include "{out_file}"\n'
-        main_tests += indent + tests_name + '<double>();\n'
+        main_tests += indent_one + tests_name + '<double>();\n'
         print('generated ' + out_file)
 
     for f in glob.glob('*.cu'):
