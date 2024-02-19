@@ -23,11 +23,11 @@ void tests_libieeep1788_cancel() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
     "minimal_cancel_plus_cancelPlus"_test = [&] {
@@ -156,6 +156,8 @@ void tests_libieeep1788_cancel() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0X1.70A3D70A3D70BP-4,0X1.E666666666657P+0},
@@ -366,6 +368,8 @@ void tests_libieeep1788_cancel() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0X1.999999999998P-4},
@@ -446,8 +450,8 @@ void tests_libieeep1788_cancel() {
     };
 
 
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }

@@ -23,16 +23,16 @@ void tests_pow_rev() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
 
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }

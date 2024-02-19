@@ -23,11 +23,11 @@ void tests_c_xsc() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
     "cxsc.intervaladdsub_add"_test = [&] {
@@ -44,6 +44,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {23.0,37.0},
@@ -70,6 +72,7 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-20.0,-10.0},
@@ -94,6 +97,7 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {10.0,20.0},
@@ -124,6 +128,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-6.0,7.0},
@@ -184,6 +190,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             entire,
@@ -256,6 +264,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-6.0,8.0},
@@ -321,6 +331,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-2.0,2.0},
@@ -383,6 +395,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-1.0,1.0},
@@ -433,6 +447,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-4.0,2.0},
@@ -477,6 +493,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             empty,
@@ -521,6 +539,8 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-2.0,-2.0},
@@ -567,6 +587,8 @@ void tests_c_xsc() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -628,6 +650,8 @@ void tests_c_xsc() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -694,6 +718,8 @@ void tests_c_xsc() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -747,6 +773,8 @@ void tests_c_xsc() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -808,6 +836,8 @@ void tests_c_xsc() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -876,6 +906,8 @@ void tests_c_xsc() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -916,6 +948,7 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {81.0,81.0},
@@ -944,6 +977,7 @@ void tests_c_xsc() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0.0},
@@ -963,8 +997,8 @@ void tests_c_xsc() {
     };
 
 
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }

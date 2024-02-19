@@ -518,9 +518,9 @@ __device__ interval<T> sign(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> is_member(T x, interval<T> y)
+__device__ bool is_member(T x, interval<T> y)
 {
-    return inf(y) <= x && x <= sup(y);
+    return isfinite(x) && inf(y) <= x && x <= sup(y);
 }
 
 template<typename T>

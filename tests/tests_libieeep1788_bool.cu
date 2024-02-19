@@ -23,11 +23,11 @@ void tests_libieeep1788_bool() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
     "minimal_is_empty_isEmpty"_test = [&] {
@@ -51,6 +51,7 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -101,6 +102,7 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -170,6 +172,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -265,6 +269,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -370,6 +376,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -464,6 +472,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -543,6 +553,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -613,6 +625,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -681,6 +695,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -741,6 +757,8 @@ void tests_libieeep1788_bool() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -768,8 +786,8 @@ void tests_libieeep1788_bool() {
     };
 
 
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }

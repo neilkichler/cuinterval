@@ -346,6 +346,15 @@ __global__ void test_strictPrecedes(int n, interval<T> *x, interval<T> *y, bool 
 }
 
 template<typename T>
+__global__ void test_isMember(int n, T *x, interval<T> *y, bool *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = is_member(x[i], y[i]);
+    }
+}
+
+template<typename T>
 __global__ void test_isSingleton(int n, interval<T> *x, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;

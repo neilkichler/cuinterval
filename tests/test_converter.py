@@ -7,8 +7,6 @@ from collections import defaultdict
 
 indent = ' ' * 4
 
-# TODO: figure out how to represent d_res generically for all test cases,
-#       it can be an interval, a number or boolean
 def convert_to_test(file_path):
     try:
         with open(file_path, 'r') as file:
@@ -42,56 +40,58 @@ void tests_''' + test_name + '''() {
 '''
 
             code_postamble ='''
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }
 '''
             largest_n = 0
+            # TODO: create enum for "I", "B", and "T"
             supported = {
-                "pos": "I",
-                "neg": "I",
-                "add": "I",
-                "sub": "I",
-                "mul": "I",
-                "div": "I",
-                "recip": "I",
-                "sqr": "I",
-                "sqrt": "I",
-                "fma": "I",
-                "mig": "T",
-                "mag": "T",
-                "wid": "T",
-                "inf": "T",
-                "sup": "T",
-                "mid": "T",
-                "rad": "T",
-                "floor": "I",
-                "ceil": "I",
-                "abs": "I",
-                "min": "I",
-                "max": "I",
-                "trunc": "I",
-                "sign": "I",
-                "intersection": "I",
-                "convexHull": "I",
-                "equal": "B",
-                "subset": "B",
-                "interior": "B",
-                "disjoint": "B",
-                "isEmpty": "B",
-                "isEntire": "B",
-                "less": "B",
-                "strictLess": "B",
-                "precedes": "B",
-                "strictPrecedes": "B",
-                "isSingleton": "B",
-                "isCommonInterval": "B",
-                "cancelMinus": "I",
-                "cancelPlus": "I",
-                "roundTiesToEven": "I",
-                "roundTiesToAway": "I",
+                "pos": {"args": ["I"], "ret": "I"},
+                "neg": {"args": ["I"], "ret": "I"},
+                "add": {"args": ["I", "I"], "ret": "I"},
+                "sub": {"args": ["I", "I"], "ret": "I"},
+                "mul": {"args": ["I", "I"], "ret": "I"},
+                "div": {"args": ["I", "I"], "ret": "I"},
+                "recip": {"args": ["I"], "ret": "I"},
+                "sqr": {"args": ["I"], "ret": "I"},
+                "sqrt": {"args": ["I"], "ret": "I"},
+                "fma": {"args": ["I", "I", "I"], "ret": "I"},
+                "mig": {"args": ["I", "I"], "ret": "T"},
+                "mag": {"args": ["I", "I"], "ret": "T"},
+                "wid": {"args": ["I", "I"], "ret": "T"},
+                "inf": {"args": ["I"], "ret": "T"},
+                "sup": {"args": ["I"], "ret": "T"},
+                "mid": {"args": ["I", "I"], "ret": "T"},
+                "rad": {"args": ["I"], "ret": "T"},
+                "floor": {"args": ["I"], "ret": "I"},
+                "ceil": {"args": ["I"], "ret": "I"},
+                "abs": {"args": ["I"], "ret": "I"},
+                "min": {"args": ["I", "I"], "ret": "I"},
+                "max": {"args": ["I", "I"], "ret": "I"},
+                "trunc": {"args": ["I"], "ret": "I"},
+                "sign": {"args": ["I"], "ret": "I"},
+                "intersection": {"args": ["I", "I"], "ret": "I"},
+                "convexHull": {"args": ["I", "I"], "ret": "I"},
+                "equal": {"args": ["I", "I"], "ret": "B"},
+                "subset": {"args": ["I", "I"], "ret": "B"},
+                "interior": {"args": ["I", "I"], "ret": "B"},
+                "disjoint": {"args": ["I", "I"], "ret": "B"},
+                "isEmpty": {"args": ["I"], "ret": "B"},
+                "isEntire": {"args": ["I"], "ret": "B"},
+                "less": {"args": ["I", "I"], "ret": "B"},
+                "strictLess": {"args": ["I", "I"], "ret": "B"},
+                "precedes": {"args": ["I", "I"], "ret": "B"},
+                "strictPrecedes": {"args": ["I", "I"], "ret": "B"},
+                "isMember": {"args": ["T", "I"], "ret": "B"},
+                "isSingleton": {"args": ["I"], "ret": "B"},
+                "isCommonInterval": {"args": ["I", "I"], "ret": "B"},
+                "cancelMinus": {"args": ["I", "I"], "ret": "I"},
+                "cancelPlus": {"args": ["I", "I"], "ret": "I"},
+                "roundTiesToEven": {"args": ["I"], "ret": "I"},
+                "roundTiesToAway": {"args": ["I"], "ret": "I"},
             }
 
             empty = '{empty}'
@@ -146,14 +146,19 @@ void tests_''' + test_name + '''() {
                         print(f'Skipping unsupported instruction: {instr}', file=sys.stderr)
                         continue
 
-                    result_type = supported[instr]
+                    arg_types = supported[instr]['args']
+                    result_type = supported[instr]['ret']
                     test_code = indent + f'"{name}_{instr}"_test = [&] {{\n'
 
                     for i in range(n_vars - 1):
-                        var_codes[i] = indent*2 + f'std::array<I, n> h_{vars[i]} {{{{\n'
+                        var_codes[i] = indent*2 + f'std::array<{arg_types[i]}, n> h_{vars[i]} {{{{\n'
 
                     var_codes[n_vars-1] = indent*2 + f'std::array<{result_type}, n> h_res{{}};\n'
                     var_codes[n_vars-1] += indent*2 + f'{result_type} *d_res = ({result_type} *)d_res_;\n'
+
+                    for i in range(n_vars - 1):
+                        var_codes[n_vars-1] += indent*2 + f'{arg_types[i]} *d_{vars[i]} = ({arg_types[i]} *)d_{vars[i]}_;\n'
+
                     var_codes[n_vars-1] += indent*2 + f'int n_result_bytes = n * sizeof({result_type});\n'
 
                     var_codes[n_vars-1] += indent*2 + f'std::array<{result_type}, n> h_ref {{{{\n'
@@ -200,8 +205,8 @@ void tests_''' + test_name + '''() {
 
                     for i in range(n_vars - 1):
                         var = vars[i]
-                        cuda_code += failed_code['cuda']['I'].format(var[0])
-                        params_code += ', ' + failed_code['params']['I'].format(var, var)
+                        cuda_code += failed_code['cuda'][arg_types[i]].format(var[0])
+                        params_code += ', ' + failed_code['params'][arg_types[i]].format(var, var)
 
                     cuda_code += '"'
                     cuda_code += params_code
@@ -224,11 +229,11 @@ void tests_''' + test_name + '''() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));\n\n'''
 
             return code_preamble + code_constants + code + code_postamble

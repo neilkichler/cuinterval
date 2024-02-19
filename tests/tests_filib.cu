@@ -23,11 +23,11 @@ void tests_filib() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
     "FI_LIB.addii_add"_test = [&] {
@@ -78,6 +78,8 @@ void tests_filib() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0X3.0000000000000P+0,-0X3.0000000000000P+0},
@@ -161,6 +163,8 @@ void tests_filib() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0X1.0000000000000P+0,0X1.0000000000000P+0},
@@ -298,6 +302,8 @@ void tests_filib() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0X1.0000000000000P+0,+0X1.0000000000000P+0},
@@ -412,6 +418,8 @@ void tests_filib() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0X8.0000000000000P-4,+0X8.0000000000000P-4},
@@ -485,6 +493,7 @@ void tests_filib() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0X0.0000000000000P+0,0X4.0000000000000P-1076},
@@ -566,6 +575,7 @@ void tests_filib() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0X1.152C585EDDB6AP-384,0X1.53F1A81CAA4A0P-164},
@@ -612,8 +622,8 @@ void tests_filib() {
     };
 
 
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }

@@ -23,11 +23,11 @@ void tests_mpfi() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
     "mpfi_ab_abs"_test = [&] {
@@ -49,6 +49,7 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0x123456799p-16},
@@ -124,6 +125,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,+6.0},
@@ -233,6 +236,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0x10038p-4,-0x10018p-4},
@@ -304,6 +309,7 @@ void tests_mpfi() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -405,6 +411,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             entire,
@@ -468,6 +476,7 @@ void tests_mpfi() {
 
         std::array<T, n> h_res{};
         T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(T);
         std::array<T, n> h_ref {{
             17,
@@ -627,6 +636,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0x7.0ef61537b1704p-8,0x2.30ee5eef9c36cp+4},
@@ -765,6 +776,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0x10000000000001p-53,0x10000000000001p-20},
@@ -880,6 +893,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0x10000000000001p-49,-0x114b37f4b51f71p-107},
@@ -966,6 +981,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,+8.0},
@@ -1014,6 +1031,7 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0x1480a9b5772a23p-50,-0x177887d65484c9p-52},
@@ -1082,6 +1100,8 @@ void tests_mpfi() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -1156,6 +1176,8 @@ void tests_mpfi() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -1230,6 +1252,8 @@ void tests_mpfi() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -1304,6 +1328,8 @@ void tests_mpfi() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -1378,6 +1404,8 @@ void tests_mpfi() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             false,
@@ -1452,6 +1480,8 @@ void tests_mpfi() {
 
         std::array<B, n> h_res{};
         B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(B);
         std::array<B, n> h_ref {{
             true,
@@ -1501,6 +1531,7 @@ void tests_mpfi() {
 
         std::array<T, n> h_res{};
         T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(T);
         std::array<T, n> h_ref {{
             34,
@@ -1544,6 +1575,7 @@ void tests_mpfi() {
 
         std::array<T, n> h_res{};
         T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(T);
         std::array<T, n> h_ref {{
             -0x1921fb54442d18p-51,
@@ -1587,6 +1619,7 @@ void tests_mpfi() {
 
         std::array<T, n> h_res{};
         T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(T);
         std::array<T, n> h_ref {{
             17,
@@ -1722,6 +1755,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0x1.442e2695ac81ap+0,0x1.fb5fbebd0cbc6p+0},
@@ -1888,6 +1923,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0x18000000000002p0,-0x27fffffffffffep-123},
@@ -1964,6 +2001,7 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-8.0,+infinity},
@@ -2003,6 +2041,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,+5.0},
@@ -2040,6 +2080,7 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0x1.f04dba0302d4dp+0},
@@ -2080,6 +2121,7 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,+3.0},
@@ -2150,6 +2192,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0x10101010101011p+4,0x8f596b3002c1bp+947},
@@ -2259,6 +2303,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0xfff8p-4,0x10018p-4},
@@ -2343,6 +2389,8 @@ void tests_mpfi() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-infinity,+8.0},
@@ -2373,8 +2421,8 @@ void tests_mpfi() {
     };
 
 
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }

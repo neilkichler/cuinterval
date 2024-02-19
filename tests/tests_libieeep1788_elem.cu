@@ -23,11 +23,11 @@ void tests_libieeep1788_elem() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs, *d_ys, *d_zs, *d_res_;
+    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
+    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
 
     "minimal_pos_pos"_test = [&] {
@@ -48,6 +48,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0.0},
@@ -92,6 +93,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0.0},
@@ -190,6 +192,8 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-3.0,0x1.FFFFFFFFFFFFFp1023},
@@ -309,6 +313,8 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-0x1.FFFFFFFFFFFFFp1023,3.0},
@@ -598,6 +604,8 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0.0},
@@ -1422,6 +1430,8 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             empty,
@@ -1804,6 +1814,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             empty,
@@ -1856,6 +1867,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,1.0},
@@ -1903,6 +1915,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,1.0},
@@ -3636,6 +3649,9 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
+        I *d_zs = (I *)d_zs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-2.0,2.0},
@@ -4235,6 +4251,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0.0},
@@ -4283,6 +4300,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,3.0},
@@ -4333,6 +4351,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,2.0},
@@ -4381,6 +4400,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,2.0},
@@ -4434,6 +4454,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,2.0},
@@ -4492,6 +4513,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,3.0},
@@ -4544,6 +4566,7 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,0.2},
@@ -4611,6 +4634,8 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {0.0,4.0},
@@ -4682,6 +4707,8 @@ void tests_libieeep1788_elem() {
 
         std::array<I, n> h_res{};
         I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
         int n_result_bytes = n * sizeof(I);
         std::array<I, n> h_ref {{
             {-1.0,infinity},
@@ -4714,8 +4741,8 @@ void tests_libieeep1788_elem() {
     };
 
 
-    CUDA_CHECK(cudaFree(d_xs));
-    CUDA_CHECK(cudaFree(d_ys));
-    CUDA_CHECK(cudaFree(d_zs));
+    CUDA_CHECK(cudaFree(d_xs_));
+    CUDA_CHECK(cudaFree(d_ys_));
+    CUDA_CHECK(cudaFree(d_zs_));
     CUDA_CHECK(cudaFree(d_res_));
 }
