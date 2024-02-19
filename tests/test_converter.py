@@ -86,6 +86,8 @@ void tests_''' + test_name + '''() {
                 "strictLess": "B",
                 "precedes": "B",
                 "strictPrecedes": "B",
+                "cancelMinus": "I",
+                "cancelPlus": "I",
             }
 
             empty = '{empty}'

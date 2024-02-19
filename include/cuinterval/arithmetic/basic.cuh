@@ -330,7 +330,9 @@ __device__ bool entire(interval<T> x)
 template<typename T>
 __device__ bool bounded(interval<T> x)
 {
-    return !entire(x) || empty(x);
+    // return (isfinite(x.lb) && isfinite(x.ub)) || empty(x);
+    // if empty is given by +inf,-inf then the below is true
+    return x.lb > intrinsic::neg_inf<T>() && x.ub < intrinsic::pos_inf<T>();
 }
 
 template<typename T>
@@ -426,13 +428,29 @@ template<typename T>
 __device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
 {
     if (empty(x) && bounded(y)) {
-        return interval<T>::empty();
-    } else if (!bounded(x) || !bounded(y) || empty(y)) {
-        return interval<T>::entire();
+        return empty<T>();
+    } else if (!bounded(x) || !bounded(y) || empty(y) || (width(x) < width(y))) {
+        return entire<T>();
     } else if (width(y) <= width(x)) {
-        return { x.lb - y.lb, x.ub - y.ub };
-    } else {
-        assert(0 && "TODO");
+        interval<T> z { intrinsic::sub_down(x.lb, y.lb), intrinsic::sub_up(x.ub, y.ub) };
+
+        if (z.lb > z.ub) {
+            return entire<T>();
+        }
+
+        if (!bounded(z)) {
+            return z;
+        }
+
+        // corner case if width(x) == width(y) in finite precision. See 12.12.5 of IA standard.
+        T w_lb = intrinsic::add_down(y.lb, z.lb);
+        T w_ub = intrinsic::add_up(y.ub, z.ub);
+
+        if (width(x) == width(y) && (nextafter(x.lb, intrinsic::neg_inf<T>()) > w_lb || nextafter(x.ub, intrinsic::pos_inf<T>()) < w_ub)) {
+            return entire<T>();
+        }
+
+        return z;
     }
 }
 
