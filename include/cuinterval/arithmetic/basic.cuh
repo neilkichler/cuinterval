@@ -640,4 +640,70 @@ __device__ interval<T> log1p(interval<T> x)
     return { intrinsic::prev_floating(std::log1p(x.lb)), intrinsic::next_floating(std::log1p(x.ub)) };
 }
 
+template<typename T>
+__device__ interval<T> pown(interval<T> x, std::integral auto n)
+{
+    if (empty(x)) {
+        return x;
+    } else if (n == 0) {
+        return { 1, 1 };
+    } else if (n == 1) {
+        return x;
+    } else if (n == 2) {
+        return sqr(x);
+    } else if (n < 0 && just_zero(x)) {
+        return empty<T>();
+    }
+
+    if (n % 2) { // odd power
+        if (entire(x)) {
+            return x;
+        }
+
+        if (n > 0) {
+            if (inf(x) == 0) {
+                return { 0, pow(sup(x), n) }; // TODO: rounding
+            } else if (sup(x) == 0) {
+                return { pow(inf(x), n), 0 }; // TODO: rounding
+            } else {
+               return { pow(inf(x), n), pow(sup(x), n) }; // TODO: rounding 
+            }
+        } else {
+            if (inf(x) >= 0) {
+                if (inf(x) == 0) {
+                    return { pow(sup(x), n), intrinsic::pos_inf<T>() }; // TODO: rounding
+                } else {
+                    return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+                }
+            } else if (sup(x) <= 0) {
+                if (sup(x) == 0) {
+                    return { intrinsic::neg_inf<T>(), pow(inf(x), n) }; // TODO: rounding
+                } else {
+                    return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+                }
+            } else {
+                return entire<T>();
+            }
+        }
+    } else { // even power
+        if (n > 0) {
+            if (inf(x) >= 0) {
+                return { pow(inf(x), n), pow(sup(x), n) }; // TODO: rounding
+            } else if (sup(x) <= 0) {
+                return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+            } else {
+                return { pow(mig(x), n), pow(mag(x), n) }; // TODO: rounding
+            }
+        } else {
+            if (inf(x) >= 0) {
+                return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+            } else if (sup(x) <= 0) {
+                return { pow(inf(x), n), pow(sup(x), n) }; // TODO: rounding
+            } else {
+                return { pow(mag(x), n), pow(mig(x), n) }; // TODO: rounding
+            }
+        }
+    }
+}
+
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

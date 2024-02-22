@@ -463,4 +463,13 @@ __global__ void test_log1p(int n, interval<T> *x, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_pown(int n, interval<T> *x, int p, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = pown(x[i], p);
+    }
+}
+
 #endif // TEST_OPS_CUH
