@@ -4,8 +4,6 @@
 #include "interval.h"
 #include "intrinsic.cuh"
 
-#include <assert.h>
-
 // IEEE Std 1788.1-2017, Table 4.1
 
 template<typename T>
@@ -446,7 +444,7 @@ __device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
         T w_lb = intrinsic::add_down(y.lb, z.lb);
         T w_ub = intrinsic::add_up(y.ub, z.ub);
 
-        if (width(x) == width(y) && (intrinsic::next_after(x.lb, intrinsic::neg_inf<T>()) > w_lb || intrinsic::next_after(x.ub, intrinsic::pos_inf<T>()) < w_ub)) {
+        if (width(x) == width(y) && (intrinsic::prev_floating(x.lb) > w_lb || intrinsic::next_floating(x.ub) < w_ub)) {
             return entire<T>();
         }
 
@@ -545,6 +543,101 @@ template<typename T>
 __device__ interval<T> round_ties_to_away(interval<T> x)
 {
     return { intrinsic::round_away(x.lb), intrinsic::round_away(x.ub) };
+}
+
+template<typename T>
+__device__ interval<T> exp(interval<T> x)
+{
+    // NOTE: would not be needed if empty was using nan instead of inf
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::next_after(intrinsic::exp(x.lb), static_cast<T>(0)),
+             intrinsic::next_floating(intrinsic::exp(x.ub)) };
+}
+
+
+template<typename T>
+__device__ interval<T> exp2(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::next_after(intrinsic::exp2(x.lb), static_cast<T>(0)),
+             intrinsic::next_floating(intrinsic::exp2(x.ub)) };
+}
+
+template<typename T>
+__device__ interval<T> exp10(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::next_after(intrinsic::exp10(x.lb), static_cast<T>(0)),
+             intrinsic::next_floating(intrinsic::exp10(x.ub)) };
+}
+
+template<typename T>
+__device__ interval<T> expm1(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::next_after(std::expm1(x.lb), static_cast<T>(-1)), intrinsic::next_floating(std::expm1(x.ub)) };
+}
+
+template<typename T>
+__device__ interval<T> log(interval<T> x)
+{
+    if (empty(x) || sup(x) == 0) {
+        return empty<T>();
+    }
+
+    auto xx = intersection(x, {static_cast<T>(0), intrinsic::pos_inf<T>()});
+
+    return { intrinsic::prev_floating(std::log(xx.lb)), intrinsic::next_floating(std::log(xx.ub)) };
+}
+
+// NOTE: The overestimation on the lower and upper bound is at most 2 ulps (unit in the last place)
+//       (due to underlying function having error of at most 1 ulp).
+template<typename T>
+__device__ interval<T> log2(interval<T> x)
+{
+    if (empty(x) || sup(x) == 0) {
+        return empty<T>();
+    }
+
+    auto xx = intersection(x, {static_cast<T>(0), intrinsic::pos_inf<T>()});
+    // return { intrinsic::prev_floating(std::log2(x.lb)), intrinsic::next_floating(std::log2(x.ub)) };
+    return { (xx.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(std::log2(xx.lb))), 
+             (xx.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(std::log2(xx.ub))) };
+}
+
+template<typename T>
+__device__ interval<T> log10(interval<T> x)
+{
+    if (empty(x) || sup(x) == 0) {
+        return empty<T>();
+    }
+
+    auto xx = intersection(x, {static_cast<T>(0), intrinsic::pos_inf<T>()});
+    return { (xx.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(std::log10(xx.lb))), 
+             (xx.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(std::log10(xx.ub))) };
+}
+
+template<typename T>
+__device__ interval<T> log1p(interval<T> x)
+{
+    if (empty(x) || sup(x) == -1) {
+        return x;
+    }
+
+    auto xx = intersection(x, {static_cast<T>(-1), intrinsic::pos_inf<T>()});
+    return { intrinsic::prev_floating(std::log1p(x.lb)), intrinsic::next_floating(std::log1p(x.ub)) };
 }
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

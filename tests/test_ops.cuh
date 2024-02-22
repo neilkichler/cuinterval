@@ -390,4 +390,77 @@ __global__ void test_roundTiesToAway(int n, interval<T> *x, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_exp(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = exp(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_exp2(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = exp2(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_exp10(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = exp10(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_expm1(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = expm1(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_log(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = log(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_log2(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = log2(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_log10(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = log10(x[i]);
+    }
+}
+
+
+template<typename T>
+__global__ void test_log1p(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = log1p(x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

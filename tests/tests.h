@@ -14,10 +14,10 @@
 #include <boost/ut.hpp>
 #endif
 
+#include <ostream>
+#include <source_location>
 #include <span>
 #include <vector>
-#include <source_location>
-#include <ostream>
 
 #include <stdio.h>
 
@@ -38,8 +38,26 @@ std::ostream &operator<<(std::ostream &os, const interval<T> &x)
     return (os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']');
 }
 
+template<typename T>
+bool check_within_ulps(T x, T y, std::size_t n, T direction)
+{
+    if (x == y) {
+        return true;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        y = std::nextafter(y, direction);
+
+        if (x == y) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 template<typename T, int N>
-std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref, const std::source_location location = std::source_location::current())
+std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref, int max_ulps_diff, const std::source_location location = std::source_location::current())
 {
     using namespace boost::ut;
 
@@ -48,17 +66,24 @@ std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref,
     for (size_t i = 0; i < h_xs.size(); ++i) {
         if (h_xs[i] != h_xs[i] && h_ref[i] != h_ref[i]) // both are NaN
             continue;
+            
+        if constexpr (std::is_same_v<T, interval<double>>) {
+            if (!empty(h_xs[i]) || !empty(h_ref[i])) {
+                bool lb_within_ulps = check_within_ulps(h_xs[i].lb, h_ref[i].lb, max_ulps_diff, -std::numeric_limits<double>::infinity());
+                bool ub_within_ulps = check_within_ulps(h_xs[i].ub, h_ref[i].ub, max_ulps_diff, std::numeric_limits<double>::infinity());
 
-        if (h_xs[i] != h_ref[i]) {
-            failed_ids.push_back(i);
-            if constexpr (std::is_same_v<T, interval<double>>) {
-                printf("FAILED: [%a, %a] != [%a, %a]\n", h_xs[i].lb, h_xs[i].ub, h_ref[i].lb, h_ref[i].ub);
-                printf("FAILED: [%e, %e] != [%e, %e]\n", h_xs[i].lb, h_xs[i].ub, h_ref[i].lb, h_ref[i].ub);
+                expect(lb_within_ulps, location);
+                expect(ub_within_ulps, location);
+
+                if (!lb_within_ulps || !ub_within_ulps) {
+                    failed_ids.push_back(i);
+                    printf("FAILED: [%a, %a] != [%a, %a]\n", h_xs[i].lb, h_xs[i].ub, h_ref[i].lb, h_ref[i].ub);
+                    printf("delta: [%a, %a]\n", std::fabs(h_xs[i].lb - h_ref[i].lb), std::fabs(h_xs[i].ub - h_ref[i].ub));
+                }
             }
-            // std::cout << "FAILED: " << h_xs[i] << " != " << h_ref[i] << std::endl;
+        } else {
+            expect(eq(h_xs[i], h_ref[i]), location);
         }
-
-        expect(eq(h_xs[i], h_ref[i]), location);
     }
 
     return failed_ids;

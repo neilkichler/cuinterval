@@ -56,49 +56,57 @@ void tests_''' + test_name + '''() {
             B = ParamType.B
             T = ParamType.T
             supported = {
-                "pos": {"args": [I], "ret": I},
-                "neg": {"args": [I], "ret": I},
-                "add": {"args": [I, I], "ret": I},
-                "sub": {"args": [I, I], "ret": I},
-                "mul": {"args": [I, I], "ret": I},
-                "div": {"args": [I, I], "ret": I},
-                "recip": {"args": [I], "ret": I},
-                "sqr": {"args": [I], "ret": I},
-                "sqrt": {"args": [I], "ret": I},
-                "fma": {"args": [I, I, I], "ret": I},
-                "mig": {"args": [I, I], "ret": T},
-                "mag": {"args": [I, I], "ret": T},
-                "wid": {"args": [I, I], "ret": T},
-                "inf": {"args": [I], "ret": T},
-                "sup": {"args": [I], "ret": T},
-                "mid": {"args": [I, I], "ret": T},
-                "rad": {"args": [I], "ret": T},
-                "floor": {"args": [I], "ret": I},
-                "ceil": {"args": [I], "ret": I},
-                "abs": {"args": [I], "ret": I},
-                "min": {"args": [I, I], "ret": I},
-                "max": {"args": [I, I], "ret": I},
-                "trunc": {"args": [I], "ret": I},
-                "sign": {"args": [I], "ret": I},
-                "intersection": {"args": [I, I], "ret": I},
-                "convexHull": {"args": [I, I], "ret": I},
-                "equal": {"args": [I, I], "ret": B},
-                "subset": {"args": [I, I], "ret": B},
-                "interior": {"args": [I, I], "ret": B},
-                "disjoint": {"args": [I, I], "ret": B},
-                "isEmpty": {"args": [I], "ret": B},
-                "isEntire": {"args": [I], "ret": B},
-                "less": {"args": [I, I], "ret": B},
-                "strictLess": {"args": [I, I], "ret": B},
-                "precedes": {"args": [I, I], "ret": B},
-                "strictPrecedes": {"args": [I, I], "ret": B},
-                "isMember": {"args": [T, I], "ret": B},
-                "isSingleton": {"args": [I], "ret": B},
-                "isCommonInterval": {"args": [I, I], "ret": B},
-                "cancelMinus": {"args": [I, I], "ret": I},
-                "cancelPlus": {"args": [I, I], "ret": I},
-                "roundTiesToEven": {"args": [I], "ret": I},
-                "roundTiesToAway": {"args": [I], "ret": I},
+                "pos": {"args": [I], "ret": I, "ulp_error": 0},
+                "neg": {"args": [I], "ret": I, "ulp_error": 0},
+                "add": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "sub": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "mul": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "div": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "recip": {"args": [I], "ret": I, "ulp_error": 0},
+                "sqr": {"args": [I], "ret": I, "ulp_error": 0},
+                "sqrt": {"args": [I], "ret": I, "ulp_error": 0},
+                "fma": {"args": [I, I, I], "ret": I, "ulp_error": 0},
+                "mig": {"args": [I, I], "ret": T, "ulp_error": 0},
+                "mag": {"args": [I, I], "ret": T, "ulp_error": 0},
+                "wid": {"args": [I, I], "ret": T, "ulp_error": 0},
+                "inf": {"args": [I], "ret": T, "ulp_error": 0},
+                "sup": {"args": [I], "ret": T, "ulp_error": 0},
+                "mid": {"args": [I, I], "ret": T, "ulp_error": 0},
+                "rad": {"args": [I], "ret": T, "ulp_error": 0},
+                "floor": {"args": [I], "ret": I, "ulp_error": 0},
+                "ceil": {"args": [I], "ret": I, "ulp_error": 0},
+                "abs": {"args": [I], "ret": I, "ulp_error": 0},
+                "min": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "max": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "trunc": {"args": [I], "ret": I, "ulp_error": 0},
+                "sign": {"args": [I], "ret": I, "ulp_error": 0},
+                "intersection": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "convexHull": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "equal": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "subset": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "interior": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "disjoint": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "isEmpty": {"args": [I], "ret": B, "ulp_error": 0},
+                "isEntire": {"args": [I], "ret": B, "ulp_error": 0},
+                "less": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "strictLess": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "precedes": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "strictPrecedes": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "isMember": {"args": [T, I], "ret": B, "ulp_error": 0},
+                "isSingleton": {"args": [I], "ret": B, "ulp_error": 0},
+                "isCommonInterval": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "cancelMinus": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "cancelPlus": {"args": [I, I], "ret": I, "ulp_error": 0},
+                "roundTiesToEven": {"args": [I], "ret": I, "ulp_error": 0},
+                "roundTiesToAway": {"args": [I], "ret": I, "ulp_error": 0},
+                "exp": {"args": [I], "ret": I, "ulp_error": 3},
+                "exp2": {"args": [I], "ret": I, "ulp_error": 3},
+                "exp10": {"args": [I], "ret": I, "ulp_error": 3},
+                "expm1": {"args": [I], "ret": I, "ulp_error": 3},
+                "log": {"args": [I], "ret": I, "ulp_error": 3},
+                "log2": {"args": [I], "ret": I, "ulp_error": 3},
+                "log10": {"args": [I], "ret": I, "ulp_error": 3},
+                "log1p": {"args": [I], "ret": I, "ulp_error": 3},
             }
 
             empty = '{empty}'
@@ -130,7 +138,7 @@ void tests_''' + test_name + '''() {
                 if name.endswith('dec'): # ignore decorated interval tests
                     continue
 
-                body = body.replace('[', '{').replace(']', '}').replace(', ', ',').replace('=', ' ')
+                body = body.replace('[ ', '[').replace('[', '{').replace(']', '}').replace(' ,', ',').replace(', ', ',').replace('=', ' ')
                 ops = body.splitlines()[1:-2]
                 ops = [op.lstrip() for op in sorted(ops)]
 
@@ -155,6 +163,7 @@ void tests_''' + test_name + '''() {
 
                     arg_types = supported[instr]['args']
                     result_type = supported[instr]['ret'].name
+                    max_ulp_diff = supported[instr]['ulp_error']
                     test_code = indent_one + f'"{name}_{instr}"_test = [&] {{\n'
 
                     n_args = n_vars - 1
@@ -203,7 +212,8 @@ void tests_''' + test_name + '''() {
 
                     cuda_code += indent_two + f'test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
                     cuda_code += indent_two + 'CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));\n'
-                    cuda_code += indent_two + f'auto failed = check_all_equal<{result_type}, n>(h_res, h_ref);\n'
+                    cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
+                    cuda_code += indent_two + f'auto failed = check_all_equal<{result_type}, n>(h_res, h_ref, max_ulp_diff);\n'
                     cuda_code += indent_two + 'for (auto fail_id : failed) {\n'
                     cuda_code += indent_three + 'printf("failed at case %zu:\\n", fail_id);\n'
                     cuda_code += indent_three + 'printf("'

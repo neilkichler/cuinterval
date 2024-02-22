@@ -28,9 +28,14 @@ namespace intrinsic
     template<typename T> __device__ T trunc     (T x);
     template<typename T> __device__ T round_away(T x);
     template<typename T> __device__ T round_even(T x);
+    template<typename T> __device__ T exp       (T x);
+    template<typename T> __device__ T exp10     (T x);
+    template<typename T> __device__ T exp2      (T x);
     template<typename T> __device__ __host__ T nan();
     template<typename T> __device__ T pos_inf();
     template<typename T> __device__ T neg_inf();
+    template<typename T> __device__ T next_floating(T x);
+    template<typename T> __device__ T prev_floating(T x);
 
     template<> __device__ double fma_down  (double x, double y, double z) { return __fma_rd(x, y, z); }    
     template<> __device__ double fma_up    (double x, double y, double z) { return __fma_ru(x, y, z); }    
@@ -56,9 +61,14 @@ namespace intrinsic
     template<> __device__ double trunc     (double x)           { return ::trunc(x); }
     template<> __device__ double round_away(double x)           { return round(x); }
     template<> __device__ double round_even(double x)           { return nearbyint(x); }
-    template<> __device__ __host__ double nan()                { return ::nan(""); }
+    template<> __device__ double exp       (double x)           { return ::exp(x); }
+    template<> __device__ double exp10     (double x)           { return ::exp10(x); }
+    template<> __device__ double exp2      (double x)           { return ::exp2(x); }
+    template<> __device__ __host__ double nan()                 { return ::nan(""); }
     template<> __device__ double neg_inf() { return __longlong_as_double(0xfff0000000000000ull); }
     template<> __device__ double pos_inf() { return __longlong_as_double(0x7ff0000000000000ull); }
+    template<> __device__ double next_floating(double x)        { return nextafter(x, intrinsic::pos_inf<double>()); }
+    template<> __device__ double prev_floating(double x)        { return nextafter(x, intrinsic::neg_inf<double>()); }
 
     template<> __device__ float fma_down   (float x, float y, float z) { return __fmaf_rd(x, y, z); }    
     template<> __device__ float fma_up     (float x, float y, float z) { return __fmaf_ru(x, y, z); } 
@@ -84,9 +94,15 @@ namespace intrinsic
     template<> __device__ float trunc      (float x)            { return truncf(x); }
     template<> __device__ float round_away (float x)            { return roundf(x); }
     template<> __device__ float round_even (float x)            { return nearbyintf(x); }
-    template<> __device__ __host__ float nan()                  { return nanf(""); }
+    template<> __device__ float exp        (float x)            { return ::expf(x); }
+    template<> __device__ float exp10      (float x)            { return ::exp10f(x); }
+    template<> __device__ float exp2       (float x)            { return ::exp2f(x); }
+    template<> __device__ __host__ float nan()                  { return ::nanf(""); }
     template<> __device__ float neg_inf() { return __int_as_float(0xff800000); }
     template<> __device__ float pos_inf() { return __int_as_float(0x7f800000); }
+    template<> __device__ float next_floating(float x)          { return nextafterf(x, intrinsic::pos_inf<float>()); }
+    template<> __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
+
 // clang-format on
 } // namespace intrinsic
 
