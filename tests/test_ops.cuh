@@ -472,4 +472,13 @@ __global__ void test_pown(int n, interval<T> *x, int p, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_sin(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = sin(x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

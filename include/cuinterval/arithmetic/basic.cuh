@@ -228,6 +228,7 @@ template<typename T>
 __device__ T mig(interval<T> x)
 {
     // TODO: we might want to split up the function into the bare interval operation and this part.
+    //       we could perhaps use a monad for either result or empty using expected?
     if (empty(x)) {
         return intrinsic::nan<T>();
     }
@@ -703,6 +704,82 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
                 return { pow(mag(x), n), pow(mig(x), n) }; // TODO: rounding
             }
         }
+    }
+}
+
+template<typename T>
+__device__ interval<T> sin(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    interval<T> pi = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    interval<T> tau = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+
+    T w = width(x);
+
+    if (w >= sup(tau)) {
+        // interval contains at least one full period -> return range of sin
+        return { -1, 1 };
+    }
+
+    /*
+       Determine the quadrant where x resides. We have
+
+       q0: [0, pi/2]
+       q1: (pi/2, pi)
+       q2: [pi, 3pi/2]
+       q3: (3pi/2, 2pi).
+
+       TODO: The intervals are closed and open the way they are due to the current remquo - pi/4 implementation.
+             Check if always correct.
+
+         1 -|         ,-'''-.
+            |      ,-'   |   `-.
+            |    ,'      |      `.
+            |  ,'        |        `.
+            | /    q0    |    q1    \
+            |/           |           \
+        ----+-------------------------\--------------------------
+            |          __           __ \           |           /  __
+            |          ||/2         ||  \    q2    |    q3    /  2||
+            |                            `.        |        ,'
+            |                              `.      |      ,'
+            |                                `-.   |   ,-'
+        -1 -|                                   `-,,,-'
+    */
+    auto quadrant = [](T v) {
+        int quotient;
+        T rem = remquo(v - M_PI_4, M_PI_2, &quotient);
+        return static_cast<unsigned>(quotient) % 4;
+    };
+
+    auto quadrant_lb = quadrant(x.lb);
+    auto quadrant_ub = quadrant(x.ub);
+
+    if (quadrant_lb == quadrant_ub) {
+        if (w >= sup(pi)) { // beyond single quadrant -> full range
+            return { -1, 1 };
+        } else if (quadrant_lb == 1 || quadrant_lb == 2) { // decreasing
+            return { intrinsic::prev_floating(sin(x.ub)),
+                     intrinsic::next_floating(sin(x.lb)) };
+        } else { // increasing
+            return { intrinsic::prev_floating(sin(x.lb)),
+                     intrinsic::next_floating(sin(x.ub)) };
+        }
+    } else if (quadrant_lb == 3 && quadrant_ub == 0) { // increasing
+        return { intrinsic::prev_floating(sin(x.lb)),
+                 intrinsic::next_floating(sin(x.ub)) };
+    } else if (quadrant_lb == 1 && quadrant_ub == 2) { // decreasing
+        return { intrinsic::prev_floating(sin(x.ub)),
+                 intrinsic::next_floating(sin(x.lb)) };
+    } else if ((quadrant_lb == 3 || quadrant_lb == 0) && (quadrant_ub == 1 || quadrant_ub == 2)) {
+        return { intrinsic::prev_floating(min(sin(x.lb), sin(x.ub))), 1 };
+    } else if ((quadrant_lb == 1 || quadrant_lb == 2) && (quadrant_ub == 3 || quadrant_ub == 0)) {
+        return { -1, intrinsic::next_floating(max(sin(x.lb), sin(x.ub))) };
+    } else {
+        return { -1, 1 };
     }
 }
 

@@ -77,8 +77,8 @@ std::vector<size_t> check_all_equal(std::span<T, N> h_xs, std::span<T, N> h_ref,
 
                 if (!lb_within_ulps || !ub_within_ulps) {
                     failed_ids.push_back(i);
-                    printf("FAILED: [%a, %a] != [%a, %a]\n", h_xs[i].lb, h_xs[i].ub, h_ref[i].lb, h_ref[i].ub);
-                    printf("delta: [%a, %a]\n", std::fabs(h_xs[i].lb - h_ref[i].lb), std::fabs(h_xs[i].ub - h_ref[i].ub));
+                    printf("FAILED[%zu]: [%a, %a] != [%a, %a]\n", i, h_xs[i].lb, h_xs[i].ub, h_ref[i].lb, h_ref[i].ub);
+                    printf("delta[%zu]: [%a, %a]\n", i, std::fabs(h_xs[i].lb - h_ref[i].lb), std::fabs(h_xs[i].ub - h_ref[i].ub));
                 }
             }
         } else {
