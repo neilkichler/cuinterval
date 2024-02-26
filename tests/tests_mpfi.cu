@@ -345,6 +345,122 @@ void tests_mpfi() {
         }
     };
 
+    "mpfi_co_cos"_test = [&] {
+        constexpr int n = 46;
+        std::array<I, n> h_xs {{
+            {-0.5,0.5},
+            {-1.0,-0.25},
+            {-1.0,0.0},
+            {-2.0,-0.5},
+            {-4.0,-1.0},
+            {-4.0,-2.0},
+            {-4.0,-3.0},
+            {-4.0,-4.0},
+            {-4.0,0.0},
+            {-4.0,1.0},
+            {-4.5,0.625},
+            {-5.0,-1.0},
+            {-5.0,-2.0},
+            {-5.0,-3.0},
+            {-5.0,-4.0},
+            {-5.0,-5.0},
+            {-5.0,0.0},
+            {-5.0,1.0},
+            {-6.0,-1.0},
+            {-6.0,-2.0},
+            {-6.0,-3.0},
+            {-6.0,-4.0},
+            {-6.0,-5.0},
+            {-6.0,-6.0},
+            {-6.0,0.0},
+            {-6.0,1.0},
+            {-7.0,-1.0},
+            {-7.0,-2.0},
+            {-7.0,-3.0},
+            {-7.0,-4.0},
+            {-7.0,-5.0},
+            {-7.0,-6.0},
+            {-7.0,-7.0},
+            {-7.0,0.0},
+            {-7.0,1.0},
+            {-infinity,+8.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {0.0,+1.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.125,17.0},
+            {1.0,0x3243f6a8885a3p-48},
+            {17.0,42.0},
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0x1c1528065b7d4fp-53,1.0},
+            {0x114a280fb5068bp-53,0xf80aa4fbef751p-52},
+            {0x114a280fb5068bp-53,1.0},
+            {-0x1aa22657537205p-54,0x1c1528065b7d5p-49},
+            {-1.0,0x114a280fb5068cp-53},
+            {-1.0,-0x1aa22657537204p-54},
+            {-1.0,-0x14eaa606db24c0p-53},
+            {-0x14eaa606db24c1p-53,-0x14eaa606db24c0p-53},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,0x114a280fb5068cp-53},
+            {-1.0,0x122785706b4adap-54},
+            {-1.0,0x122785706b4adap-54},
+            {-0x14eaa606db24c1p-53,0x122785706b4adap-54},
+            {0x122785706b4ad9p-54,0x122785706b4adap-54},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,0x1eb9b7097822f6p-53},
+            {-1.0,0x1eb9b7097822f6p-53},
+            {-1.0,0x1eb9b7097822f6p-53},
+            {-0x14eaa606db24c1p-53,0x1eb9b7097822f6p-53},
+            {0x122785706b4ad9p-54,0x1eb9b7097822f6p-53},
+            {0x1eb9b7097822f5p-53,0x1eb9b7097822f6p-53},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-0x14eaa606db24c1p-53,1.0},
+            {0x122785706b4ad9p-54,1.0},
+            {0x181ff79ed92017p-53,1.0},
+            {0x181ff79ed92017p-53,0x181ff79ed92018p-53},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {0x114a280fb5068bp-53,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,0x4528a03ed41a3p-51},
+            {-1.0,1.0},
+            {-1.0,1.0},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_cos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 2;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "mpfi_d_div_div"_test = [&] {
         constexpr int n = 30;
         std::array<I, n> h_xs {{

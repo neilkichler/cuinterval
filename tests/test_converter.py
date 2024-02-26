@@ -108,6 +108,7 @@ void tests_''' + test_name + '''() {
                 "log10": {"args": [I], "ret": I, "ulp_error": 3},
                 "log1p": {"args": [I], "ret": I, "ulp_error": 3},
                 "sin": {"args": [I], "ret": I, "ulp_error": 2},
+                "cos": {"args": [I], "ret": I, "ulp_error": 2},
             }
 
             empty = '{empty}'

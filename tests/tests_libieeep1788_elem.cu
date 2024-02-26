@@ -4747,6 +4747,134 @@ void tests_libieeep1788_elem() {
         }
     };
 
+    "minimal_cos_cos"_test = [&] {
+        constexpr int n = 52;
+        std::array<I, n> h_xs {{
+            {-0.0,-0.0},
+            {-0.0,0X1.921FB54442D18P+0},
+            {-0.0,0X1.921FB54442D18P+1},
+            {-0.0,0X1.921FB54442D19P+0},
+            {-0.0,0X1.921FB54442D19P+1},
+            {-0.0,infinity},
+            {-0.7,0.1},
+            {-0X1.921FB54442D18P+0,-0.0},
+            {-0X1.921FB54442D18P+0,-0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D18P+0,0.0},
+            {-0X1.921FB54442D18P+0,0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D18P+0,0X1.921FB54442D19P+0},
+            {-0X1.921FB54442D18P+1,-0.0},
+            {-0X1.921FB54442D18P+1,-0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D18P+1,-0X1.921FB54442D18P+1},
+            {-0X1.921FB54442D18P+1,-0X1.921FB54442D19P+0},
+            {-0X1.921FB54442D18P+1,0.0},
+            {-0X1.921FB54442D19P+0,-0.0},
+            {-0X1.921FB54442D19P+0,-0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D19P+0,-0X1.921FB54442D19P+0},
+            {-0X1.921FB54442D19P+0,0.0},
+            {-0X1.921FB54442D19P+0,0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D19P+0,0X1.921FB54442D19P+0},
+            {-0X1.921FB54442D19P+1,-0.0},
+            {-0X1.921FB54442D19P+1,-0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D19P+1,-0X1.921FB54442D18P+1},
+            {-0X1.921FB54442D19P+1,-0X1.921FB54442D19P+0},
+            {-0X1.921FB54442D19P+1,-0X1.921FB54442D19P+1},
+            {-0X1.921FB54442D19P+1,0.0},
+            {-3.2,-2.9},
+            {-infinity,-0.0},
+            {-infinity,0.0},
+            {0.0,0.0},
+            {0.0,0X1.921FB54442D18P+0},
+            {0.0,0X1.921FB54442D18P+1},
+            {0.0,0X1.921FB54442D19P+0},
+            {0.0,0X1.921FB54442D19P+1},
+            {0.0,infinity},
+            {0X1.921FB54442D18P+0,0X1.921FB54442D18P+0},
+            {0X1.921FB54442D18P+0,0X1.921FB54442D18P+1},
+            {0X1.921FB54442D18P+0,0X1.921FB54442D19P+0},
+            {0X1.921FB54442D18P+0,0X1.921FB54442D19P+1},
+            {0X1.921FB54442D18P+1,0X1.921FB54442D18P+1},
+            {0X1.921FB54442D18P+1,0X1.921FB54442D19P+1},
+            {0X1.921FB54442D19P+0,0X1.921FB54442D18P+1},
+            {0X1.921FB54442D19P+0,0X1.921FB54442D19P+0},
+            {0X1.921FB54442D19P+0,0X1.921FB54442D19P+1},
+            {0X1.921FB54442D19P+1,0X1.921FB54442D19P+1},
+            {1.0,2.0},
+            {2.0,3.0},
+            empty,
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {1.0,1.0},
+            {0X1.1A62633145C06P-54,1.0},
+            {-1.0,1.0},
+            {-0X1.72CECE675D1FDP-53,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {0X1.87996529F9D92P-1,1.0},
+            {0X1.1A62633145C06P-54,1.0},
+            {0X1.1A62633145C06P-54,0X1.1A62633145C07P-54},
+            {0X1.1A62633145C06P-54,1.0},
+            {0X1.1A62633145C06P-54,1.0},
+            {-0X1.72CECE675D1FDP-53,1.0},
+            {-1.0,1.0},
+            {-1.0,0X1.1A62633145C07P-54},
+            {-0X1P+0,-0X1.FFFFFFFFFFFFFP-1},
+            {-1.0,-0X1.72CECE675D1FCP-53},
+            {-1.0,1.0},
+            {-0X1.72CECE675D1FDP-53,1.0},
+            {-0X1.72CECE675D1FDP-53,0X1.1A62633145C07P-54},
+            {-0X1.72CECE675D1FDP-53,-0X1.72CECE675D1FCP-53},
+            {-0X1.72CECE675D1FDP-53,1.0},
+            {-0X1.72CECE675D1FDP-53,1.0},
+            {-0X1.72CECE675D1FDP-53,1.0},
+            {-1.0,1.0},
+            {-1.0,0X1.1A62633145C07P-54},
+            {-0X1P+0,-0X1.FFFFFFFFFFFFFP-1},
+            {-1.0,-0X1.72CECE675D1FCP-53},
+            {-0X1P+0,-0X1.FFFFFFFFFFFFFP-1},
+            {-1.0,1.0},
+            {-1.0,-0X1.F1216DBA340C8P-1},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {1.0,1.0},
+            {0X1.1A62633145C06P-54,1.0},
+            {-1.0,1.0},
+            {-0X1.72CECE675D1FDP-53,1.0},
+            {-1.0,1.0},
+            {-1.0,1.0},
+            {0X1.1A62633145C06P-54,0X1.1A62633145C07P-54},
+            {-1.0,0X1.1A62633145C07P-54},
+            {-0X1.72CECE675D1FDP-53,0X1.1A62633145C07P-54},
+            {-1.0,0X1.1A62633145C07P-54},
+            {-0X1P+0,-0X1.FFFFFFFFFFFFFP-1},
+            {-0X1P+0,-0X1.FFFFFFFFFFFFFP-1},
+            {-1.0,-0X1.72CECE675D1FCP-53},
+            {-0X1.72CECE675D1FDP-53,-0X1.72CECE675D1FCP-53},
+            {-1.0,-0X1.72CECE675D1FCP-53},
+            {-0X1P+0,-0X1.FFFFFFFFFFFFFP-1},
+            {-0X1.AA22657537205P-2,0X1.14A280FB5068CP-1},
+            {-0X1.FAE04BE85E5D3P-1,-0X1.AA22657537204P-2},
+            empty,
+            {-1.0,1.0},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_cos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 2;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "minimal_sign_sign"_test = [&] {
         constexpr int n = 11;
         std::array<I, n> h_xs {{

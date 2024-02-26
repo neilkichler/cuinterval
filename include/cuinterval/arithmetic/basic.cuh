@@ -714,8 +714,8 @@ __device__ interval<T> sin(interval<T> x)
         return x;
     }
 
-    interval<T> pi = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
-    interval<T> tau = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    constexpr interval<T> pi = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr interval<T> tau = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
     
     T sin_min = static_cast<T>(-1);
     T sin_max = static_cast<T>(1);
@@ -781,6 +781,60 @@ __device__ interval<T> sin(interval<T> x)
         return { intrinsic::next_after(min(sin(x.lb), sin(x.ub)), sin_min), 1 };
     } else if ((quadrant_lb == 1 || quadrant_lb == 2) && (quadrant_ub == 3 || quadrant_ub == 0)) {
         return { -1, intrinsic::next_after(max(sin(x.lb), sin(x.ub)), sin_max) };
+    } else {
+        return { -1, 1 };
+    }
+}
+
+template<typename T>
+__device__ interval<T> cos(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    constexpr interval<T> pi = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr interval<T> tau = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    
+    T cos_min = static_cast<T>(-1);
+    T cos_max = static_cast<T>(1);
+
+    T w = width(x);
+
+    if (w >= sup(tau)) {
+        // interval contains at least one full period -> return range of sin
+        return { -1, 1 };
+    }
+
+    auto quadrant = [](T v) {
+        int quotient;
+        T rem = remquo(v - M_PI_4, M_PI_2, &quotient);
+        return static_cast<unsigned>(quotient) % 4;
+    };
+
+    auto quadrant_lb = quadrant(x.lb);
+    auto quadrant_ub = quadrant(x.ub);
+
+    if (quadrant_lb == quadrant_ub) {
+        if (w >= sup(pi)) { // beyond single quadrant -> full range
+            return { -1, 1 };
+        } else if (quadrant_lb == 2 || quadrant_lb == 3) { // increasing
+            return { intrinsic::next_after(cos(x.lb), cos_min),
+                     intrinsic::next_after(cos(x.ub), cos_max) };
+        } else { // decreasing
+            return { intrinsic::next_after(cos(x.ub), cos_min),
+                     intrinsic::next_after(cos(x.lb), cos_max) };
+        }
+    } else if (quadrant_lb == 2 && quadrant_ub == 3) { // increasing
+        return { intrinsic::next_after(cos(x.lb), cos_min),
+                 intrinsic::next_after(cos(x.ub), cos_max) };
+    } else if (quadrant_lb == 0 && quadrant_ub == 1) { // decreasing
+        return { intrinsic::next_after(cos(x.ub), cos_min),
+                 intrinsic::next_after(cos(x.lb), cos_max) };
+    } else if ((quadrant_lb == 2 || quadrant_lb == 3) && (quadrant_ub == 0 || quadrant_ub == 1)) {
+        return { intrinsic::next_after(min(cos(x.lb), cos(x.ub)), cos_min), 1 };
+    } else if ((quadrant_lb == 0 || quadrant_lb == 1) && (quadrant_ub == 2 || quadrant_ub == 3)) {
+        return { -1, intrinsic::next_after(max(cos(x.lb), cos(x.ub)), cos_max) };
     } else {
         return { -1, 1 };
     }
