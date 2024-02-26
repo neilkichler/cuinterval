@@ -4875,6 +4875,96 @@ void tests_libieeep1788_elem() {
         }
     };
 
+    "minimal_tan_tan"_test = [&] {
+        constexpr int n = 33;
+        std::array<I, n> h_xs {{
+            {-0.0,-0.0},
+            {-0.0,0X1.921FB54442D18P+0},
+            {-0.0,0X1.921FB54442D18P+1},
+            {-0.0,0X1.921FB54442D19P+0},
+            {-0.0,0X1.921FB54442D19P+1},
+            {-0.0,infinity},
+            {-0X1.555475A31A4BEP-2,0X1.999999999999AP-4},
+            {-0X1.921FB54442D18P+0,0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D18P+0,0X1.921FB54442D19P+0},
+            {-0X1.921FB54442D19P+0,0X1.921FB54442D18P+0},
+            {-0X1.921FB54442D19P+0,0X1.921FB54442D19P+0},
+            {-infinity,-0.0},
+            {-infinity,0.0},
+            {0.0,0.0},
+            {0.0,0X1.921FB54442D18P+0},
+            {0.0,0X1.921FB54442D18P+1},
+            {0.0,0X1.921FB54442D19P+0},
+            {0.0,0X1.921FB54442D19P+1},
+            {0.0,infinity},
+            {0X1.4E18E147AE148P+12,0X1.4E2028F5C28F6P+12},
+            {0X1.4E18E147AE148P+12,0X1.546028F5C28F6P+12},
+            {0X1.921FB54442D18P+0,0X1.921FB54442D18P+0},
+            {0X1.921FB54442D18P+0,0X1.921FB54442D19P+0},
+            {0X1.921FB54442D18P+1,0X1.921FB54442D18P+1},
+            {0X1.921FB54442D19P+0,0X1.921FB54442D19P+0},
+            {0X1.921FB54442D19P+1,0X1.921FB54442D19P+1},
+            {0X1.FAE147AE147AEP-1,0X1.028F5C28F5C29P+0},
+            {0X1P-51,0X1.921FB54442D18P+1},
+            {0X1P-51,0X1.921FB54442D19P+1},
+            {0X1P-52,0X1.921FB54442D18P+1},
+            {0X1P-52,0X1.921FB54442D19P+1},
+            empty,
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0.0,0.0},
+            {0.0,0X1.D02967C31CDB5P+53},
+            entire,
+            entire,
+            entire,
+            entire,
+            {-0X1.628F4FD931FEFP-2,0X1.9AF8877430B81P-4},
+            {-0X1.D02967C31CDB5P+53,0X1.D02967C31CDB5P+53},
+            entire,
+            entire,
+            entire,
+            entire,
+            entire,
+            {0.0,0.0},
+            {0.0,0X1.D02967C31CDB5P+53},
+            entire,
+            entire,
+            entire,
+            entire,
+            {-0X1.D6D67B035B6B4P+2,-0X1.7E42B0760E3F3P+0},
+            entire,
+            {0X1.D02967C31CDB4P+53,0X1.D02967C31CDB5P+53},
+            entire,
+            {-0X1.1A62633145C07P-53,-0X1.1A62633145C06P-53},
+            {-0X1.617A15494767BP+52,-0X1.617A15494767AP+52},
+            {0X1.72CECE675D1FCP-52,0X1.72CECE675D1FDP-52},
+            {0X1.860FADCC59064P+0,0X1.979AD0628469DP+0},
+            entire,
+            entire,
+            entire,
+            entire,
+            empty,
+            entire,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_tan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "minimal_sign_sign"_test = [&] {
         constexpr int n = 11;
         std::array<I, n> h_xs {{

@@ -490,4 +490,13 @@ __global__ void test_cos(int n, interval<T> *x, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_tan(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = tan(x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

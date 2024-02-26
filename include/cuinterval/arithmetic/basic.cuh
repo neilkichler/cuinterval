@@ -707,6 +707,15 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
     }
 }
 
+
+template<typename T>
+__device__ unsigned int quadrant(T v) {
+    int quotient;
+    T vv = intrinsic::next_after(intrinsic::sub_down(v, M_PI_4), static_cast<T>(0));
+    T rem = remquo(vv, M_PI_2, &quotient);
+    return static_cast<unsigned>(quotient) % 4;
+};
+
 template<typename T>
 __device__ interval<T> sin(interval<T> x)
 {
@@ -714,8 +723,8 @@ __device__ interval<T> sin(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
-    constexpr interval<T> tau = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    constexpr interval<T> pi{ 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr interval<T> tau{ 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
     
     T sin_min = static_cast<T>(-1);
     T sin_max = static_cast<T>(1);
@@ -730,13 +739,12 @@ __device__ interval<T> sin(interval<T> x)
     /*
        Determine the quadrant where x resides. We have
 
-       q0: [0, pi/2]
-       q1: (pi/2, pi)
-       q2: [pi, 3pi/2]
-       q3: (3pi/2, 2pi).
+       q0: [0, pi/2)
+       q1: [pi/2, pi)
+       q2: [pi, 3pi/2)
+       q3: [3pi/2, 2pi).
 
-       TODO: The intervals are closed and open the way they are due to the current remquo - pi/4 implementation.
-             Check if always correct.
+        NOTE: In floating point we have float64(pi/2) < pi/2 < float64(pi) < pi. So, e.g., float64(pi) is in q1 not q2!
 
          1 -|         ,-'''-.
             |      ,-'   |   `-.
@@ -752,11 +760,6 @@ __device__ interval<T> sin(interval<T> x)
             |                                `-.   |   ,-'
         -1 -|                                   `-,,,-'
     */
-    auto quadrant = [](T v) {
-        int quotient;
-        T rem = remquo(v - M_PI_4, M_PI_2, &quotient);
-        return static_cast<unsigned>(quotient) % 4;
-    };
 
     auto quadrant_lb = quadrant(x.lb);
     auto quadrant_ub = quadrant(x.ub);
@@ -793,8 +796,8 @@ __device__ interval<T> cos(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
-    constexpr interval<T> tau = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    constexpr interval<T> pi{ 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr interval<T> tau{ 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
     
     T cos_min = static_cast<T>(-1);
     T cos_max = static_cast<T>(1);
@@ -802,15 +805,9 @@ __device__ interval<T> cos(interval<T> x)
     T w = width(x);
 
     if (w >= sup(tau)) {
-        // interval contains at least one full period -> return range of sin
+        // interval contains at least one full period -> return range of cos
         return { -1, 1 };
     }
-
-    auto quadrant = [](T v) {
-        int quotient;
-        T rem = remquo(v - M_PI_4, M_PI_2, &quotient);
-        return static_cast<unsigned>(quotient) % 4;
-    };
 
     auto quadrant_lb = quadrant(x.lb);
     auto quadrant_ub = quadrant(x.ub);
@@ -839,5 +836,42 @@ __device__ interval<T> cos(interval<T> x)
         return { -1, 1 };
     }
 }
+
+template<typename T>
+__device__ interval<T> tan(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    constexpr interval<T> pi{ 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr interval<T> tau{ 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    
+    T cos_min = static_cast<T>(-1);
+    T cos_max = static_cast<T>(1);
+
+    T w = width(x);
+
+    if (w > sup(pi)) {
+        // interval contains at least one full period -> return range of tan
+        return entire<T>();
+    }
+
+    auto quadrant_lb = quadrant(x.lb);
+    auto quadrant_ub = quadrant(x.ub);
+    auto quadrant_lb_mod = quadrant_lb % 2;
+    auto quadrant_ub_mod = quadrant_ub % 2;
+
+    if ((quadrant_lb_mod == 0 && quadrant_ub_mod == 1)
+       || (quadrant_lb_mod == quadrant_ub_mod && quadrant_lb != quadrant_ub)) {
+        // crossing an asymptote -> return range of tan
+        return entire<T>();
+    } else {
+        return { intrinsic::prev_floating(intrinsic::prev_floating(tan(x.lb))), 
+                 intrinsic::next_floating(intrinsic::next_floating(tan(x.ub))) };
+    }
+
+}
+
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH
