@@ -716,6 +716,9 @@ __device__ interval<T> sin(interval<T> x)
 
     interval<T> pi = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
     interval<T> tau = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    
+    T sin_min = static_cast<T>(-1);
+    T sin_max = static_cast<T>(1);
 
     T w = width(x);
 
@@ -762,22 +765,22 @@ __device__ interval<T> sin(interval<T> x)
         if (w >= sup(pi)) { // beyond single quadrant -> full range
             return { -1, 1 };
         } else if (quadrant_lb == 1 || quadrant_lb == 2) { // decreasing
-            return { intrinsic::prev_floating(sin(x.ub)),
-                     intrinsic::next_floating(sin(x.lb)) };
+            return { intrinsic::next_after(sin(x.ub), sin_min),
+                     intrinsic::next_after(sin(x.lb), sin_max) };
         } else { // increasing
-            return { intrinsic::prev_floating(sin(x.lb)),
-                     intrinsic::next_floating(sin(x.ub)) };
+            return { intrinsic::next_after(sin(x.lb), sin_min),
+                     intrinsic::next_after(sin(x.ub), sin_max) };
         }
     } else if (quadrant_lb == 3 && quadrant_ub == 0) { // increasing
-        return { intrinsic::prev_floating(sin(x.lb)),
-                 intrinsic::next_floating(sin(x.ub)) };
+        return { intrinsic::next_after(sin(x.lb), sin_min),
+                 intrinsic::next_after(sin(x.ub), sin_max) };
     } else if (quadrant_lb == 1 && quadrant_ub == 2) { // decreasing
-        return { intrinsic::prev_floating(sin(x.ub)),
-                 intrinsic::next_floating(sin(x.lb)) };
+        return { intrinsic::next_after(sin(x.ub), sin_min),
+                 intrinsic::next_after(sin(x.lb), sin_max) };
     } else if ((quadrant_lb == 3 || quadrant_lb == 0) && (quadrant_ub == 1 || quadrant_ub == 2)) {
-        return { intrinsic::prev_floating(min(sin(x.lb), sin(x.ub))), 1 };
+        return { intrinsic::next_after(min(sin(x.lb), sin(x.ub)), sin_min), 1 };
     } else if ((quadrant_lb == 1 || quadrant_lb == 2) && (quadrant_ub == 3 || quadrant_ub == 0)) {
-        return { -1, intrinsic::next_floating(max(sin(x.lb), sin(x.ub))) };
+        return { -1, intrinsic::next_after(max(sin(x.lb), sin(x.ub)), sin_max) };
     } else {
         return { -1, 1 };
     }
