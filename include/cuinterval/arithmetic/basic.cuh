@@ -873,5 +873,47 @@ __device__ interval<T> tan(interval<T> x)
 
 }
 
+template<typename T>
+__device__ interval<T> asin(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    constexpr interval<T> pi_2 { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
+    constexpr interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
+
+    auto xx = intersection(x, domain);
+    return { (xx.lb != 0) * intrinsic::next_after(intrinsic::next_after(asin(xx.lb), -pi_2.ub), -pi_2.ub), 
+             (xx.ub != 0) * intrinsic::next_after(intrinsic::next_after(asin(xx.ub), pi_2.ub), pi_2.ub) };
+}
+
+template<typename T>
+__device__ interval<T> acos(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
+
+    auto xx = intersection(x, domain);
+    return { intrinsic::next_after(intrinsic::next_after(acos(xx.ub), static_cast<T>(0)), static_cast<T>(0)), 
+             intrinsic::next_after(intrinsic::next_after(acos(xx.lb), pi.ub), pi.ub) };
+}
+
+template<typename T>
+__device__ interval<T> atan(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    constexpr interval<T> pi_2 { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
+
+    return { intrinsic::next_after(intrinsic::next_after(atan(x.lb), -pi_2.ub), -pi_2.ub), 
+             intrinsic::next_after(intrinsic::next_after(atan(x.ub), pi_2.ub), pi_2.ub) };
+}
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

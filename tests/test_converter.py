@@ -110,6 +110,9 @@ void tests_''' + test_name + '''() {
                 "sin": {"args": [I], "ret": I, "ulp_error": 2},
                 "cos": {"args": [I], "ret": I, "ulp_error": 2},
                 "tan": {"args": [I], "ret": I, "ulp_error": 3},
+                "asin": {"args": [I], "ret": I, "ulp_error": 3},
+                "acos": {"args": [I], "ret": I, "ulp_error": 3},
+                "atan": {"args": [I], "ret": I, "ulp_error": 3},
             }
 
             empty = '{empty}'

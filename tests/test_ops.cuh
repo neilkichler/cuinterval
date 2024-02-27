@@ -499,4 +499,31 @@ __global__ void test_tan(int n, interval<T> *x, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_asin(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = asin(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_acos(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = acos(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_atan(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = atan(x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH
