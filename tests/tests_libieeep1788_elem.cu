@@ -5129,6 +5129,52 @@ void tests_libieeep1788_elem() {
         }
     };
 
+    "minimal_sinh_sinh"_test = [&] {
+        constexpr int n = 11;
+        std::array<I, n> h_xs {{
+            {-0.0,-0.0},
+            {-0.0,infinity},
+            {-0X1.199999999999AP+0,0X1.2666666666666P+1},
+            {-0X1.FD219490EAAC1P+38,-0X1.1AF1C9D74F06DP+9},
+            {-infinity,-0.0},
+            {-infinity,0.0},
+            {0.0,0.0},
+            {0.0,infinity},
+            {1.0,0X1.2C903022DD7AAP+8},
+            empty,
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0.0,0.0},
+            {0.0,infinity},
+            {-0X1.55ECFE1B2B215P+0,0X1.3BF72EA61AF1BP+2},
+            {-infinity,-0X1.53045B4F849DEP+815},
+            {-infinity,0.0},
+            {-infinity,0.0},
+            {0.0,0.0},
+            {0.0,infinity},
+            {0X1.2CD9FC44EB982P+0,0X1.89BCA168970C6P+432},
+            empty,
+            entire,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_sinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "minimal_sign_sign"_test = [&] {
         constexpr int n = 11;
         std::array<I, n> h_xs {{

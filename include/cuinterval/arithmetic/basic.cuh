@@ -916,4 +916,39 @@ __device__ interval<T> atan(interval<T> x)
              intrinsic::next_after(intrinsic::next_after(atan(x.ub), pi_2.ub), pi_2.ub) };
 }
 
+template<typename T>
+__device__ interval<T> sinh(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::next_after(intrinsic::next_after(sinh(x.lb), intrinsic::neg_inf<T>()), intrinsic::neg_inf<T>()), 
+             intrinsic::next_after(intrinsic::next_after(sinh(x.ub), intrinsic::pos_inf<T>()), intrinsic::pos_inf<T>()) };
+}
+
+template<typename T>
+__device__ interval<T> tanh(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    interval<T> range { static_cast<T>(-1), static_cast<T>(1) };
+
+    return { intrinsic::next_after(intrinsic::next_after(tanh(x.lb), range.lb), range.lb), 
+             intrinsic::next_after(intrinsic::next_after(tanh(x.ub), range.ub), range.ub) };
+}
+
+template<typename T>
+__device__ interval<T> asinh(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::next_after(intrinsic::next_after(asinh(x.lb), intrinsic::neg_inf<T>()), intrinsic::neg_inf<T>()), 
+             intrinsic::next_after(intrinsic::next_after(asinh(x.ub), intrinsic::pos_inf<T>()), intrinsic::pos_inf<T>()) };
+}
+
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

@@ -526,4 +526,31 @@ __global__ void test_atan(int n, interval<T> *x, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_sinh(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = sinh(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_tanh(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = tanh(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_asinh(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = asinh(x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

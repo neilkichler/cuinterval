@@ -1433,6 +1433,90 @@ void tests_filib() {
         }
     };
 
+    "FI_LIB.unary_function_sinh"_test = [&] {
+        constexpr int n = 30;
+        std::array<I, n> h_xs {{
+            {-0X1.0362421843787P+0,-0X3.3D2CCEF698A5AP-972},
+            {-0X1.1B4B8388A3D92P-340,-0XD.51D4A3CE4C490P-600},
+            {-0X1.1BBBD6FE8B950P-208,-0X1.463A32DBA649DP-220},
+            {-0X1.494A24A7585D1P-380,+0X1.A0790A9E3013EP-604},
+            {-0X1.4AD562C0B5178P-380,+0X3.CEB34F40EA9BAP-792},
+            {-0X1.55EBB1D70A46EP-592,+0X4.733FA51468530P-20},
+            {-0X1.56FBE834FC822P-296,-0X3.66041558BACA8P-516},
+            {-0X1.73D14FA7DA1CBP-504,+0X1.5B3AFEEB17A85P-28},
+            {-0X1.CF3637DCBCC9AP-452,-0X5.E4846462FF33CP-636},
+            {-0X2.9476464AAE5BAP-548,+0X4.0734E17C026D4P-784},
+            {-0X2.B64BC5E999866P-368,-0XF.0633041110C28P-572},
+            {-0X2.E7332C654ABB6P-384,-0X1.4363967367F55P-932},
+            {-0X3.3CD34997DF066P-320,-0X1.606C7BCE75819P-852},
+            {-0X3.53DC9496DE0A0P-160,-0XC.287E0E10EC1B8P-960},
+            {-0X3.F9D9FE5792CE0P-912,-0X3.F00FC8CE24ADCP-1016},
+            {-0X4.21B73745BC4C0P-952,+0XD.E40D83923C3E0P-404},
+            {-0X4.785C46BDC2A50P-244,-0X1.BA5C062DE8F00P-432},
+            {-0X5.B5DCAA821A628P-784,-0X1.48532232C10FDP-940},
+            {-0X5.FA887950A63CCP-588,-0X2.B707741B15478P-800},
+            {-0X6.44524F6FCCF8CP-340,-0X5.3E8ED576A1334P-896},
+            {-0X7.56F52F4FED854P-336,-0X4.F40A3934B3354P-416},
+            {-0X7.D5A28EF80D6B0P-176,+0XC.5D2B8FFCB2AD8P-756},
+            {-0X7.ED02EF56E40B0P-92,-0X1.8C80275A696B0P-552},
+            {-0X8.92F5BEDA59C78P-268,+0X2.51B11C2EC76BAP-612},
+            {-0X9.9488CB205AFA8P-124,-0X2.940180D1AA2AEP-556},
+            {-0XA.0E33C2BA95C88P-48,-0X1.1927CA3847669P-808},
+            {-0XC.5356A56E59748P-516,-0X1.33B9A95C55513P-772},
+            {-0XF.A46AC05B0EAA8P-68,+0X1.EFA89F34F4188P-684},
+            {0X3.8110D13AB0378P-720,0X2.77422E18981C2P-44},
+            {0X5.290FE84915530P-268,0X1.8C9AF520C22C3P-96},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {-0X1.32197576F3697P+0,-0X3.3D2CCEF698A5AP-972},
+            {-0X1.1B4B8388A3D93P-340,-0XD.51D4A3CE4C490P-600},
+            {-0X1.1BBBD6FE8B951P-208,-0X1.463A32DBA649DP-220},
+            {-0X1.494A24A7585D2P-380,+0X1.A0790A9E3013FP-604},
+            {-0X1.4AD562C0B5179P-380,+0X3.CEB34F40EA9BCP-792},
+            {-0X1.55EBB1D70A46FP-592,+0X4.733FA51477038P-20},
+            {-0X1.56FBE834FC823P-296,-0X3.66041558BACA8P-516},
+            {-0X1.73D14FA7DA1CCP-504,+0X1.5B3AFEEB17A86P-28},
+            {-0X1.CF3637DCBCC9BP-452,-0X5.E4846462FF33CP-636},
+            {-0X2.9476464AAE5BCP-548,+0X4.0734E17C026D8P-784},
+            {-0X2.B64BC5E999868P-368,-0XF.0633041110C28P-572},
+            {-0X2.E7332C654ABB8P-384,-0X1.4363967367F55P-932},
+            {-0X3.3CD34997DF068P-320,-0X1.606C7BCE75819P-852},
+            {-0X3.53DC9496DE0A2P-160,-0XC.287E0E10EC1B8P-960},
+            {-0X3.F9D9FE5792CE2P-912,-0X3.F00FC8CE24ADCP-1016},
+            {-0X4.21B73745BC4C4P-952,+0XD.E40D83923C3E8P-404},
+            {-0X4.785C46BDC2A54P-244,-0X1.BA5C062DE8F00P-432},
+            {-0X5.B5DCAA821A62CP-784,-0X1.48532232C10FDP-940},
+            {-0X5.FA887950A63D0P-588,-0X2.B707741B15478P-800},
+            {-0X6.44524F6FCCF90P-340,-0X5.3E8ED576A1334P-896},
+            {-0X7.56F52F4FED858P-336,-0X4.F40A3934B3354P-416},
+            {-0X7.D5A28EF80D6B4P-176,+0XC.5D2B8FFCB2AE0P-756},
+            {-0X7.ED02EF56E40B4P-92,-0X1.8C80275A696B0P-552},
+            {-0X8.92F5BEDA59C80P-268,+0X2.51B11C2EC76BCP-612},
+            {-0X9.9488CB205AFB0P-124,-0X2.940180D1AA2AEP-556},
+            {-0XA.0E33C2BA95C90P-48,-0X1.1927CA3847669P-808},
+            {-0XC.5356A56E59750P-516,-0X1.33B9A95C55513P-772},
+            {-0XF.A46AC05B0EAB0P-68,+0X1.EFA89F34F4189P-684},
+            {0X3.8110D13AB0378P-720,0X2.77422E18981C4P-44},
+            {0X5.290FE84915530P-268,0X1.8C9AF520C22C4P-96},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_sinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "FI_LIB.unary_function_sqr"_test = [&] {
         constexpr int n = 29;
         std::array<I, n> h_xs {{
