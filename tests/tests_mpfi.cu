@@ -118,6 +118,40 @@ void tests_mpfi() {
         }
     };
 
+    "mpfi_acosh_acosh"_test = [&] {
+        constexpr int n = 5;
+        std::array<I, n> h_xs {{
+            {+1.0,+infinity},
+            {+1.5,+infinity},
+            {1.0,1.5},
+            {1.5,1.5},
+            {2.0,1000.0},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0.0,+infinity},
+            {0x1ecc2caec51609p-53,+infinity},
+            {0.0,0xf661657628b05p-52},
+            {0x1ecc2caec51609p-53,0xf661657628b05p-52},
+            {0x544909c66010dp-50,0x799d4ba2a13b5p-48},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_acosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "mpfi_add_add"_test = [&] {
         constexpr int n = 19;
         std::array<I, n> h_xs {{
@@ -369,6 +403,68 @@ void tests_mpfi() {
         }
     };
 
+    "mpfi_asinh_asinh"_test = [&] {
+        constexpr int n = 19;
+        std::array<I, n> h_xs {{
+            {-0.5,0.5},
+            {-0.75,-0.25},
+            {-1.0,-0.5},
+            {-1.0,0.0},
+            {-1.0,1.0},
+            {-2.0,-0.5},
+            {-42.0,17.0},
+            {-6.0,-4.0},
+            {-infinity,+8.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {0.0,+1.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.125,17.0},
+            {0.25,0.625},
+            {17.0,42.0},
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {-0xf661657628b05p-53,0xf661657628b05p-53},
+            {-0x162e42fefa39fp-49,-0xfd67d91ccf31bp-54},
+            {-0x1c34366179d427p-53,-0x1ecc2caec51609p-54},
+            {-0x1c34366179d427p-53,0.0},
+            {-0x1c34366179d427p-53,0x1c34366179d427p-53},
+            {-0x2e32430627a11p-49,-0x1ecc2caec51609p-54},
+            {-0x8dca6976ad6bdp-49,0xe1be0ba541ef7p-50},
+            {-0x4fbca919fe219p-49,-0x10c1f8a6e80eebp-51},
+            {-infinity,0x58d8dc657eaf5p-49},
+            {-infinity,-0x152728c91b5f1dp-51},
+            {-infinity,0.0},
+            {0.0,0x1c34366179d427p-53},
+            {0.0,0x58d8dc657eaf5p-49},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0xff5685b4cb4b9p-55,0xe1be0ba541ef7p-50},
+            {0xfd67d91ccf31bp-54,0x4b89d40b2fecdp-51},
+            {0x1c37c174a83dedp-51,0x8dca6976ad6bdp-49},
+            entire,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_asinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "mpfi_atan_atan"_test = [&] {
         constexpr int n = 19;
         std::array<I, n> h_xs {{
@@ -594,6 +690,58 @@ void tests_mpfi() {
         CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_cos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 2;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "mpfi_cosh_cosh"_test = [&] {
+        constexpr int n = 14;
+        std::array<I, n> h_xs {{
+            {-0.125,0.0},
+            {-1.0,0.0},
+            {-4.5,-0.625},
+            {-infinity,+8.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {0.0,+1.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,0x10000000000001p-53},
+            {1.0,3.0},
+            {17.0,0xb145bb71d3dbp-38},
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {1.0,0x10200aac16db6fp-52},
+            {1.0,0x18b07551d9f551p-52},
+            {0x99d310a496b6dp-51,0x1681ceb0641359p-47},
+            {1.0,+infinity},
+            {0x11228949ba3a8bp-43,+infinity},
+            {1.0,+infinity},
+            {1.0,0x18b07551d9f551p-52},
+            {1.0,0x1749eaa93f4e77p-42},
+            {1.0,+infinity},
+            {1.0,1.0},
+            {1.0,0x120ac1862ae8d1p-52},
+            {0x18b07551d9f55p-48,0x1422a497d6185fp-49},
+            {0x1709348c0ea503p-29,0x3ffffffffffa34p+968},
+            {1.0,+infinity},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_cosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
@@ -3498,6 +3646,58 @@ void tests_mpfi() {
         CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_tan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "mpfi_tanh_tanh"_test = [&] {
+        constexpr int n = 14;
+        std::array<I, n> h_xs {{
+            {-0.125,0.0},
+            {-1.0,0.0},
+            {-4.5,-0.625},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {-infinity,8.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,0x10000000000001p-53},
+            {0.0,1.0},
+            {0.0,8.0},
+            {1.0,3.0},
+            {17.0,18.0},
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {-0x1fd5992bc4b835p-56,0.0},
+            {-0x185efab514f395p-53,0.0},
+            {-0x1ffdfa72153984p-53,-0x11bf47eabb8f95p-53},
+            {-1.0,-0x1ffffc832750f1p-53},
+            {-1.0,0.0},
+            {-1.0,0x1fffff872a91f9p-53},
+            {0.0,+1.0},
+            {0.0,0.0},
+            {0.0,0x1d9353d7568af5p-54},
+            {0.0,0x185efab514f395p-53},
+            {0.0,0x1fffff872a91f9p-53},
+            {0x185efab514f394p-53,0x1fd77d111a0b00p-53},
+            {0x1fffffffffffe1p-53,0x1ffffffffffffcp-53},
+            {-1.0,+1.0},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_tanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);

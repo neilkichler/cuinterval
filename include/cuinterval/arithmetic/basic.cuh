@@ -928,6 +928,19 @@ __device__ interval<T> sinh(interval<T> x)
 }
 
 template<typename T>
+__device__ interval<T> cosh(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    interval<T> range { static_cast<T>(1), intrinsic::pos_inf<T>() };
+
+    return { intrinsic::next_after(cosh(mig(x)), range.lb), 
+             intrinsic::next_after(cosh(mag(x)), range.ub) };
+}
+
+template<typename T>
 __device__ interval<T> tanh(interval<T> x)
 {
     if (empty(x)) {
@@ -949,6 +962,38 @@ __device__ interval<T> asinh(interval<T> x)
 
     return { intrinsic::next_after(intrinsic::next_after(asinh(x.lb), intrinsic::neg_inf<T>()), intrinsic::neg_inf<T>()), 
              intrinsic::next_after(intrinsic::next_after(asinh(x.ub), intrinsic::pos_inf<T>()), intrinsic::pos_inf<T>()) };
+}
+
+template<typename T>
+__device__ interval<T> acosh(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    interval<T> range { static_cast<T>(0), intrinsic::pos_inf<T>() };
+    interval<T> domain { static_cast<T>(1), intrinsic::pos_inf<T>() };
+
+    auto xx = intersection(x, domain);
+
+    return { intrinsic::next_after(intrinsic::next_after(acosh(inf(xx)), range.lb), range.lb),
+             intrinsic::next_after(intrinsic::next_after(acosh(sup(xx)), range.ub), range.ub) };
+}
+
+template<typename T>
+__device__ interval<T> atanh(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    interval<T> range { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
+    interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
+
+    auto xx = intersection(x, domain);
+
+    return { intrinsic::next_after(intrinsic::next_after(atanh(inf(xx)), range.lb), range.lb),
+             intrinsic::next_after(intrinsic::next_after(atanh(sup(xx)), range.ub), range.ub) };
 }
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

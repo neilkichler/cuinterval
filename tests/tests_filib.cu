@@ -545,6 +545,90 @@ void tests_filib() {
         }
     };
 
+    "FI_LIB.unary_function_acosh"_test = [&] {
+        constexpr int n = 30;
+        std::array<I, n> h_xs {{
+            {0X1.054DCDEF21349P+436,0X1.618994D07D9A7P+636},
+            {0X1.05ADFE119D4C2P+296,0X2.6BCDF50E05E34P+1020},
+            {0X1.09A940A083EE3P+132,0X1.047FD514ADF08P+384},
+            {0X1.1265074E9E3DFP+792,0X2.229B285A709C0P+920},
+            {0X1.20E762C8AAB55P+72,0X1.DBB7B8FE35847P+960},
+            {0X1.BCD62C46ADFD7P+16,0XA.CD289B35ECD00P+564},
+            {0X2.3721A01F70456P+564,0X9.C62BBF31FD290P+728},
+            {0X2.383FC27D5E4E4P+756,0X5.88E9C96565E54P+920},
+            {0X2.C4F59012F4E48P+508,0X1.1854765A9A205P+688},
+            {0X3.4B22674960B0EP+468,0XA.505A061DF4CD8P+808},
+            {0X4.280BEC7911E7CP+180,0X6.B4F11E86ECA38P+792},
+            {0X4.5BE0D9A7FF0CCP+460,0X2.6F2C55F16354AP+568},
+            {0X4.A457C35864940P+344,0X2.3ADEFB54BC048P+444},
+            {0X5.2641115F86D38P+204,0X7.BE33D080E6584P+252},
+            {0X5.AD89AD14DDC74P+272,0X2.6EC5D31670A5EP+860},
+            {0X5.D326D4B0883D8P+76,0X1.77175C5A113ADP+528},
+            {0X5.F207EAF5F8BB4P+608,0XA.BC87C6F90AEE0P+648},
+            {0X6.534BBA40A0B44P+224,0X1.8DE35856E91FBP+452},
+            {0X6.941C8B9506D90P+56,0X3.B11D8083AE958P+744},
+            {0X6.F06D452BDCEF0P+44,0X2.4825931366BBCP+520},
+            {0X7.710740B71A0D4P+256,0XF.C0798D156BFA0P+560},
+            {0X8.6F890522C18B0P+44,0X3.F87592D71E06CP+220},
+            {0X9.2A9035A578970P+124,0X1.35EE42DCA8B75P+608},
+            {0X9.BD8B9A7FB6630P+80,0X2.AD5F8458C8722P+768},
+            {0XA.7F5D255B81268P+408,0X1.9D1EDDC132B36P+864},
+            {0XA.8746F72A1BD90P+72,0X5.6ABE29A315520P+872},
+            {0XA.C15D51DB7D9F0P+536,0X1.7207A70831D7AP+796},
+            {0XB.241032F9700A0P+380,0X1.04A65B06B2920P+640},
+            {0XB.D0973FF704000P+224,0X2.2FD9ABBD09D34P+976},
+            {0XC.FBE4E2C6D0A80P+484,0X4.DF75BDC17C330P+868},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0X1.2EED02D819A15P+8,0X1.B9DB8970CC5ECP+8},
+            {0XC.DE2FBE78FEC28P+4,0X2.C49666459E1A4P+8},
+            {0X5.C39C22D7AA908P+4,0X1.0AE10BDF7FE81P+8},
+            {0X2.25BC2FC876EBCP+8,0X2.7F25A89FE16E6P+8},
+            {0X3.2B87D37C9EAFAP+4,0X2.9ABBED2A77E62P+8},
+            {0XC.56062C0C41518P+0,0X1.8A0201556D85AP+8},
+            {0X1.886C6F1DDDFF7P+8,0X1.FB958311209BFP+8},
+            {0X2.0D82822002358P+8,0X2.801980299550CP+8},
+            {0X1.61D49DF92AB79P+8,0X1.DDAB5081E5A0EP+8},
+            {0X1.4647297977E4EP+8,0X2.3316ED57009D4P+8},
+            {0X7.EE261446DD5F8P+4,0X2.27919F48F2C20P+8},
+            {0X1.4103588C86AB6P+8,0X1.8B4A572E180D4P+8},
+            {0XF.0ABC113DB1AF0P+4,0X1.3540A29BC6B5EP+8},
+            {0X8.FBBEB3B84C708P+4,0XB.169BBE1313F68P+4},
+            {0XB.EF73BF42C19D8P+4,0X2.55B05064B6C2AP+8},
+            {0X3.7226BF0157930P+4,0X1.6F0E8DBF98710P+8},
+            {0X1.A7E8C5069EA32P+8,0X1.C439E5E8A511CP+8},
+            {0X9.DCD7CC0C7FFB8P+4,0X1.3A6FC95911674P+8},
+            {0X2.964A9197BF832P+4,0X2.05B3663FAE652P+8},
+            {0X2.120F95BD1F706P+4,0X1.69F464545899AP+8},
+            {0XB.42559B5CF34E8P+4,0X1.879CCE87EE3A1P+8},
+            {0X2.152F7D2DBF2BCP+4,0X9.A907E7C701690P+4},
+            {0X5.8DBE2A7E96990P+4,0X1.A6515B9ECF2F1P+8},
+            {0X3.A6BD416FCCF70P+4,0X2.1603D4EDCB36AP+8},
+            {0X1.1DD92C82827A1P+8,0X2.580D06072BF20P+8},
+            {0X3.4F42DBFC0E4B4P+4,0X2.5ECE9922C7894P+8},
+            {0X1.76986E964982DP+8,0X2.28CE847F69DCAP+8},
+            {0X1.0A7FEC190CCEEP+8,0X1.BC5349B021815P+8},
+            {0X9.E6D6EA0633070P+4,0X2.A5FCBEDD15F2CP+8},
+            {0X1.52BD770642386P+8,0X2.5BEDB7E376E18P+8},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_acosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "FI_LIB.unary_function_asin"_test = [&] {
         constexpr int n = 30;
         std::array<I, n> h_xs {{
@@ -620,6 +704,82 @@ void tests_filib() {
         CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_asin<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "FI_LIB.unary_function_asinh"_test = [&] {
+        constexpr int n = 26;
+        std::array<I, n> h_xs {{
+            {0X1.3A01905E36F84P+0,0X4.ECBC855871080P+332},
+            {0X1.5444E676976F1P+252,0X2.7C064F6929234P+292},
+            {0X1.63A15E999EB64P-344,0X6.5263CF84EF388P+172},
+            {0X1.7036C237D5B00P-672,0X6.F70E0DA4D2BA0P-140},
+            {0X1.7A77BFCCF5A9EP-232,0X2.8457BC029986EP+112},
+            {0X1.8BCA641025A83P-124,0X5.F775993940188P-120},
+            {0X1.BA04D452BBB35P+180,0X1.F0D19ADCB5D74P+312},
+            {0X1.D283CF8F05665P+252,0XB.24D19E00C8460P+324},
+            {0X1.EB0E1AB78F314P-480,0X1.98EF0C6A8BD66P+132},
+            {0X2.075DF98B2478CP-456,0X1.1503444763FC5P-416},
+            {0X2.404E44C49C644P-440,0X7.32EDAB7F60A50P+236},
+            {0X2.6ABC15579B2B2P-48,0X2.E046DB554037CP+256},
+            {0X2.BB570B356C6CAP-440,0X2.B00450A48D586P-148},
+            {0X3.C5EC30FBB68C8P-508,0X6.05C0BB1BCB730P-220},
+            {0X5.2B55801231EC8P-344,0XA.27B4555158148P-68},
+            {0X6.36B661DCE2688P-236,0X1.D68A6BA7E617FP+12},
+            {0X6.3E590E626451CP-172,0X1.7AAA15EBBD3F2P+8},
+            {0X6.65D7E0A247778P-56,0X3.AE1DC13A652CAP+168},
+            {0X6.6978492A3064CP+188,0XD.5E2045CEE9720P+236},
+            {0X6.941F470A70074P-756,0X1.4171976A1CA54P-288},
+            {0X6.ACFA418D8F92CP-544,0X2.8F9204BC4041EP+988},
+            {0X7.4CF193131FA64P-192,0X1.C08152CC09416P+220},
+            {0X7.78A1F475A306CP-564,0X4.69BB1D34B9570P-76},
+            {0X7.DEA605DEC97CCP-316,0X1.5BD629B25AA23P-236},
+            {0XC.41329461A0C30P-512,0X1.9E7DDBBE00F75P+352},
+            {0XE.20FF41BD18058P-204,0X2.9B09919BF9D9EP+272},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0X1.086AFFAE230B6P+0,0XE.8698B81E22AB0P+4},
+            {0XA.FA69A93525138P+4,0XC.C008F1DBA8390P+4},
+            {0X1.63A15E999EB63P-344,0X7.9C22B35B1CEE0P+4},
+            {0X1.7036C237D5AFFP-672,0X6.F70E0DA4D2BA0P-140},
+            {0X1.7A77BFCCF5A9DP-232,0X4.F3FA9CD060658P+4},
+            {0X1.8BCA641025A82P-124,0X5.F775993940188P-120},
+            {0X7.E017D1421AED4P+4,0XD.99E3CCF428D70P+4},
+            {0XA.FF762A8B30EA0P+4,0XE.3AF0836B2F5B0P+4},
+            {0X1.EB0E1AB78F313P-480,0X5.CA82DEDB3D320P+4},
+            {0X2.075DF98B2478AP-456,0X1.1503444763FC5P-416},
+            {0X2.404E44C49C642P-440,0XA.63FF3E7D6B730P+4},
+            {0X2.6ABC15579B2B0P-48,0XB.331FC2BC20E70P+4},
+            {0X2.BB570B356C6C8P-440,0X2.B00450A48D586P-148},
+            {0X3.C5EC30FBB68C6P-508,0X6.05C0BB1BCB730P-220},
+            {0X5.2B55801231EC4P-344,0XA.27B4555158148P-68},
+            {0X6.36B661DCE2684P-236,0X9.9E9F4F5A56088P+0},
+            {0X6.3E590E6264518P-172,0X6.A13A85E654788P+0},
+            {0X6.65D7E0A247774P-56,0X7.671E008768830P+4},
+            {0X8.4DCECB852E1E8P+4,0XA.6DE648AA01A20P+4},
+            {0X6.941F470A70070P-756,0X1.4171976A1CA54P-288},
+            {0X6.ACFA418D8F928P-544,0X2.AE767FF2330E0P+8},
+            {0X7.4CF193131FA60P-192,0X9.9BF0B87669850P+4},
+            {0X7.78A1F475A3068P-564,0X4.69BB1D34B9570P-76},
+            {0X7.DEA605DEC97C8P-316,0X1.5BD629B25AA23P-236},
+            {0XC.41329461A0C28P-512,0XF.529AF3B8107E0P+4},
+            {0XE.20FF41BD18050P-204,0XB.E2FD554E373E0P+4},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_asinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
@@ -788,6 +948,90 @@ void tests_filib() {
         CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_cos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 2;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "FI_LIB.unary_function_cosh"_test = [&] {
+        constexpr int n = 30;
+        std::array<I, n> h_xs {{
+            {-0X1.0362421843787P+0,-0X3.3D2CCEF698A5AP-972},
+            {-0X1.1B4B8388A3D92P-340,-0XD.51D4A3CE4C490P-600},
+            {-0X1.1BBBD6FE8B950P-208,-0X1.463A32DBA649DP-220},
+            {-0X1.494A24A7585D1P-380,+0X1.A0790A9E3013EP-604},
+            {-0X1.4AD562C0B5178P-380,+0X3.CEB34F40EA9BAP-792},
+            {-0X1.55EBB1D70A46EP-592,+0X4.733FA51468530P-20},
+            {-0X1.56FBE834FC822P-296,-0X3.66041558BACA8P-516},
+            {-0X1.73D14FA7DA1CBP-504,+0X1.5B3AFEEB17A85P-28},
+            {-0X1.CF3637DCBCC9AP-452,-0X5.E4846462FF33CP-636},
+            {-0X2.9476464AAE5BAP-548,+0X4.0734E17C026D4P-784},
+            {-0X2.B64BC5E999866P-368,-0XF.0633041110C28P-572},
+            {-0X2.E7332C654ABB6P-384,-0X1.4363967367F55P-932},
+            {-0X3.3CD34997DF066P-320,-0X1.606C7BCE75819P-852},
+            {-0X3.53DC9496DE0A0P-160,-0XC.287E0E10EC1B8P-960},
+            {-0X3.F9D9FE5792CE0P-912,-0X3.F00FC8CE24ADCP-1016},
+            {-0X4.21B73745BC4C0P-952,+0XD.E40D83923C3E0P-404},
+            {-0X4.785C46BDC2A50P-244,-0X1.BA5C062DE8F00P-432},
+            {-0X5.B5DCAA821A628P-784,-0X1.48532232C10FDP-940},
+            {-0X5.FA887950A63CCP-588,-0X2.B707741B15478P-800},
+            {-0X6.44524F6FCCF8CP-340,-0X5.3E8ED576A1334P-896},
+            {-0X7.56F52F4FED854P-336,-0X4.F40A3934B3354P-416},
+            {-0X7.D5A28EF80D6B0P-176,+0XC.5D2B8FFCB2AD8P-756},
+            {-0X7.ED02EF56E40B0P-92,-0X1.8C80275A696B0P-552},
+            {-0X8.92F5BEDA59C78P-268,+0X2.51B11C2EC76BAP-612},
+            {-0X9.9488CB205AFA8P-124,-0X2.940180D1AA2AEP-556},
+            {-0XA.0E33C2BA95C88P-48,-0X1.1927CA3847669P-808},
+            {-0XC.5356A56E59748P-516,-0X1.33B9A95C55513P-772},
+            {-0XF.A46AC05B0EAA8P-68,+0X1.EFA89F34F4188P-684},
+            {0X3.8110D13AB0378P-720,0X2.77422E18981C2P-44},
+            {0X5.290FE84915530P-268,0X1.8C9AF520C22C3P-96},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0X1.0000000000000P+0,0X1.8F0A39674B193P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000009E6FP+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+            {0X1.0000000000000P+0,0X1.0000000000001P+0},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_cosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
@@ -1758,6 +2002,90 @@ void tests_filib() {
         CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_tan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "FI_LIB.unary_function_tanh"_test = [&] {
+        constexpr int n = 30;
+        std::array<I, n> h_xs {{
+            {0X1.3A01905E36F84P+0,0X4.ECBC855871080P+332},
+            {0X1.5444E676976F1P+252,0X2.7C064F6929234P+292},
+            {0X1.63A15E999EB64P-344,0X6.5263CF84EF388P+172},
+            {0X1.7036C237D5B00P-672,0X6.F70E0DA4D2BA0P-140},
+            {0X1.7A77BFCCF5A9EP-232,0X2.8457BC029986EP+112},
+            {0X1.8BCA641025A83P-124,0X5.F775993940188P-120},
+            {0X1.BA04D452BBB35P+180,0X1.F0D19ADCB5D74P+312},
+            {0X1.D283CF8F05665P+252,0XB.24D19E00C8460P+324},
+            {0X1.EB0E1AB78F314P-480,0X1.98EF0C6A8BD66P+132},
+            {0X2.075DF98B2478CP-456,0X1.1503444763FC5P-416},
+            {0X2.404E44C49C644P-440,0X7.32EDAB7F60A50P+236},
+            {0X2.6ABC15579B2B2P-48,0X2.E046DB554037CP+256},
+            {0X2.BB570B356C6CAP-440,0X2.B00450A48D586P-148},
+            {0X3.436DFE8F08194P+48,0X2.A69A969772FDEP+688},
+            {0X3.A0EE84451C92CP-324,0XF.CC937FA330E40P+648},
+            {0X3.C5EC30FBB68C8P-508,0X6.05C0BB1BCB730P-220},
+            {0X5.2B55801231EC8P-344,0XA.27B4555158148P-68},
+            {0X6.36B661DCE2688P-236,0X1.D68A6BA7E617FP+12},
+            {0X6.3E590E626451CP-172,0X1.7AAA15EBBD3F2P+8},
+            {0X6.65D7E0A247778P-56,0X3.AE1DC13A652CAP+168},
+            {0X6.6978492A3064CP+188,0XD.5E2045CEE9720P+236},
+            {0X6.941F470A70074P-756,0X1.4171976A1CA54P-288},
+            {0X6.ACFA418D8F92CP-544,0X2.8F9204BC4041EP+988},
+            {0X7.4CF193131FA64P-192,0X1.C08152CC09416P+220},
+            {0X7.78A1F475A306CP-564,0X4.69BB1D34B9570P-76},
+            {0X7.DEA605DEC97CCP-316,0X1.5BD629B25AA23P-236},
+            {0X8.297A99ED9ED08P+8,0XE.33C49CF5B8790P+652},
+            {0XC.41329461A0C30P-512,0X1.9E7DDBBE00F75P+352},
+            {0XD.05E9CCF66CF58P+424,0XB.A944253373080P+564},
+            {0XE.20FF41BD18058P-204,0X2.9B09919BF9D9EP+272},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0XD.772335E624B98P-4,0X1.0000000000000P+0},
+            {0XF.FFFFFFFFFFFF8P-4,0X1.0000000000000P+0},
+            {0X1.63A15E999EB63P-344,0X1.0000000000000P+0},
+            {0X1.7036C237D5AFFP-672,0X6.F70E0DA4D2BA0P-140},
+            {0X1.7A77BFCCF5A9DP-232,0X1.0000000000000P+0},
+            {0X1.8BCA641025A82P-124,0X5.F775993940188P-120},
+            {0XF.FFFFFFFFFFFF8P-4,0X1.0000000000000P+0},
+            {0XF.FFFFFFFFFFFF8P-4,0X1.0000000000000P+0},
+            {0X1.EB0E1AB78F313P-480,0X1.0000000000000P+0},
+            {0X2.075DF98B2478AP-456,0X1.1503444763FC5P-416},
+            {0X2.404E44C49C642P-440,0X1.0000000000000P+0},
+            {0X2.6ABC15579B2B0P-48,0X1.0000000000000P+0},
+            {0X2.BB570B356C6C8P-440,0X2.B00450A48D586P-148},
+            {0XF.FFFFFFFFFFFF8P-4,0X1.0000000000000P+0},
+            {0X3.A0EE84451C92AP-324,0X1.0000000000000P+0},
+            {0X3.C5EC30FBB68C6P-508,0X6.05C0BB1BCB730P-220},
+            {0X5.2B55801231EC4P-344,0XA.27B4555158148P-68},
+            {0X6.36B661DCE2684P-236,0X1.0000000000000P+0},
+            {0X6.3E590E6264518P-172,0X1.0000000000000P+0},
+            {0X6.65D7E0A247774P-56,0X1.0000000000000P+0},
+            {0XF.FFFFFFFFFFFF8P-4,0X1.0000000000000P+0},
+            {0X6.941F470A70070P-756,0X1.4171976A1CA54P-288},
+            {0X6.ACFA418D8F928P-544,0X1.0000000000000P+0},
+            {0X7.4CF193131FA60P-192,0X1.0000000000000P+0},
+            {0X7.78A1F475A3068P-564,0X4.69BB1D34B9570P-76},
+            {0X7.DEA605DEC97C8P-316,0X1.5BD629B25AA23P-236},
+            {0XF.FFFFFFFFFFFF8P-4,0X1.0000000000000P+0},
+            {0XC.41329461A0C28P-512,0X1.0000000000000P+0},
+            {0XF.FFFFFFFFFFFF8P-4,0X1.0000000000000P+0},
+            {0XE.20FF41BD18050P-204,0X1.0000000000000P+0},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_tanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);

@@ -114,6 +114,11 @@ void tests_''' + test_name + '''() {
                 "acos": {"args": [I], "ret": I, "ulp_error": 3},
                 "atan": {"args": [I], "ret": I, "ulp_error": 3},
                 "sinh": {"args": [I], "ret": I, "ulp_error": 3},
+                "cosh": {"args": [I], "ret": I, "ulp_error": 2},
+                "tanh": {"args": [I], "ret": I, "ulp_error": 3},
+                "asinh": {"args": [I], "ret": I, "ulp_error": 3},
+                "acosh": {"args": [I], "ret": I, "ulp_error": 3},
+                "atanh": {"args": [I], "ret": I, "ulp_error": 3},
             }
 
             empty = '{empty}'
