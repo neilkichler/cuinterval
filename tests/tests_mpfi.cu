@@ -527,6 +527,48 @@ void tests_mpfi() {
         }
     };
 
+    "mpfi_atanh_atanh"_test = [&] {
+        constexpr int n = 9;
+        std::array<I, n> h_xs {{
+            {-0.5,0.5},
+            {-0.75,-0.25},
+            {-1.0,-0.5},
+            {-1.0,0.0},
+            {-1.0,1.0},
+            {0.0,+1.0},
+            {0.0,0.0},
+            {0.125,1.0},
+            {0.25,0.625},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {-0x1193ea7aad030bp-53,0x1193ea7aad030bp-53},
+            {-0x3e44e55c64b4bp-50,-0x1058aefa811451p-54},
+            {-infinity,-0x8c9f53d568185p-52},
+            {-infinity,0.0},
+            entire,
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0x1015891c9eaef7p-55,+infinity},
+            {0x1058aefa811451p-54,0x2eec3bb76c2b3p-50},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_atanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
     "mpfi_bounded_p_isCommonInterval"_test = [&] {
         constexpr int n = 16;
         std::array<I, n> h_xs {{
@@ -3699,7 +3741,7 @@ void tests_mpfi() {
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_tanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
-        int max_ulp_diff = 3;
+        int max_ulp_diff = 2;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);

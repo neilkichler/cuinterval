@@ -5259,7 +5259,7 @@ void tests_libieeep1788_elem() {
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_tanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
-        int max_ulp_diff = 3;
+        int max_ulp_diff = 2;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
         for (auto fail_id : failed) {
             printf("failed at case %zu:\n", fail_id);
@@ -5350,6 +5350,60 @@ void tests_libieeep1788_elem() {
         CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
         CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
         test_acosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
+    "minimal_atanh_atanh"_test = [&] {
+        constexpr int n = 15;
+        std::array<I, n> h_xs {{
+            {-0.0,-0.0},
+            {-0.0,infinity},
+            {-0X1.FFB88E9EB6307P-1,0X1.999999999999AP-4},
+            {-1.0,-1.0},
+            {-1.0,1.0},
+            {-infinity,-0.0},
+            {-infinity,-1.0},
+            {-infinity,0.0},
+            {0.0,0.0},
+            {0.0,infinity},
+            {0X1.4C0420F6F08CCP-2,0X1.FFFFFFFFFFFFFP-1},
+            {1.0,1.0},
+            {1.0,infinity},
+            empty,
+            entire,
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0.0,0.0},
+            {0.0,infinity},
+            {-0X1.06A3A97D7979CP+2,0X1.9AF93CD234413P-4},
+            empty,
+            entire,
+            {-infinity,0.0},
+            empty,
+            {-infinity,0.0},
+            {0.0,0.0},
+            {0.0,infinity},
+            {0X1.5871DD2DF9102P-2,0X1.2B708872320E2P+4},
+            empty,
+            empty,
+            empty,
+            entire,
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_atanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);

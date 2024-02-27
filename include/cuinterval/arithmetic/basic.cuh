@@ -378,7 +378,7 @@ __device__ bool equal(interval<T> a, interval<T> b)
 template<typename T>
 __device__ bool strict_less_or_both_inf(T x, T y)
 {
-    return (x < y) || (isinf(x) && isinf(y));
+    return (x < y) || ((isinf(x) || isinf(y)) && (x == y));
 }
 
 template<typename T>
@@ -396,7 +396,11 @@ __device__ bool interior(interval<T> a, interval<T> b)
 template<typename T>
 __device__ bool disjoint(interval<T> a, interval<T> b)
 {
-    return !(a.lb <= b.ub && b.lb <= a.ub);
+    // return !(a.lb <= b.ub && b.lb <= a.ub);
+    return empty(a)
+        || empty(b)
+        || strict_less_or_both_inf(b.ub, a.lb)
+        || strict_less_or_both_inf(a.ub, b.lb);
 }
 
 template<typename T>
@@ -463,7 +467,7 @@ template<typename T>
 __device__ interval<T> intersection(interval<T> x, interval<T> y)
 {
     // extended
-    if (empty(x) || empty(y)) {
+    if (disjoint(x, y)) {
         return empty<T>();
     }
 
@@ -917,6 +921,89 @@ __device__ interval<T> atan(interval<T> x)
 }
 
 template<typename T>
+__device__ interval<T> atan2(interval<T> y, interval<T> x)
+{
+    if (empty(x) || empty(y)) {
+        return empty<T>();
+    }
+
+    constexpr interval<T> pi_2 { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
+    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    interval<T> range { -pi.ub, pi.ub };
+
+    using intrinsic::next_after;
+
+    if (justzero(x)) {
+        if (justzero(y)) {
+            return empty<T>();
+        } else if (y.lb >= 0) {
+            return pi_2;
+        } else if (y.ub <= 0) {
+            return -pi_2;
+        } else {
+            return range;
+        }
+    } else if (x.lb > 0) {
+        if (justzero(y)) {
+            return y;
+        } else if (y.lb >= 0) {
+            return { next_after(next_after(std::atan2(y.lb, x.ub), range.lb), range.lb) , 
+                     next_after(next_after(std::atan2(y.ub, x.lb), range.ub), range.ub) };
+        } else if (y.ub <= 0) {
+            return { next_after(next_after(std::atan2(y.lb, x.lb), range.lb), range.lb) , 
+                     next_after(next_after(std::atan2(y.ub, x.ub), range.ub), range.ub) };
+        } else {
+            return range;
+        }
+    } else if (x.ub < 0) {
+        if (justzero(y)) {
+            return pi;
+        } else if (y.lb >= 0) {
+            return { next_after(next_after(std::atan2(y.ub, x.ub), range.lb), range.lb),
+                     next_after(next_after(std::atan2(y.lb, x.lb), range.ub), range.ub) };
+        } else if (y.ub <= 0) {
+            return { -pi_2.ub,
+                     next_after(next_after(std::atan2(y.ub, x.ub), range.ub), range.ub) };
+        } else {
+            return range;
+        }
+    } else {
+        if (x.lb == 0) {
+            if (justzero(y)) {
+                return pi;
+            } else if (y.lb >= 0) {
+                return { next_after(next_after(std::atan2(y.lb, x.ub), range.lb), range.lb),
+                         pi_2.ub };
+            } else if (y.ub <= 0) {
+                return { -pi_2.ub, next_after(next_after(std::atan2(y.ub, x.ub), range.ub), range.ub) };
+            } else {
+                return range;
+            }
+        } else if (x.ub == 0) {
+            if (justzero(y)) {
+                return pi;
+            } else if (y.lb >= 0) {
+                return { -pi_2.ub, next_after(next_after(std::atan2(y.lb, x.lb), range.lb))};
+            } else if (y.ub < 0) {
+                return { next_after(next_after(std::atan2(y.ub, x.lb), range.ub), range.ub), -pi_2.ub };
+            } else {
+                return range;
+            }
+        } else {
+            if (y.lb >= 0) {
+                return { next_after(next_after(atan2(y.lb, x.ub), range.lb), range.lb), 
+                         next_after(next_after(atan2(y.lb, x.lb), range.ub), range.ub) };
+            } else if (y.ub < 0) {
+                return { next_after(next_after(atan2(y.ub, x.lb), range.lb), range.lb), 
+                         next_after(next_after(atan2(y.ub, x.ub), range.ub), range.ub) };
+            } else {
+                return range;
+            }
+        }
+    }
+}
+
+template<typename T>
 __device__ interval<T> sinh(interval<T> x)
 {
     if (empty(x)) {
@@ -949,8 +1036,8 @@ __device__ interval<T> tanh(interval<T> x)
 
     interval<T> range { static_cast<T>(-1), static_cast<T>(1) };
 
-    return { intrinsic::next_after(intrinsic::next_after(tanh(x.lb), range.lb), range.lb), 
-             intrinsic::next_after(intrinsic::next_after(tanh(x.ub), range.ub), range.ub) };
+    return { intrinsic::next_after(tanh(x.lb), range.lb),
+             intrinsic::next_after(tanh(x.ub), range.ub) };
 }
 
 template<typename T>
@@ -990,7 +1077,13 @@ __device__ interval<T> atanh(interval<T> x)
     interval<T> range { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
     interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
 
+
     auto xx = intersection(x, domain);
+
+    // TODO: this should not be needed and is kind of a hack for now.
+    if (xx.lb == xx.ub && (xx.lb == domain.lb || xx.lb == domain.ub)) {
+        return empty<T>();
+    }
 
     return { intrinsic::next_after(intrinsic::next_after(atanh(inf(xx)), range.lb), range.lb),
              intrinsic::next_after(intrinsic::next_after(atanh(sup(xx)), range.ub), range.ub) };
