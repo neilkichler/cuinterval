@@ -930,69 +930,71 @@ __device__ interval<T> atan2(interval<T> y, interval<T> x)
     constexpr interval<T> pi_2 { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
     constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
     interval<T> range { -pi.ub, pi.ub };
+    interval<T> half_range { -pi_2.ub, pi_2.ub };
 
     using intrinsic::next_after;
 
-    if (justzero(x)) {
-        if (justzero(y)) {
+    if (just_zero(x)) {
+        if (just_zero(y)) {
             return empty<T>();
         } else if (y.lb >= 0) {
             return pi_2;
         } else if (y.ub <= 0) {
             return -pi_2;
         } else {
-            return range;
+            return half_range;
         }
     } else if (x.lb > 0) {
-        if (justzero(y)) {
+        if (just_zero(y)) {
             return y;
         } else if (y.lb >= 0) {
-            return { next_after(next_after(std::atan2(y.lb, x.ub), range.lb), range.lb) , 
-                     next_after(next_after(std::atan2(y.ub, x.lb), range.ub), range.ub) };
+            return { next_after(next_after(atan2(y.lb, x.ub), range.lb), range.lb) , 
+                     next_after(next_after(atan2(y.ub, x.lb), range.ub), range.ub) };
         } else if (y.ub <= 0) {
-            return { next_after(next_after(std::atan2(y.lb, x.lb), range.lb), range.lb) , 
-                     next_after(next_after(std::atan2(y.ub, x.ub), range.ub), range.ub) };
+            return { next_after(next_after(atan2(y.lb, x.lb), range.lb), range.lb) , 
+                     next_after(next_after(atan2(y.ub, x.ub), range.ub), range.ub) };
         } else {
-            return range;
+            return { next_after(next_after(atan2(y.lb, x.lb), range.lb), range.lb) , 
+                     next_after(next_after(atan2(y.ub, x.lb), range.ub), range.ub) };
         }
     } else if (x.ub < 0) {
-        if (justzero(y)) {
+        if (just_zero(y)) {
             return pi;
         } else if (y.lb >= 0) {
-            return { next_after(next_after(std::atan2(y.ub, x.ub), range.lb), range.lb),
-                     next_after(next_after(std::atan2(y.lb, x.lb), range.ub), range.ub) };
-        } else if (y.ub <= 0) {
-            return { -pi_2.ub,
-                     next_after(next_after(std::atan2(y.ub, x.ub), range.ub), range.ub) };
+            return { next_after(next_after(atan2(y.ub, x.ub), range.lb), range.lb),
+                     next_after(next_after(abs(atan2(y.lb, x.lb)), range.ub), range.ub) };
+        } else if (y.ub < 0) {
+            return { next_after(next_after(atan2(y.ub, x.lb), range.lb), range.lb),
+                     next_after(next_after(atan2(y.lb, x.ub), range.ub), range.ub) };
         } else {
             return range;
         }
     } else {
         if (x.lb == 0) {
-            if (justzero(y)) {
-                return pi;
+            if (just_zero(y)) {
+                return y;
             } else if (y.lb >= 0) {
-                return { next_after(next_after(std::atan2(y.lb, x.ub), range.lb), range.lb),
+                return { next_after(next_after(atan2(y.lb, x.ub), range.lb), range.lb),
                          pi_2.ub };
             } else if (y.ub <= 0) {
-                return { -pi_2.ub, next_after(next_after(std::atan2(y.ub, x.ub), range.ub), range.ub) };
+                return { -pi_2.ub, next_after(next_after(atan2(y.ub, x.ub), range.ub), range.ub) };
             } else {
-                return range;
+                return half_range;
             }
         } else if (x.ub == 0) {
-            if (justzero(y)) {
+            if (just_zero(y)) {
                 return pi;
             } else if (y.lb >= 0) {
-                return { -pi_2.ub, next_after(next_after(std::atan2(y.lb, x.lb), range.lb))};
+                return { pi_2.lb, next_after(next_after(abs(atan2(y.lb, x.lb)), range.ub), range.ub)};
             } else if (y.ub < 0) {
-                return { next_after(next_after(std::atan2(y.ub, x.lb), range.ub), range.ub), -pi_2.ub };
+                return { next_after(next_after(atan2(y.ub, x.lb), range.lb), range.lb), -pi_2.lb };
             } else {
                 return range;
             }
         } else {
             if (y.lb >= 0) {
                 return { next_after(next_after(atan2(y.lb, x.ub), range.lb), range.lb), 
-                         next_after(next_after(atan2(y.lb, x.lb), range.ub), range.ub) };
+                         next_after(next_after(abs(atan2(y.lb, x.lb)), range.ub), range.ub) };
             } else if (y.ub < 0) {
                 return { next_after(next_after(atan2(y.ub, x.lb), range.lb), range.lb), 
                          next_after(next_after(atan2(y.ub, x.ub), range.ub), range.ub) };

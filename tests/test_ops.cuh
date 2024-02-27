@@ -580,4 +580,13 @@ __global__ void test_atanh(int n, interval<T> *x, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_atan2(int n, interval<T> *y, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = atan2(y[i], x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

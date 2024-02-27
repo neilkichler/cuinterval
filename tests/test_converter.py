@@ -113,7 +113,7 @@ void tests_''' + test_name + '''() {
                 "asin": {"args": [I], "ret": I, "ulp_error": 3},
                 "acos": {"args": [I], "ret": I, "ulp_error": 3},
                 "atan": {"args": [I], "ret": I, "ulp_error": 3},
-                # "atan2": {"args": [I], "ret": I, "ulp_error": 3},
+                "atan2": {"args": [I, I], "ret": I, "ulp_error": 3},
                 "sinh": {"args": [I], "ret": I, "ulp_error": 3},
                 "cosh": {"args": [I], "ret": I, "ulp_error": 2},
                 "tanh": {"args": [I], "ret": I, "ulp_error": 2},

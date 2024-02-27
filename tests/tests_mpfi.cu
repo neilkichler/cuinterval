@@ -527,6 +527,89 @@ void tests_mpfi() {
         }
     };
 
+    "mpfi_atan2_atan2"_test = [&] {
+        constexpr int n = 18;
+        std::array<I, n> h_xs {{
+            {-17.0,-5.0},
+            {-17.0,-5.0},
+            {-17.0,5.0},
+            {-infinity,+8.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {0.0,+8.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {5.0,17.0},
+            {5.0,17.0},
+            entire,
+        }};
+
+        std::array<I, n> h_ys {{
+            {-4002.0,-1.0},
+            {1.0,4002.0},
+            {-4002.0,1.0},
+            {0.0,+8.0},
+            {-1.0,+8.0},
+            {+8.0,+infinity},
+            {-7.0,+8.0},
+            {-7.0,0.0},
+            {0.0,+8.0},
+            {0.0,+8.0},
+            {+8.0,+infinity},
+            {-infinity,-7.0},
+            {0.0,+8.0},
+            {0.0,0.0},
+            entire,
+            {-4002.0,-1.0},
+            {1.0,4002.0},
+            {0.0,+8.0},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        I *d_ys = (I *)d_ys_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {-0x191f6c4c09a81bp-51,-0x1a12a5465464cfp-52},
+            {-0x1831516233f561p-52,-0xa3c20ea13f5e5p-61},
+            {-0x1921fb54442d19p-51,0x1921fb54442d19p-51},
+            {-0x1921fb54442d19p-52,0x1921fb54442d19p-52},
+            {-0x6d9cc4b34bd0dp-50,-0x1700a7c5784633p-53},
+            {-0x1921fb54442d19p-52,0.0},
+            {0.0,0x1921fb54442d19p-51},
+            {0x3243f6a8885a3p-49,0x1921fb54442d19p-51},
+            {0.0,0x1921fb54442d19p-52},
+            {0.0,0x1921fb54442d19p-52},
+            {0.0,0.0},
+            {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
+            {0.0,0.0},
+            empty,
+            {0.0,0x1921fb54442d19p-51},
+            {0x1a12a5465464cfp-52,0x191f6c4c09a81bp-51},
+            {0xa3c20ea13f5e5p-61,0x1831516233f561p-52},
+            {-0x1921fb54442d19p-52,0x1921fb54442d19p-52},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_atan2<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
+        }
+    };
+
     "mpfi_atanh_atanh"_test = [&] {
         constexpr int n = 9;
         std::array<I, n> h_xs {{
