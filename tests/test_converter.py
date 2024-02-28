@@ -99,6 +99,7 @@ void tests_''' + test_name + '''() {
                 "cancelPlus": {"args": [I, I], "ret": I, "ulp_error": 0},
                 "roundTiesToEven": {"args": [I], "ret": I, "ulp_error": 0},
                 "roundTiesToAway": {"args": [I], "ret": I, "ulp_error": 0},
+                "cbrt": {"args": [I], "ret": I, "ulp_error": 1},
                 "exp": {"args": [I], "ret": I, "ulp_error": 3},
                 "exp2": {"args": [I], "ret": I, "ulp_error": 3},
                 "exp10": {"args": [I], "ret": I, "ulp_error": 3},

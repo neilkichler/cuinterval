@@ -128,6 +128,17 @@ __device__ interval<T> sqrt(interval<T> x)
 }
 
 template<typename T>
+__device__ interval<T> cbrt(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    return { intrinsic::prev_floating(cbrt(x.lb)),
+             intrinsic::next_floating(cbrt(x.ub)) };
+}
+
+template<typename T>
 __device__ bool contains(interval<T> x, T y)
 {
     return x.lb <= y && y <= x.ub;

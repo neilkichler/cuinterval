@@ -49,6 +49,15 @@ __global__ void test_sqrt(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
+__global__ void test_cbrt(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = cbrt(x[i]);
+    }
+}
+
+template<typename T>
 __global__ void test_add(int n, interval<T> *x, interval<T> *y, interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
