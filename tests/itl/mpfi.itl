@@ -1019,15 +1019,15 @@ testcase mpfi_log {
 
 testcase mpfi_log1p {
     // special values
-    logp1 [-1.0, 0.0] = [-infinity, 0.0];
-    logp1 [0.0, 0.0] = [0.0, 0.0];
-    logp1 [0.0, 1.0] = [0.0, 0x162e42fefa39f0p-53];
-    logp1 [0.0, +infinity] = [0.0, +infinity];
+    log1p [-1.0, 0.0] = [-infinity, 0.0];
+    log1p [0.0, 0.0] = [0.0, 0.0];
+    log1p [0.0, 1.0] = [0.0, 0x162e42fefa39f0p-53];
+    log1p [0.0, +infinity] = [0.0, +infinity];
 
     // regular values
-    logp1 [-0xb616ab8b683b5p-52, 0.0] = [-0x13e080325bab7bp-52, 0.0];
-    logp1 [0.0, 0x8ac74d932fae3p-21] = [0.0, 0x14e0115561569cp-48];
-    logp1 [0x4c322657ec89bp-16, 0x4d68ba5f26bf1p-11] = [0x17bdce451a337fp-48, 0x1b3913fc99f6fcp-48];
+    log1p [-0xb616ab8b683b5p-52, 0.0] = [-0x13e080325bab7bp-52, 0.0];
+    log1p [0.0, 0x8ac74d932fae3p-21] = [0.0, 0x14e0115561569cp-48];
+    log1p [0x4c322657ec89bp-16, 0x4d68ba5f26bf1p-11] = [0x17bdce451a337fp-48, 0x1b3913fc99f6fcp-48];
 }
 
 testcase mpfi_log2 {
