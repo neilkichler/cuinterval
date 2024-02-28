@@ -12,6 +12,7 @@ void tests_c_xsc() {
 
     using I = interval<T>;
     using B = bool;
+    using N = int;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();

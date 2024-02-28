@@ -671,6 +671,9 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
         return empty<T>();
     }
 
+    using intrinsic::next_floating;
+    using intrinsic::prev_floating;
+
     if (n % 2) { // odd power
         if (entire(x)) {
             return x;
@@ -678,24 +681,24 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
 
         if (n > 0) {
             if (inf(x) == 0) {
-                return { 0, pow(sup(x), n) }; // TODO: rounding
+                return { 0, next_floating(pow(sup(x), n)) };
             } else if (sup(x) == 0) {
-                return { pow(inf(x), n), 0 }; // TODO: rounding
+                return { prev_floating(pow(inf(x), n)), 0 };
             } else {
-               return { pow(inf(x), n), pow(sup(x), n) }; // TODO: rounding 
+               return { prev_floating(pow(inf(x), n)), next_floating(pow(sup(x), n)) };
             }
         } else {
             if (inf(x) >= 0) {
                 if (inf(x) == 0) {
-                    return { pow(sup(x), n), intrinsic::pos_inf<T>() }; // TODO: rounding
+                    return { prev_floating(pow(sup(x), n)), next_floating(intrinsic::pos_inf<T>()) };
                 } else {
-                    return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+                    return { prev_floating(pow(sup(x), n)), next_floating(pow(inf(x), n)) };
                 }
             } else if (sup(x) <= 0) {
                 if (sup(x) == 0) {
-                    return { intrinsic::neg_inf<T>(), pow(inf(x), n) }; // TODO: rounding
+                    return { prev_floating(intrinsic::neg_inf<T>()), next_floating(pow(inf(x), n)) };
                 } else {
-                    return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+                    return { prev_floating(pow(sup(x), n)), next_floating(pow(inf(x), n)) };
                 }
             } else {
                 return entire<T>();
@@ -704,19 +707,19 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
     } else { // even power
         if (n > 0) {
             if (inf(x) >= 0) {
-                return { pow(inf(x), n), pow(sup(x), n) }; // TODO: rounding
+                return { prev_floating(pow(inf(x), n)), next_floating(pow(sup(x), n)) };
             } else if (sup(x) <= 0) {
-                return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+                return { prev_floating(pow(sup(x), n)), next_floating(pow(inf(x), n)) };
             } else {
-                return { pow(mig(x), n), pow(mag(x), n) }; // TODO: rounding
+                return { prev_floating(pow(mig(x), n)), next_floating(pow(mag(x), n)) };
             }
         } else {
             if (inf(x) >= 0) {
-                return { pow(sup(x), n), pow(inf(x), n) }; // TODO: rounding
+                return { prev_floating(pow(sup(x), n)), next_floating(pow(inf(x), n)) };
             } else if (sup(x) <= 0) {
-                return { pow(inf(x), n), pow(sup(x), n) }; // TODO: rounding
+                return { prev_floating(pow(inf(x), n)), next_floating(pow(sup(x), n)) };
             } else {
-                return { pow(mag(x), n), pow(mig(x), n) }; // TODO: rounding
+                return { prev_floating(pow(mag(x), n)), next_floating(pow(mig(x), n)) };
             }
         }
     }
@@ -968,10 +971,6 @@ __device__ interval<T> tan(interval<T> x)
     }
 
     constexpr interval<T> pi{ 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
-    constexpr interval<T> tau{ 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
-    
-    T cos_min = static_cast<T>(-1);
-    T cos_max = static_cast<T>(1);
 
     T w = width(x);
 
@@ -1208,6 +1207,13 @@ __device__ interval<T> atanh(interval<T> x)
 
     return { intrinsic::next_after(intrinsic::next_after(atanh(inf(xx)), range.lb), range.lb),
              intrinsic::next_after(intrinsic::next_after(atanh(sup(xx)), range.ub), range.ub) };
+}
+
+template<typename T>
+__device__ interval<T> cot(interval<T> x)
+{
+    // return cos(x) / sin(x);
+    return {};
 }
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

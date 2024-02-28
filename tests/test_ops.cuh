@@ -616,4 +616,22 @@ __global__ void test_cospi(int n, interval<T> *x, interval<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_cot(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = cot(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_pown(int n, interval<T> *x, int *n_pow, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = pown(x[i], n_pow[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

@@ -6,7 +6,7 @@ import os
 from collections import defaultdict
 from enum import Enum
 
-ParamType = Enum('ParamType', ['I','B', 'T'])
+ParamType = Enum('ParamType', ['I','B','T','N']) # interval | boolean | type | number
 
 indent_one = ' ' * 4
 indent_two = ' ' * 8
@@ -37,6 +37,7 @@ void tests_''' + test_name + '''() {
 
     using I = interval<T>;
     using B = bool;
+    using N = int;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
@@ -55,6 +56,7 @@ void tests_''' + test_name + '''() {
             I = ParamType.I
             B = ParamType.B
             T = ParamType.T
+            N = ParamType.N
             supported = {
                 "pos": {"args": [I], "ret": I, "ulp_error": 0},
                 "neg": {"args": [I], "ret": I, "ulp_error": 0},
@@ -123,6 +125,8 @@ void tests_''' + test_name + '''() {
                 "atanh": {"args": [I], "ret": I, "ulp_error": 3},
                 "sinpi": {"args": [I], "ret": I, "ulp_error": 3},
                 "cospi": {"args": [I], "ret": I, "ulp_error": 3},
+                "pown": {"args": [I, N], "ret": I, "ulp_error": 1},
+                # "cot": {"args": [I], "ret": I, "ulp_error": 4},
             }
 
             empty = '{empty}'
@@ -133,12 +137,14 @@ void tests_''' + test_name + '''() {
             failed_code = {
                 'params': {
                     T: 'h_{}[fail_id]',
+                    N: 'h_{}[fail_id]',
                     I: 'h_{}[fail_id].lb, h_{}[fail_id].ub'
                 },
                 'cuda': {
                     T: '{} = %a\\n',
                     B: '{} = %d\\n',
-                    I: '{} = [%a, %a]\\n'
+                    I: '{} = [%a, %a]\\n',
+                    N: '{} = %d\\n'
                 }
             }
             

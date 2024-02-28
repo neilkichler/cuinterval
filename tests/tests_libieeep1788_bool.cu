@@ -12,6 +12,7 @@ void tests_libieeep1788_bool() {
 
     using I = interval<T>;
     using B = bool;
+    using N = int;
 
     I empty         = ::empty<T>();
     I entire        = ::entire<T>();
