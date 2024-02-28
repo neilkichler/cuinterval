@@ -726,6 +726,54 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
 }
 
 template<typename T>
+__device__ interval<T> pow_(interval<T> x, T y)
+{
+    assert(inf(x) >= 0);
+
+    using intrinsic::next_floating;
+    using intrinsic::prev_floating;
+
+    if (sup(x) == 0) {
+        if (y > 0) {
+            return { 0, 0 };
+        } else {
+            return empty<T>();
+        }
+    } else {
+        if (rint(y) == y) {
+            return pown(x, lrint(y));
+        } else if (y == 0.5) {
+            return sqrt(x);
+        } else {
+            interval<T> lb { prev_floating(pow(inf(x), y)), next_floating(pow(inf(x), y))};
+            interval<T> ub { prev_floating(pow(sup(x), y)), next_floating(pow(sup(x), y))};
+            return convex_hull(lb, ub);
+        }
+    }
+
+    return {};
+}
+
+template<typename T>
+__device__ interval<T> pow(interval<T> x, interval<T> y)
+{
+    if (empty(y)) {
+        return empty<T>();
+    }
+
+    interval<T> domain { static_cast<T>(0), intrinsic::pos_inf<T>() };
+    x = intersection(x, domain);
+
+    if (empty(x)) {
+        return empty<T>();
+    } else if (y.lb == y.ub) {
+        return pow_(x, y.ub);
+    } else {
+        return convex_hull(pow_(x, y.lb), pow_(x, y.ub));
+    }
+}
+
+template<typename T>
 __device__ unsigned int quadrant(T v) {
     int quotient;
     T vv = intrinsic::next_after(intrinsic::sub_down(v, M_PI_4), static_cast<T>(0));
