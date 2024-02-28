@@ -127,6 +127,7 @@ void tests_''' + test_name + '''() {
                 "cospi": {"args": [I], "ret": I, "ulp_error": 3},
                 "pown": {"args": [I, N], "ret": I, "ulp_error": 1},
                 "pow": {"args": [I, I], "ret": I, "ulp_error": 1},
+                "rootn": {"args": [I, N], "ret": I, "ulp_error": 2},
                 # "cot": {"args": [I], "ret": I, "ulp_error": 4},
             }
 

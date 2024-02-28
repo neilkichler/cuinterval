@@ -635,6 +635,15 @@ __global__ void test_pown(int n, interval<T> *x, int *n_pow, interval<T> *res)
 }
 
 template<typename T>
+__global__ void test_rootn(int n, interval<T> *x, int *n_pow, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = rootn(x[i], n_pow[i]);
+    }
+}
+
+template<typename T>
 __global__ void test_pow(int n, interval<T> *x, interval<T> *y, interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;

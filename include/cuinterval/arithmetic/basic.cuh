@@ -755,6 +755,36 @@ __device__ interval<T> pow_(interval<T> x, T y)
 }
 
 template<typename T>
+__device__ interval<T> rootn(interval<T> x, std::integral auto n)
+{
+    assert(n && "n must be non-zero integer");
+
+    if (empty(x)) {
+        return x;
+    } else if (n == 0) {
+        return empty<T>();
+    } else if (n == 1) {
+        return x;
+    } else if (n == 2) {
+        return sqrt(x);
+    } else if (n < 0) {
+        return recip(rootn(x, -n));
+    }
+
+    bool is_odd = n % 2;
+    interval<T> domain { is_odd ? intrinsic::neg_inf<T>() : static_cast<T>(0),
+                         intrinsic::pos_inf<T>() };
+
+    x = intersection(x, domain);
+    if (empty(x)) {
+        return empty<T>();
+    }
+    
+    return { intrinsic::next_after(pow(inf(x), 1.0 / n), domain.lb),
+             intrinsic::next_after(pow(sup(x), 1.0 / n), domain.ub) };
+}
+
+template<typename T>
 __device__ interval<T> pow(interval<T> x, interval<T> y)
 {
     if (empty(y)) {
