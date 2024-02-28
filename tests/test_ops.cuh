@@ -589,4 +589,22 @@ __global__ void test_atan2(int n, interval<T> *y, interval<T> *x, interval<T> *r
     }
 }
 
+template<typename T>
+__global__ void test_sinpi(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = sinpi(x[i]);
+    }
+}
+
+template<typename T>
+__global__ void test_cospi(int n, interval<T> *x, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = cospi(x[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

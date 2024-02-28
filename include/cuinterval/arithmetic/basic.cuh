@@ -711,7 +711,6 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
     }
 }
 
-
 template<typename T>
 __device__ unsigned int quadrant(T v) {
     int quotient;
@@ -721,6 +720,15 @@ __device__ unsigned int quadrant(T v) {
 };
 
 template<typename T>
+__device__ unsigned int quadrant_pi(T v) {
+    int quotient;
+    T vv = intrinsic::next_after(intrinsic::sub_down(v, 0.25), static_cast<T>(0));
+    T rem = remquo(vv, 0.5, &quotient);
+    return static_cast<unsigned>(quotient) % 4;
+};
+
+// NOTE: Prefer sinpi whenever possible to avoid immediate rounding error of pi during calculation.
+template<typename T>
 __device__ interval<T> sin(interval<T> x)
 {
     if (empty(x)) {
@@ -729,13 +737,15 @@ __device__ interval<T> sin(interval<T> x)
 
     constexpr interval<T> pi{ 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
     constexpr interval<T> tau{ 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
-    
+
     T sin_min = static_cast<T>(-1);
     T sin_max = static_cast<T>(1);
 
     T w = width(x);
+    T full_period = sup(tau);
+    T half_period = sup(pi);
 
-    if (w >= sup(tau)) {
+    if (w >= full_period) {
         // interval contains at least one full period -> return range of sin
         return { -1, 1 };
     }
@@ -769,7 +779,7 @@ __device__ interval<T> sin(interval<T> x)
     auto quadrant_ub = quadrant(x.ub);
 
     if (quadrant_lb == quadrant_ub) {
-        if (w >= sup(pi)) { // beyond single quadrant -> full range
+        if (w >= half_period) { // beyond single quadrant -> full range
             return { -1, 1 };
         } else if (quadrant_lb == 1 || quadrant_lb == 2) { // decreasing
             return { intrinsic::next_after(sin(x.ub), sin_min),
@@ -793,6 +803,55 @@ __device__ interval<T> sin(interval<T> x)
     }
 }
 
+
+template<typename T>
+__device__ interval<T> sinpi(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    T sin_min = static_cast<T>(-1);
+    T sin_max = static_cast<T>(1);
+
+    T w = width(x);
+    T full_period = 2;
+    T half_period = 1;
+
+    if (w >= full_period) {
+        // interval contains at least one full period -> return range of sin
+        return { -1, 1 };
+    }
+
+    auto quadrant_lb = quadrant_pi(x.lb);
+    auto quadrant_ub = quadrant_pi(x.ub);
+
+    if (quadrant_lb == quadrant_ub) {
+        if (w >= half_period) { // beyond single quadrant -> full range
+            return { -1, 1 };
+        } else if (quadrant_lb == 1 || quadrant_lb == 2) { // decreasing
+            return { intrinsic::next_after(sinpi(x.ub), sin_min),
+                     intrinsic::next_after(sinpi(x.lb), sin_max) };
+        } else { // increasing
+            return { intrinsic::next_after(sinpi(x.lb), sin_min),
+                     intrinsic::next_after(sinpi(x.ub), sin_max) };
+        }
+    } else if (quadrant_lb == 3 && quadrant_ub == 0) { // increasing
+        return { intrinsic::next_after(sinpi(x.lb), sin_min),
+                 intrinsic::next_after(sinpi(x.ub), sin_max) };
+    } else if (quadrant_lb == 1 && quadrant_ub == 2) { // decreasing
+        return { intrinsic::next_after(sinpi(x.ub), sin_min),
+                 intrinsic::next_after(sinpi(x.lb), sin_max) };
+    } else if ((quadrant_lb == 3 || quadrant_lb == 0) && (quadrant_ub == 1 || quadrant_ub == 2)) {
+        return { intrinsic::next_after(min(sinpi(x.lb), sinpi(x.ub)), sin_min), 1 };
+    } else if ((quadrant_lb == 1 || quadrant_lb == 2) && (quadrant_ub == 3 || quadrant_ub == 0)) {
+        return { -1, intrinsic::next_after(max(sinpi(x.lb), sinpi(x.ub)), sin_max) };
+    } else {
+        return { -1, 1 };
+    }
+}
+
+// NOTE: Prefer cospi whenever possible to avoid immediate rounding error of pi during calculation.
 template<typename T>
 __device__ interval<T> cos(interval<T> x)
 {
@@ -807,8 +866,10 @@ __device__ interval<T> cos(interval<T> x)
     T cos_max = static_cast<T>(1);
 
     T w = width(x);
+    T full_period = sup(tau);
+    T half_period = sup(pi);
 
-    if (w >= sup(tau)) {
+    if (w >= full_period) {
         // interval contains at least one full period -> return range of cos
         return { -1, 1 };
     }
@@ -817,7 +878,7 @@ __device__ interval<T> cos(interval<T> x)
     auto quadrant_ub = quadrant(x.ub);
 
     if (quadrant_lb == quadrant_ub) {
-        if (w >= sup(pi)) { // beyond single quadrant -> full range
+        if (w >= half_period) { // beyond single quadrant -> full range
             return { -1, 1 };
         } else if (quadrant_lb == 2 || quadrant_lb == 3) { // increasing
             return { intrinsic::next_after(cos(x.lb), cos_min),
@@ -836,6 +897,53 @@ __device__ interval<T> cos(interval<T> x)
         return { intrinsic::next_after(min(cos(x.lb), cos(x.ub)), cos_min), 1 };
     } else if ((quadrant_lb == 0 || quadrant_lb == 1) && (quadrant_ub == 2 || quadrant_ub == 3)) {
         return { -1, intrinsic::next_after(max(cos(x.lb), cos(x.ub)), cos_max) };
+    } else {
+        return { -1, 1 };
+    }
+}
+
+template<typename T>
+__device__ interval<T> cospi(interval<T> x)
+{
+    if (empty(x)) {
+        return x;
+    }
+
+    T cos_min = static_cast<T>(-1);
+    T cos_max = static_cast<T>(1);
+
+    T w = width(x);
+    T full_period = 2;
+    T half_period = 1;
+
+    if (w >= full_period) {
+        // interval contains at least one full period -> return range of cos
+        return { -1, 1 };
+    }
+
+    auto quadrant_lb = quadrant_pi(x.lb);
+    auto quadrant_ub = quadrant_pi(x.ub);
+
+    if (quadrant_lb == quadrant_ub) {
+        if (w >= half_period) { // beyond single quadrant -> full range
+            return { -1, 1 };
+        } else if (quadrant_lb == 2 || quadrant_lb == 3) { // increasing
+            return { intrinsic::next_after(cospi(x.lb), cos_min),
+                     intrinsic::next_after(cospi(x.ub), cos_max) };
+        } else { // decreasing
+            return { intrinsic::next_after(cospi(x.ub), cos_min),
+                     intrinsic::next_after(cospi(x.lb), cos_max) };
+        }
+    } else if (quadrant_lb == 2 && quadrant_ub == 3) { // increasing
+        return { intrinsic::next_after(cospi(x.lb), cos_min),
+                 intrinsic::next_after(cospi(x.ub), cos_max) };
+    } else if (quadrant_lb == 0 && quadrant_ub == 1) { // decreasing
+        return { intrinsic::next_after(cospi(x.ub), cos_min),
+                 intrinsic::next_after(cospi(x.lb), cos_max) };
+    } else if ((quadrant_lb == 2 || quadrant_lb == 3) && (quadrant_ub == 0 || quadrant_ub == 1)) {
+        return { intrinsic::next_after(min(cospi(x.lb), cospi(x.ub)), cos_min), 1 };
+    } else if ((quadrant_lb == 0 || quadrant_lb == 1) && (quadrant_ub == 2 || quadrant_ub == 3)) {
+        return { -1, intrinsic::next_after(max(cospi(x.lb), cospi(x.ub)), cos_max) };
     } else {
         return { -1, 1 };
     }
