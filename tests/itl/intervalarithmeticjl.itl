@@ -23,4 +23,22 @@ testcase iajl_sinpi {
     sinpi [36.0, 37.0] = [0.0, 1.0];
 }
 
+testcase iajl_cospi {
+    cospi [empty] = [empty];
+    cospi [entire] = [-1.0, 1.0];
+    cospi [1.0, 2.0] = [-1.0, 1.0];
+    cospi [0.5, 1.5] = [-1.0, 0.0];
+
+    cospi [1.0, 1.0] = [-1.0, -1.0];
+    cospi [2.0, 2.0] = [1.0, 1.0];
+    cospi [0.5, 0.5] = [0.0, 0.0];
+    cospi [1.5, 1.5] = [0.0, 0.0];
+    cospi [0.25, 0.75] = [-0x1.6a09e667f3bcdp-1, 0x1.6a09e667f3bcdp-1];
+    cospi [-0.25, 0.25] = [0x1.6a09e667f3bcdp-1, 1.0];
+
+
+    // some additional ones
+    cospi [0.0, 2.0] = [-1.0, 1.0];
+    cospi [36.0, 37.0] = [-1.0, 1.0];
+}
 
