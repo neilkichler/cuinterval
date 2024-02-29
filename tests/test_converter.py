@@ -289,8 +289,8 @@ if __name__ == '__main__':
     os.chdir(os.path.dirname(__file__) + '/itl')
     files = glob.glob('*.itl', recursive=True)
     main_preamble = auto_generated_comment + '\n'
-    main_includes = ''
-    main_tests = ''
+    main_includes = '#include "tests_additional.cu"\n'
+    main_tests = indent_one + 'tests_additional<double>();\n'
 
     for f in files:
         test_code = convert_to_test(f)

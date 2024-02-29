@@ -6,11 +6,17 @@
 
 // IEEE Std 1788.1-2017, Table 4.1
 
+// TODO: next up is arith.jl tests, and examples.
+
 template<typename T>
 __device__ interval<T> pos_inf()
 {
     return { intrinsic::pos_inf<T>(), intrinsic::pos_inf<T>() };
 }
+
+//
+// Constant intervals
+//
 
 template<typename T>
 __device__ __host__ interval<T> empty()
@@ -47,7 +53,9 @@ __device__ bool just_zero(interval<T> x)
     return x.lb == 0 && x.ub == 0;
 }
 
-// Basic operations
+//
+// Basic arithmetic operations
+//
 
 template<typename T>
 __device__ interval<T> neg(interval<T> x)
@@ -550,6 +558,12 @@ __device__ bool is_common_interval(interval<T> x)
 }
 
 template<typename T>
+__device__ bool is_atomic(interval<T> x)
+{
+    return empty(x) || is_singleton(x) || (intrinsic::next_floating(inf(x)) == sup(x));
+}
+
+template<typename T>
 __device__ interval<T> round_to_nearest_even(interval<T> x)
 {
     return { intrinsic::round_even(x.lb), intrinsic::round_even(x.ub) };
@@ -809,6 +823,10 @@ __device__ interval<T> pow(interval<T> x, interval<T> y)
         return convex_hull(pow_(x, y.lb), pow_(x, y.ub));
     }
 }
+
+//
+// Trigonometric functions
+//
 
 template<typename T>
 __device__ unsigned int quadrant(T v) {
@@ -1208,6 +1226,10 @@ __device__ interval<T> atan2(interval<T> y, interval<T> x)
     }
 }
 
+//
+// Hyperbolic functions
+//
+
 template<typename T>
 __device__ interval<T> sinh(interval<T> x)
 {
@@ -1299,6 +1321,58 @@ __device__ interval<T> cot(interval<T> x)
 {
     // return cos(x) / sin(x);
     return {};
+}
+
+template<typename T>
+struct split
+{
+    interval<T> lower_half;
+    interval<T> upper_half;
+
+    auto operator<=>(const split&) const = default;
+};
+
+template<typename T>
+__device__ split<T> bisect(interval<T> x, T split_ratio)
+{
+    assert(0 <= split_ratio && split_ratio <= 1);
+
+    if (is_atomic(x)) {
+        return { x, empty<T>() };
+    }
+
+    T split_point;
+    T type_min = intrinsic::neg_inf<T>();
+    T type_max = intrinsic::pos_inf<T>();
+
+    using intrinsic::next_floating;
+    using intrinsic::prev_floating;
+
+    if (entire(x)) {
+        if (split_ratio == 0.5) {
+            split_point = 0;
+        } else if (split_ratio > 0.5) {
+            split_point = prev_floating(type_max);
+        } else {
+            split_point = next_floating(type_min);
+        }
+    } else {
+        if (x.lb == type_min) {
+            split_point = next_floating(x.lb);
+        } else if (x.ub == type_max) {
+            split_point = prev_floating(x.ub);
+        } else {
+            split_point = split_ratio * (x.ub + x.lb * (1/split_ratio - 1));
+
+            if (split_point == type_min || split_point == type_max) {
+                split_point = (1 - split_ratio) * x.lb + split_ratio * x.ub;
+            }
+
+            split_point = (split_point != 0) * split_point; // turn -0 to 0
+        }
+    }
+
+    return { { x.lb, split_point }, { split_point, x.ub } };
 }
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

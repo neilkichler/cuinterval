@@ -652,4 +652,13 @@ __global__ void test_pow(int n, interval<T> *x, interval<T> *y, interval<T> *res
     }
 }
 
+template<typename T>
+__global__ void test_bisect(int n, interval<T> *x, T *y, split<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = bisect(x[i], y[i]);
+    }
+}
+
 #endif // TEST_OPS_CUH

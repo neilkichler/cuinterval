@@ -35,7 +35,13 @@
 template<typename T>
 std::ostream &operator<<(std::ostream &os, const interval<T> &x)
 {
-    return (os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']');
+    return os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']';
+}
+
+template<typename T>
+std::ostream &operator<<(std::ostream &os, const split<T> &x)
+{
+    return os << '(' << x.lower_half << ',' << x.upper_half << ')';
 }
 
 template<typename T>
