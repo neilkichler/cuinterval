@@ -15,6 +15,7 @@
 #include "tests_libieeep1788_bool.cu"
 #include "tests_atan2.cu"
 #include "tests_mpfi.cu"
+#include "tests_intervalarithmeticjl.cu"
 #include "tests_libieeep1788_set.cu"
 #include "tests_filib.cu"
 #include "tests_ieee1788_exceptions.cu"
@@ -38,6 +39,7 @@ int main()
     tests_libieeep1788_bool<double>();
     tests_atan2<double>();
     tests_mpfi<double>();
+    tests_intervalarithmeticjl<double>();
     tests_libieeep1788_set<double>();
     tests_filib<double>();
     tests_ieee1788_exceptions<double>();
