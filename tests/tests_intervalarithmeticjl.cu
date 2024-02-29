@@ -128,6 +128,36 @@ void tests_intervalarithmeticjl() {
         }
     };
 
+    "iajl_tan_tan"_test = [&] {
+        constexpr int n = 3;
+        std::array<I, n> h_xs {{
+            {0.5,0.5},
+            {0.5,1.67},
+            {1.67,3.2},
+        }};
+
+        std::array<I, n> h_res{};
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_ref {{
+            {0.54630248984379048,0.5463024898437906},
+            entire,
+            {-10.047182299210307,0.05847385445957865},
+        }};
+
+        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        test_tan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        int max_ulp_diff = 3;
+        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
+        for (auto fail_id : failed) {
+            printf("failed at case %zu:\n", fail_id);
+            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
+        }
+    };
+
 
     CUDA_CHECK(cudaFree(d_xs_));
     CUDA_CHECK(cudaFree(d_ys_));
