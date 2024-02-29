@@ -6,6 +6,8 @@
 
 // IEEE Std 1788.1-2017, Table 4.1
 
+// TODO: next up: pi test through looping
+
 template<typename T>
 __device__ interval<T> pos_inf()
 {

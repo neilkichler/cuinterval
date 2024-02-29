@@ -48,3 +48,35 @@ testcase iajl_tan {
     tan [1.67, 3.2] = [-10.047182299210307, 0.05847385445957865];
     tan [6.638314112824137, 8.38263151220128] = [entire];
 }
+
+testcase iajl_rootn {
+    rootn [empty] 3 = [empty];
+    rootn [empty] 4 = [empty];
+    rootn [empty] -3 = [empty];
+    rootn [empty] -4 = [empty];
+    rootn [1, 2] 0 = [empty];
+    rootn [5, 8] 0 = [empty];
+    rootn [1, 7] 0 = [empty];
+    rootn [8, 27] 3 = [2, 3];
+    rootn [0, 27] 3 = [0, 3];
+    // rootn [-27, 0] 3 = [-3, 0];
+    // rootn [-27, 27] 3 = [-3, 3];
+    // rootn [-27, -8] 3 = [-3, -2];
+    rootn [16, 81] 4 = [2, 3];
+    rootn [0, 81] 4 = [0, 3];
+    // rootn [-81, 0] 4 = [0, 0];
+    // rootn [-81, 81] 4 = [0, 3];
+    // rootn [-81, -16] 4 = [empty];
+    // rootn [8, 27] -3 = [1/3, 1/2];
+    // rootn [0, 27] -3 = [1/3, infinity];
+    // rootn [-27, 0] -3 = [-infinity, -1/3];
+    // rootn [-27, 27] -3 = [-infinity, infinity];
+    // rootn [-27, -8] -3 = [-1/2, -1/3];
+    // rootn [16, 81] -4 = [1/3, 1/2];
+    // rootn [0, 81] -4 = [1/3, infinity];
+    // rootn [-81, 0] -4 = [empty];
+    // rootn [-81, 1] 1 = [-81, 1];
+    // rootn [-81, 81] -4 = [1/3, infinity];
+    // rootn [-81, -16] -4 = [empty];
+    // rootn [-81, -16] 1 = [-81, -16];
+}
