@@ -13,8 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: ilammy/msvc-dev-cmd@v1
     - name: Display the path
-      shell: cmd.exe /k "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" {0}
       run: echo %PATH%
     - name: gpu info
       run: nvidia-smi
