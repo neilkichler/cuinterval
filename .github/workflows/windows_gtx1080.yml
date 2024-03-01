@@ -13,8 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: compiler info
-      run: clang-cl
+    - name: Display the path
+      shell: pwsh
+      run: echo ${env:PATH}
     - name: gpu info
       run: nvidia-smi
     - name: directory info
