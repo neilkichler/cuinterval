@@ -11,9 +11,9 @@ void tests_bisect() {
     using B = bool;
     using N = int;
 
-    I empty         = ::empty<T>();
-    I entire        = ::entire<T>();
     T infinity = std::numeric_limits<T>::infinity();
+    I empty    = { infinity, -infinity };
+    I entire   = { -infinity, infinity };
     T NaN = ::nan("");
 
     const int n = 8; // count of largest test array

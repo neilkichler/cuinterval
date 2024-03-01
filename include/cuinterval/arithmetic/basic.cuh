@@ -6,7 +6,9 @@
 
 // IEEE Std 1788.1-2017, Table 4.1
 
-// TODO: next up: pi test through looping
+//
+// Constant intervals
+//
 
 template<typename T>
 __device__ interval<T> pos_inf()
@@ -14,37 +16,22 @@ __device__ interval<T> pos_inf()
     return { intrinsic::pos_inf<T>(), intrinsic::pos_inf<T>() };
 }
 
-//
-// Constant intervals
-//
-
 template<typename T>
-__device__ __host__ interval<T> empty()
+constexpr __device__ interval<T> empty()
 {
-    // return { intrinsic::nan<T>(), intrinsic::nan<T>() };
-    // return { intrinsic::pos_inf<T>(), intrinsic::neg_inf<T>() };
-    return { std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity() };
+    return { intrinsic::pos_inf<T>(), intrinsic::neg_inf<T>() };
 }
 
 template<typename T>
-__device__ __host__ interval<T> entire()
+constexpr __device__ interval<T> entire()
 {
-    return { -std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity() };
+    return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
 }
-
-// template<typename T>
-// __device__ /*__host__*/ interval<T> entire()
-// {
-//     return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
-//     // return { -std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity() };
-// }
 
 template<typename T>
 __device__ __host__ bool empty(interval<T> x)
 {
-    // return isnan(x.lb) || isnan(x.ub);
     return !(x.lb <= x.ub);
-    // return (x.lb == std::numeric_limits<T>::infinity() && x.ub == -std::numeric_limits<T>::infinity());
 }
 
 template<typename T>
@@ -144,12 +131,6 @@ __device__ interval<T> cbrt(interval<T> x)
 
     return { intrinsic::prev_floating(cbrt(x.lb)),
              intrinsic::next_floating(cbrt(x.ub)) };
-}
-
-template<typename T>
-__device__ bool contains(interval<T> x, T y)
-{
-    return x.lb <= y && y <= x.ub;
 }
 
 template<typename T>
@@ -337,6 +318,12 @@ __device__ interval<T> operator*(interval<T> a, interval<T> b)
 __device__ interval<double> operator/(interval<double> a, interval<double> b)
 {
     return div(a, b);
+}
+
+template<typename T>
+__device__ bool contains(interval<T> x, T y)
+{
+    return x.lb <= y && y <= x.ub;
 }
 
 template<typename T>

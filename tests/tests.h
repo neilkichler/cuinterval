@@ -3,14 +3,20 @@
 
 #include <cuinterval/cuinterval.h>
 
+
 // compiler bug fix; TODO: remove when fixed
 #ifdef __CUDACC__
+#pragma nv_diagnostic push
+#pragma nv_diag_suppress 2811
 #pragma push_macro("__cpp_consteval")
 #define consteval constexpr
 #include <boost/ut.hpp>
 #undef consteval
+#pragma nv_diagnostic pop
+#pragma nv_diag_default 2811
 #pragma pop_macro("__cpp_consteval")
 #else
+#pragma message("No compiler detected")
 #include <boost/ut.hpp>
 #endif
 

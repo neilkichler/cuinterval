@@ -15,9 +15,9 @@ void tests_libieeep1788_elem() {
     using B = bool;
     using N = int;
 
-    I empty         = ::empty<T>();
-    I entire        = ::entire<T>();
     T infinity = std::numeric_limits<T>::infinity();
+    I empty    = { infinity, -infinity };
+    I entire   = { -infinity, infinity };
     T NaN = ::nan("");
 
     const int n = 1344; // count of largest test array

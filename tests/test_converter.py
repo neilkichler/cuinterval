@@ -41,9 +41,9 @@ void tests_''' + test_name + '''() {
     using B = bool;
     using N = int;
 
-    I empty         = ::empty<T>();
-    I entire        = ::entire<T>();
     T infinity = std::numeric_limits<T>::infinity();
+    I empty    = { infinity, -infinity };
+    I entire   = { -infinity, infinity };
     T NaN = ::nan("");
 '''
 
