@@ -15,3 +15,5 @@ jobs:
     - uses: actions/checkout@v4
     - name: gpu info
       run: nvidia-smi
+    - name: directory info
+      run: ls
