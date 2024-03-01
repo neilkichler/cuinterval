@@ -289,6 +289,10 @@ if __name__ == '__main__':
     os.chdir(os.path.dirname(__file__) + '/itl')
     files = glob.glob('*.itl', recursive=True)
     main_preamble = auto_generated_comment + '\n'
+
+    # NOTE: for now we ignore floating point warnings for denormals
+    main_pragmas_begin = '#ifdef __CUDACC__\n#pragma nv_diagnostic push\n#pragma nv_diag_suppress 1046\n#endif\n\n'
+    main_pragmas_end = '\n#ifdef __CUDACC__\n#pragma nv_diagnostic pop\n#pragma nv_diag_default 1046\n#endif\n'
     main_includes = '#include "tests_additional.cu"\n'
     main_tests = indent_one + 'tests_additional<double>();\n'
 
@@ -310,7 +314,7 @@ if __name__ == '__main__':
 
     with open('tests.cu', 'w') as f:
         main_body = f'\nint main()\n{{\n{main_tests}\n    return 0;\n}}\n'
-        main_code = main_preamble + main_includes + main_body
+        main_code = main_preamble + main_pragmas_begin + main_includes + main_pragmas_end + main_body
         f.write(main_code)
 
     print('Done!')

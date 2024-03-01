@@ -1,9 +1,6 @@
 #ifndef CUDA_INTERVAL_TESTS_H
 #define CUDA_INTERVAL_TESTS_H
 
-#include <cuinterval/cuinterval.h>
-
-
 // compiler bug fix; TODO: remove when fixed
 #ifdef __CUDACC__
 #pragma nv_diagnostic push
@@ -19,6 +16,8 @@
 #pragma message("No compiler detected")
 #include <boost/ut.hpp>
 #endif
+
+#include <cuinterval/cuinterval.h>
 
 #include <ostream>
 #include <source_location>
