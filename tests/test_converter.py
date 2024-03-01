@@ -293,8 +293,8 @@ if __name__ == '__main__':
     # NOTE: for now we ignore floating point warnings for denormals
     main_pragmas_begin = '#ifdef __CUDACC__\n#pragma nv_diagnostic push\n#pragma nv_diag_suppress 1046\n#endif\n\n'
     main_pragmas_end = '\n#ifdef __CUDACC__\n#pragma nv_diagnostic pop\n#pragma nv_diag_default 1046\n#endif\n'
-    main_includes = '#include "tests_additional.cu"\n'
-    main_tests = indent_one + 'tests_additional<double>();\n'
+    main_includes = ''
+    main_tests = ''
 
     for f in files:
         test_code = convert_to_test(f)
@@ -303,7 +303,7 @@ if __name__ == '__main__':
         out_file = tests_name + '.cu'
         with open(out_file, 'w') as f:
             f.write(test_code)
-        main_includes += f'#include "generated/{out_file}"\n'
+        main_includes += f'#include "{out_file}"\n'
         main_tests += indent_one + tests_name + '<double>();\n'
         print('generated ' + out_file)
 
@@ -312,8 +312,8 @@ if __name__ == '__main__':
 
     os.chdir(os.path.dirname(__file__))
 
-    with open('tests.cu', 'w') as f:
-        main_body = f'\nint main()\n{{\n{main_tests}\n    return 0;\n}}\n'
+    with open('generated/tests_generated.cu', 'w') as f:
+        main_body = f'\ntemplate <typename T>\nvoid tests_generated()\n{{\n{main_tests}}}\n'
         main_code = main_preamble + main_pragmas_begin + main_includes + main_pragmas_end + main_body
         f.write(main_code)
 
