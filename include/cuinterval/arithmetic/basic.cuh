@@ -527,6 +527,12 @@ __device__ interval<T> sign(interval<T> x)
 }
 
 template<typename T>
+__host__ __device__ bool isnai(interval<T> x)
+{
+    return x.lb != x.lb && x.ub != x.ub;
+}
+
+template<typename T>
 __device__ bool is_member(T x, interval<T> y)
 {
     return isfinite(x) && inf(y) <= x && x <= sup(y);
