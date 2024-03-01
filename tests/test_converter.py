@@ -28,8 +28,8 @@ def convert_to_test(file_path):
             code_preamble = auto_generated_comment + r'''
 #include <cuinterval/cuinterval.h>
 
-#include "tests.h"
-#include "test_ops.cuh"
+#include "../tests.h"
+#include "../test_ops.cuh"
 
 #include <stdio.h>
 
@@ -303,12 +303,12 @@ if __name__ == '__main__':
         out_file = tests_name + '.cu'
         with open(out_file, 'w') as f:
             f.write(test_code)
-        main_includes += f'#include "{out_file}"\n'
+        main_includes += f'#include "generated/{out_file}"\n'
         main_tests += indent_one + tests_name + '<double>();\n'
         print('generated ' + out_file)
 
     for f in glob.glob('*.cu'):
-        os.replace(f, "../" + f)
+        os.replace(f, "../generated/" + f)
 
     os.chdir(os.path.dirname(__file__))
 

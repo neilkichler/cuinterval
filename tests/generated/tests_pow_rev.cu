@@ -2,13 +2,13 @@
 
 #include <cuinterval/cuinterval.h>
 
-#include "tests.h"
-#include "test_ops.cuh"
+#include "../tests.h"
+#include "../test_ops.cuh"
 
 #include <stdio.h>
 
 template<typename T>
-void tests_libieeep1788_reduction() {
+void tests_pow_rev() {
     using namespace boost::ut;
 
     using I = interval<T>;

@@ -2,8 +2,8 @@
 
 #include <cuinterval/cuinterval.h>
 
-#include "tests.h"
-#include "test_ops.cuh"
+#include "../tests.h"
+#include "../test_ops.cuh"
 
 #include <stdio.h>
 
