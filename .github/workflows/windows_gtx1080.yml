@@ -15,7 +15,9 @@ jobs:
     - uses: actions/checkout@v4
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Display the path
-      run: echo %PATH%
+      run: echo ${env:PATH}
+    - name: test compiler
+      run: cl
     - name: gpu info
       run: nvidia-smi
     - name: directory info
