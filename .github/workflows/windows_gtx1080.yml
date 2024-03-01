@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: compiler info
-      run: cl
+      run: clang-cl
     - name: gpu info
       run: nvidia-smi
     - name: directory info
