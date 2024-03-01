@@ -13,14 +13,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
     - uses: ilammy/msvc-dev-cmd@v1
+    
     - name: Display the path
       run: echo ${env:PATH}
+    
     - name: test compiler
       run: cl
+    
     - name: gpu info
       run: nvidia-smi
+    
     - name: directory info
       run: ls
+    
     - name: nvidia compiler info
       run: nvcc --version
+
+    - name: setup cmake
+      run: cmake -S . -B build -GNinja
+
+    - name: build
+      run: cmake --build build
