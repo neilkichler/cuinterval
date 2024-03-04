@@ -74,7 +74,7 @@ void tests_bisect() {
         test_bisect<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
-        check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff);
+        check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
     CUDA_CHECK(cudaFree(d_xs_));

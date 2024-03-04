@@ -38,7 +38,7 @@
 template<typename T>
 std::ostream &operator<<(std::ostream &os, const interval<T> &x)
 {
-    return os << '[' << std::hexfloat << x.lb << ',' << x.ub << ']';
+    return os << '[' << x.lb << ',' << x.ub << ']';
 }
 
 template<typename T>
@@ -65,12 +65,19 @@ bool check_within_ulps(T x, T y, std::size_t n, T direction)
     return false;
 }
 
-template<typename T, int N>
-std::vector<size_t> check_all_equal(std::span<T, N> h_res, std::span<T, N> h_ref, int max_ulps_diff, const std::source_location location = std::source_location::current())
+template<typename T, int N, typename... Args>
+void check_all_equal(std::span<T, N> h_res, std::span<T, N> h_ref, int max_ulps_diff, std::source_location location, Args &&...args)
 {
     using namespace boost::ut;
 
     std::vector<size_t> failed_ids;
+
+    auto show_inputs = [](auto &out, auto &&...args) {
+        out << "with input:";
+        ((out << "\n\t"
+              << args),
+         ...);
+    };
 
     for (size_t i = 0; i < h_res.size(); ++i) {
         if (h_res[i] != h_res[i] && h_ref[i] != h_ref[i]) // both are NaN
@@ -81,17 +88,20 @@ std::vector<size_t> check_all_equal(std::span<T, N> h_res, std::span<T, N> h_ref
                 bool lb_within_ulps = check_within_ulps(h_res[i].lb, h_ref[i].lb, max_ulps_diff, -std::numeric_limits<double>::infinity());
                 bool ub_within_ulps = check_within_ulps(h_res[i].ub, h_ref[i].ub, max_ulps_diff, std::numeric_limits<double>::infinity());
 
-                expect(lb_within_ulps && ub_within_ulps, location)
-                    << "Failed at [" << i << "]: " << h_res[i] << "!= " << h_ref[i] << "\n"
-                    << "Delta  at [" << i << "]: [" << std::fabs(h_res[i].lb - h_ref[i].lb) 
-                                            << ", " << std::fabs(h_res[i].ub - h_ref[i].ub) << "]\n";
+                auto out = expect(eq(lb_within_ulps && ub_within_ulps, true), location)
+                    << std::hexfloat
+                    << "Failed at case" << i << ": " << h_res[i] << "!= " << h_ref[i] << "\n"
+                    << '\t' << "with delta: [" << std::fabs(h_res[i].lb - h_ref[i].lb)
+                    << ", " << std::fabs(h_res[i].ub - h_ref[i].ub) << "]\n\t";
+                show_inputs(out, std::forward<Args>(args)[i]...);
             }
         } else {
-            expect(eq(h_res[i], h_ref[i]), location);
+            auto out = expect(eq(h_res[i], h_ref[i]), location);
+            out << "Failed at case" << i << ":\n";
+            out << std::hexfloat << '\t';
+            show_inputs(out, std::forward<Args>(args)[i]...);
         }
     }
-
-    return failed_ids;
 }
 
 #endif // CUDA_INTERVAL_TESTS_H

@@ -230,6 +230,7 @@ void tests_''' + test_name + '''() {
                     
                     cuda_code += indent_two + 'CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));\n'
 
+                    host_vars = ', '.join([ f'h_{vars[i]}' for i in range(n_args) ])
                     device_vars = ''
                     for v in vars[:-1]:
                         device_vars += f', d_{v}'
@@ -239,22 +240,7 @@ void tests_''' + test_name + '''() {
                     cuda_code += indent_two + f'test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
                     cuda_code += indent_two + 'CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));\n'
                     cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
-                    cuda_code += indent_two + f'auto failed = check_all_equal<{result_type}, n>(h_res, h_ref, max_ulp_diff);\n'
-                    cuda_code += indent_two + 'for (auto fail_id : failed) {\n'
-                    cuda_code += indent_three + 'printf("failed at case %zu:\\n", fail_id);\n'
-                    cuda_code += indent_three + 'printf("'
-                    
-                    params_code = ''
-
-                    for i in range(n_args):
-                        var = vars[i]
-                        cuda_code += failed_code['cuda'][arg_types[i]].format(var[0])
-                        params_code += ', ' + failed_code['params'][arg_types[i]].format(var, var)
-
-                    cuda_code += '"'
-                    cuda_code += params_code
-                    cuda_code += ');\n'
-                    cuda_code += indent_two + '}\n'
+                    cuda_code += indent_two + f'check_all_equal<{result_type}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_vars});\n'
                     cuda_code += indent_one + '};\n\n'
 
                     largest_n = max(n_ops, largest_n)

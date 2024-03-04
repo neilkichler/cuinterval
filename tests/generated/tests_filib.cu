@@ -111,11 +111,7 @@ void tests_filib() {
         test_add<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
     "FI_LIB.subii_sub"_test = [&] {
@@ -197,11 +193,7 @@ void tests_filib() {
         test_sub<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
     "FI_LIB.mulii_mul"_test = [&] {
@@ -364,11 +356,7 @@ void tests_filib() {
         test_mul<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
     "FI_LIB.divii_div"_test = [&] {
@@ -456,11 +444,7 @@ void tests_filib() {
         test_div<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\ny = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub, h_ys[fail_id].lb, h_ys[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
     "FI_LIB.unary_function_acos"_test = [&] {
@@ -540,11 +524,7 @@ void tests_filib() {
         test_acos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_acosh"_test = [&] {
@@ -624,11 +604,7 @@ void tests_filib() {
         test_acosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_asin"_test = [&] {
@@ -708,11 +684,7 @@ void tests_filib() {
         test_asin<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_asinh"_test = [&] {
@@ -784,11 +756,7 @@ void tests_filib() {
         test_asinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_atan"_test = [&] {
@@ -868,11 +836,7 @@ void tests_filib() {
         test_atan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_atanh"_test = [&] {
@@ -952,11 +916,7 @@ void tests_filib() {
         test_atanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_cos"_test = [&] {
@@ -1036,11 +996,7 @@ void tests_filib() {
         test_cos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_cosh"_test = [&] {
@@ -1120,11 +1076,7 @@ void tests_filib() {
         test_cosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_exp"_test = [&] {
@@ -1196,11 +1148,7 @@ void tests_filib() {
         test_exp<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_exp10"_test = [&] {
@@ -1268,11 +1216,7 @@ void tests_filib() {
         test_exp10<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_exp2"_test = [&] {
@@ -1344,11 +1288,7 @@ void tests_filib() {
         test_exp2<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_expm1"_test = [&] {
@@ -1420,11 +1360,7 @@ void tests_filib() {
         test_expm1<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_log"_test = [&] {
@@ -1504,11 +1440,7 @@ void tests_filib() {
         test_log<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_log10"_test = [&] {
@@ -1588,11 +1520,7 @@ void tests_filib() {
         test_log10<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_log1p"_test = [&] {
@@ -1672,11 +1600,7 @@ void tests_filib() {
         test_log1p<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_log2"_test = [&] {
@@ -1756,11 +1680,7 @@ void tests_filib() {
         test_log2<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_sin"_test = [&] {
@@ -1840,11 +1760,7 @@ void tests_filib() {
         test_sin<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_sinh"_test = [&] {
@@ -1924,11 +1840,7 @@ void tests_filib() {
         test_sinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_sqr"_test = [&] {
@@ -2006,11 +1918,7 @@ void tests_filib() {
         test_sqr<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_sqrt"_test = [&] {
@@ -2090,11 +1998,7 @@ void tests_filib() {
         test_sqrt<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_tan"_test = [&] {
@@ -2174,11 +2078,7 @@ void tests_filib() {
         test_tan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
     "FI_LIB.unary_function_tanh"_test = [&] {
@@ -2258,11 +2158,7 @@ void tests_filib() {
         test_tanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
-        auto failed = check_all_equal<I, n>(h_res, h_ref, max_ulp_diff);
-        for (auto fail_id : failed) {
-            printf("failed at case %zu:\n", fail_id);
-            printf("x = [%a, %a]\n", h_xs[fail_id].lb, h_xs[fail_id].ub);
-        }
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
 
