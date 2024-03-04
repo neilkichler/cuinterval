@@ -31,8 +31,6 @@ def convert_to_test(file_path):
 #include "../tests.h"
 #include "../test_ops.cuh"
 
-#include <stdio.h>
-
 template<typename T>
 void tests_''' + test_name + '''() {
     using namespace boost::ut;

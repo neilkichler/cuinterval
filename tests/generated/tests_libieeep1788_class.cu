@@ -5,8 +5,6 @@
 #include "../tests.h"
 #include "../test_ops.cuh"
 
-#include <stdio.h>
-
 template<typename T>
 void tests_libieeep1788_class() {
     using namespace boost::ut;

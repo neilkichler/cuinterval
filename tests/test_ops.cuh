@@ -462,7 +462,6 @@ __global__ void test_log10(int n, interval<T> *x, interval<T> *res)
     }
 }
 
-
 template<typename T>
 __global__ void test_log1p(int n, interval<T> *x, interval<T> *res)
 {

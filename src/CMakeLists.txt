@@ -20,5 +20,5 @@ source_group(
     PREFIX "Header Files"
     FILES ${headers})
 
-# set_target_properties(CudaIntervals PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+# set_target_properties(cuinterval PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 

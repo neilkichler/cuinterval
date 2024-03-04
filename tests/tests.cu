@@ -1,5 +1,5 @@
-#include "tests_additional.cu"
 #include "generated/tests_generated.cu"
+#include "tests_additional.cu"
 
 int main()
 {
