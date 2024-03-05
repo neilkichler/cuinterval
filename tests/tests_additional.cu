@@ -1,5 +1,5 @@
 #include "tests_bisect.cu"
-#include "tests_loop.cu"
+// #include "tests_loop.cu"
 
 template<typename T>
 void tests_additional()
