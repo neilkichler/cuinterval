@@ -13,6 +13,7 @@ add_executable(tests tests.cu)
 
 # Use C++20 in the tests
 target_compile_features(tests PRIVATE cxx_std_20)
+target_compile_features(tests PRIVATE cuda_std_20)
 
 # Link with main library and testing library
 target_link_libraries(tests PRIVATE cuinterval Boost::ut)

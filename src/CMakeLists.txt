@@ -14,6 +14,7 @@ target_include_directories(cuinterval PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 # C++17 is required for all users of the library
 target_compile_features(cuinterval PRIVATE cxx_std_17)
+target_compile_features(cuinterval PRIVATE cuda_std_17)
 
 source_group(
     TREE "${PROJECT_SOURCE_DIR}/include"
