@@ -1,0 +1,33 @@
+name: WSL GPU tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: [self-hosted, Linux, WSL, GPU]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Display the path
+      run: echo $PATH
+  
+    - name: gpu info
+      run: nvidia-smi
+    
+    - name: directory info
+      run: ls
+    
+    - name: nvidia compiler info
+      run: nvcc --version
+
+    - name: setup cmake
+      run: cmake -S . -B build -GNinja
+
+    - name: build
+      run: cmake --build build
