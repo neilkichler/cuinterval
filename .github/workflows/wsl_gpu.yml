@@ -31,3 +31,8 @@ jobs:
 
     - name: build
       run: cmake --build build
+
+    - name: run ctest
+      run: |
+        cd build
+        ctest
