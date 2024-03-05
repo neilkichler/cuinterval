@@ -4,6 +4,8 @@
 #include "interval.h"
 #include "intrinsic.cuh"
 
+#include <numbers>
+
 // IEEE Std 1788.1-2017, Table 4.1
 
 //
@@ -823,8 +825,8 @@ template<typename T>
 __device__ unsigned int quadrant(T v)
 {
     int quotient;
-    T vv  = intrinsic::next_after(intrinsic::sub_down(v, M_PI_4), static_cast<T>(0));
-    T rem = remquo(vv, M_PI_2, &quotient);
+    T vv  = intrinsic::next_after(intrinsic::sub_down(v, std::numbers::pi/4), static_cast<T>(0));
+    T rem = remquo(vv, std::numbers::pi/2, &quotient);
     return static_cast<unsigned>(quotient) % 4;
 };
 
