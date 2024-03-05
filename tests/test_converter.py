@@ -68,12 +68,12 @@ void tests_''' + test_name + '''() {
                 "sqr": {"args": [I], "ret": I, "ulp_error": 0},
                 "sqrt": {"args": [I], "ret": I, "ulp_error": 0},
                 "fma": {"args": [I, I, I], "ret": I, "ulp_error": 0},
-                "mig": {"args": [I, I], "ret": T, "ulp_error": 0},
-                "mag": {"args": [I, I], "ret": T, "ulp_error": 0},
-                "wid": {"args": [I, I], "ret": T, "ulp_error": 0},
+                "mig": {"args": [I], "ret": T, "ulp_error": 0},
+                "mag": {"args": [I], "ret": T, "ulp_error": 0},
+                "wid": {"args": [I], "ret": T, "ulp_error": 0},
                 "inf": {"args": [I], "ret": T, "ulp_error": 0},
                 "sup": {"args": [I], "ret": T, "ulp_error": 0},
-                "mid": {"args": [I, I], "ret": T, "ulp_error": 0},
+                "mid": {"args": [I], "ret": T, "ulp_error": 0},
                 "rad": {"args": [I], "ret": T, "ulp_error": 0},
                 "floor": {"args": [I], "ret": I, "ulp_error": 0},
                 "ceil": {"args": [I], "ret": I, "ulp_error": 0},
@@ -96,7 +96,7 @@ void tests_''' + test_name + '''() {
                 "strictPrecedes": {"args": [I, I], "ret": B, "ulp_error": 0},
                 "isMember": {"args": [T, I], "ret": B, "ulp_error": 0},
                 "isSingleton": {"args": [I], "ret": B, "ulp_error": 0},
-                "isCommonInterval": {"args": [I, I], "ret": B, "ulp_error": 0},
+                "isCommonInterval": {"args": [I], "ret": B, "ulp_error": 0},
                 "cancelMinus": {"args": [I, I], "ret": I, "ulp_error": 0},
                 "cancelPlus": {"args": [I, I], "ret": I, "ulp_error": 0},
                 "roundTiesToEven": {"args": [I], "ret": I, "ulp_error": 0},
@@ -175,9 +175,10 @@ void tests_''' + test_name + '''() {
 
                 for instr, ops in subtests.items():
                     instr_len = len(ops[0])
-                    vars = ['ref', 'xs', 'ys', 'zs'][:instr_len]
+                    vars = ['res', 'xs', 'ys', 'zs'][:instr_len]
                     vars = vars[1:] + vars[:1] # rotate ref to last place
                     n_vars = len(vars)
+                    n_args = n_vars - 1
                     n_ops = len(ops)
                     var_codes = [''] * n_vars
 
@@ -186,23 +187,17 @@ void tests_''' + test_name + '''() {
                         continue
 
                     arg_types = supported[instr]['args']
-                    result_type = supported[instr]['ret'].name
+                    var_types = arg_types
+                    var_types.append(supported[instr]['ret'])
                     max_ulp_diff = supported[instr]['ulp_error']
                     test_code = indent_one + f'"{name}_{instr}"_test = [&] {{\n'
 
-                    n_args = n_vars - 1
-                    for i in range(n_args):
-                        var_codes[i] = indent_two + f'std::array<{arg_types[i].name}, n> h_{vars[i]} {{{{\n'
+                    for i in range(n_vars):
+                        var_codes[i] = indent_two + f'std::array<{var_types[i].name}, n> h_{vars[i]} {{{{\n'
 
-                    var_codes[n_args] = indent_two + f'std::array<{result_type}, n> h_res{{}};\n'
-                    var_codes[n_args] += indent_two + f'{result_type} *d_res = ({result_type} *)d_res_;\n'
+                    var_codes[-1] = var_codes[-1][:-1] + "}};\n"
 
-                    for i in range(n_args):
-                        var_codes[n_args] += indent_two + f'{arg_types[i].name} *d_{vars[i]} = ({arg_types[i].name} *)d_{vars[i]}_;\n'
-
-                    var_codes[n_args] += indent_two + f'int n_result_bytes = n * sizeof({result_type});\n'
-                    var_codes[n_args] += indent_two + f'std::array<{result_type}, n> h_ref {{{{\n'
-
+                    var_codes[n_args] += indent_two + f'std::array<{var_types[n_args].name}, n> h_ref {{{{\n'
                     for elements in ops:
                         for i, el in enumerate(elements):
                             var_codes[i] += indent_three
@@ -220,25 +215,18 @@ void tests_''' + test_name + '''() {
                                 var_codes[i] += f'{el},\n'
 
                     cuda_code = ''
-                    for i in range(n_vars):
+                    for i in reversed(range(n_vars)):
                         var_codes[i] += indent_two + '}};\n\n'
-
-                    for i in range(n_args):
-                        cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpy(d_{vars[i]}, h_{vars[i]}.data(), n_bytes, cudaMemcpyHostToDevice));\n'
+                        var_codes[n_args] += indent_two + f'{var_types[i].name} *d_{vars[i]} = ({var_types[i].name} *)d_{vars[i]}_;\n'
+                        cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(d_{vars[i]}, h_{vars[i]}.data(), n*sizeof({var_types[i].name}), cudaMemcpyHostToDevice));\n'
                     
-                    cuda_code += indent_two + 'CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));\n'
-
-                    host_vars = ', '.join([ f'h_{vars[i]}' for i in range(n_args) ])
-                    device_vars = ''
-                    for v in vars[:-1]:
-                        device_vars += f', d_{v}'
-
-                    device_vars += ', d_res'
+                    host_input_vars = ', '.join([ f'h_{vars[i]}' for i in range(n_args) ])
+                    device_vars = ''.join([ f', d_{v}' for v in vars ])
 
                     cuda_code += indent_two + f'test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
-                    cuda_code += indent_two + 'CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));\n'
+                    cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof({var_types[n_args].name}), cudaMemcpyDeviceToHost));\n'
                     cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
-                    cuda_code += indent_two + f'check_all_equal<{result_type}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_vars});\n'
+                    cuda_code += indent_two + f'check_all_equal<{var_types[n_args].name}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_input_vars});\n'
                     cuda_code += indent_one + '};\n\n'
 
                     largest_n = max(n_ops, largest_n)

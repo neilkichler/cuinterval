@@ -47,10 +47,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,0x123456799p-16},
             {0.0,+infinity},
@@ -66,10 +63,12 @@ void tests_mpfi() {
             {0.0,+infinity},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_abs<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -87,10 +86,7 @@ void tests_mpfi() {
             {0.25,0.625},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0x10c152382d7365p-52,0x860a91c16b9b3p-50},
             {0x1d2cf5c7c70f0bp-52,0x4d6749be4edb1p-49},
@@ -102,10 +98,12 @@ void tests_mpfi() {
             {0x1ca94936b98a21p-53,0x151700e0c14b25p-52},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_acos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -120,10 +118,7 @@ void tests_mpfi() {
             {2.0,1000.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,+infinity},
             {0x1ecc2caec51609p-53,+infinity},
@@ -132,10 +127,12 @@ void tests_mpfi() {
             {0x544909c66010dp-50,0x799d4ba2a13b5p-48},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_acosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -186,11 +183,7 @@ void tests_mpfi() {
             {0.0,+8.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,+6.0},
             {-5.0,0.0},
@@ -213,11 +206,14 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_add<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -294,11 +290,7 @@ void tests_mpfi() {
             {0.0e-17,0.0e-17},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x10038p-4,-0x10018p-4},
             {0xfff8p-4,0x10018p-4},
@@ -334,11 +326,14 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_add<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -356,10 +351,7 @@ void tests_mpfi() {
             {0.25,0.625},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x860a91c16b9b3p-52,0x860a91c16b9b3p-52},
             {-0x1b235315c680ddp-53,-0x102be9ce0b87cdp-54},
@@ -371,10 +363,12 @@ void tests_mpfi() {
             {0x102be9ce0b87cdp-54,0x159aad71ced00fp-53},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_asin<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -403,10 +397,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0xf661657628b05p-53,0xf661657628b05p-53},
             {-0x162e42fefa39fp-49,-0xfd67d91ccf31bp-54},
@@ -429,10 +420,12 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_asinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -461,10 +454,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x1dac670561bb5p-50,0x1dac670561bb5p-50},
             {-0xa4bc7d1934f71p-52,-0x1f5b75f92c80ddp-55},
@@ -487,10 +477,12 @@ void tests_mpfi() {
             {-0x1921fb54442d19p-52,0x1921fb54442d19p-52},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_atan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -539,11 +531,7 @@ void tests_mpfi() {
             {0.0,+8.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x191f6c4c09a81bp-51,-0x1a12a5465464cfp-52},
             {-0x1831516233f561p-52,-0xa3c20ea13f5e5p-61},
@@ -565,11 +553,14 @@ void tests_mpfi() {
             {-0x1921fb54442d19p-52,0x1921fb54442d19p-52},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_atan2<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -588,10 +579,7 @@ void tests_mpfi() {
             {0.25,0.625},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x1193ea7aad030bp-53,0x1193ea7aad030bp-53},
             {-0x3e44e55c64b4bp-50,-0x1058aefa811451p-54},
@@ -604,10 +592,12 @@ void tests_mpfi() {
             {0x1058aefa811451p-54,0x2eec3bb76c2b3p-50},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_atanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -633,10 +623,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<B, n> h_res{};
-        B *d_res = (B *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_res {{}};
         std::array<B, n> h_ref {{
             true,
             true,
@@ -656,10 +643,12 @@ void tests_mpfi() {
             false,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        B *d_res = (B *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(B), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_isCommonInterval<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(B), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -679,10 +668,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x2e5e58c0083b7bp-154,6.0},
             {-infinity,+4.0},
@@ -696,10 +682,12 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_cbrt<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 1;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -755,10 +743,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0x1c1528065b7d4fp-53,1.0},
             {0x114a280fb5068bp-53,0xf80aa4fbef751p-52},
@@ -808,10 +793,12 @@ void tests_mpfi() {
             {-1.0,1.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_cos<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -835,10 +822,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {1.0,0x10200aac16db6fp-52},
             {1.0,0x18b07551d9f551p-52},
@@ -856,10 +840,12 @@ void tests_mpfi() {
             {1.0,+infinity},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_cosh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -932,11 +918,7 @@ void tests_mpfi() {
             {8.28125,530.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             entire,
             {-infinity,-0x13c3ada9f391a5p-110},
@@ -970,11 +952,14 @@ void tests_mpfi() {
             {0x1p-4,4.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_div<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -994,10 +979,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<T, n> h_res{};
-        T *d_res = (T *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(T);
+        std::array<T, n> h_res {{}};
         std::array<T, n> h_ref {{
             17,
             +8,
@@ -1011,10 +993,12 @@ void tests_mpfi() {
             +infinity,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(T), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_wid<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(T), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -1151,11 +1135,7 @@ void tests_mpfi() {
             {0.0,+8.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0x7.0ef61537b1704p-8,0x2.30ee5eef9c36cp+4},
             {0x69p-16,0x2.30ee5eef9c36cp+4},
@@ -1221,11 +1201,14 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_div<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -1288,11 +1271,7 @@ void tests_mpfi() {
             {0.0e-17,0.0e-17},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0x10000000000001p-53,0x10000000000001p-20},
             {-0x1p+33,-0x1000001fffffffp-52},
@@ -1321,11 +1300,14 @@ void tests_mpfi() {
             empty,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_div<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -1402,11 +1384,7 @@ void tests_mpfi() {
             {0x1p-550,0x1fffffffffffffp-52},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x10000000000001p-49,-0x114b37f4b51f71p-107},
             {-infinity,-0x142d169d7dfa03p-106},
@@ -1442,11 +1420,14 @@ void tests_mpfi() {
             {0xfff8p-4,0x10018p-4},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_sub<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -1468,10 +1449,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0x1c3d6a24ed8221p-53,1.0},
             {0x1c3d6a24ed8221p-53,0x148b5e3c3e8187p-52},
@@ -1487,10 +1465,12 @@ void tests_mpfi() {
             {0.0,+infinity},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_exp<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -1513,10 +1493,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0x1d5818dcfba487p-53,1.0},
             {0x1d5818dcfba487p-53,0x1306fe0a31b716p-52},
@@ -1533,10 +1510,12 @@ void tests_mpfi() {
             {0.0,+infinity},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_exp2<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -1558,10 +1537,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x1e14aed893eef4p-56,0.0},
             {-0x1e14aed893eef4p-56,0x122d78f0fa061ap-54},
@@ -1577,10 +1553,12 @@ void tests_mpfi() {
             {-1.0,+infinity},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_expm1<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -1621,11 +1599,7 @@ void tests_mpfi() {
             {0.0,+8.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,+8.0},
             empty,
@@ -1643,11 +1617,14 @@ void tests_mpfi() {
             {0.0,+8.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_intersection<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -1668,10 +1645,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x1480a9b5772a23p-50,-0x177887d65484c9p-52},
             {-.5,-0.125},
@@ -1686,10 +1660,12 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_recip<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -1734,11 +1710,7 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        std::array<B, n> h_res{};
-        B *d_res = (B *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_res {{}};
         std::array<B, n> h_ref {{
             false,
             false,
@@ -1758,11 +1730,14 @@ void tests_mpfi() {
             false,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        B *d_res = (B *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(B), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_precedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(B), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -1807,11 +1782,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<B, n> h_res{};
-        B *d_res = (B *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_res {{}};
         std::array<B, n> h_ref {{
             true,
             true,
@@ -1831,11 +1802,14 @@ void tests_mpfi() {
             false,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        B *d_res = (B *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(B), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_less<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(B), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -1880,11 +1854,7 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        std::array<B, n> h_res{};
-        B *d_res = (B *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_res {{}};
         std::array<B, n> h_ref {{
             false,
             true,
@@ -1904,11 +1874,14 @@ void tests_mpfi() {
             false,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        B *d_res = (B *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(B), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_less<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(B), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -1953,11 +1926,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<B, n> h_res{};
-        B *d_res = (B *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_res {{}};
         std::array<B, n> h_ref {{
             true,
             true,
@@ -1977,11 +1946,14 @@ void tests_mpfi() {
             false,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        B *d_res = (B *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(B), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_precedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(B), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -2026,11 +1998,7 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        std::array<B, n> h_res{};
-        B *d_res = (B *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_res {{}};
         std::array<B, n> h_ref {{
             false,
             false,
@@ -2050,11 +2018,14 @@ void tests_mpfi() {
             false,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        B *d_res = (B *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(B), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_strictPrecedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(B), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -2099,11 +2070,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<B, n> h_res{};
-        B *d_res = (B *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(B);
+        std::array<B, n> h_res {{}};
         std::array<B, n> h_ref {{
             true,
             true,
@@ -2123,11 +2090,14 @@ void tests_mpfi() {
             false,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        B *d_res = (B *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(B), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_strictPrecedes<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(B), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -2144,10 +2114,7 @@ void tests_mpfi() {
             {0xb616ab8b683b5p-52,+1.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,0.0},
             {0.0,0x5380455576989p-46},
@@ -2158,10 +2125,12 @@ void tests_mpfi() {
             {-0x2b9b8b1fb2fb9p-51,0.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_log<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2178,10 +2147,7 @@ void tests_mpfi() {
             {0x4c322657ec89bp-16,0x4d68ba5f26bf1p-11},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x13e080325bab7bp-52,0.0},
             {-infinity,0.0},
@@ -2192,10 +2158,12 @@ void tests_mpfi() {
             {0x17bdce451a337fp-48,0x1b3913fc99f6fcp-48},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_log1p<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2211,10 +2179,7 @@ void tests_mpfi() {
             {1.0,1.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-infinity,0.0},
             entire,
@@ -2224,10 +2189,12 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_log2<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2244,10 +2211,7 @@ void tests_mpfi() {
             {100.0,0x8ac74d932fae3p-21},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             entire,
             {-infinity,0.0},
@@ -2258,10 +2222,12 @@ void tests_mpfi() {
             {2.0,0x1221cc590b9946p-49},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_log10<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2281,10 +2247,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<T, n> h_res{};
-        T *d_res = (T *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(T);
+        std::array<T, n> h_res {{}};
         std::array<T, n> h_ref {{
             34,
             +8,
@@ -2298,10 +2261,12 @@ void tests_mpfi() {
             +infinity,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(T), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_mag<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(T), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2322,10 +2287,7 @@ void tests_mpfi() {
             {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
         }};
 
-        std::array<T, n> h_res{};
-        T *d_res = (T *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(T);
+        std::array<T, n> h_res {{}};
         std::array<T, n> h_ref {{
             -0x1921fb54442d18p-51,
             0.5,
@@ -2340,10 +2302,12 @@ void tests_mpfi() {
             0x1921fb54442d18p-51,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(T), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_mid<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(T), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2363,10 +2327,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<T, n> h_res{};
-        T *d_res = (T *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(T);
+        std::array<T, n> h_res {{}};
         std::array<T, n> h_ref {{
             17,
             +0,
@@ -2380,10 +2341,12 @@ void tests_mpfi() {
             +0,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        T *d_res = (T *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(T), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_mig<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(T), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2496,11 +2459,7 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x1.442e2695ac81ap+0,0x1.fb5fbebd0cbc6p+0},
             {-0x20p0,0x30p0},
@@ -2554,11 +2513,14 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_mul<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -2661,11 +2623,7 @@ void tests_mpfi() {
             {0.0e-17,0.0e-17},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x18000000000002p0,-0x27fffffffffffep-123},
             {-0x18000000000002p0,-0xfffffffffffffp-123},
@@ -2714,11 +2672,14 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_mul<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -2736,10 +2697,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-8.0,+infinity},
             {+7.0,+infinity},
@@ -2751,10 +2709,12 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_neg<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -2773,22 +2733,21 @@ void tests_mpfi() {
             {0.0,0.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,+5.0},
             {-8.0,0.0},
             {0.0,0.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_convexHull<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -2926,10 +2885,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x1eaee8744b05f0p-54,0x1eaee8744b05f0p-54},
             {-0x1aed548f090cefp-53,-0x1faaeed4f31576p-55},
@@ -3061,10 +3017,12 @@ void tests_mpfi() {
             {-1.0,1.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_sin<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -3087,10 +3045,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x100aaccd00d2f1p-55,0.0},
             {-0x12cd9fc44eb983p-52,0.0},
@@ -3107,10 +3062,12 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_sinh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -3131,10 +3088,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,0x1.f04dba0302d4dp+0},
             {0.0,+infinity},
@@ -3149,10 +3103,12 @@ void tests_mpfi() {
             {0.0,+infinity},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_sqr<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -3169,10 +3125,7 @@ void tests_mpfi() {
             {0xe.49ae7969e41bp-4,0xaaa1p0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0.0,+3.0},
             {0.0,+infinity},
@@ -3183,10 +3136,12 @@ void tests_mpfi() {
             {0xf.1ea42821b27a8p-4,0xd1p0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_sqrt<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -3237,11 +3192,7 @@ void tests_mpfi() {
             {0.0,+8.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x10101010101011p+4,0x8f596b3002c1bp+947},
             {-0x10000000000001p-93,0x123456789abcdp0},
@@ -3264,11 +3215,14 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_sub<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -3345,11 +3299,7 @@ void tests_mpfi() {
             {0.0e-17,0.0e-17},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {0xfff8p-4,0x10018p-4},
             {-0x10038p-4,-0x10018p-4},
@@ -3385,11 +3335,14 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_sub<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -3527,10 +3480,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x117b4f5bf3474bp-53,0x117b4f5bf3474bp-53},
             {-0x18eb245cbee3a6p-52,-0x105785a43c4c55p-54},
@@ -3662,10 +3612,12 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_tan<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -3689,10 +3641,7 @@ void tests_mpfi() {
             entire,
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-0x1fd5992bc4b835p-56,0.0},
             {-0x185efab514f395p-53,0.0},
@@ -3710,10 +3659,12 @@ void tests_mpfi() {
             {-1.0,+1.0},
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_tanh<<<numBlocks, blockSize>>>(n, d_xs, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -3752,11 +3703,7 @@ void tests_mpfi() {
             {0.0,+8.0},
         }};
 
-        std::array<I, n> h_res{};
-        I *d_res = (I *)d_res_;
-        I *d_xs = (I *)d_xs_;
-        I *d_ys = (I *)d_ys_;
-        int n_result_bytes = n * sizeof(I);
+        std::array<I, n> h_res {{}};
         std::array<I, n> h_ref {{
             {-infinity,+8.0},
             {-infinity,+8.0},
@@ -3773,11 +3720,14 @@ void tests_mpfi() {
             entire,
         }};
 
-        CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
         test_convexHull<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpy(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
