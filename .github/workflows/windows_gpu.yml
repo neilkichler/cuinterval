@@ -1,4 +1,4 @@
-name: GPU workflow test
+name: Windows GPU tests
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: [self-hosted, Windows]
+    runs-on: [self-hosted, Windows, GPU]
 
     steps:
     - uses: actions/checkout@v4
