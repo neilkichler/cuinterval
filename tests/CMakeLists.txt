@@ -15,6 +15,9 @@ add_executable(tests tests.cu)
 target_compile_features(tests PRIVATE cxx_std_20)
 target_compile_features(tests PRIVATE cuda_std_20)
 
+# Specify the CUDA architecture to compile to
+set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES "61;86")
+
 # Link with main library and testing library
 target_link_libraries(tests PRIVATE cuinterval Boost::ut)
 

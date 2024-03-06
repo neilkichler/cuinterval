@@ -323,7 +323,7 @@ __device__ interval<double> operator/(interval<double> a, interval<double> b)
 }
 
 template<typename T>
-__device__ bool contains(interval<T> x, T y)
+__host__ __device__ bool contains(interval<T> x, T y)
 {
     return x.lb <= y && y <= x.ub;
 }
