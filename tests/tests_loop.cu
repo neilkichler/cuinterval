@@ -1,3 +1,5 @@
+#include "tests.h"
+
 #include <cuinterval/cuinterval.h>
 
 #include <thrust/device_vector.h>
@@ -42,7 +44,7 @@ struct pi_inv_fn
     template<typename I>
     __device__ I operator()(const I &x) const
     {
-        return I{1.0, 1.0}/(sqr(x));
+        return I { 1.0, 1.0 } / (sqr(x));
     }
 };
 
@@ -77,13 +79,12 @@ struct final_decrement_fn
 };
 
 template<typename T>
-void tests_loop()
+void tests_pi_approximation()
 {
-    int n   = 100'000;
     using I = interval<T>;
     using namespace boost::ut;
-    using namespace thrust::placeholders;
 
+    constexpr int n = 100'000;
     thrust::counting_iterator<T> seq_first(1);
     thrust::counting_iterator<T> seq_last = seq_first + n;
 
@@ -114,4 +115,68 @@ void tests_loop()
         expect(le(pi_approx.lb, std::numbers::pi));
         expect(ge(pi_approx.ub, std::numbers::pi));
     }
+}
+
+#include <cstdio>
+
+struct coeff_fn
+{
+    template<typename T>
+    __device__ interval<T> operator()(T x) const
+    {
+        using I = interval<T>;
+        return I { 1.0, 1.0 } / I { x, x };
+    }
+};
+
+template<typename I>
+struct horner_fn
+{
+    I x;
+
+    horner_fn(I _x)
+        : x(_x)
+    { }
+
+    __device__ I operator()(I res, I coeff) const
+    {
+        return res * x + coeff;
+    }
+};
+
+template<typename T>
+void tests_horner()
+{
+    using I = interval<T>;
+    using namespace boost::ut;
+
+    // Approximate exp with Horner's scheme.
+    constexpr int n_coefficients = 16;
+    thrust::host_vector<T> ps(n_coefficients);
+
+    thrust::counting_iterator<T> seq_first(1);
+    thrust::counting_iterator<T> seq_last = seq_first + n_coefficients;
+
+    thrust::inclusive_scan(seq_first, seq_last, ps.begin(), thrust::multiplies<T>());
+
+    thrust::device_vector<T> d_ps = ps;
+    thrust::device_vector<I> d_coefficients(n_coefficients);
+    thrust::transform(d_ps.begin(), d_ps.end() - 1, d_coefficients.begin() + 1, coeff_fn());
+    d_coefficients[0] = I { 1.0, 1.0 };
+
+    // example input
+    T eps = 1.0e-12;
+    I x{ 1.0 - eps, 1.0 + eps };
+    thrust::device_vector<I> d_res(n_coefficients);
+    thrust::inclusive_scan(d_coefficients.rbegin(), d_coefficients.rend(), d_res.begin(), horner_fn<I>(x));
+
+    thrust::host_vector<I> coefficients = d_coefficients;
+    thrust::host_vector<I> res = d_res;
+
+    I exp_approx = res[res.size() - 1];
+    T exp_true = std::numbers::e;
+
+    expect(contains(exp_approx, exp_true));
+    expect(le(exp_approx.lb, exp_true));
+    expect(ge(exp_approx.ub, exp_true));
 }
