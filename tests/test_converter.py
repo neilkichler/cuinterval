@@ -172,7 +172,7 @@ void tests_''' + test_name + '''() {
                         continue
                     new_op, body = op.split(maxsplit=1)
                     subtests[new_op].append(body[:-1].split())
-
+                
                 for instr, ops in subtests.items():
                     instr_len = len(ops[0])
                     vars = ['res', 'xs', 'ys', 'zs'][:instr_len]
@@ -251,6 +251,10 @@ void tests_''' + test_name + '''() {
     CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
     CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));\n\n'''
 
+            if (code == ''):
+                print(f'No operation supported in file: {file_path} -> skipping')
+                return ''
+
             return code_preamble + code_constants + code + code_postamble
 
     except FileNotFoundError:
@@ -270,6 +274,8 @@ if __name__ == '__main__':
 
     for f in files:
         test_code = convert_to_test(f)
+        if test_code == '':
+            continue
         f = f.replace('-', '_')
         tests_name = 'tests_' + f.rsplit('.', 1)[0]
         out_file = tests_name + '.cu'
