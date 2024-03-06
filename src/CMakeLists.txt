@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.24)
 
-set(LIB_PATH "${PROJECT_SOURCE_DIR}/include/cuinterval")
+set(INCLUDE_PATH "${cuinterval_SOURCE_DIR}/include")
+set(LIB_PATH "${INCLUDE_PATH}/cuinterval")
 
 set(headers 
     "${LIB_PATH}/arithmetic/intrinsic.cuh"
@@ -10,14 +11,14 @@ set(headers
 
 add_library(cuinterval "main.cu" ${headers})
 
-target_include_directories(cuinterval PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(cuinterval PUBLIC "${INCLUDE_PATH}")
 
 # C++17 is required for all users of the library
 target_compile_features(cuinterval PUBLIC cxx_std_17)
 target_compile_features(cuinterval PUBLIC cuda_std_17)
 
 source_group(
-    TREE "${PROJECT_SOURCE_DIR}/include"
+    TREE "${INCLUDE_PATH}"
     PREFIX "Header Files"
     FILES ${headers})
 
