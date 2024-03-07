@@ -20,6 +20,9 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # Let's nicely support folders in IDEs
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+  # Include example programs
+  add_subdirectory(examples)
+
   # Testing only available if this is the main project.
   # Note this needs to be done in the main CMakeLists
   # since it calls enable_testing, which must be in the
@@ -27,9 +30,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)
 
   add_subdirectory(tests)
-
-  # Include example programs
-  add_subdirectory(examples)
 endif()
 
 # Include main library

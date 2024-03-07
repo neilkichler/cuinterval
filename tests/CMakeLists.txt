@@ -19,9 +19,8 @@ target_compile_features(tests PRIVATE cuda_std_20)
 set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES "61;70;86")
 
 # Link with main library and testing library
-target_link_libraries(tests PRIVATE cuinterval Boost::ut)
+target_link_libraries(tests PRIVATE cuinterval example_interval_procedures Boost::ut)
 
 # Register tests for use in ctest
 add_test(NAME testcuinterval COMMAND tests)
-
 
