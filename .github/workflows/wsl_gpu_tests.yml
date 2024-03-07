@@ -27,7 +27,7 @@ jobs:
       run: nvcc --version
 
     - name: setup cmake
-      run: cmake -S . -B build -GNinja
+      run: CUDACXX=/usr/local/cuda-12.2/bin/nvcc cmake -S . -B build -GNinja
 
     - name: build
       run: cmake --build build
