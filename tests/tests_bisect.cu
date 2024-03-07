@@ -92,12 +92,6 @@ void tests_bisect()
     CUDA_CHECK(cudaFree(d_res_));
 }
 
-struct bisection_settings
-{
-    int max_steps = 1000;
-    double tol    = 1e-5;
-};
-
 // Stack in local memory. Managed independently for each thread.
 template<class T, std::size_t N>
 struct local_stack
@@ -115,8 +109,6 @@ struct local_stack
     size_type len {};
 };
 
-#include <cstdio>
-
 template<typename I>
 __device__ I f(I x)
 {
@@ -124,14 +116,12 @@ __device__ I f(I x)
 };
 
 template<typename T, int max_depth>
-__global__ void bisection(interval<T> x_init, bisection_settings settings, interval<T> *roots, std::size_t *max_roots)
+__global__ void bisection(interval<T> x_init, double tol, interval<T> *roots, std::size_t *max_roots)
 {
     using I = interval<T>;
 
     std::size_t n_roots = 0;
-    double tol          = settings.tol;
     local_stack<I, max_depth> intervals;
-
     intervals.push(x_init);
 
     for (int depth = 0; !intervals.empty() && depth < max_depth; depth++) {
@@ -148,7 +138,7 @@ __global__ void bisection(interval<T> x_init, bisection_settings settings, inter
             roots[n_roots] = x;
             n_roots++;
             if (n_roots == *max_roots) {
-                break;
+                break; // reached max roots we can store
             }
         } else {
             // interval could still contain a root -> bisect
@@ -176,7 +166,7 @@ void tests_bisection()
         9.42469725473852
     };
 
-    constexpr bisection_settings settings { .tol = 1e-7 };
+    constexpr double tolerance      = 1e-7;
     constexpr std::size_t max_depth = 512;
     std::size_t max_roots           = 16;
 
@@ -186,7 +176,7 @@ void tests_bisection()
     thrust::device_vector<I> roots(max_roots);
 
     I *d_roots = thrust::raw_pointer_cast(roots.data());
-    bisection<T, max_depth><<<1, 1>>>(x, settings, d_roots, d_max_roots);
+    bisection<T, max_depth><<<1, 1>>>(x, tolerance, d_roots, d_max_roots);
     CUDA_CHECK(cudaMemcpy(&max_roots, d_max_roots, sizeof(*d_max_roots), cudaMemcpyDeviceToHost));
 
     roots.resize(max_roots);
