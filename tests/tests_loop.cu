@@ -177,6 +177,4 @@ void tests_horner()
     T exp_true = std::numbers::e;
 
     expect(contains(exp_approx, exp_true));
-    expect(le(exp_approx.lb, exp_true));
-    expect(ge(exp_approx.ub, exp_true));
 }

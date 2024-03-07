@@ -129,7 +129,6 @@ void tests_bisection()
     thrust::host_vector<I> h_roots = roots;
     for (std::size_t i = 0; i < max_roots; i++) {
         expect(contains(h_roots[i], ref_roots[i]));
-        expect(le(h_roots[i].lb, ref_roots[i]));
-        expect(ge(h_roots[i].ub, ref_roots[i]));
+        expect(h_roots[i].ub - h_roots[i].lb < tolerance);
     }
 }
