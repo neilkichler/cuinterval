@@ -5,17 +5,17 @@
 #pragma nv_diag_suppress 1046
 #endif
 
-#include "tests_c_xsc.cu"
-#include "tests_libieeep1788_elem.cu"
-#include "tests_libieeep1788_rec_bool.cu"
-#include "tests_libieeep1788_cancel.cu"
-#include "tests_libieeep1788_bool.cu"
 #include "tests_atan2.cu"
-#include "tests_mpfi.cu"
-#include "tests_intervalarithmeticjl.cu"
 #include "tests_libieeep1788_set.cu"
+#include "tests_intervalarithmeticjl.cu"
+#include "tests_libieeep1788_bool.cu"
 #include "tests_filib.cu"
+#include "tests_c_xsc.cu"
+#include "tests_mpfi.cu"
+#include "tests_libieeep1788_elem.cu"
 #include "tests_libieeep1788_num.cu"
+#include "tests_libieeep1788_cancel.cu"
+#include "tests_libieeep1788_rec_bool.cu"
 
 #ifdef __CUDACC__
 #pragma nv_diagnostic pop
@@ -23,17 +23,17 @@
 #endif
 
 template <typename T>
-void tests_generated()
+void tests_generated(char *buffer)
 {
-    tests_c_xsc<double>();
-    tests_libieeep1788_elem<double>();
-    tests_libieeep1788_rec_bool<double>();
-    tests_libieeep1788_cancel<double>();
-    tests_libieeep1788_bool<double>();
-    tests_atan2<double>();
-    tests_mpfi<double>();
-    tests_intervalarithmeticjl<double>();
-    tests_libieeep1788_set<double>();
-    tests_filib<double>();
-    tests_libieeep1788_num<double>();
+    tests_atan2<double>(buffer);
+    tests_libieeep1788_set<double>(buffer);
+    tests_intervalarithmeticjl<double>(buffer);
+    tests_libieeep1788_bool<double>(buffer);
+    tests_filib<double>(buffer);
+    tests_c_xsc<double>(buffer);
+    tests_mpfi<double>(buffer);
+    tests_libieeep1788_elem<double>(buffer);
+    tests_libieeep1788_num<double>(buffer);
+    tests_libieeep1788_cancel<double>(buffer);
+    tests_libieeep1788_rec_bool<double>(buffer);
 }

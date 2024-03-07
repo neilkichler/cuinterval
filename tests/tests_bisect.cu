@@ -8,7 +8,7 @@
 #include "tests.h"
 
 template<typename T>
-void tests_bisect()
+void tests_bisect(char *buffer)
 {
     using namespace boost::ut;
 
@@ -28,10 +28,10 @@ void tests_bisect()
 
     I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_res_, 2 * n_bytes));
+    d_xs_ = (I *) buffer;
+    d_ys_ = (I *) buffer + n_bytes;
+    d_zs_ = (I *) buffer + 2 * n_bytes;
+    d_res_ = (I *) buffer + 3 * n_bytes;
 
     "bisection"_test = [&] {
         constexpr int n = 8;
@@ -84,11 +84,6 @@ void tests_bisect()
         int max_ulp_diff = 0;
         check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
-
-    CUDA_CHECK(cudaFree(d_xs_));
-    CUDA_CHECK(cudaFree(d_ys_));
-    CUDA_CHECK(cudaFree(d_zs_));
-    CUDA_CHECK(cudaFree(d_res_));
 }
 
 template<typename I>
@@ -98,7 +93,7 @@ __device__ I f(I x)
 };
 
 template<typename T>
-void tests_bisection()
+void tests_bisection(char *buffer)
 {
     using namespace boost::ut;
     using I = interval<T>;
@@ -116,8 +111,8 @@ void tests_bisection()
     constexpr std::size_t max_depth = 512;
     std::size_t max_roots           = 16;
 
-    std::size_t *d_max_roots;
-    CUDA_CHECK(cudaMalloc(&d_max_roots, sizeof(*d_max_roots)));
+    std::size_t *d_max_roots = (std::size_t *) buffer;
+    // CUDA_CHECK(cudaMalloc(&d_max_roots, sizeof(*d_max_roots)));
     CUDA_CHECK(cudaMemcpy(d_max_roots, &max_roots, sizeof(*d_max_roots), cudaMemcpyHostToDevice));
     thrust::device_vector<I> roots(max_roots);
 

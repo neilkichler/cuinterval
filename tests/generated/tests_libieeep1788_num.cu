@@ -6,7 +6,7 @@
 #include "../test_ops.cuh"
 
 template<typename T>
-void tests_libieeep1788_num() {
+void tests_libieeep1788_num(char *buffer) {
     using namespace boost::ut;
 
     using I = interval<T>;
@@ -23,12 +23,10 @@ void tests_libieeep1788_num() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
-
-    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));
+    I *d_xs_  = (I *) buffer;
+    I *d_ys_  = (I *) buffer + 1 * n_bytes;
+    I *d_zs_  = (I *) buffer + 2 * n_bytes;
+    I *d_res_ = (I *) buffer + 3 * n_bytes;
 
     "minimal_inf_inf"_test = [&] {
         constexpr int n = 14;
@@ -315,9 +313,4 @@ void tests_libieeep1788_num() {
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-
-    CUDA_CHECK(cudaFree(d_xs_));
-    CUDA_CHECK(cudaFree(d_ys_));
-    CUDA_CHECK(cudaFree(d_zs_));
-    CUDA_CHECK(cudaFree(d_res_));
 }

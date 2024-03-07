@@ -32,7 +32,7 @@ def convert_to_test(file_path):
 #include "../test_ops.cuh"
 
 template<typename T>
-void tests_''' + test_name + '''() {
+void tests_''' + test_name + '''(char *buffer) {
     using namespace boost::ut;
 
     using I = interval<T>;
@@ -45,13 +45,8 @@ void tests_''' + test_name + '''() {
     T NaN = ::nan("");
 '''
 
-            code_postamble ='''
-    CUDA_CHECK(cudaFree(d_xs_));
-    CUDA_CHECK(cudaFree(d_ys_));
-    CUDA_CHECK(cudaFree(d_zs_));
-    CUDA_CHECK(cudaFree(d_res_));
-}
-'''
+            code_postamble ='}'
+
             largest_n = 0
             I = ParamType.I
             B = ParamType.B
@@ -135,20 +130,6 @@ void tests_''' + test_name + '''() {
             entire = '{entire}'
             float_max = '0x1.FFFFFFFFFFFFFp1023'
             float_min = '-0x1.FFFFFFFFFFFFFp1023'
-
-            failed_code = {
-                'params': {
-                    T: 'h_{}[fail_id]',
-                    N: 'h_{}[fail_id]',
-                    I: 'h_{}[fail_id].lb, h_{}[fail_id].ub'
-                },
-                'cuda': {
-                    T: '{} = %a\\n',
-                    B: '{} = %d\\n',
-                    I: '{} = [%a, %a]\\n',
-                    N: '{} = %d\\n'
-                }
-            }
             
             def replace_min_and_max(v):
                 return 'std::numeric_limits<T>::max()' if v == float_max else 'std::numeric_limits<T>::lowest()' if v == float_min else v
@@ -244,12 +225,10 @@ void tests_''' + test_name + '''() {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs_, *d_ys_, *d_zs_, *d_res_;
-
-    CUDA_CHECK(cudaMalloc(&d_xs_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_ys_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_zs_, n_bytes));
-    CUDA_CHECK(cudaMalloc(&d_res_, n_bytes));\n\n'''
+    I *d_xs_  = (I *) buffer;
+    I *d_ys_  = (I *) buffer + 1 * n_bytes;
+    I *d_zs_  = (I *) buffer + 2 * n_bytes;
+    I *d_res_ = (I *) buffer + 3 * n_bytes;\n\n'''
 
             if (code == ''):
                 print(f'No operation supported in file: {file_path} -> skipping')
@@ -282,7 +261,7 @@ if __name__ == '__main__':
         with open(out_file, 'w') as f:
             f.write(test_code)
         main_includes += f'#include "{out_file}"\n'
-        main_tests += indent_one + tests_name + '<double>();\n'
+        main_tests += indent_one + tests_name + '<double>(buffer);\n'
         print('generated ' + out_file)
 
     for f in glob.glob('*.cu'):
@@ -291,7 +270,7 @@ if __name__ == '__main__':
     os.chdir(os.path.dirname(__file__))
 
     with open('generated/tests_generated.cu', 'w') as f:
-        main_body = f'\ntemplate <typename T>\nvoid tests_generated()\n{{\n{main_tests}}}\n'
+        main_body = f'\ntemplate <typename T>\nvoid tests_generated(char *buffer)\n{{\n{main_tests}}}\n'
         main_code = main_preamble + main_pragmas_begin + main_includes + main_pragmas_end + main_body
         f.write(main_code)
 
