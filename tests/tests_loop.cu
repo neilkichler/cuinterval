@@ -79,7 +79,7 @@ struct final_decrement_fn
 };
 
 template<typename T>
-void tests_pi_approximation()
+void tests_pi_approximation(cudaStream_t stream)
 {
     using I = interval<T>;
     using namespace boost::ut;
@@ -97,16 +97,16 @@ void tests_pi_approximation()
     auto pi_inv_first = thrust::make_transform_iterator(tr_first, pi_inv_fn());
     auto pi_inv_last  = thrust::make_transform_iterator(tr_last, pi_inv_fn());
 
-    I sum_rcp = thrust::reduce(thrust::device, pi_rcp_first, pi_rcp_last, I {});
-    I sum_pow = thrust::reduce(thrust::device, pi_rcp_first, pi_rcp_last, I {});
-    I sum_inv = thrust::reduce(thrust::device, pi_inv_first, pi_inv_last, I {});
+    I sum_rcp = thrust::reduce(thrust::cuda::par.on(stream), pi_rcp_first, pi_rcp_last, I {});
+    I sum_pow = thrust::reduce(thrust::cuda::par.on(stream), pi_rcp_first, pi_rcp_last, I {});
+    I sum_inv = thrust::reduce(thrust::cuda::par.on(stream), pi_inv_first, pi_inv_last, I {});
 
     // NOTE: The rest could (and normally should) be done on the CPU
     //       but for testing purposes we use the GPU.
     thrust::device_vector<I> d_pi { sum_rcp, sum_pow, sum_inv };
 
-    thrust::transform(d_pi.begin(), d_pi.end(), d_pi.begin(), final_decrement_fn(n));
-    thrust::transform(d_pi.begin(), d_pi.end(), d_pi.begin(), scale_fn());
+    thrust::transform(thrust::cuda::par.on(stream), d_pi.begin(), d_pi.end(), d_pi.begin(), final_decrement_fn(n));
+    thrust::transform(thrust::cuda::par.on(stream), d_pi.begin(), d_pi.end(), d_pi.begin(), scale_fn());
 
     thrust::host_vector<I> h_pi = d_pi;
 
@@ -145,7 +145,7 @@ struct horner_fn
 };
 
 template<typename T>
-void tests_horner()
+void tests_horner(cudaStream_t stream)
 {
     using I = interval<T>;
     using namespace boost::ut;

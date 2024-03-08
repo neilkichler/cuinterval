@@ -2,11 +2,12 @@
 
 #include <cuinterval/cuinterval.h>
 
-#include "../tests.h"
 #include "../test_ops.cuh"
+#include "../tests.h"
+#include "../tests_common.cuh"
 
 template<typename T>
-void tests_atan2(char *buffer) {
+void tests_atan2(cuda_buffers buffers, cudaStream_t stream) {
     using namespace boost::ut;
 
     using I = interval<T>;
@@ -23,14 +24,17 @@ void tests_atan2(char *buffer) {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs_  = (I *) buffer;
-    I *d_ys_  = (I *) buffer + 1 * n_bytes;
-    I *d_zs_  = (I *) buffer + 2 * n_bytes;
-    I *d_res_ = (I *) buffer + 3 * n_bytes;
+    char *d_buffer = buffers.device;
+    char *h_buffer = buffers.host;
+
+    I *d_xs_  = (I *) d_buffer;
+    I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
+    I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
+    I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
     "minimal.atan2_atan2"_test = [&] {
         constexpr int n = 37;
-        std::array<I, n> h_xs {{
+        I *h_xs = new (h_buffer) I[n]{
             {-0x1p-1022,-0x1p-1022},
             {-0x1p-1022,0.0},
             {-0x1p-1022,0x1p-1022},
@@ -68,9 +72,10 @@ void tests_atan2(char *buffer) {
             empty,
             entire,
             entire,
-        }};
+        };
 
-        std::array<I, n> h_ys {{
+        h_buffer += n * sizeof(I);
+        I *h_ys = new (h_buffer) I[n]{
             {-0x1p-1022,0x1p-1022},
             {-0x1p-1022,-0x1p-1022},
             {-0x1p-1022,-0x1p-1022},
@@ -108,9 +113,10 @@ void tests_atan2(char *buffer) {
             entire,
             empty,
             entire,
-        }};
+        };
 
-        std::array<I, n> h_res {{}};
+        h_buffer += n * sizeof(I);
+        I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1.2D97C7F3321D3p1,-0x1.921FB54442D18p-1},
             {-0x1.921FB54442D19p1,+0x1.921FB54442D19p1},
@@ -151,15 +157,16 @@ void tests_atan2(char *buffer) {
             {-0x1.921FB54442D19p1,+0x1.921FB54442D19p1},
         }};
 
+        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n*sizeof(I), cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n*sizeof(I), cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n*sizeof(I), cudaMemcpyHostToDevice));
-        test_atan2<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof(I), cudaMemcpyDeviceToHost));
-        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        test_atan2<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
+        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 

@@ -28,11 +28,12 @@ def convert_to_test(file_path):
             code_preamble = auto_generated_comment + r'''
 #include <cuinterval/cuinterval.h>
 
-#include "../tests.h"
 #include "../test_ops.cuh"
+#include "../tests.h"
+#include "../tests_common.cuh"
 
 template<typename T>
-void tests_''' + test_name + '''(char *buffer) {
+void tests_''' + test_name + '''(cuda_buffers buffers, cudaStream_t stream) {
     using namespace boost::ut;
 
     using I = interval<T>;
@@ -174,9 +175,9 @@ void tests_''' + test_name + '''(char *buffer) {
                     test_code = indent_one + f'"{name}_{instr}"_test = [&] {{\n'
 
                     for i in range(n_vars):
-                        var_codes[i] = indent_two + f'std::array<{var_types[i].name}, n> h_{vars[i]} {{{{\n'
+                        var_codes[i] = indent_two + f'{var_types[i].name} *h_{vars[i]} = new (h_buffer) {var_types[i].name}[n]{{\n'
 
-                    var_codes[-1] = var_codes[-1][:-1] + "}};\n"
+                    var_codes[-1] = var_codes[-1][:-1] + "};\n"
 
                     var_codes[n_args] += indent_two + f'std::array<{var_types[n_args].name}, n> h_ref {{{{\n'
                     for elements in ops:
@@ -197,15 +198,18 @@ void tests_''' + test_name + '''(char *buffer) {
 
                     cuda_code = ''
                     for i in reversed(range(n_vars)):
-                        var_codes[i] += indent_two + '}};\n\n'
+                        extra = '}' if i == n_vars-1 else ''
+                        var_codes[i] += indent_two + extra + '};\n\n'
+                        var_codes[i] += indent_two + f'h_buffer += n * sizeof({var_types[i].name});\n'
                         var_codes[n_args] += indent_two + f'{var_types[i].name} *d_{vars[i]} = ({var_types[i].name} *)d_{vars[i]}_;\n'
-                        cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(d_{vars[i]}, h_{vars[i]}.data(), n*sizeof({var_types[i].name}), cudaMemcpyHostToDevice));\n'
+                        cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(d_{vars[i]}, h_{vars[i]}, n*sizeof({var_types[i].name}), cudaMemcpyHostToDevice, stream));\n'
                     
                     host_input_vars = ', '.join([ f'h_{vars[i]}' for i in range(n_args) ])
                     device_vars = ''.join([ f', d_{v}' for v in vars ])
 
-                    cuda_code += indent_two + f'test_{instr}<<<numBlocks, blockSize>>>(n{device_vars});\n'
-                    cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n*sizeof({var_types[n_args].name}), cudaMemcpyDeviceToHost));\n'
+                    cuda_code += indent_two + f'test_{instr}<<<numBlocks, blockSize, 0, stream>>>(n{device_vars});\n'
+                    cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof({var_types[n_args].name}), cudaMemcpyDeviceToHost, stream));\n'
+                    cuda_code += indent_two + f'CUDA_CHECK(cudaDeviceSynchronize());'
                     cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
                     cuda_code += indent_two + f'check_all_equal<{var_types[n_args].name}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_input_vars});\n'
                     cuda_code += indent_one + '};\n\n'
@@ -225,10 +229,13 @@ void tests_''' + test_name + '''(char *buffer) {
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
-    I *d_xs_  = (I *) buffer;
-    I *d_ys_  = (I *) buffer + 1 * n_bytes;
-    I *d_zs_  = (I *) buffer + 2 * n_bytes;
-    I *d_res_ = (I *) buffer + 3 * n_bytes;\n\n'''
+    char *d_buffer = buffers.device;
+    char *h_buffer = buffers.host;
+
+    I *d_xs_  = (I *) d_buffer;
+    I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
+    I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
+    I *d_res_ = (I *) d_buffer + 3 * n_bytes;\n\n'''
 
             if (code == ''):
                 print(f'No operation supported in file: {file_path} -> skipping')
@@ -251,7 +258,7 @@ if __name__ == '__main__':
     main_includes = ''
     main_tests = ''
 
-    for f in files:
+    for i, f in enumerate(files):
         test_code = convert_to_test(f)
         if test_code == '':
             continue
@@ -261,7 +268,7 @@ if __name__ == '__main__':
         with open(out_file, 'w') as f:
             f.write(test_code)
         main_includes += f'#include "{out_file}"\n'
-        main_tests += indent_one + tests_name + '<double>(buffer);\n'
+        main_tests += indent_one + tests_name + f'<double>(buffers, streams[{i%4}]);\n'
         print('generated ' + out_file)
 
     for f in glob.glob('*.cu'):
@@ -270,7 +277,7 @@ if __name__ == '__main__':
     os.chdir(os.path.dirname(__file__))
 
     with open('generated/tests_generated.cu', 'w') as f:
-        main_body = f'\ntemplate <typename T>\nvoid tests_generated(char *buffer)\n{{\n{main_tests}}}\n'
+        main_body = f'\n#include "../tests_common.cuh"\n\ntemplate <typename T>\nvoid tests_generated(cuda_buffers buffers, cuda_streams streams)\n{{\n{main_tests}}}\n'
         main_code = main_preamble + main_pragmas_begin + main_includes + main_pragmas_end + main_body
         f.write(main_code)
 

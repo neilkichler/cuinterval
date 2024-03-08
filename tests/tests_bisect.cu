@@ -6,9 +6,10 @@
 
 #include "test_ops.cuh"
 #include "tests.h"
+#include "tests_common.cuh"
 
 template<typename T>
-void tests_bisect(char *buffer)
+void tests_bisect(cuda_buffers buffers, cuda_streams streams)
 {
     using namespace boost::ut;
 
@@ -21,6 +22,8 @@ void tests_bisect(char *buffer)
     I entire   = { -infinity, infinity };
     T NaN      = ::nan("");
 
+    char *d_buffer                       = buffers.device;
+    char *h_buffer                       = buffers.host;
     const int n                          = 8; // count of largest test array
     const int n_bytes                    = n * sizeof(I);
     const int blockSize                  = 256;
@@ -28,14 +31,14 @@ void tests_bisect(char *buffer)
 
     I *d_xs_, *d_ys_, *d_zs_, *d_res_;
 
-    d_xs_ = (I *) buffer;
-    d_ys_ = (I *) buffer + n_bytes;
-    d_zs_ = (I *) buffer + 2 * n_bytes;
-    d_res_ = (I *) buffer + 3 * n_bytes;
+    d_xs_  = (I *)d_buffer;
+    d_ys_  = (I *)d_buffer + 1 * n_bytes;
+    d_zs_  = (I *)d_buffer + 2 * n_bytes;
+    d_res_ = (I *)d_buffer + 3 * n_bytes;
 
     "bisection"_test = [&] {
         constexpr int n = 8;
-        std::array<I, n> h_xs { {
+        I *h_xs         = new (h_buffer) I[n] {
             empty,
             entire,
             entire,
@@ -44,9 +47,10 @@ void tests_bisect(char *buffer)
             { 1.0, 1.0 },
             { 0.0, 1.0 },
             { 0.0, 1.0 },
-        } };
+        };
+        h_buffer += n * sizeof(I);
 
-        std::array<T, n> h_ys { {
+        T *h_ys = new (h_buffer) T[n] {
             0.5,
             0.5,
             0.25,
@@ -55,13 +59,20 @@ void tests_bisect(char *buffer)
             0.5,
             0.5,
             0.25,
-        } };
-
-        std::array<split<T>, n> h_res {};
+        };
+        h_buffer += n * sizeof(I);
+        split<T> *h_res = new (h_buffer) split<T>[n] {};
+        h_buffer += n * sizeof(split<T>);
         split<T> *d_res    = (split<T> *)d_res_;
         I *d_xs            = (I *)d_xs_;
         T *d_ys            = (T *)d_ys_;
         int n_result_bytes = n * sizeof(*d_res);
+
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n_bytes, cudaMemcpyHostToDevice, streams[0]));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys, n_bytes, cudaMemcpyHostToDevice, streams[1]));
+        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n_result_bytes, cudaMemcpyHostToDevice, streams[2]));
+        test_bisect<<<numBlocks, blockSize, 0, streams[3]>>>(n, d_xs, d_ys, d_res);
+      
         std::array<split<T>, n> h_ref { {
             { empty, empty },
             { { entire.lb, 0.0 }, { 0.0, entire.ub } },
@@ -73,14 +84,8 @@ void tests_bisect(char *buffer)
             { { 0.0, 0.25 }, { 0.25, 1.0 } },
         } };
 
-        // CUDA_CHECK(cudaMemcpy(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        // CUDA_CHECK(cudaMemcpy(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        // CUDA_CHECK(cudaMemcpy(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys.data(), n_bytes, cudaMemcpyHostToDevice));
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res.data(), n_result_bytes, cudaMemcpyHostToDevice));
-        test_bisect<<<numBlocks, blockSize>>>(n, d_xs, d_ys, d_res);
-        CUDA_CHECK(cudaMemcpyAsync(h_res.data(), d_res, n_result_bytes, cudaMemcpyDeviceToHost));
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n_result_bytes, cudaMemcpyDeviceToHost, streams[0]));
+        CUDA_CHECK(cudaDeviceSynchronize());
         int max_ulp_diff = 0;
         check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -93,7 +98,7 @@ __device__ I f(I x)
 };
 
 template<typename T>
-void tests_bisection(char *buffer)
+void tests_bisection(cuda_buffers buffers, cudaStream_t stream)
 {
     using namespace boost::ut;
     using I = interval<T>;
@@ -111,13 +116,12 @@ void tests_bisection(char *buffer)
     constexpr std::size_t max_depth = 512;
     std::size_t max_roots           = 16;
 
-    std::size_t *d_max_roots = (std::size_t *) buffer;
-    // CUDA_CHECK(cudaMalloc(&d_max_roots, sizeof(*d_max_roots)));
+    std::size_t *d_max_roots = (std::size_t *)buffers.device;
     CUDA_CHECK(cudaMemcpy(d_max_roots, &max_roots, sizeof(*d_max_roots), cudaMemcpyHostToDevice));
     thrust::device_vector<I> roots(max_roots);
 
     I *d_roots = thrust::raw_pointer_cast(roots.data());
-    bisection<T, max_depth><<<1, 1>>>(x, tolerance, d_roots, d_max_roots);
+    bisection<T, max_depth><<<1, 1, 0, stream>>>(x, tolerance, d_roots, d_max_roots);
     CUDA_CHECK(cudaMemcpy(&max_roots, d_max_roots, sizeof(*d_max_roots), cudaMemcpyDeviceToHost));
 
     roots.resize(max_roots);

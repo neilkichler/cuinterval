@@ -66,7 +66,7 @@ bool check_within_ulps(T x, T y, std::size_t n, T direction)
 }
 
 template<typename T, int N, typename... Args>
-void check_all_equal(std::span<T, N> h_res, std::span<T, N> h_ref, int max_ulps_diff, std::source_location location, Args &&...args)
+void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::source_location location, Args &&...args)
 {
     using namespace boost::ut;
 
@@ -79,7 +79,7 @@ void check_all_equal(std::span<T, N> h_res, std::span<T, N> h_ref, int max_ulps_
          ...);
     };
 
-    for (size_t i = 0; i < h_res.size(); ++i) {
+    for (size_t i = 0; i < h_ref.size(); ++i) {
         if (h_res[i] != h_res[i] && h_ref[i] != h_ref[i]) // both are NaN
             continue;
 
