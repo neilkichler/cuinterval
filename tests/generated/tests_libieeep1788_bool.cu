@@ -77,7 +77,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_isEmpty<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -126,7 +127,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_isEntire<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -198,7 +200,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_equal<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -306,7 +309,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_subset<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -411,7 +415,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_less<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -501,7 +506,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_precedes<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -576,7 +582,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_interior<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -645,7 +652,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_strictLess<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -714,7 +722,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_strictPrecedes<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -771,7 +780,8 @@ void tests_libieeep1788_bool(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_disjoint<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(B), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 

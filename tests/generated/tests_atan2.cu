@@ -166,7 +166,8 @@ void tests_atan2(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_atan2<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 

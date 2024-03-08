@@ -209,7 +209,7 @@ void tests_''' + test_name + '''(cuda_buffers buffers, cudaStream_t stream) {
 
                     cuda_code += indent_two + f'test_{instr}<<<numBlocks, blockSize, 0, stream>>>(n{device_vars});\n'
                     cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof({var_types[n_args].name}), cudaMemcpyDeviceToHost, stream));\n'
-                    cuda_code += indent_two + f'CUDA_CHECK(cudaDeviceSynchronize());'
+                    cuda_code += indent_two + f'CUDA_CHECK(cudaStreamSynchronize(stream));\n'
                     cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
                     cuda_code += indent_two + f'check_all_equal<{var_types[n_args].name}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_input_vars});\n'
                     cuda_code += indent_one + '};\n\n'

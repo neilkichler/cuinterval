@@ -112,7 +112,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_add<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -196,7 +197,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_sub<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -361,7 +363,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_mul<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -451,7 +454,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_div<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
@@ -532,7 +536,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_acos<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -613,7 +618,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_acosh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -694,7 +700,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_asin<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -767,7 +774,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_asinh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -848,7 +856,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_atan<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -929,7 +938,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_atanh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1010,7 +1020,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_cos<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 2;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1091,7 +1102,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_cosh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 2;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1164,7 +1176,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_exp<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1233,7 +1246,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_exp10<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1306,7 +1320,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_exp2<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1379,7 +1394,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_expm1<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1460,7 +1476,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_log<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1541,7 +1558,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_log10<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1622,7 +1640,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_log1p<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1703,7 +1722,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_log2<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1784,7 +1804,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_sin<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 2;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1865,7 +1886,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_sinh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -1944,7 +1966,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_sqr<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -2025,7 +2048,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_sqrt<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 0;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -2106,7 +2130,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_tan<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 3;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 3;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
@@ -2187,7 +2212,8 @@ void tests_filib(cuda_buffers buffers, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         test_tanh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaDeviceSynchronize());        int max_ulp_diff = 2;
+        CUDA_CHECK(cudaStreamSynchronize(stream));
+        int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
