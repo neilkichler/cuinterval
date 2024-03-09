@@ -464,6 +464,7 @@ __device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
 
         return z;
     }
+    return {};
 }
 
 template<typename T>
