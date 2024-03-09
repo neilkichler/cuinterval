@@ -4,6 +4,7 @@
 #include "interval.h"
 #include "intrinsic.cuh"
 
+#include <cassert>
 #include <numbers>
 
 // IEEE Std 1788.1-2017, Table 4.1
