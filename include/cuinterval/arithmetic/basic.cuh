@@ -318,6 +318,29 @@ __device__ interval<T> operator*(interval<T> a, interval<T> b)
     return mul(a, b);
 }
 
+template<typename T>
+__device__ interval<T> operator*(T a, interval<T> b)
+{
+    if (std::isnan(a) || empty(b)) {
+        return empty<T>();
+    }
+
+    constexpr auto zero = static_cast<T>(0);
+    if (a < zero) {
+        return { intrinsic::mul_down(a, b.ub), intrinsic::mul_up(a, b.lb) };
+    } else if (a == zero) {
+        return { zero, zero };
+    } else {
+        return { intrinsic::mul_down(a, b.lb), intrinsic::mul_up(a, b.ub) };
+    }
+}
+
+template<typename T>
+__device__ interval<T> operator*(interval<T> a, T b)
+{
+    return b * a;
+}
+
 __device__ interval<double> operator/(interval<double> a, interval<double> b)
 {
     return div(a, b);
