@@ -824,6 +824,12 @@ __device__ interval<T> rootn(interval<T> x, std::integral auto n)
 }
 
 template<typename T>
+__device__ interval<T> pow(interval<T> x, std::integral auto y)
+{
+    return pown(x, y);
+}
+
+template<typename T>
 __device__ interval<T> pow(interval<T> x, interval<T> y)
 {
     if (empty(y)) {
