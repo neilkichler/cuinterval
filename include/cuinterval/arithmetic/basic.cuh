@@ -313,6 +313,26 @@ __device__ interval<T> operator-(interval<T> a, interval<T> b)
 }
 
 template<typename T>
+__device__ interval<T> operator-(T a, interval<T> b)
+{
+    if (std::isnan(a) || empty(b)) {
+        return empty<T>();
+    }
+
+    return { intrinsic::sub_down(a, b.ub), intrinsic::sub_up(a, b.lb) };
+}
+
+template<typename T>
+__device__ interval<T> operator-(interval<T> a, T b)
+{
+    if (empty(a) || std::isnan(b)) {
+        return empty<T>();
+    }
+
+    return { intrinsic::sub_down(a.lb, b), intrinsic::sub_up(a.ub, b) };
+}
+
+template<typename T>
 __device__ interval<T> operator*(interval<T> a, interval<T> b)
 {
     return mul(a, b);
@@ -856,8 +876,8 @@ template<typename T>
 __device__ unsigned int quadrant(T v)
 {
     int quotient;
-    T vv  = intrinsic::next_after(intrinsic::sub_down(v, std::numbers::pi/4), static_cast<T>(0));
-    T rem = remquo(vv, std::numbers::pi/2, &quotient);
+    T vv  = intrinsic::next_after(intrinsic::sub_down(v, std::numbers::pi / 4), static_cast<T>(0));
+    T rem = remquo(vv, std::numbers::pi / 2, &quotient);
     return static_cast<unsigned>(quotient) % 4;
 };
 

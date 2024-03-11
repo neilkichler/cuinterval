@@ -13,14 +13,13 @@ __device__ I f(I x)
     // return I{1.0, 1.0};
     // return x*sqr(x) - (I{2.0, 2.0} * sqr(x)) + x;
     // return sqr(sin(x)) - (I{1.0, 1.0} - cos(I{2.0, 2.0} * x)) / I{2.0, 2.0};
-    return pown(x, 3) - pown(x, 2) - I{17.0, 17.0} * x - I{15.0, 15.0};
+    return pow(x, 3) - pow(x, 2) - 17.0*x - 15.0;
 };
 
 void example_bisection()
 {
     using I = interval<double>;
 
-    // I x = { -1.0, 2.0 };
     I x = { -5.0, 10.0 };
 
     constexpr double tolerance      = 1e-12;
