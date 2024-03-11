@@ -13,12 +13,12 @@
 #pragma nv_diag_default 2811
 #pragma pop_macro("__cpp_consteval")
 #else
-#pragma message("No compiler detected")
 #include <boost/ut.hpp>
 #endif
 
-#include <cuinterval/cuinterval.h>
+#include <cuinterval/arithmetic/interval.h>
 
+#include <cmath>
 #include <ostream>
 #include <source_location>
 #include <span>

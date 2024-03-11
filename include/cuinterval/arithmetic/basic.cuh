@@ -1367,15 +1367,6 @@ __device__ interval<T> cot(interval<T> x)
 }
 
 template<typename T>
-struct split
-{
-    interval<T> lower_half;
-    interval<T> upper_half;
-
-    auto operator<=>(const split &) const = default;
-};
-
-template<typename T>
 __device__ split<T> bisect(interval<T> x, T split_ratio)
 {
     assert(0 <= split_ratio && split_ratio <= 1);

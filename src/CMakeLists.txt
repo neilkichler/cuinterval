@@ -24,3 +24,4 @@ source_group(
 
 # set_target_properties(cuinterval PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
+
