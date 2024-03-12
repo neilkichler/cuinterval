@@ -1,13 +1,11 @@
 #pragma once
 
 #include <cuda_runtime.h>
-
-#include <cuinterval/arithmetic/interval.h>
-
+#include <omp.h>
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 
-#include <omp.h>
+#include <cuinterval/arithmetic/interval.h>
 
 #include "tests.h"
 #include "tests_common.h"
@@ -15,9 +13,8 @@
 void test_bisect_call(cudaStream_t stream, int n,
                       interval<double> *x, double *y, split<double> *res);
 
-// void test_bisection_call(cudaStream_t stream, interval<double> x, double tolerance,
-//                          interval<double> *roots, std::size_t *max_roots);
-
+void test_bisection_call(cudaStream_t stream, interval<double> x, double tolerance,
+                         interval<double> *roots, std::size_t *max_roots);
 
 template<typename T>
 void tests_bisect(cuda_buffers buffers, cuda_streams streams)

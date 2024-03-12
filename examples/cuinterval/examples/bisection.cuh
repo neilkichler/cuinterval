@@ -1,4 +1,4 @@
-
+#pragma once
 #include <cuinterval/cuinterval.h>
 
 // Stack in local memory. Managed independently for each thread.
@@ -19,6 +19,16 @@ struct local_stack
 };
 
 #include <cstdio>
+
+template<typename I>
+__device__ I f(I x)
+{
+    // return exp(I { -3.0, -3.0 } * x) - sin(x) * sin(x) * sin(x);
+    // return I{1.0, 1.0};
+    // return x*sqr(x) - (I{2.0, 2.0} * sqr(x)) + x;
+    // return sqr(sin(x)) - (I{1.0, 1.0} - cos(I{2.0, 2.0} * x)) / I{2.0, 2.0};
+    return pown(x, 3) - pown(x, 2) - 17.0 * x - 15.0;
+};
 
 // Example implementation of the bisection method for finding all roots in a given interval.
 template<typename T, int max_depth>
@@ -54,15 +64,19 @@ __global__ void bisection(interval<T> x_init, double tol, interval<T> *roots, st
                 ||  inf(x) <= sup(root) && sup(root) <= sup(x)
                 ||  inf(x) <= inf(root) && inf(root) <= sup(x)) {
                     roots[i] = convex_hull(root, x);
+                    // the width of the root could now be larger than the tolerance 
+                    // -> apply a mince and merge strategy
+                    // by mincing by n + 1, where n is the number of joined roots
                     absorbed = true;
-                    // printf("absorbed root at = %f, %f with new root = %f, %f\n", root.lb, root.ub, x.lb, x.ub);
+                    // printf("absorbed root at = %.15f, %.15f with new root = %.15f, %.15f\n", root.lb, root.ub, x.lb, x.ub);
+                    // printf("new diff is = %.15f\n", width(roots[i]));
                     break;
                 }
             }
 
             if (!absorbed) {
                 roots[n_roots] = x;
-                // printf("found root at = %f, %f\n", x.lb, x.ub);
+                // printf("found root at = %.15f, %.15f\n", x.lb, x.ub);
                 n_roots++;
             }
 
