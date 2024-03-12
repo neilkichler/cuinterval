@@ -8,22 +8,25 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(ut)
 
-# FetchContent_Declare(
-#     CCCL
-#     GIT_REPOSITORY https://github.com/nvidia/cccl.git
-#     GIT_TAG main
-# )
-# FetchContent_MakeAvailable(CCCL)
-
 # Tests need to be added as executables first
-add_executable(tests tests.cpp tests_bisect.h tests_bisect.cu tests_bisect.cpp test_ops.cuh)
+add_executable(tests 
+    tests.cpp
+    tests_ops.cuh
+    tests_bisect.h 
+    tests_bisect.cu 
+    tests_bisect.cpp 
+    tests_loop.h
+    tests_loop.cu
+    tests_loop.cpp
+)
 
 # Use C++20 in the tests
 target_compile_features(tests PRIVATE cxx_std_20)
 target_compile_features(tests PRIVATE cuda_std_20)
 
 # Specify the CUDA architecture to compile to
-set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES "61;70;86")
+# set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES "61;70;86")
+set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES native)
 
 set_target_properties(tests PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
@@ -34,8 +37,6 @@ target_link_libraries(tests PRIVATE cuinterval example_interval_procedures Boost
 find_package(CUDAToolkit REQUIRED)
 target_link_libraries(tests PRIVATE CUDA::cuda_driver)
 target_link_libraries(tests PRIVATE CUDA::cudart)
-
-# target_link_libraries(tests PRIVATE CCCL::CCCL)
 
 # Enable OpenMP
 find_package(OpenMP)

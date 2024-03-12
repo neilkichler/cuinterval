@@ -2,7 +2,7 @@
 
 #include <cuinterval/cuinterval.h>
 
-#include "../test_ops.cuh"
+#include "../tests_ops.cuh"
 #include "../tests.h"
 #include "../tests_common.cuh"
 

@@ -14,31 +14,31 @@
 //
 
 template<typename T>
-__device__ interval<T> pos_inf()
+inline __device__ interval<T> pos_inf()
 {
     return { intrinsic::pos_inf<T>(), intrinsic::pos_inf<T>() };
 }
 
 template<typename T>
-constexpr __device__ interval<T> empty()
+constexpr inline __device__ interval<T> empty()
 {
     return { intrinsic::pos_inf<T>(), intrinsic::neg_inf<T>() };
 }
 
 template<typename T>
-constexpr __device__ interval<T> entire()
+constexpr inline __device__ interval<T> entire()
 {
     return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
 }
 
 template<typename T>
-__device__ __host__ bool empty(interval<T> x)
+inline __device__ __host__ bool empty(interval<T> x)
 {
     return !(x.lb <= x.ub);
 }
 
 template<typename T>
-__device__ bool just_zero(interval<T> x)
+inline __device__ bool just_zero(interval<T> x)
 {
     return x.lb == 0 && x.ub == 0;
 }
@@ -48,25 +48,25 @@ __device__ bool just_zero(interval<T> x)
 //
 
 template<typename T>
-__device__ interval<T> neg(interval<T> x)
+inline __device__ interval<T> neg(interval<T> x)
 {
     return { -x.ub, -x.lb };
 }
 
 template<typename T>
-__device__ interval<T> add(interval<T> a, interval<T> b)
+inline __device__ interval<T> add(interval<T> a, interval<T> b)
 {
     return { intrinsic::add_down(a.lb, b.lb), intrinsic::add_up(a.ub, b.ub) };
 }
 
 template<typename T>
-__device__ interval<T> sub(interval<T> a, interval<T> b)
+inline __device__ interval<T> sub(interval<T> a, interval<T> b)
 {
     return { intrinsic::sub_down(a.lb, b.ub), intrinsic::sub_up(a.ub, b.lb) };
 }
 
 template<typename T>
-__device__ interval<T> mul(interval<T> a, interval<T> b)
+inline __device__ interval<T> mul(interval<T> a, interval<T> b)
 {
     if (empty(a) || empty(b)) {
         return empty<T>();
@@ -87,7 +87,7 @@ __device__ interval<T> mul(interval<T> a, interval<T> b)
 }
 
 template<typename T>
-__device__ interval<T> fma(interval<T> x, interval<T> y, interval<T> z)
+inline __device__ interval<T> fma(interval<T> x, interval<T> y, interval<T> z)
 {
     return (x * y) + z;
     // interval<T> res;
@@ -104,7 +104,7 @@ __device__ interval<T> fma(interval<T> x, interval<T> y, interval<T> z)
 }
 
 template<typename T>
-__device__ interval<T> sqr(interval<T> x)
+inline __device__ interval<T> sqr(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -119,14 +119,14 @@ __device__ interval<T> sqr(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> sqrt(interval<T> x)
+inline __device__ interval<T> sqrt(interval<T> x)
 {
     return { x.lb <= 0 && x.ub > 0 ? 0 : intrinsic::sqrt_down(x.lb),
              intrinsic::sqrt_up(x.ub) };
 }
 
 template<typename T>
-__device__ interval<T> cbrt(interval<T> x)
+inline __device__ interval<T> cbrt(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -137,7 +137,7 @@ __device__ interval<T> cbrt(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> recip(interval<T> a)
+inline __device__ interval<T> recip(interval<T> a)
 {
 
     if (empty(a)) {
@@ -164,7 +164,7 @@ __device__ interval<T> recip(interval<T> a)
 }
 
 template<typename T>
-__device__ interval<T> div(interval<T> x, interval<T> y)
+inline __device__ interval<T> div(interval<T> x, interval<T> y)
 {
     // return mul(a, recip(b));
 
@@ -219,7 +219,7 @@ __device__ interval<T> div(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-__device__ T mag(interval<T> x)
+inline __device__ T mag(interval<T> x)
 {
     if (empty(x)) {
         return intrinsic::nan<T>();
@@ -228,7 +228,7 @@ __device__ T mag(interval<T> x)
 }
 
 template<typename T>
-__device__ T mig(interval<T> x)
+inline __device__ T mig(interval<T> x)
 {
     // TODO: we might want to split up the function into the bare interval operation and this part.
     //       we could perhaps use a monad for either result or empty using expected?
@@ -244,7 +244,7 @@ __device__ T mig(interval<T> x)
 }
 
 template<typename T>
-__device__ T rad(interval<T> x)
+inline __device__ T rad(interval<T> x)
 {
     if (empty(x)) {
         return intrinsic::nan<T>();
@@ -263,13 +263,13 @@ __device__ T rad(interval<T> x)
 // abs(x) = empty if x is empty
 // abs(x) = inf   if x is +-inf
 template<typename T>
-__device__ interval<T> abs(interval<T> x)
+inline __device__ interval<T> abs(interval<T> x)
 {
     return { mig(x), mag(x) };
 }
 
 template<typename T>
-__device__ interval<T> max(interval<T> x, interval<T> y)
+inline __device__ interval<T> max(interval<T> x, interval<T> y)
 {
     if (empty(x) || empty(y)) {
         return empty<T>();
@@ -279,7 +279,7 @@ __device__ interval<T> max(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-__device__ interval<T> min(interval<T> x, interval<T> y)
+inline __device__ interval<T> min(interval<T> x, interval<T> y)
 {
     if (empty(x) || empty(y)) {
         return empty<T>();
@@ -289,31 +289,31 @@ __device__ interval<T> min(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-__device__ interval<T> operator+(interval<T> x)
+inline __device__ interval<T> operator+(interval<T> x)
 {
     return x;
 }
 
 template<typename T>
-__device__ interval<T> operator-(interval<T> x)
+inline __device__ interval<T> operator-(interval<T> x)
 {
     return neg(x);
 }
 
 template<typename T>
-__device__ interval<T> operator+(interval<T> a, interval<T> b)
+inline __device__ interval<T> operator+(interval<T> a, interval<T> b)
 {
     return add(a, b);
 }
 
 template<typename T>
-__device__ interval<T> operator-(interval<T> a, interval<T> b)
+inline __device__ interval<T> operator-(interval<T> a, interval<T> b)
 {
     return sub(a, b);
 }
 
 template<typename T>
-__device__ interval<T> operator-(T a, interval<T> b)
+inline __device__ interval<T> operator-(T a, interval<T> b)
 {
     if (std::isnan(a) || empty(b)) {
         return empty<T>();
@@ -323,7 +323,7 @@ __device__ interval<T> operator-(T a, interval<T> b)
 }
 
 template<typename T>
-__device__ interval<T> operator-(interval<T> a, T b)
+inline __device__ interval<T> operator-(interval<T> a, T b)
 {
     if (empty(a) || std::isnan(b)) {
         return empty<T>();
@@ -333,13 +333,13 @@ __device__ interval<T> operator-(interval<T> a, T b)
 }
 
 template<typename T>
-__device__ interval<T> operator*(interval<T> a, interval<T> b)
+inline __device__ interval<T> operator*(interval<T> a, interval<T> b)
 {
     return mul(a, b);
 }
 
 template<typename T>
-__device__ interval<T> operator*(T a, interval<T> b)
+inline __device__ interval<T> operator*(T a, interval<T> b)
 {
     if (std::isnan(a) || empty(b)) {
         return empty<T>();
@@ -356,30 +356,30 @@ __device__ interval<T> operator*(T a, interval<T> b)
 }
 
 template<typename T>
-__device__ interval<T> operator*(interval<T> a, T b)
+inline __device__ interval<T> operator*(interval<T> a, T b)
 {
     return b * a;
 }
 
-__device__ interval<double> operator/(interval<double> a, interval<double> b)
+inline __device__ interval<double> operator/(interval<double> a, interval<double> b)
 {
     return div(a, b);
 }
 
 template<typename T>
-__host__ __device__ bool contains(interval<T> x, T y)
+__host__ inline __device__ bool contains(interval<T> x, T y)
 {
     return x.lb <= y && y <= x.ub;
 }
 
 template<typename T>
-__device__ bool entire(interval<T> x)
+inline __device__ bool entire(interval<T> x)
 {
     return intrinsic::neg_inf<T>() == x.lb && intrinsic::pos_inf<T>() == x.ub;
 }
 
 template<typename T>
-__device__ bool bounded(interval<T> x)
+inline __device__ bool bounded(interval<T> x)
 {
     // return (isfinite(x.lb) && isfinite(x.ub)) || empty(x);
     // if empty is given by +inf,-inf then the below is true
@@ -387,7 +387,7 @@ __device__ bool bounded(interval<T> x)
 }
 
 template<typename T>
-__device__ T width(interval<T> x)
+inline __device__ T width(interval<T> x)
 {
     if (empty(x)) {
         return intrinsic::nan<T>();
@@ -396,13 +396,13 @@ __device__ T width(interval<T> x)
 }
 
 template<typename T>
-__device__ T inf(interval<T> x) { return x.lb; }
+inline __device__ T inf(interval<T> x) { return x.lb; }
 
 template<typename T>
-__device__ T sup(interval<T> x) { return x.ub; }
+inline __device__ T sup(interval<T> x) { return x.ub; }
 
 template<typename T>
-__device__ T mid(interval<T> x)
+inline __device__ T mid(interval<T> x)
 {
     if (empty(x)) {
         return intrinsic::nan<T>();
@@ -422,31 +422,31 @@ __device__ T mid(interval<T> x)
 }
 
 template<typename T>
-__device__ bool equal(interval<T> a, interval<T> b)
+inline __device__ bool equal(interval<T> a, interval<T> b)
 {
     return (empty(a) && empty(b)) || (a.lb == b.lb && a.ub == b.ub);
 }
 
 template<typename T>
-__device__ bool strict_less_or_both_inf(T x, T y)
+inline __device__ bool strict_less_or_both_inf(T x, T y)
 {
     return (x < y) || ((isinf(x) || isinf(y)) && (x == y));
 }
 
 template<typename T>
-__device__ bool subset(interval<T> a, interval<T> b)
+inline __device__ bool subset(interval<T> a, interval<T> b)
 {
     return empty(a) || ((b.lb <= a.lb) && (a.ub <= b.ub));
 }
 
 template<typename T>
-__device__ bool interior(interval<T> a, interval<T> b)
+inline __device__ bool interior(interval<T> a, interval<T> b)
 {
     return empty(a) || (strict_less_or_both_inf(b.lb, a.lb) && strict_less_or_both_inf(a.ub, b.ub));
 }
 
 template<typename T>
-__device__ bool disjoint(interval<T> a, interval<T> b)
+inline __device__ bool disjoint(interval<T> a, interval<T> b)
 {
     // return !(a.lb <= b.ub && b.lb <= a.ub);
     return empty(a)
@@ -456,31 +456,31 @@ __device__ bool disjoint(interval<T> a, interval<T> b)
 }
 
 template<typename T>
-__device__ bool less(interval<T> a, interval<T> b)
+inline __device__ bool less(interval<T> a, interval<T> b)
 {
     return (a.lb <= b.lb && a.ub <= b.ub);
 }
 
 template<typename T>
-__device__ bool strict_less(interval<T> a, interval<T> b)
+inline __device__ bool strict_less(interval<T> a, interval<T> b)
 {
     return strict_less_or_both_inf(a.lb, b.lb) && strict_less_or_both_inf(a.ub, b.ub);
 }
 
 template<typename T>
-__device__ bool precedes(interval<T> a, interval<T> b)
+inline __device__ bool precedes(interval<T> a, interval<T> b)
 {
     return a.ub <= b.lb;
 }
 
 template<typename T>
-__device__ bool strict_precedes(interval<T> a, interval<T> b)
+inline __device__ bool strict_precedes(interval<T> a, interval<T> b)
 {
     return empty(a) || empty(b) || a.ub < b.lb;
 }
 
 template<typename T>
-__device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
+inline __device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
 {
     if (empty(x) && bounded(y)) {
         return empty<T>();
@@ -511,13 +511,13 @@ __device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-__device__ interval<T> cancel_plus(interval<T> x, interval<T> y)
+inline __device__ interval<T> cancel_plus(interval<T> x, interval<T> y)
 {
     return cancel_minus(x, -y);
 }
 
 template<typename T>
-__device__ interval<T> intersection(interval<T> x, interval<T> y)
+inline __device__ interval<T> intersection(interval<T> x, interval<T> y)
 {
     // extended
     if (disjoint(x, y)) {
@@ -528,7 +528,7 @@ __device__ interval<T> intersection(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-__device__ interval<T> convex_hull(interval<T> x, interval<T> y)
+inline __device__ interval<T> convex_hull(interval<T> x, interval<T> y)
 {
     // extended
     if (empty(x)) {
@@ -541,19 +541,19 @@ __device__ interval<T> convex_hull(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-__device__ interval<T> ceil(interval<T> x)
+inline __device__ interval<T> ceil(interval<T> x)
 {
     return { intrinsic::int_up(x.lb), intrinsic::int_up(x.ub) };
 }
 
 template<typename T>
-__device__ interval<T> floor(interval<T> x)
+inline __device__ interval<T> floor(interval<T> x)
 {
     return { intrinsic::int_down(x.lb), intrinsic::int_down(x.ub) };
 }
 
 template<typename T>
-__device__ interval<T> trunc(interval<T> x)
+inline __device__ interval<T> trunc(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -563,7 +563,7 @@ __device__ interval<T> trunc(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> sign(interval<T> x)
+inline __device__ interval<T> sign(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -574,49 +574,49 @@ __device__ interval<T> sign(interval<T> x)
 }
 
 template<typename T>
-__host__ __device__ bool isnai(interval<T> x)
+__host__ inline __device__ bool isnai(interval<T> x)
 {
     return x.lb != x.lb && x.ub != x.ub;
 }
 
 template<typename T>
-__device__ bool is_member(T x, interval<T> y)
+inline __device__ bool is_member(T x, interval<T> y)
 {
     return isfinite(x) && inf(y) <= x && x <= sup(y);
 }
 
 template<typename T>
-__device__ bool is_singleton(interval<T> x)
+inline __device__ bool is_singleton(interval<T> x)
 {
     return x.lb == x.ub;
 }
 
 template<typename T>
-__device__ bool is_common_interval(interval<T> x)
+inline __device__ bool is_common_interval(interval<T> x)
 {
     return !empty(x) && bounded(x);
 }
 
 template<typename T>
-__device__ bool is_atomic(interval<T> x)
+inline __device__ bool is_atomic(interval<T> x)
 {
     return empty(x) || is_singleton(x) || (intrinsic::next_floating(inf(x)) == sup(x));
 }
 
 template<typename T>
-__device__ interval<T> round_to_nearest_even(interval<T> x)
+inline __device__ interval<T> round_to_nearest_even(interval<T> x)
 {
     return { intrinsic::round_even(x.lb), intrinsic::round_even(x.ub) };
 }
 
 template<typename T>
-__device__ interval<T> round_ties_to_away(interval<T> x)
+inline __device__ interval<T> round_ties_to_away(interval<T> x)
 {
     return { intrinsic::round_away(x.lb), intrinsic::round_away(x.ub) };
 }
 
 template<typename T>
-__device__ interval<T> exp(interval<T> x)
+inline __device__ interval<T> exp(interval<T> x)
 {
     // NOTE: would not be needed if empty was using nan instead of inf
     if (empty(x)) {
@@ -628,7 +628,7 @@ __device__ interval<T> exp(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> exp2(interval<T> x)
+inline __device__ interval<T> exp2(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -639,7 +639,7 @@ __device__ interval<T> exp2(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> exp10(interval<T> x)
+inline __device__ interval<T> exp10(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -650,7 +650,7 @@ __device__ interval<T> exp10(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> expm1(interval<T> x)
+inline __device__ interval<T> expm1(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -660,7 +660,7 @@ __device__ interval<T> expm1(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> log(interval<T> x)
+inline __device__ interval<T> log(interval<T> x)
 {
     if (empty(x) || sup(x) == 0) {
         return empty<T>();
@@ -674,7 +674,7 @@ __device__ interval<T> log(interval<T> x)
 // NOTE: The overestimation on the lower and upper bound is at most 2 ulps (unit in the last place)
 //       (due to underlying function having error of at most 1 ulp).
 template<typename T>
-__device__ interval<T> log2(interval<T> x)
+inline __device__ interval<T> log2(interval<T> x)
 {
     if (empty(x) || sup(x) == 0) {
         return empty<T>();
@@ -687,7 +687,7 @@ __device__ interval<T> log2(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> log10(interval<T> x)
+inline __device__ interval<T> log10(interval<T> x)
 {
     if (empty(x) || sup(x) == 0) {
         return empty<T>();
@@ -699,7 +699,7 @@ __device__ interval<T> log10(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> log1p(interval<T> x)
+inline __device__ interval<T> log1p(interval<T> x)
 {
     if (empty(x) || sup(x) == -1) {
         return x;
@@ -710,7 +710,7 @@ __device__ interval<T> log1p(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> pown(interval<T> x, std::integral auto n)
+inline __device__ interval<T> pown(interval<T> x, std::integral auto n)
 {
     if (empty(x)) {
         return x;
@@ -779,7 +779,7 @@ __device__ interval<T> pown(interval<T> x, std::integral auto n)
 }
 
 template<typename T>
-__device__ interval<T> pow_(interval<T> x, T y)
+inline __device__ interval<T> pow_(interval<T> x, T y)
 {
     assert(inf(x) >= 0);
 
@@ -808,7 +808,7 @@ __device__ interval<T> pow_(interval<T> x, T y)
 }
 
 template<typename T>
-__device__ interval<T> rootn(interval<T> x, std::integral auto n)
+inline __device__ interval<T> rootn(interval<T> x, std::integral auto n)
 {
     if (empty(x)) {
         return x;
@@ -844,13 +844,13 @@ __device__ interval<T> rootn(interval<T> x, std::integral auto n)
 }
 
 template<typename T>
-__device__ interval<T> pow(interval<T> x, std::integral auto y)
+inline __device__ interval<T> pow(interval<T> x, std::integral auto y)
 {
     return pown(x, y);
 }
 
 template<typename T>
-__device__ interval<T> pow(interval<T> x, interval<T> y)
+inline __device__ interval<T> pow(interval<T> x, interval<T> y)
 {
     if (empty(y)) {
         return empty<T>();
@@ -873,7 +873,7 @@ __device__ interval<T> pow(interval<T> x, interval<T> y)
 //
 
 template<typename T>
-__device__ unsigned int quadrant(T v)
+inline __device__ unsigned int quadrant(T v)
 {
     int quotient;
     T vv  = intrinsic::next_after(intrinsic::sub_down(v, std::numbers::pi / 4), static_cast<T>(0));
@@ -882,7 +882,7 @@ __device__ unsigned int quadrant(T v)
 };
 
 template<typename T>
-__device__ unsigned int quadrant_pi(T v)
+inline __device__ unsigned int quadrant_pi(T v)
 {
     int quotient;
     T vv  = intrinsic::next_after(intrinsic::sub_down(v, 0.25), static_cast<T>(0));
@@ -892,7 +892,7 @@ __device__ unsigned int quadrant_pi(T v)
 
 // NOTE: Prefer sinpi whenever possible to avoid immediate rounding error of pi during calculation.
 template<typename T>
-__device__ interval<T> sin(interval<T> x)
+inline __device__ interval<T> sin(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -967,7 +967,7 @@ __device__ interval<T> sin(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> sinpi(interval<T> x)
+inline __device__ interval<T> sinpi(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1015,7 +1015,7 @@ __device__ interval<T> sinpi(interval<T> x)
 
 // NOTE: Prefer cospi whenever possible to avoid immediate rounding error of pi during calculation.
 template<typename T>
-__device__ interval<T> cos(interval<T> x)
+inline __device__ interval<T> cos(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1065,7 +1065,7 @@ __device__ interval<T> cos(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> cospi(interval<T> x)
+inline __device__ interval<T> cospi(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1112,7 +1112,7 @@ __device__ interval<T> cospi(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> tan(interval<T> x)
+inline __device__ interval<T> tan(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1143,7 +1143,7 @@ __device__ interval<T> tan(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> asin(interval<T> x)
+inline __device__ interval<T> asin(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1158,7 +1158,7 @@ __device__ interval<T> asin(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> acos(interval<T> x)
+inline __device__ interval<T> acos(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1173,7 +1173,7 @@ __device__ interval<T> acos(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> atan(interval<T> x)
+inline __device__ interval<T> atan(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1186,7 +1186,7 @@ __device__ interval<T> atan(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> atan2(interval<T> y, interval<T> x)
+inline __device__ interval<T> atan2(interval<T> y, interval<T> x)
 {
     if (empty(x) || empty(y)) {
         return empty<T>();
@@ -1275,7 +1275,7 @@ __device__ interval<T> atan2(interval<T> y, interval<T> x)
 //
 
 template<typename T>
-__device__ interval<T> sinh(interval<T> x)
+inline __device__ interval<T> sinh(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1286,7 +1286,7 @@ __device__ interval<T> sinh(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> cosh(interval<T> x)
+inline __device__ interval<T> cosh(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1299,7 +1299,7 @@ __device__ interval<T> cosh(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> tanh(interval<T> x)
+inline __device__ interval<T> tanh(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1312,7 +1312,7 @@ __device__ interval<T> tanh(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> asinh(interval<T> x)
+inline __device__ interval<T> asinh(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1323,7 +1323,7 @@ __device__ interval<T> asinh(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> acosh(interval<T> x)
+inline __device__ interval<T> acosh(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1339,7 +1339,7 @@ __device__ interval<T> acosh(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> atanh(interval<T> x)
+inline __device__ interval<T> atanh(interval<T> x)
 {
     if (empty(x)) {
         return x;
@@ -1360,14 +1360,14 @@ __device__ interval<T> atanh(interval<T> x)
 }
 
 template<typename T>
-__device__ interval<T> cot(interval<T> x)
+inline __device__ interval<T> cot(interval<T> x)
 {
     // return cos(x) / sin(x);
     return {};
 }
 
 template<typename T>
-__device__ split<T> bisect(interval<T> x, T split_ratio)
+inline __device__ split<T> bisect(interval<T> x, T split_ratio)
 {
     assert(0 <= split_ratio && split_ratio <= 1);
 

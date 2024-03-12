@@ -92,7 +92,7 @@ void tests_bisect(cuda_buffers buffers, cuda_streams streams)
         } };
 
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n_result_bytes, cudaMemcpyDeviceToHost, streams[0]));
-        CUDA_CHECK(cudaDeviceSynchronize());
+        CUDA_CHECK(cudaStreamSynchronize(streams[0]));
         int max_ulp_diff = 0;
         check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };

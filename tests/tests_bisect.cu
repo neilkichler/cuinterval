@@ -2,7 +2,11 @@
 #include <cuinterval/arithmetic/interval.h>
 #include <cuinterval/examples/bisection.cuh>
 
-#include "test_ops.cuh"
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+
+#include "tests_common.h"
+#include "tests_ops.cuh"
 
 void test_bisect_call(cudaStream_t stream, int n,
                       interval<double> *x, double *y, split<double> *res)
@@ -21,12 +25,6 @@ void test_bisection_call(cudaStream_t stream, interval<double> x, double toleran
     bisection<double, max_depth><<<1, 1, 0, stream>>>(x, tolerance, roots, max_roots);
 }
 
-#include <cuinterval/examples/bisection.cuh>
-
-#include <thrust/host_vector.h>
-#include <thrust/device_vector.h>
-
-#include "tests_common.h"
 
 // template<typename I>
 thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffers buffers, interval<double> x, double tolerance) {

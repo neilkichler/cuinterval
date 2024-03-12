@@ -28,7 +28,7 @@ def convert_to_test(file_path):
             code_preamble = auto_generated_comment + r'''
 #include <cuinterval/cuinterval.h>
 
-#include "../test_ops.cuh"
+#include "../tests_ops.cuh"
 #include "../tests.h"
 #include "../tests_common.cuh"
 

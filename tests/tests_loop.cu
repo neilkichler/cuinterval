@@ -1,16 +1,12 @@
-#include "tests.h"
-
 #include <cuinterval/cuinterval.h>
 
 #include <thrust/device_vector.h>
-#include <thrust/execution_policy.h>
-#include <thrust/fill.h>
-#include <thrust/functional.h>
+// #include <thrust/execution_policy.h>
+// #include <thrust/fill.h>
+// #include <thrust/functional.h>
 #include <thrust/host_vector.h>
-#include <thrust/sequence.h>
+// #include <thrust/sequence.h>
 #include <thrust/transform.h>
-
-#include <numbers>
 
 struct to_interval_fn
 {
@@ -78,11 +74,10 @@ struct final_decrement_fn
     }
 };
 
-template<typename T>
-void tests_pi_approximation(cudaStream_t stream)
+thrust::host_vector<interval<double>> compute_pi_approximation(cudaStream_t stream)
 {
+    using T = double;
     using I = interval<T>;
-    using namespace boost::ut;
 
     constexpr int n = 100'000;
     thrust::counting_iterator<T> seq_first(1);
@@ -109,15 +104,8 @@ void tests_pi_approximation(cudaStream_t stream)
     thrust::transform(thrust::cuda::par.on(stream), d_pi.begin(), d_pi.end(), d_pi.begin(), scale_fn());
 
     thrust::host_vector<I> h_pi = d_pi;
-
-    for (I pi_approx : h_pi) {
-        expect(contains(pi_approx, std::numbers::pi));
-        expect(le(pi_approx.lb, std::numbers::pi));
-        expect(ge(pi_approx.ub, std::numbers::pi));
-    }
+    return h_pi;
 }
-
-#include <cstdio>
 
 struct coeff_fn
 {
@@ -144,11 +132,10 @@ struct horner_fn
     }
 };
 
-template<typename T>
-void tests_horner(cudaStream_t stream)
+thrust::host_vector<interval<double>> compute_horner(cudaStream_t stream)
 {
+    using T = double;
     using I = interval<T>;
-    using namespace boost::ut;
 
     // Approximate exp with Horner's scheme.
     constexpr int n_coefficients = 16;
@@ -172,9 +159,5 @@ void tests_horner(cudaStream_t stream)
 
     thrust::host_vector<I> coefficients = d_coefficients;
     thrust::host_vector<I> res = d_res;
-
-    I exp_approx = res[res.size() - 1];
-    T exp_true = std::numbers::e;
-
-    expect(contains(exp_approx, exp_true));
+    return res;
 }

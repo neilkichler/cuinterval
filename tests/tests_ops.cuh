@@ -1,5 +1,5 @@
-#ifndef TEST_OPS_CUH
-#define TEST_OPS_CUH
+#ifndef TESTS_OPS_CUH
+#define TESTS_OPS_CUH
 
 #include <cuinterval/cuinterval.h>
 
@@ -660,4 +660,4 @@ __global__ void test_bisect(int n, interval<T> *x, T *y, split<T> *res)
     }
 }
 
-#endif // TEST_OPS_CUH
+#endif // TESTS_OPS_CUH
