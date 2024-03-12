@@ -42,13 +42,9 @@ thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream,
     bisection<T, max_depth><<<1, 1, 0, stream>>>(x, tolerance, d_roots, d_max_roots);
 
     CUDA_CHECK(cudaMemcpyAsync(&max_roots, d_max_roots, sizeof(*d_max_roots), cudaMemcpyDeviceToHost, stream));
-    CUDA_CHECK(cudaStreamSynchronize(stream));
-    // roots.resize(max_roots);
-    // roots.resize(*d_max_roots);
     thrust::host_vector<I> h_roots(max_roots);
-    // thrust::device_event e = thrust::async::copy(roots.begin(), roots.begin() + max_roots, h_roots.begin());
-    thrust::copy(roots.begin(), roots.begin() + max_roots, h_roots.begin());
+    CUDA_CHECK(cudaStreamSynchronize(stream));
+    thrust::device_event e = thrust::async::copy(roots.begin(), roots.begin() + max_roots, h_roots.begin());
 
     return h_roots;
-    // return {};
 }
