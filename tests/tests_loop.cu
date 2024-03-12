@@ -1,12 +1,15 @@
 #include <cuinterval/cuinterval.h>
 
-#include <thrust/device_vector.h>
 // #include <thrust/execution_policy.h>
 // #include <thrust/fill.h>
 // #include <thrust/functional.h>
-#include <thrust/host_vector.h>
 // #include <thrust/sequence.h>
+
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
+#include <thrust/iterator/transform_iterator.h>
 #include <thrust/transform.h>
+
 
 struct to_interval_fn
 {
@@ -153,11 +156,11 @@ thrust::host_vector<interval<double>> compute_horner(cudaStream_t stream)
 
     // example input
     T eps = 1.0e-12;
-    I x{ 1.0 - eps, 1.0 + eps };
+    I x { 1.0 - eps, 1.0 + eps };
     thrust::device_vector<I> d_res(n_coefficients);
     thrust::inclusive_scan(d_coefficients.rbegin(), d_coefficients.rend(), d_res.begin(), horner_fn<I>(x));
 
     thrust::host_vector<I> coefficients = d_coefficients;
-    thrust::host_vector<I> res = d_res;
+    thrust::host_vector<I> res          = d_res;
     return res;
 }
