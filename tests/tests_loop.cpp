@@ -1,5 +1,6 @@
 #include "tests_loop.h"
 #include "tests.h"
+#include "tests_utils.h"
 
 #include <omp.h>
 

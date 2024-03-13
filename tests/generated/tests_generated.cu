@@ -5,37 +5,36 @@
 #pragma nv_diag_suppress 1046
 #endif
 
-#include "tests_c_xsc.cu"
-#include "tests_libieeep1788_elem.cu"
-#include "tests_libieeep1788_rec_bool.cu"
-#include "tests_libieeep1788_cancel.cu"
-#include "tests_libieeep1788_bool.cu"
 #include "tests_atan2.cu"
-#include "tests_mpfi.cu"
-#include "tests_intervalarithmeticjl.cu"
 #include "tests_libieeep1788_set.cu"
+#include "tests_intervalarithmeticjl.cu"
+#include "tests_libieeep1788_bool.cu"
 #include "tests_filib.cu"
+#include "tests_c_xsc.cu"
+#include "tests_mpfi.cu"
+#include "tests_libieeep1788_elem.cu"
 #include "tests_libieeep1788_num.cu"
+#include "tests_libieeep1788_cancel.cu"
+#include "tests_libieeep1788_rec_bool.cu"
 
 #ifdef __CUDACC__
 #pragma nv_diagnostic pop
 #pragma nv_diag_default 1046
 #endif
 
-#include "../tests_common.cuh"
+#include "../tests_common.h"
 
-template <typename T>
 void tests_generated(cuda_buffers buffers, cuda_streams streams)
 {
-    tests_c_xsc<double>(buffers, streams[1]);
-    tests_libieeep1788_elem<double>(buffers, streams[3]);
-    tests_libieeep1788_rec_bool<double>(buffers, streams[1]);
-    tests_libieeep1788_cancel<double>(buffers, streams[2]);
-    tests_libieeep1788_bool<double>(buffers, streams[3]);
     tests_atan2<double>(buffers, streams[0]);
-    tests_mpfi<double>(buffers, streams[1]);
-    tests_intervalarithmeticjl<double>(buffers, streams[2]);
     tests_libieeep1788_set<double>(buffers, streams[3]);
-    tests_filib<double>(buffers, streams[0]);
-    tests_libieeep1788_num<double>(buffers, streams[2]);
+    tests_intervalarithmeticjl<double>(buffers, streams[2]);
+    tests_libieeep1788_bool<double>(buffers, streams[0]);
+    tests_filib<double>(buffers, streams[3]);
+    tests_c_xsc<double>(buffers, streams[0]);
+    tests_mpfi<double>(buffers, streams[2]);
+    tests_libieeep1788_elem<double>(buffers, streams[3]);
+    tests_libieeep1788_num<double>(buffers, streams[0]);
+    tests_libieeep1788_cancel<double>(buffers, streams[1]);
+    tests_libieeep1788_rec_bool<double>(buffers, streams[3]);
 }

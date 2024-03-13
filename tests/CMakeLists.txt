@@ -18,6 +18,7 @@ add_executable(tests
     tests_loop.h
     tests_loop.cu
     tests_loop.cpp
+    generated/tests_generated.cu
 )
 
 # Use C++20 in the tests

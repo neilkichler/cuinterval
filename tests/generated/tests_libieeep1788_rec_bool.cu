@@ -4,7 +4,7 @@
 
 #include "../tests_ops.cuh"
 #include "../tests.h"
-#include "../tests_common.cuh"
+#include "../tests_common.h"
 
 template<typename T>
 void tests_libieeep1788_rec_bool(cuda_buffers buffers, cudaStream_t stream) {

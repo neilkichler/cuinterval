@@ -30,7 +30,7 @@ def convert_to_test(file_path):
 
 #include "../tests_ops.cuh"
 #include "../tests.h"
-#include "../tests_common.cuh"
+#include "../tests_common.h"
 
 template<typename T>
 void tests_''' + test_name + '''(cuda_buffers buffers, cudaStream_t stream) {
@@ -277,7 +277,7 @@ if __name__ == '__main__':
     os.chdir(os.path.dirname(__file__))
 
     with open('generated/tests_generated.cu', 'w') as f:
-        main_body = f'\n#include "../tests_common.cuh"\n\ntemplate <typename T>\nvoid tests_generated(cuda_buffers buffers, cuda_streams streams)\n{{\n{main_tests}}}\n'
+        main_body = f'\n#include "../tests_common.h"\n\nvoid tests_generated(cuda_buffers buffers, cuda_streams streams)\n{{\n{main_tests}}}\n'
         main_code = main_preamble + main_pragmas_begin + main_includes + main_pragmas_end + main_body
         f.write(main_code)
 

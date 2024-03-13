@@ -1,4 +1,5 @@
 #include "tests_bisect.h"
+#include "tests_utils.h"
 
 thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffers buffers, interval<double> x, double tolerance);
 

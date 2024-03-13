@@ -78,6 +78,9 @@ void tests_bisect(cuda_buffers buffers, cuda_streams streams)
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n_bytes, cudaMemcpyHostToDevice, streams[0]));
         CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys, n_bytes, cudaMemcpyHostToDevice, streams[1]));
         CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n_result_bytes, cudaMemcpyHostToDevice, streams[2]));
+        CUDA_CHECK(cudaStreamSynchronize(streams[0]));
+        CUDA_CHECK(cudaStreamSynchronize(streams[1]));
+        CUDA_CHECK(cudaStreamSynchronize(streams[2]));
         test_bisect_call(streams[3], n, d_xs, d_ys, d_res);
 
         std::array<split<T>, n> h_ref { {
@@ -91,8 +94,8 @@ void tests_bisect(cuda_buffers buffers, cuda_streams streams)
             { { 0.0, 0.25 }, { 0.25, 1.0 } },
         } };
 
-        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n_result_bytes, cudaMemcpyDeviceToHost, streams[0]));
-        CUDA_CHECK(cudaStreamSynchronize(streams[0]));
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n_result_bytes, cudaMemcpyDeviceToHost, streams[3]));
+        CUDA_CHECK(cudaStreamSynchronize(streams[3]));
         int max_ulp_diff = 0;
         check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };

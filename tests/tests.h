@@ -54,15 +54,6 @@ bool check_within_ulps(T x, T y, std::size_t n, T direction)
     return false;
 }
 
-template<typename T>
-void contains(interval<T> x, T y)
-{
-    using namespace boost::ut;
-
-    expect(le(x.lb, y));
-    expect(le(y, x.ub));
-};
-
 template<typename T, int N, typename... Args>
 void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::source_location location, Args &&...args)
 {

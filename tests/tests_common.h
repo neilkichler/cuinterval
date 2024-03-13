@@ -3,6 +3,7 @@
 #ifndef CUINTERVAL_TESTS_COMMON_H
 #define CUINTERVAL_TESTS_COMMON_H
 
+#include <cstdio>
 #include <cstddef>
 #include <span>
 

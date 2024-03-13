@@ -10,6 +10,8 @@
 #include <cstddef>
 #include <cstdio>
 
+void tests_generated(cuda_buffers buffers, cuda_streams streams);
+
 int main(int argc, char *argv[])
 {
     cuda_buffers buffers;
@@ -31,6 +33,7 @@ int main(int argc, char *argv[])
 
     tests_additional<double>(buffers, streams);
     // tests_generated<double>(buffers, streams);
+    tests_generated(buffers, streams);
 
     for (auto &stream : streams)
         CUDA_CHECK(cudaStreamDestroy(stream));
