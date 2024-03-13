@@ -75,13 +75,15 @@ void tests_bisect(cuda_buffers buffers, cuda_streams streams)
         T *d_ys            = (T *)d_ys_;
         int n_result_bytes = n * sizeof(*d_res);
 
-        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n_bytes, cudaMemcpyHostToDevice, streams[0]));
-        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys, n_bytes, cudaMemcpyHostToDevice, streams[1]));
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n_result_bytes, cudaMemcpyHostToDevice, streams[2]));
-        CUDA_CHECK(cudaStreamSynchronize(streams[0]));
-        CUDA_CHECK(cudaStreamSynchronize(streams[1]));
-        CUDA_CHECK(cudaStreamSynchronize(streams[2]));
-        test_bisect_call(streams[3], n, d_xs, d_ys, d_res);
+        int n_chunk = n / 2;
+        for (int i = 0; i < 2; i++) {
+            auto stream = streams[i];
+            CUDA_CHECK(cudaMemcpyAsync(d_xs + i * n_chunk, h_xs + i * n_chunk, n_chunk * sizeof(I), cudaMemcpyHostToDevice, stream));
+            CUDA_CHECK(cudaMemcpyAsync(d_ys + i * n_chunk, h_ys + i * n_chunk, n_chunk * sizeof(I), cudaMemcpyHostToDevice, stream));
+            CUDA_CHECK(cudaMemcpyAsync(d_res + i * n_chunk, h_res + i * n_chunk, n_result_bytes / 2, cudaMemcpyHostToDevice, stream));
+            test_bisect_call(stream, n_chunk, d_xs + i * n_chunk, d_ys + i * n_chunk, d_res + i * n_chunk);           
+            CUDA_CHECK(cudaMemcpyAsync(h_res + i * n_chunk, d_res + i * n_chunk, n_result_bytes / 2, cudaMemcpyDeviceToHost, stream));
+        }
 
         std::array<split<T>, n> h_ref { {
             { empty, empty },
@@ -94,8 +96,10 @@ void tests_bisect(cuda_buffers buffers, cuda_streams streams)
             { { 0.0, 0.25 }, { 0.25, 1.0 } },
         } };
 
-        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n_result_bytes, cudaMemcpyDeviceToHost, streams[3]));
-        CUDA_CHECK(cudaStreamSynchronize(streams[3]));
+        for (int i = 0; i < 2; i++) {
+            auto stream = streams[i];
+            CUDA_CHECK(cudaStreamSynchronize(stream));
+        }
         int max_ulp_diff = 0;
         check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
