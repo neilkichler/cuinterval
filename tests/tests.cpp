@@ -1,4 +1,3 @@
-// #include "generated/tests_generated.cu"
 #include "tests.h"
 #include "tests_additional.h"
 #include "tests_common.h"
@@ -32,7 +31,6 @@ int main(int argc, char *argv[])
         CUDA_CHECK(cudaStreamCreate(&stream));
 
     tests_additional<double>(buffers, streams);
-    // tests_generated<double>(buffers, streams);
     tests_generated(buffers, streams);
 
     for (auto &stream : streams)
