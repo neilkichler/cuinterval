@@ -267,10 +267,6 @@ def generate_kernel_wrappers(ops: dict):
         instr_len = len(v['args']) + 1
         vars = ['res', 'xs', 'ys', 'zs'][:instr_len]
         vars = vars[1:] + vars[:1] # rotate ref to last place
-
-        print("k: ", k)
-        print(v['args'])
-        print(v)
         op_name = k
 
         input_args = ', '.join([ f'{template[arg]} *d_{vars[i]}' for i, arg in enumerate(v['args']) ])
