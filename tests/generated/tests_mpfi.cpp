@@ -33,7 +33,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "mpfi_ab_abs"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0x123456789p-16,0x123456799p-16},
@@ -79,7 +79,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_aco_acos"_test = [&] {
+    {
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -117,7 +117,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_acosh_acosh"_test = [&] {
+    {
         constexpr int n = 5;
         I *h_xs = new (h_buffer) I[n]{
             {+1.0,+infinity},
@@ -149,7 +149,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_add_add"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {+4.0,+8.0},
@@ -234,7 +234,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_add_d_add"_test = [&] {
+    {
         constexpr int n = 32;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1fffffffffffffp-52,-0x1p-550},
@@ -358,7 +358,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_asin_asin"_test = [&] {
+    {
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -396,7 +396,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_asinh_asinh"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -456,7 +456,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_atan_atan"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -516,7 +516,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_atan2_atan2"_test = [&] {
+    {
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-17.0,-5.0},
@@ -598,7 +598,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_atanh_atanh"_test = [&] {
+    {
         constexpr int n = 9;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -638,7 +638,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_bounded_p_isCommonInterval"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
@@ -692,7 +692,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_cbr_cbrt"_test = [&] {
+    {
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1856e4be527197p-354,0xd8p0},
@@ -734,7 +734,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_co_cos"_test = [&] {
+    {
         constexpr int n = 46;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -848,7 +848,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_cosh_cosh"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -898,7 +898,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_d_div_div"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {+0x170ef54646d497p-105,+0x170ef54646d497p-105},
@@ -1016,7 +1016,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_diam_ab_wid"_test = [&] {
+    {
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-34.0,-17.0},
@@ -1058,7 +1058,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_div_div"_test = [&] {
+    {
         constexpr int n = 62;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1.02f0415f9f596p+0,-0x1.489c07caba163p-4},
@@ -1272,7 +1272,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_div_d_div"_test = [&] {
+    {
         constexpr int n = 25;
         I *h_xs = new (h_buffer) I[n]{
             {-0x10000000000001p-20,-0x10000000000001p-53},
@@ -1375,7 +1375,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_d_sub_sub"_test = [&] {
+    {
         constexpr int n = 32;
         I *h_xs = new (h_buffer) I[n]{
             {-0x114b37f4b51f71p-107,-0x114b37f4b51f71p-107},
@@ -1499,7 +1499,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_exp_exp"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -1545,7 +1545,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_exp2_exp2"_test = [&] {
+    {
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -1593,7 +1593,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_expm1_expm1"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -1639,7 +1639,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_intersec_intersection"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},
@@ -1709,7 +1709,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_inv_recip"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0xae83b95effd69p-52,-0x63e3cb4ed72a3p-53},
@@ -1753,7 +1753,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_is_neg_precedes"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
@@ -1829,7 +1829,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_is_nonneg_less"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},
@@ -1905,7 +1905,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_is_nonpo_less"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
@@ -1981,7 +1981,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_is_po_precedes"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},
@@ -2057,7 +2057,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_is_strictly_neg_strictPrecedes"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
@@ -2133,7 +2133,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_is_strictly_po_strictPrecedes"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},
@@ -2209,7 +2209,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_log_log"_test = [&] {
+    {
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {+1.0,+1.0},
@@ -2245,7 +2245,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_log1p_log1p"_test = [&] {
+    {
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {-0xb616ab8b683b5p-52,0.0},
@@ -2281,7 +2281,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_log2_log2"_test = [&] {
+    {
         constexpr int n = 6;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,+1.0},
@@ -2315,7 +2315,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_log10_log10"_test = [&] {
+    {
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,+infinity},
@@ -2351,7 +2351,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_mag_mag"_test = [&] {
+    {
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-34.0,-17.0},
@@ -2393,7 +2393,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_mid_mid"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1921fb54442d19p-51,-0x1921fb54442d18p-51},
@@ -2437,7 +2437,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_mig_mig"_test = [&] {
+    {
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-34.0,-17.0},
@@ -2479,7 +2479,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_mul_mul"_test = [&] {
+    {
         constexpr int n = 50;
         I *h_xs = new (h_buffer) I[n]{
             {-0x01p0,0x1.90aa487ecf153p+0},
@@ -2657,7 +2657,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_mul_d_mul"_test = [&] {
+    {
         constexpr int n = 45;
         I *h_xs = new (h_buffer) I[n]{
             {-0x10000000000001p0,-0x1aaaaaaaaaaaaap-123},
@@ -2820,7 +2820,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_neg_neg"_test = [&] {
+    {
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},
@@ -2858,7 +2858,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_put_d_convexHull"_test = [&] {
+    {
         constexpr int n = 3;
         I *h_xs = new (h_buffer) I[n]{
             {+5.0,+5.0},
@@ -2895,7 +2895,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_sin_sin"_test = [&] {
+    {
         constexpr int n = 128;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -3173,7 +3173,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_sinh_sinh"_test = [&] {
+    {
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -3221,7 +3221,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_sqr_sqr"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1.64722ad2480c9p+0,0x1p0},
@@ -3265,7 +3265,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_sqr_sqrt"_test = [&] {
+    {
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,+9.0},
@@ -3301,7 +3301,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_sub_sub"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1000100010001p+8,0x1p+60},
@@ -3386,7 +3386,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_sub_d_sub"_test = [&] {
+    {
         constexpr int n = 32;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1fffffffffffffp-52,-0x1p-550},
@@ -3510,7 +3510,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "mpfi_tan_tan"_test = [&] {
+    {
         constexpr int n = 128;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -3788,7 +3788,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_tanh_tanh"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -3838,7 +3838,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "mpfi_union_convexHull"_test = [&] {
+    {
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},

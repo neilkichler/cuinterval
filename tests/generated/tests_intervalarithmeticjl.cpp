@@ -33,7 +33,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "iajl_sinpi_sinpi"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.25,0.25},
@@ -79,7 +79,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "iajl_cospi_cospi"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.25,0.25},
@@ -125,7 +125,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "iajl_tan_tan"_test = [&] {
+    {
         constexpr int n = 4;
         I *h_xs = new (h_buffer) I[n]{
             {0.5,0.5},
@@ -155,7 +155,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "iajl_rootn_rootn"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {0,27},

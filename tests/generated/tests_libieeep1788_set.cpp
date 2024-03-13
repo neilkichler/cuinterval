@@ -33,7 +33,7 @@ void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "minimal_intersection_intersection"_test = [&] {
+    {
         constexpr int n = 5;
         I *h_xs = new (h_buffer) I[n]{
             {1.0,3.0},
@@ -76,7 +76,7 @@ void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_convex_hull_convexHull"_test = [&] {
+    {
         constexpr int n = 5;
         I *h_xs = new (h_buffer) I[n]{
             {1.0,1.0},

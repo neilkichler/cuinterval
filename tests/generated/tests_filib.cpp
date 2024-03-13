@@ -33,7 +33,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "FI_LIB.addii_add"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,-0X1.0000000000000P+0},
@@ -118,7 +118,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "FI_LIB.subii_sub"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,-0X1.0000000000000P+0},
@@ -203,7 +203,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "FI_LIB.mulii_mul"_test = [&] {
+    {
         constexpr int n = 46;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,+0X1.0000000000000P+0},
@@ -369,7 +369,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "FI_LIB.divii_div"_test = [&] {
+    {
         constexpr int n = 21;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,+0X1.0000000000000P+0},
@@ -460,7 +460,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "FI_LIB.unary_function_acos"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.08C248C37E53BP-816,+0X2.8C9F04EE5DE84P-948},
@@ -542,7 +542,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_acosh"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.054DCDEF21349P+436,0X1.618994D07D9A7P+636},
@@ -624,7 +624,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_asin"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.08C248C37E53BP-816,+0X2.8C9F04EE5DE84P-948},
@@ -706,7 +706,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_asinh"_test = [&] {
+    {
         constexpr int n = 26;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.3A01905E36F84P+0,0X4.ECBC855871080P+332},
@@ -780,7 +780,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_atan"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.3A01905E36F84P+0,0X4.ECBC855871080P+332},
@@ -862,7 +862,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_atanh"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.08C248C37E53BP-816,+0X2.8C9F04EE5DE84P-948},
@@ -944,7 +944,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_cos"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.2789C2D583BCDP-568,-0X1.F2BD89DAD0665P-780},
@@ -1026,7 +1026,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_cosh"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0362421843787P+0,-0X3.3D2CCEF698A5AP-972},
@@ -1108,7 +1108,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_exp"_test = [&] {
+    {
         constexpr int n = 26;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,+0X2.0000000000000P+0},
@@ -1182,7 +1182,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_exp10"_test = [&] {
+    {
         constexpr int n = 24;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.1503444763FC5P-416,-0X2.075DF98B2478CP-456},
@@ -1252,7 +1252,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_exp2"_test = [&] {
+    {
         constexpr int n = 26;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,+0X2.0000000000000P+0},
@@ -1326,7 +1326,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_expm1"_test = [&] {
+    {
         constexpr int n = 26;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,+0X2.0000000000000P+0},
@@ -1400,7 +1400,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_log"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.2C18FEEBCAEAEP-768,0X1.C369E759DF5E3P-328},
@@ -1482,7 +1482,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_log10"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.2C18FEEBCAEAEP-768,0X1.C369E759DF5E3P-328},
@@ -1564,7 +1564,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_log1p"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.2C18FEEBCAEAEP-768,0X1.C369E759DF5E3P-328},
@@ -1646,7 +1646,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_log2"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.2C18FEEBCAEAEP-768,0X1.C369E759DF5E3P-328},
@@ -1728,7 +1728,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_sin"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.2789C2D583BCDP-568,-0X1.F2BD89DAD0665P-780},
@@ -1810,7 +1810,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_sinh"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0362421843787P+0,-0X3.3D2CCEF698A5AP-972},
@@ -1892,7 +1892,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_sqr"_test = [&] {
+    {
         constexpr int n = 29;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.2789C2D583BCDP-568,-0X1.F2BD89DAD0665P-780},
@@ -1972,7 +1972,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_sqrt"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.2C18FEEBCAEAEP-768,0X1.C369E759DF5E3P-328},
@@ -2054,7 +2054,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_tan"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.19454E95BC804P+12,0X1.194551E9AD95AP+12},
@@ -2136,7 +2136,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "FI_LIB.unary_function_tanh"_test = [&] {
+    {
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {0X1.3A01905E36F84P+0,0X4.ECBC855871080P+332},

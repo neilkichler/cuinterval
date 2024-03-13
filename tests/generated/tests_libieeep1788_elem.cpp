@@ -33,7 +33,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "minimal_pos_pos"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -77,7 +77,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_neg_neg"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -121,7 +121,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_add_add"_test = [&] {
+    {
         constexpr int n = 31;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -242,7 +242,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_sub_sub"_test = [&] {
+    {
         constexpr int n = 31;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -363,7 +363,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_mul_mul"_test = [&] {
+    {
         constexpr int n = 116;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -739,7 +739,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_div_div"_test = [&] {
+    {
         constexpr int n = 341;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -1790,7 +1790,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_recip_recip"_test = [&] {
+    {
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -1848,7 +1848,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_sqr_sqr"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,1.0},
@@ -1894,7 +1894,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_sqrt_sqrt"_test = [&] {
+    {
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,1.0},
@@ -1942,7 +1942,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_fma_fma"_test = [&] {
+    {
         constexpr int n = 564;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -4232,7 +4232,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys, h_zs);
     };
 
-    "minimal_pown_pown"_test = [&] {
+    {
         constexpr int n = 163;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -4749,7 +4749,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_pow_pow"_test = [&] {
+    {
         constexpr int n = 1344;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -8809,7 +8809,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_exp_exp"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,0X1.62E42FEFA39EP+9},
@@ -8869,7 +8869,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_exp2_exp2"_test = [&] {
+    {
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,1023.0},
@@ -8927,7 +8927,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_exp10_exp10"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,0X1.34413509F79FEP+8},
@@ -8987,7 +8987,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_log_log"_test = [&] {
+    {
         constexpr int n = 21;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,0x1.FFFFFFFFFFFFFp1023},
@@ -9051,7 +9051,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_log2_log2"_test = [&] {
+    {
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,0x1.FFFFFFFFFFFFFp1023},
@@ -9111,7 +9111,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_log10_log10"_test = [&] {
+    {
         constexpr int n = 20;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,0x1.FFFFFFFFFFFFFp1023},
@@ -9173,7 +9173,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_sin_sin"_test = [&] {
+    {
         constexpr int n = 52;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -9299,7 +9299,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_cos_cos"_test = [&] {
+    {
         constexpr int n = 52;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -9425,7 +9425,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_tan_tan"_test = [&] {
+    {
         constexpr int n = 33;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -9513,7 +9513,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_asin_asin"_test = [&] {
+    {
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -9571,7 +9571,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_acos_acos"_test = [&] {
+    {
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -9629,7 +9629,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_atan_atan"_test = [&] {
+    {
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -9671,7 +9671,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_atan2_atan2"_test = [&] {
+    {
         constexpr int n = 169;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -10206,7 +10206,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_sinh_sinh"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -10250,7 +10250,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_cosh_cosh"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -10294,7 +10294,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_tanh_tanh"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -10338,7 +10338,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_asinh_asinh"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -10382,7 +10382,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_acosh_acosh"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,infinity},
@@ -10426,7 +10426,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_atanh_atanh"_test = [&] {
+    {
         constexpr int n = 15;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -10478,7 +10478,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_sign_sign"_test = [&] {
+    {
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -10522,7 +10522,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_ceil_ceil"_test = [&] {
+    {
         constexpr int n = 15;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,2.2},
@@ -10574,7 +10574,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_floor_floor"_test = [&] {
+    {
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,2.2},
@@ -10622,7 +10622,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_trunc_trunc"_test = [&] {
+    {
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,2.2},
@@ -10670,7 +10670,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_round_ties_to_even_roundTiesToEven"_test = [&] {
+    {
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,2.5},
@@ -10728,7 +10728,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_round_ties_to_away_roundTiesToAway"_test = [&] {
+    {
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,2.5},
@@ -10786,7 +10786,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_abs_abs"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,0.2},
@@ -10832,7 +10832,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_min_min"_test = [&] {
+    {
         constexpr int n = 15;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,5.0},
@@ -10905,7 +10905,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_max_max"_test = [&] {
+    {
         constexpr int n = 15;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,5.0},

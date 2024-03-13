@@ -33,7 +33,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "cxsc.intervaladdsub_add"_test = [&] {
+    {
         constexpr int n = 2;
         I *h_xs = new (h_buffer) I[n]{
             {10.0,20.0},
@@ -67,7 +67,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervaladdsub_neg"_test = [&] {
+    {
         constexpr int n = 1;
         I *h_xs = new (h_buffer) I[n]{
             {10.0,20.0},
@@ -91,7 +91,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "cxsc.intervaladdsub_pos"_test = [&] {
+    {
         constexpr int n = 1;
         I *h_xs = new (h_buffer) I[n]{
             {10.0,20.0},
@@ -115,7 +115,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "cxsc.intervaladdsub_sub"_test = [&] {
+    {
         constexpr int n = 2;
         I *h_xs = new (h_buffer) I[n]{
             {10.0,20.0},
@@ -149,7 +149,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalmuldiv_div"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,2.0},
@@ -225,7 +225,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalmuldiv_mul"_test = [&] {
+    {
         constexpr int n = 15;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,2.0},
@@ -298,7 +298,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalsetop_convexHull"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,1.0},
@@ -362,7 +362,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalsetop_intersection"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,1.0},
@@ -426,7 +426,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalmixsetop_convexHull"_test = [&] {
+    {
         constexpr int n = 6;
         I *h_xs = new (h_buffer) I[n]{
             {-2.0,2.0},
@@ -472,7 +472,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalmixsetop_intersection"_test = [&] {
+    {
         constexpr int n = 6;
         I *h_xs = new (h_buffer) I[n]{
             {-2.0,2.0},
@@ -518,7 +518,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.scalarmixsetop_convexHull"_test = [&] {
+    {
         constexpr int n = 6;
         I *h_xs = new (h_buffer) I[n]{
             {-2.0,-2.0},
@@ -564,7 +564,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalsetcompop_equal"_test = [&] {
+    {
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,2.0},
@@ -613,7 +613,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalsetcompop_interior"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,1.0},
@@ -683,7 +683,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalsetcompop_subset"_test = [&] {
+    {
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,1.0},
@@ -750,7 +750,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalscalarsetcompop_equal"_test = [&] {
+    {
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,-1.0},
@@ -799,7 +799,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalscalarsetcompop_interior"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,-1.0},
@@ -869,7 +869,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalscalarsetcompop_subset"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,-1.0},
@@ -939,7 +939,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalstdfunc_pow"_test = [&] {
+    {
         constexpr int n = 2;
         I *h_xs = new (h_buffer) I[n]{
             {2.0,2.0},
@@ -973,7 +973,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalstdfunc_rootn"_test = [&] {
+    {
         constexpr int n = 3;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},
@@ -1010,7 +1010,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "cxsc.intervalstdfunc_sqr"_test = [&] {
+    {
         constexpr int n = 3;
         I *h_xs = new (h_buffer) I[n]{
             {-9.0,-9.0},
@@ -1038,7 +1038,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "cxsc.intervalstdfunc_sqrt"_test = [&] {
+    {
         constexpr int n = 3;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},

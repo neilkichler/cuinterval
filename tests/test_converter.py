@@ -172,7 +172,7 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream) {
                     var_types = arg_types
                     var_types.append(supported[instr]['ret'])
                     max_ulp_diff = supported[instr]['ulp_error']
-                    test_code = indent_one + f'"{name}_{instr}"_test = [&] {{\n'
+                    test_code = indent_one + f'{{\n'
 
                     for i in range(n_vars):
                         var_codes[i] = indent_two + f'{var_types[i].name} *h_{vars[i]} = new (h_buffer) {var_types[i].name}[n]{{\n'

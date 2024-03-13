@@ -33,7 +33,7 @@ void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "minimal_is_common_interval_isCommonInterval"_test = [&] {
+    {
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -79,7 +79,7 @@ void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_is_singleton_isSingleton"_test = [&] {
+    {
         constexpr int n = 15;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -131,7 +131,7 @@ void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_is_member_isMember"_test = [&] {
+    {
         constexpr int n = 35;
         T *h_xs = new (h_buffer) T[n]{
             -0.0,

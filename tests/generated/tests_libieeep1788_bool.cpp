@@ -33,7 +33,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "minimal_is_empty_isEmpty"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -83,7 +83,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_is_entire_isEntire"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -133,7 +133,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
 
-    "minimal_equal_equal"_test = [&] {
+    {
         constexpr int n = 15;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -206,7 +206,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_subset_subset"_test = [&] {
+    {
         constexpr int n = 27;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -315,7 +315,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_less_less"_test = [&] {
+    {
         constexpr int n = 26;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -421,7 +421,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_precedes_precedes"_test = [&] {
+    {
         constexpr int n = 21;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -512,7 +512,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_interior_interior"_test = [&] {
+    {
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -588,7 +588,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_strictly_less_strictLess"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,4.0},
@@ -658,7 +658,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_strictly_precedes_strictPrecedes"_test = [&] {
+    {
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-3.0,-0.0},
@@ -728,7 +728,7 @@ void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream) {
         check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
 
-    "minimal_disjoint_disjoint"_test = [&] {
+    {
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+infinity},

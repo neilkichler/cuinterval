@@ -33,7 +33,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream) {
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
-    "minimal.atan2_atan2"_test = [&] {
+    {
         constexpr int n = 37;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1p-1022,-0x1p-1022},
