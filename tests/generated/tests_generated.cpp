@@ -20,27 +20,27 @@ void tests_generated(cuda_buffers buffers, cuda_streams streams) {
     {
         #pragma omp single nowait
         {
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[1].host,buffers[1].device)
             tests_c_xsc(buffers[1], streams[1]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[3].host,buffers[3].device)
             tests_libieeep1788_elem(buffers[3], streams[3]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[1].host,buffers[1].device)
             tests_libieeep1788_rec_bool(buffers[1], streams[1]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[2].host,buffers[2].device)
             tests_libieeep1788_cancel(buffers[2], streams[2]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[3].host,buffers[3].device)
             tests_libieeep1788_bool(buffers[3], streams[3]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
             tests_atan2(buffers[0], streams[0]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[1].host,buffers[1].device)
             tests_mpfi(buffers[1], streams[1]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[2].host,buffers[2].device)
             tests_intervalarithmeticjl(buffers[2], streams[2]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[3].host,buffers[3].device)
             tests_libieeep1788_set(buffers[3], streams[3]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
             tests_filib(buffers[0], streams[0]);
-            #pragma omp task
+            #pragma omp task depend(inout:buffers[2].host,buffers[2].device)
             tests_libieeep1788_num(buffers[2], streams[2]);
 
         }

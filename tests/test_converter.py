@@ -316,7 +316,7 @@ if __name__ == '__main__':
             f.write(test_code)
         # main_includes += f'#include "{out_file}"\n'
         main_declares += "void " + tests_name + f'(cuda_buffer buffer, cudaStream_t stream);\n'
-        main_tests += indent_three + "#pragma omp task\n" + indent_three + tests_name + f'(buffers[{i%4}], streams[{i%4}]);\n'
+        main_tests += indent_three + f"#pragma omp task depend(inout:buffers[{i%4}].host,buffers[{i%4}].device)\n" + indent_three + tests_name + f'(buffers[{i%4}], streams[{i%4}]);\n'
         print('generated ' + cpp_out_file)
 
     for f in glob.glob('*.cu') + glob.glob('*.cpp'):
