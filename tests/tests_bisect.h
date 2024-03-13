@@ -17,7 +17,7 @@ void test_bisection_call(cudaStream_t stream, interval<double> x, double toleran
                          interval<double> *roots, std::size_t *max_roots);
 
 template<typename T>
-void tests_bisect(cuda_buffers buffers, cuda_streams streams)
+void tests_bisect(cuda_buffer buffer, cuda_streams streams)
 {
     using namespace boost::ut;
 
@@ -30,8 +30,8 @@ void tests_bisect(cuda_buffers buffers, cuda_streams streams)
     I entire   = { -infinity, infinity };
     T NaN      = ::nan("");
 
-    char *d_buffer    = buffers.device;
-    char *h_buffer    = buffers.host;
+    char *d_buffer    = buffer.device;
+    char *h_buffer    = buffer.host;
     const int n       = 8; // count of largest test array
     const int n_bytes = n * sizeof(I);
 
@@ -105,4 +105,4 @@ void tests_bisect(cuda_buffers buffers, cuda_streams streams)
     };
 }
 
-void tests_bisection(cuda_buffers buffers, cudaStream_t stream);
+void tests_bisection(cuda_buffer buffer, cudaStream_t stream);

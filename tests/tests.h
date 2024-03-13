@@ -54,6 +54,9 @@ bool check_within_ulps(T x, T y, std::size_t n, T direction)
     return false;
 }
 
+// template<typename T>
+// bool empty(interval<T> x);
+
 template<typename T, int N, typename... Args>
 void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::source_location location, Args &&...args)
 {
@@ -66,6 +69,10 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::so
         ((out << "\n\t"
               << args),
          ...);
+    };
+
+    auto empty = [](auto &&x) {
+        return !(x.lb <= x.ub);
     };
 
     for (size_t i = 0; i < h_ref.size(); ++i) {

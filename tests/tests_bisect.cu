@@ -26,14 +26,14 @@ void test_bisection_call(cudaStream_t stream, interval<double> x, double toleran
     bisection<double, max_depth><<<1, 1, 0, stream>>>(x, tolerance, roots, max_roots);
 }
 
-thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffers buffers, interval<double> x, double tolerance)
+thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffer buffer, interval<double> x, double tolerance)
 {
     using T                         = double;
     using I                         = interval<T>;
     constexpr std::size_t max_depth = 512;
     std::size_t max_roots           = 16;
 
-    std::size_t *d_max_roots = (std::size_t *)buffers.device;
+    std::size_t *d_max_roots = (std::size_t *)buffer.device;
     CUDA_CHECK(cudaMemcpyAsync(d_max_roots, &max_roots, sizeof(*d_max_roots), cudaMemcpyHostToDevice, stream));
     thrust::device_vector<I> roots(max_roots);
 

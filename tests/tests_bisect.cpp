@@ -1,9 +1,9 @@
 #include "tests_bisect.h"
 #include "tests_utils.h"
 
-thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffers buffers, interval<double> x, double tolerance);
+thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffer buffer, interval<double> x, double tolerance);
 
-void tests_bisection(cuda_buffers buffers, cudaStream_t stream)
+void tests_bisection(cuda_buffer buffer, cudaStream_t stream)
 {
     printf("Bisection: Inside OpenMP thread %i\n", omp_get_thread_num());
 
@@ -23,7 +23,7 @@ void tests_bisection(cuda_buffers buffers, cudaStream_t stream)
 
     // TODO: we should have an example function that can be called from cpp
     // settings should be passed in a struct
-    thrust::host_vector<I> h_roots = test_bisection_kernel(stream, buffers, x, tolerance);
+    thrust::host_vector<I> h_roots = test_bisection_kernel(stream, buffer, x, tolerance);
 
     for (std::size_t i = 0; i < h_roots.size(); i++) {
         contains(h_roots[i], ref_roots[i]);

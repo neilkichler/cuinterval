@@ -6,16 +6,16 @@
 #endif
 
 #include "tests_atan2.cu"
-#include "tests_libieeep1788_set.cu"
+// #include "tests_c_xsc.cu"
+// #include "tests_filib.cu"
 #include "tests_intervalarithmeticjl.cu"
-#include "tests_libieeep1788_bool.cu"
-#include "tests_filib.cu"
-#include "tests_c_xsc.cu"
+// #include "tests_libieeep1788_bool.cu"
+// #include "tests_libieeep1788_cancel.cu"
+// #include "tests_libieeep1788_elem.cu"
+// #include "tests_libieeep1788_num.cu"
+// #include "tests_libieeep1788_rec_bool.cu"
+#include "tests_libieeep1788_set.cu"
 #include "tests_mpfi.cu"
-#include "tests_libieeep1788_elem.cu"
-#include "tests_libieeep1788_num.cu"
-#include "tests_libieeep1788_cancel.cu"
-#include "tests_libieeep1788_rec_bool.cu"
 
 #ifdef __CUDACC__
 #pragma nv_diagnostic pop
@@ -24,17 +24,38 @@
 
 #include "../tests_common.h"
 
+#if 0
 void tests_generated(cuda_buffers buffers, cuda_streams streams)
 {
-    tests_atan2<double>(buffers, streams[0]);
-    tests_libieeep1788_set<double>(buffers, streams[3]);
-    tests_intervalarithmeticjl<double>(buffers, streams[2]);
-    tests_libieeep1788_bool<double>(buffers, streams[0]);
-    tests_filib<double>(buffers, streams[3]);
-    tests_c_xsc<double>(buffers, streams[0]);
-    tests_mpfi<double>(buffers, streams[2]);
-    tests_libieeep1788_elem<double>(buffers, streams[3]);
-    tests_libieeep1788_num<double>(buffers, streams[0]);
-    tests_libieeep1788_cancel<double>(buffers, streams[1]);
-    tests_libieeep1788_rec_bool<double>(buffers, streams[3]);
+    // #pragma omp parallel
+    {
+        cudaSetDevice(0);
+        // #pragma omp single nowait
+        {
+            printf("Max number of threads is %d\n", omp_get_max_threads());
+            // #pragma omp task // depend(inout:buffers[0].host) depend(inout:buffers[0].device)
+            tests_atan2<double>(buffers[0], streams[0]);
+            // #pragma omp task // depend(inout:buffers[1].host) depend(inout:buffers[1].device)
+            tests_libieeep1788_set<double>(buffers[1], streams[1]);
+            // #pragma omp task depend(inout:buffers[0].host) depend(inout:buffers[0].device)
+            tests_intervalarithmeticjl<double>(buffers[0], streams[0]);
+            // #pragma omp task
+            // tests_libieeep1788_bool<double>(buffers, streams[0]);
+            // #pragma omp task
+            // tests_filib<double>(buffers, streams[3]);
+            // #pragma omp task
+            // tests_c_xsc<double>(buffers, streams[0]);
+            // #pragma omp task
+            // tests_mpfi<double>(buffers[2], streams[2]);
+            // #pragma omp task
+            // tests_libieeep1788_elem<double>(buffers, streams[3]);
+            // #pragma omp task
+            // tests_libieeep1788_num<double>(buffers, streams[0]);
+            // #pragma omp task
+            // tests_libieeep1788_cancel<double>(buffers, streams[1]);
+            // #pragma omp task
+            // tests_libieeep1788_rec_bool<double>(buffers, streams[3]);
+        }
+    }
 }
+#endif

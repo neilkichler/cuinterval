@@ -1,4 +1,5 @@
 #include "tests.h"
+#include "generated/tests_generated.h"
 #include "tests_additional.h"
 #include "tests_common.h"
 
@@ -13,7 +14,6 @@ void tests_generated(cuda_buffers buffers, cuda_streams streams);
 
 int main(int argc, char *argv[])
 {
-    cuda_buffers buffers;
     std::size_t n_bytes = 128 * 1024 * 2 * sizeof(double);
 
     CUDA_CHECK(cudaSetDevice(0));
@@ -23,8 +23,11 @@ int main(int argc, char *argv[])
         printf("hello from omp thread %i\n", omp_get_thread_num());
     }
 
-    CUDA_CHECK(cudaMallocHost(&buffers.host, n_bytes));
-    CUDA_CHECK(cudaMalloc(&buffers.device, n_bytes));
+    std::array<cuda_buffer, n_streams> buffers {};
+    for (auto &buffer : buffers) {
+        CUDA_CHECK(cudaMallocHost(&buffer.host, n_bytes));
+        CUDA_CHECK(cudaMalloc(&buffer.device, n_bytes));
+    }
 
     std::array<cudaStream_t, n_streams> streams {};
     for (auto &stream : streams)
@@ -36,7 +39,10 @@ int main(int argc, char *argv[])
     for (auto &stream : streams)
         CUDA_CHECK(cudaStreamDestroy(stream));
 
-    CUDA_CHECK(cudaFree(buffers.device));
-    CUDA_CHECK(cudaFreeHost(buffers.host));
+    for (auto &buffer : buffers) {
+        CUDA_CHECK(cudaFree(buffer.device));
+        CUDA_CHECK(cudaFreeHost(buffer.host));
+    }
+
     return 0;
 }

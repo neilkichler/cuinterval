@@ -13,10 +13,12 @@ static constexpr std::size_t n_streams = 4;
 
 using cuda_streams = std::span<cudaStream_t, n_streams>;
 
-struct cuda_buffers {
+struct cuda_buffer {
     char *host;
     char *device;
 };
+
+using cuda_buffers = std::span<cuda_buffer, n_streams>;
 
 #define CUDA_CHECK(x)                                                                \
     do {                                                                             \

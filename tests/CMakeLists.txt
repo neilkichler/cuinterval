@@ -11,6 +11,7 @@ FetchContent_MakeAvailable(ut)
 # Tests need to be added as executables first
 add_executable(tests 
     tests.cpp
+    tests_ops.cu
     tests_ops.cuh
     tests_bisect.h 
     tests_bisect.cu 
@@ -18,12 +19,25 @@ add_executable(tests
     tests_loop.h
     tests_loop.cu
     tests_loop.cpp
-    generated/tests_generated.cu
+    generated/tests_generated.cpp
+    generated/tests_c_xsc.cpp
+    generated/tests_libieeep1788_elem.cpp
+    generated/tests_libieeep1788_rec_bool.cpp
+    generated/tests_libieeep1788_cancel.cpp
+    generated/tests_libieeep1788_bool.cpp
+    generated/tests_libieeep1788_set.cpp
+    generated/tests_libieeep1788_num.cpp
+    generated/tests_atan2.cpp
+    generated/tests_mpfi.cpp
+    generated/tests_intervalarithmeticjl.cpp
+    generated/tests_filib.cpp
 )
 
 # Use C++20 in the tests
 target_compile_features(tests PRIVATE cxx_std_20)
 target_compile_features(tests PRIVATE cuda_std_20)
+
+target_compile_options(tests PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler -fopenmp>)
 
 # Specify the CUDA architecture to compile to
 # set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES "61;70;86")

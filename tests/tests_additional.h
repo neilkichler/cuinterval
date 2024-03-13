@@ -14,9 +14,9 @@ void tests_additional(cuda_buffers buffers, cuda_streams streams)
         #pragma omp single nowait
         {
             #pragma omp task
-            tests_bisect<T>(buffers, streams);
+            tests_bisect<T>(buffers[0], streams);
             #pragma omp task
-            tests_bisection(buffers, streams[1]);
+            tests_bisection(buffers[1], streams[1]);
             #pragma omp task
             tests_pi_approximation(streams[2]);
             #pragma omp task
