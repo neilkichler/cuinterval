@@ -18,15 +18,21 @@ int main(int argc, char *argv[])
 
     CUDA_CHECK(cudaSetDevice(0));
 
-    #pragma omp parallel // we could use: [[omp::directive(parallel)]]
-    {
+    [[omp::directive(parallel)]] {
         printf("hello from omp thread %i\n", omp_get_thread_num());
     }
-
     std::array<cuda_buffer, n_streams> buffers {};
+
+    char *host_backing_buffer;
+    char *device_backing_buffer;
+    CUDA_CHECK(cudaMallocHost(&host_backing_buffer, buffers.size() * n_bytes));
+    CUDA_CHECK(cudaMalloc(&device_backing_buffer, buffers.size() * n_bytes));
+
+    std::size_t offset = 0;
     for (auto &buffer : buffers) {
-        CUDA_CHECK(cudaMallocHost(&buffer.host, n_bytes));
-        CUDA_CHECK(cudaMalloc(&buffer.device, n_bytes));
+        buffer.host   = host_backing_buffer + offset;
+        buffer.device = device_backing_buffer + offset;
+        offset += n_bytes;
     }
 
     std::array<cudaStream_t, n_streams> streams {};
@@ -39,10 +45,8 @@ int main(int argc, char *argv[])
     for (auto &stream : streams)
         CUDA_CHECK(cudaStreamDestroy(stream));
 
-    for (auto &buffer : buffers) {
-        CUDA_CHECK(cudaFree(buffer.device));
-        CUDA_CHECK(cudaFreeHost(buffer.host));
-    }
+    CUDA_CHECK(cudaFree(device_backing_buffer));
+    CUDA_CHECK(cudaFreeHost(host_backing_buffer));
 
     return 0;
 }
