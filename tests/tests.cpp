@@ -14,13 +14,9 @@ void tests_generated(cuda_buffers buffers, cuda_streams streams);
 
 int main(int argc, char *argv[])
 {
-    std::size_t n_bytes = 128 * 1024 * 2 * sizeof(double);
-
     CUDA_CHECK(cudaSetDevice(0));
 
-    [[omp::directive(parallel)]] {
-        printf("hello from omp thread %i\n", omp_get_thread_num());
-    }
+    std::size_t n_bytes = 128 * 1024 * 2 * sizeof(double);
     std::array<cuda_buffer, n_streams> buffers {};
 
     char *host_backing_buffer;
