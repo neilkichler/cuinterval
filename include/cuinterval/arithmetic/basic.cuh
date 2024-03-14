@@ -1409,4 +1409,29 @@ inline __device__ split<T> bisect(interval<T> x, T split_ratio)
     return { { x.lb, split_point }, { split_point, x.ub } };
 }
 
+#include <span>
+#include <stdio.h>
+
+template<typename T>
+inline __device__ void mince(interval<T> x, interval<T> *xs, std::size_t out_xs_size)
+{
+    std::span<interval<T>> out_xs { xs, out_xs_size };
+    if (is_atomic(x)) {
+        for (auto &out_x : out_xs) {
+            out_x = empty<T>();
+        }
+        out_xs[0] = x;
+    } else {
+        T lb = x.lb;
+        T ub = x.ub;
+
+        T step = (ub - lb) / static_cast<T>(out_xs.size());
+
+        for (std::size_t i = 0; i < out_xs.size(); i++) {
+            out_xs[i].lb = lb + i * step;
+            out_xs[i].ub = lb + (i + 1) * step;
+        }
+    }
+}
+
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

@@ -660,4 +660,13 @@ __global__ void test_bisect(int n, interval<T> *x, T *y, split<T> *res)
     }
 }
 
+template<typename T>
+__global__ void test_mince(int n, interval<T> *x, int *d_offsets, interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        mince(x[i], &res[d_offsets[i]], d_offsets[i + 1] - d_offsets[i]);
+    }
+}
+
 #endif // TESTS_OPS_CUH

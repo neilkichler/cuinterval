@@ -47,3 +47,11 @@ thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream,
 
     return h_roots;
 }
+
+void test_mince_kernel(cudaStream_t stream, cuda_buffer buffer, int n, interval<double> *x, int *d_offsets, interval<double> *res)
+{
+    const int blockSize = 256;
+    const int numBlocks = (n + blockSize - 1) / blockSize;
+
+    test_mince<<<numBlocks, blockSize, 0, stream>>>(n, x, d_offsets, res);
+}

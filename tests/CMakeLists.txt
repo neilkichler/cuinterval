@@ -59,6 +59,9 @@ if(OpenMP_CXX_FOUND)
     target_link_libraries(tests PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
+target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>")
+# target_link_options(tests PRIVATE "-fuse-ld=lld")
+
 # Register tests for use in ctest
 add_test(NAME testcuinterval COMMAND tests)
 

@@ -17,6 +17,8 @@ target_include_directories(cuinterval PUBLIC "${INCLUDE_PATH}")
 target_compile_features(cuinterval PUBLIC cxx_std_17)
 target_compile_features(cuinterval PUBLIC cuda_std_17)
 
+target_compile_options(cuinterval PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>")
+
 source_group(
     TREE "${INCLUDE_PATH}"
     PREFIX "Header Files"
