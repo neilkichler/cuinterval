@@ -1,4 +1,3 @@
-#include "tests.h"
 #include "generated/tests_generated.h"
 #include "tests_additional.h"
 #include "tests_common.h"
@@ -9,8 +8,6 @@
 #include <array>
 #include <cstddef>
 #include <cstdio>
-
-void tests_generated(cuda_buffers buffers, cuda_streams streams);
 
 int main(int argc, char *argv[])
 {
