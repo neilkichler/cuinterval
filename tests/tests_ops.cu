@@ -421,10 +421,4 @@ void tests_rootn_call(int numBlocks, int blockSize, cudaStream_t stream,
 {
     test_rootn<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
-
-void tests_mince_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, int *d_offsets, interval<double> *d_res)
-{
-    test_mince<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_offsets, d_res); 
-}
-  
+            

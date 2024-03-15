@@ -74,7 +74,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream) {
         h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(T), cudaMemcpyHostToDevice, stream));
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_inf_call(numBlocks, blockSize, stream, n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(T), cudaMemcpyDeviceToHost, stream));
@@ -124,7 +123,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream) {
         h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(T), cudaMemcpyHostToDevice, stream));
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_sup_call(numBlocks, blockSize, stream, n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(T), cudaMemcpyDeviceToHost, stream));
@@ -170,7 +168,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream) {
         h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(T), cudaMemcpyHostToDevice, stream));
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_mid_call(numBlocks, blockSize, stream, n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(T), cudaMemcpyDeviceToHost, stream));
@@ -210,7 +207,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream) {
         h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(T), cudaMemcpyHostToDevice, stream));
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_rad_call(numBlocks, blockSize, stream, n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(T), cudaMemcpyDeviceToHost, stream));
@@ -248,7 +244,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream) {
         h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(T), cudaMemcpyHostToDevice, stream));
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_wid_call(numBlocks, blockSize, stream, n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(T), cudaMemcpyDeviceToHost, stream));
@@ -286,7 +281,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream) {
         h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(T), cudaMemcpyHostToDevice, stream));
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_mag_call(numBlocks, blockSize, stream, n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(T), cudaMemcpyDeviceToHost, stream));
@@ -330,7 +324,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream) {
         h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
-        CUDA_CHECK(cudaMemcpyAsync(d_res, h_res, n*sizeof(T), cudaMemcpyHostToDevice, stream));
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_mig_call(numBlocks, blockSize, stream, n, d_xs, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(T), cudaMemcpyDeviceToHost, stream));

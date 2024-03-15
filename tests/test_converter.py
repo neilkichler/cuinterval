@@ -202,6 +202,8 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream) {
                         var_codes[i] += indent_two + extra + '};\n\n'
                         var_codes[i] += indent_two + f'h_buffer += n * sizeof({var_types[i].name});\n'
                         var_codes[n_args] += indent_two + f'{var_types[i].name} *d_{vars[i]} = ({var_types[i].name} *)d_{vars[i]}_;\n'
+
+                    for i in range(n_args):
                         cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(d_{vars[i]}, h_{vars[i]}, n*sizeof({var_types[i].name}), cudaMemcpyHostToDevice, stream));\n'
                     
                     host_input_vars = ', '.join([ f'h_{vars[i]}' for i in range(n_args) ])

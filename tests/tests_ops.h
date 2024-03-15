@@ -211,7 +211,3 @@ void tests_pow_call(int numBlocks, int blockSize, cudaStream_t stream,
 
 void tests_rootn_call(int numBlocks, int blockSize, cudaStream_t stream,
                  int n, interval<double> *d_xs, int *d_ys, interval<double> *d_res);
-
-void tests_mince_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, int *d_offsets, interval<double> *d_res);
-

@@ -100,6 +100,9 @@ void tests_bisect(cuda_buffer buffer, cuda_streams streams)
     };
 }
 
+void tests_mince_call(int numBlocks, int blockSize, cudaStream_t stream,
+                      int n, interval<double> *d_xs, int *d_offsets, interval<double> *d_res);
+
 void tests_mince(cuda_buffer buffer, cudaStream_t stream)
 {
     printf("Mince: Inside OpenMP thread %i\n", omp_get_thread_num());
