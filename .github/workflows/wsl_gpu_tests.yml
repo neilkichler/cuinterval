@@ -19,10 +19,7 @@ jobs:
   
     - name: gpu info
       run: nvidia-smi
-    
-    - name: directory info
-      run: ls
-    
+
     - name: nvidia compiler info
       run: nvcc --version
 
