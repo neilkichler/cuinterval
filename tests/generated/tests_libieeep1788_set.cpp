@@ -7,7 +7,7 @@
 
 #include <omp.h>
 
-void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream) {
+void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     using namespace boost::ut;
 
     using T = double;
@@ -70,7 +70,8 @@ void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_intersection_call(numBlocks, blockSize, stream, n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaStreamSynchronize(stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };
@@ -112,7 +113,8 @@ void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream) {
         CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys, n*sizeof(I), cudaMemcpyHostToDevice, stream));
         tests_convexHull_call(numBlocks, blockSize, stream, n, d_xs, d_ys, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaStreamSynchronize(stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
     };

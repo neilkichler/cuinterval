@@ -13,6 +13,7 @@
 static constexpr std::size_t n_streams = 4;
 
 using cuda_streams = std::span<cudaStream_t, n_streams>;
+using cuda_events = std::span<cudaEvent_t, n_streams>;
 
 struct cuda_buffer {
     char *host;

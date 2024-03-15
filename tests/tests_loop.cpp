@@ -9,7 +9,7 @@
 
 thrust::host_vector<interval<double>> compute_pi_approximation(cudaStream_t stream);
 
-void tests_pi_approximation(cudaStream_t stream)
+void tests_pi_approximation(cudaStream_t stream, cudaEvent_t event)
 {
     using T = double;
     using I = interval<T>;
@@ -29,7 +29,7 @@ void tests_pi_approximation(cudaStream_t stream)
 
 thrust::host_vector<interval<double>> compute_horner(cudaStream_t stream);
 
-void tests_horner(cudaStream_t stream)
+void tests_horner(cudaStream_t stream, cudaEvent_t event)
 {
     using T = double;
     using I = interval<T>;

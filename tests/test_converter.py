@@ -110,7 +110,7 @@ def convert_to_test(file_path):
 
 #include <omp.h>
 
-void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream) {
+void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     using namespace boost::ut;
 
     using T = double;
@@ -211,7 +211,9 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream) {
 
                     cuda_code += indent_two + f'tests_{instr}_call(numBlocks, blockSize, stream, n{device_vars});\n'
                     cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof({var_types[n_args].name}), cudaMemcpyDeviceToHost, stream));\n'
-                    cuda_code += indent_two + f'CUDA_CHECK(cudaStreamSynchronize(stream));\n'
+                    cuda_code += indent_two + f'CUDA_CHECK(cudaEventRecord(event, stream));\n'
+                    cuda_code += indent_two + f'CUDA_CHECK(cudaEventSynchronize(event));\n'
+
                     cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
                     cuda_code += indent_two + f'check_all_equal<{var_types[n_args].name}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_input_vars});\n'
                     cuda_code += indent_one + '};\n\n'
@@ -317,8 +319,8 @@ if __name__ == '__main__':
         with open(cpp_out_file, 'w') as f:
             f.write(test_code)
         # main_includes += f'#include "{out_file}"\n'
-        main_declares += "void " + tests_name + f'(cuda_buffer buffer, cudaStream_t stream);\n'
-        main_tests += indent_three + f"#pragma omp task depend(inout:buffers[{i%4}].host,buffers[{i%4}].device)\n" + indent_three + tests_name + f'(buffers[{i%4}], streams[{i%4}]);\n'
+        main_declares += "void " + tests_name + f'(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);\n'
+        main_tests += indent_three + f"#pragma omp task depend(inout:buffers[{i%4}].host,buffers[{i%4}].device)\n" + indent_three + tests_name + f'(buffers[{i%4}], streams[{i%4}], events[{i%4}]);\n'
         print('generated ' + cpp_out_file)
 
     for f in glob.glob('*.cu') + glob.glob('*.cpp'):
@@ -334,7 +336,7 @@ if __name__ == '__main__':
 
     with open('generated/tests_generated.cpp', 'w') as f:
         main_body = f'''
-void tests_generated(cuda_buffers buffers, cuda_streams streams) {{
+void tests_generated(cuda_buffers buffers, cuda_streams streams, cuda_events events) {{
     #pragma omp parallel
     {{
         #pragma omp single nowait

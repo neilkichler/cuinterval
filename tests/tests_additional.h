@@ -7,22 +7,22 @@
 #include <omp.h>
 
 template<typename T>
-void tests_additional(cuda_buffers buffers, cuda_streams streams)
+void tests_additional(cuda_buffers buffers, cuda_streams streams, cuda_events events)
 {
     #pragma omp parallel
     {
         #pragma omp single nowait
         {
             #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
-            tests_bisect(buffers[0], streams);
+            tests_bisect(buffers[0], streams, events);
             #pragma omp task
-            tests_bisection(buffers[1], streams[1]);
+            tests_bisection(buffers[1], streams[1], events[1]);
             #pragma omp task
-            tests_pi_approximation(streams[2]);
+            tests_pi_approximation(streams[2], events[2]);
             #pragma omp task
-            tests_horner(streams[3]);
+            tests_horner(streams[3], events[3]);
             #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
-            tests_mince(buffers[0], streams[0]);
+            tests_mince(buffers[0], streams[0], events[0]);
         }
     }
 }

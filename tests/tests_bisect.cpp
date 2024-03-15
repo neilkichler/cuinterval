@@ -11,7 +11,7 @@
 void test_bisect_call(cudaStream_t stream, int n,
                       interval<double> *x, double *y, split<double> *res);
 
-void tests_bisect(cuda_buffer buffer, cuda_streams streams)
+void tests_bisect(cuda_buffer buffer, cuda_streams streams, cuda_events events)
 {
     using namespace boost::ut;
 
@@ -103,7 +103,7 @@ void tests_bisect(cuda_buffer buffer, cuda_streams streams)
 void tests_mince_call(int numBlocks, int blockSize, cudaStream_t stream,
                       int n, interval<double> *d_xs, int *d_offsets, interval<double> *d_res);
 
-void tests_mince(cuda_buffer buffer, cudaStream_t stream)
+void tests_mince(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
 {
     printf("Mince: Inside OpenMP thread %i\n", omp_get_thread_num());
 
@@ -176,7 +176,9 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream)
         CUDA_CHECK(cudaMemcpyAsync(d_offsets, h_offsets, (n_results + 1) * sizeof(int), cudaMemcpyHostToDevice, stream));
         tests_mince_call(numBlocks, blockSize, stream, n, d_xs, d_offsets, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n_results * sizeof(I), cudaMemcpyDeviceToHost, stream));
-        CUDA_CHECK(cudaStreamSynchronize(stream));
+        // CUDA_CHECK(cudaStreamSynchronize(stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
         check_all_equal<I, n_results>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
     };
@@ -184,7 +186,7 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream)
 
 thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffer buffer, interval<double> x, double tolerance);
 
-void tests_bisection(cuda_buffer buffer, cudaStream_t stream)
+void tests_bisection(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
 {
     printf("Bisection: Inside OpenMP thread %i\n", omp_get_thread_num());
 

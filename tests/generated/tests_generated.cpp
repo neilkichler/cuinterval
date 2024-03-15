@@ -3,45 +3,45 @@
 #include "tests_generated.h"
 #include <omp.h>
 
-void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream);
-void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream);
-void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream);
-void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream);
-void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream);
-void tests_atan2(cuda_buffer buffer, cudaStream_t stream);
-void tests_mpfi(cuda_buffer buffer, cudaStream_t stream);
-void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream);
-void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream);
-void tests_filib(cuda_buffer buffer, cudaStream_t stream);
-void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream);
+void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_libieeep1788_bool(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_filib(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
+void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);
 
-void tests_generated(cuda_buffers buffers, cuda_streams streams) {
+void tests_generated(cuda_buffers buffers, cuda_streams streams, cuda_events events) {
     #pragma omp parallel
     {
         #pragma omp single nowait
         {
             #pragma omp task depend(inout:buffers[1].host,buffers[1].device)
-            tests_c_xsc(buffers[1], streams[1]);
+            tests_c_xsc(buffers[1], streams[1], events[1]);
             #pragma omp task depend(inout:buffers[3].host,buffers[3].device)
-            tests_libieeep1788_elem(buffers[3], streams[3]);
+            tests_libieeep1788_elem(buffers[3], streams[3], events[3]);
             #pragma omp task depend(inout:buffers[1].host,buffers[1].device)
-            tests_libieeep1788_rec_bool(buffers[1], streams[1]);
+            tests_libieeep1788_rec_bool(buffers[1], streams[1], events[1]);
             #pragma omp task depend(inout:buffers[2].host,buffers[2].device)
-            tests_libieeep1788_cancel(buffers[2], streams[2]);
+            tests_libieeep1788_cancel(buffers[2], streams[2], events[2]);
             #pragma omp task depend(inout:buffers[3].host,buffers[3].device)
-            tests_libieeep1788_bool(buffers[3], streams[3]);
+            tests_libieeep1788_bool(buffers[3], streams[3], events[3]);
             #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
-            tests_atan2(buffers[0], streams[0]);
+            tests_atan2(buffers[0], streams[0], events[0]);
             #pragma omp task depend(inout:buffers[1].host,buffers[1].device)
-            tests_mpfi(buffers[1], streams[1]);
+            tests_mpfi(buffers[1], streams[1], events[1]);
             #pragma omp task depend(inout:buffers[2].host,buffers[2].device)
-            tests_intervalarithmeticjl(buffers[2], streams[2]);
+            tests_intervalarithmeticjl(buffers[2], streams[2], events[2]);
             #pragma omp task depend(inout:buffers[3].host,buffers[3].device)
-            tests_libieeep1788_set(buffers[3], streams[3]);
+            tests_libieeep1788_set(buffers[3], streams[3], events[3]);
             #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
-            tests_filib(buffers[0], streams[0]);
+            tests_filib(buffers[0], streams[0], events[0]);
             #pragma omp task depend(inout:buffers[2].host,buffers[2].device)
-            tests_libieeep1788_num(buffers[2], streams[2]);
+            tests_libieeep1788_num(buffers[2], streams[2], events[2]);
 
         }
     }

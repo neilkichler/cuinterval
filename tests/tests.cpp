@@ -32,8 +32,16 @@ int main(int argc, char *argv[])
     for (auto &stream : streams)
         CUDA_CHECK(cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking));
 
-    tests_additional<double>(buffers, streams);
-    tests_generated(buffers, streams);
+    std::array<cudaEvent_t, n_streams> events {};
+    for (auto &event : events)
+        CUDA_CHECK(cudaEventCreateWithFlags(&event, cudaEventDisableTiming));
+
+    tests_additional<double>(buffers, streams, events);
+    tests_generated(buffers, streams, events);
+
+
+    for (auto &event : events)
+        CUDA_CHECK(cudaEventDestroy(event));
 
     for (auto &stream : streams)
         CUDA_CHECK(cudaStreamDestroy(stream));
