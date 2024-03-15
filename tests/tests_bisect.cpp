@@ -37,7 +37,6 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream)
             {-0.0,-0.0},
             {0.0,4.0},
             empty,
-            // entire,
             {-1.0,1.0},
         };
 
@@ -57,7 +56,6 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream)
             { 0.0, 1.0 }, { 1.0, 2.0 }, { 2.0, 3.0 }, { 3.0, 4.0 },
             empty, empty,
             { -1.0, 0.0 }, { 0.0, 1.0 },
-            // { entire.lb, 0.0 }, { 0.0, entire.ub },
         }};
 
         I *d_xs = (I *)d_xs_;

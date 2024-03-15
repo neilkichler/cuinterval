@@ -1410,7 +1410,6 @@ inline __device__ split<T> bisect(interval<T> x, T split_ratio)
 }
 
 #include <span>
-#include <stdio.h>
 
 template<typename T>
 inline __device__ void mince(interval<T> x, interval<T> *xs, std::size_t out_xs_size)
