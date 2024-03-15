@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     std::array<cudaStream_t, n_streams> streams {};
     for (auto &stream : streams)
-        CUDA_CHECK(cudaStreamCreate(&stream));
+        CUDA_CHECK(cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking));
 
     tests_additional<double>(buffers, streams);
     tests_generated(buffers, streams);
