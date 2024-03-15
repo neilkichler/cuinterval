@@ -100,6 +100,6 @@ void tests_bisection(cuda_buffer buffer, cudaStream_t stream)
         // printf("root is: %.15f %.15f\n", h_roots[i].lb, h_roots[i].ub);
         // printf("diff is: %.15f\n", h_roots[i].ub - h_roots[i].lb);
         // printf("tolerance is: %.15f\n", tolerance);
-        expect(le(h_roots[i].ub - h_roots[i].lb, 3 * tolerance)); // TODO: fix multiply
+        expect(le(h_roots[i].ub - h_roots[i].lb, tolerance));
     }
 }
