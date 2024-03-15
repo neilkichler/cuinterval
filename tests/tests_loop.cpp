@@ -2,7 +2,10 @@
 #include "tests.h"
 #include "tests_utils.h"
 
+#include <cuinterval/arithmetic/interval.h>
+
 #include <omp.h>
+#include <thrust/host_vector.h>
 
 thrust::host_vector<interval<double>> compute_pi_approximation(cudaStream_t stream);
 
@@ -38,7 +41,7 @@ void tests_horner(cudaStream_t stream)
     thrust::host_vector<I> res = compute_horner(stream);
 
     I exp_approx = res[res.size() - 1];
-    T exp_true = std::numbers::e;
+    T exp_true   = std::numbers::e;
 
     contains(exp_approx, exp_true);
 }

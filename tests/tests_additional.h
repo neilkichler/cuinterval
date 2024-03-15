@@ -14,7 +14,7 @@ void tests_additional(cuda_buffers buffers, cuda_streams streams)
         #pragma omp single nowait
         {
             #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
-            tests_bisect<T>(buffers[0], streams);
+            tests_bisect(buffers[0], streams);
             #pragma omp task
             tests_bisection(buffers[1], streams[1]);
             #pragma omp task

@@ -5,6 +5,7 @@
 
 #include <cstdio>
 #include <cstddef>
+#include <cstdlib>
 #include <span>
 
 #include <cuda_runtime.h>
