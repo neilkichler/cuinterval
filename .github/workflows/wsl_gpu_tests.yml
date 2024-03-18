@@ -33,3 +33,10 @@ jobs:
       run: |
         cd build
         ctest --output-on-failure
+        
+    - name: run checks
+      run: |
+        ../tools/memcheck.sh ./tests/tests
+        ../tools/racecheck.sh ./tests/tests
+        ../tools/synccheck.sh ./tests/tests
+        
