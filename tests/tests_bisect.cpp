@@ -203,9 +203,6 @@ void tests_bisection(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
     };
 
     constexpr double tolerance = 1e-12;
-
-    // TODO: we should have an example function that can be called from cpp
-    // settings should be passed in a struct
     thrust::host_vector<I> h_roots = test_bisection_kernel(stream, buffer, x, tolerance);
 
     for (std::size_t i = 0; i < h_roots.size(); i++) {

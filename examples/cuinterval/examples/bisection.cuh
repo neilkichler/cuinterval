@@ -18,21 +18,12 @@ struct local_stack
     size_type len {};
 };
 
-#include <cstdio>
-
-template<typename I>
-__device__ I f(I x)
-{
-    // return exp(I { -3.0, -3.0 } * x) - sin(x) * sin(x) * sin(x);
-    // return I{1.0, 1.0};
-    // return x*sqr(x) - (I{2.0, 2.0} * sqr(x)) + x;
-    // return sqr(sin(x)) - (I{1.0, 1.0} - cos(I{2.0, 2.0} * x)) / I{2.0, 2.0};
-    return pown(x, 3) - pown(x, 2) - 17.0 * x - 15.0;
-};
+typedef interval<double> (*fn_t)(interval<double>);
 
 // Example implementation of the bisection method for finding all roots in a given interval.
 template<typename T, int max_depth>
-__global__ void bisection(interval<T> x_init, double tol, interval<T> *roots, std::size_t *max_roots)
+__global__ void bisection(fn_t f, interval<T> x_init, double tol, interval<T> *roots, std::size_t *max_roots)
+// __global__ void bisection(interval<T> x_init, double tol, interval<T> *roots, std::size_t *max_roots)
 {
     using I = interval<T>;
 
@@ -42,7 +33,7 @@ __global__ void bisection(interval<T> x_init, double tol, interval<T> *roots, st
 
     for (int depth = 0; !intervals.empty() && depth < max_depth; depth++) {
         I x = intervals.pop();
-        I y = f(x);
+        I y = (*f)(x);
 
         if (!contains(y, 0.0)) {
             continue; // no roots in this interval -> no further splitting

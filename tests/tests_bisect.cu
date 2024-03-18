@@ -18,13 +18,14 @@ void test_bisect_call(cudaStream_t stream, int n,
     test_bisect<<<numBlocks, blockSize, 0, stream>>>(n, x, y, res);
 }
 
-void test_bisection_call(cudaStream_t stream, interval<double> x, double tolerance,
-                         interval<double> *roots, std::size_t *max_roots)
+template<typename I>
+__host__ __device__ I f(I x)
 {
+    return pow(x, 3) - pow(x, 2) - 17.0 * x - 15.0;
+};
 
-    constexpr std::size_t max_depth = 512;
-    bisection<double, max_depth><<<1, 1, 0, stream>>>(x, tolerance, roots, max_roots);
-}
+typedef interval<double> (*fn_t)(interval<double>);
+__device__ fn_t d_f = f<interval<double>>;
 
 thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffer buffer, interval<double> x, double tolerance)
 {
@@ -38,7 +39,10 @@ thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream,
     thrust::device_vector<I> roots(max_roots);
 
     I *d_roots = thrust::raw_pointer_cast(roots.data());
-    bisection<T, max_depth><<<1, 1, 0, stream>>>(x, tolerance, d_roots, d_max_roots);
+
+    fn_t h_f;
+    cudaMemcpyFromSymbol(&h_f, d_f, sizeof(h_f));
+    bisection<T, max_depth><<<1, 1, 0, stream>>>(h_f, x, tolerance, d_roots, d_max_roots);
 
     CUDA_CHECK(cudaMemcpyAsync(&max_roots, d_max_roots, sizeof(*d_max_roots), cudaMemcpyDeviceToHost, stream));
     thrust::host_vector<I> h_roots(max_roots);
