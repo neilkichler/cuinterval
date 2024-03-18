@@ -36,7 +36,6 @@ jobs:
         
     - name: run checks
       run: |
-        ../tools/memcheck.sh ./tests/tests
-        ../tools/racecheck.sh ./tests/tests
-        ../tools/synccheck.sh ./tests/tests
-        
+        ./tools/memcheck.sh ./build/tests/tests
+        ./tools/racecheck.sh ./build/tests/tests
+        ./tools/synccheck.sh ./build/tests/tests
