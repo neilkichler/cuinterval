@@ -1,0 +1,154 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "common",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "build"
+    },
+    {
+      "name": "common-linux",
+      "hidden": true,
+      "inherits": "common"
+    },
+    {
+      "name": "common-windows",
+      "hidden": true,
+      "inherits": "common"
+    },
+    {
+      "name": "debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
+      }
+    },
+    {
+      "name": "gcc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+       }
+     },
+     {
+      "name": "clang",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+       }
+     },
+     {
+      "name": "msvc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+       }
+     },
+     {
+        "name": "sanitizer-address",
+        "hidden": true,
+        "cacheVariables": {
+            "CMAKE_CXX_FLAGS": "-fsanitize=address"
+        }
+     },
+     {
+        "name": "sanitizer-leak",
+        "hidden": true,
+        "cacheVariables": {
+            "CMAKE_CXX_FLAGS": "-fsanitize=leak"
+        }
+     },
+     {
+        "name": "sanitizer-memory",
+        "hidden": true,
+        "cacheVariables": {
+            "CMAKE_CXX_FLAGS": "-fsanitize=memory"
+        }
+     },
+     {
+        "name": "sanitizer-thread",
+        "hidden": true,
+        "cacheVariables": {
+            "CMAKE_CXX_FLAGS": "-fsanitize=thread"
+        }
+     },
+     {
+        "name": "sanitizer-undefined",
+        "hidden": true,
+        "cacheVariables": {
+            "CMAKE_CXX_FLAGS": "-fsanitize=undefined"
+        }
+     },
+     {
+       "name": "linux-gcc-debug",
+       "inherits": ["common-linux", "gcc", "debug"]
+     },
+     {
+       "name": "linux-gcc-release",
+       "inherits": ["common-linux", "gcc", "release"]
+     },
+     {
+       "name": "linux-clang-debug",
+       "inherits": ["common-linux", "clang", "debug"]
+     },
+     {
+       "name": "linux-clang-release",
+       "inherits": ["common-linux", "clang", "release"]
+     },
+     {
+       "name": "linux-gcc-debug-sanitizer-address",
+       "inherits": ["linux-gcc-debug", "sanitizer-address"]
+     },
+     {
+       "name": "linux-gcc-debug-sanitizer-address-ub",
+       "inherits": ["linux-gcc-debug-sanitizer-address", "sanitizer-undefined"]
+     },
+     {
+       "name": "linux-clang-debug-sanitizer-address",
+       "inherits": ["linux-clang-debug", "sanitizer-address"]
+     },
+     {
+       "name": "linux-clang-debug-sanitizer-address-ub",
+       "inherits": ["linux-clang-debug-sanitizer-address", "sanitizer-undefined"]
+     }
+  ],
+  "buildPresets": [
+    {
+      "name": "build-gcc-all",
+      "displayName": "Build All",
+      "configurePreset": "linux-gcc-debug-sanitizer-address"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test-all",
+      "displayName": "Test All",
+      "configurePreset": "linux-gcc-debug-sanitizer-address",
+      "environment": {
+        "ASAN_OPTIONS": "protect_shadow_gap=0"     
+      },
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "stopOnFailure": true
+      }
+    }
+  ]
+}

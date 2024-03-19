@@ -1,5 +1,3 @@
-cmake_minimum_required (VERSION 3.24)
-
 set(INCLUDE_PATH "${cuinterval_SOURCE_DIR}/include")
 set(LIB_PATH "${INCLUDE_PATH}/cuinterval")
 
@@ -23,7 +21,4 @@ source_group(
     TREE "${INCLUDE_PATH}"
     PREFIX "Header Files"
     FILES ${headers})
-
-# set_target_properties(cuinterval PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
-
 
