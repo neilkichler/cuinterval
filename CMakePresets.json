@@ -116,12 +116,28 @@
        "inherits": ["linux-gcc-debug", "sanitizer-address"]
      },
      {
+       "name": "linux-gcc-debug-sanitizer-ub",
+       "inherits": ["linux-gcc-debug", "sanitizer-undefined"]
+     },
+     {
+       "name": "linux-gcc-debug-sanitizer-thread",
+       "inherits": ["linux-gcc-debug", "sanitizer-thread"]
+     },
+     {
        "name": "linux-gcc-debug-sanitizer-address-ub",
        "inherits": ["linux-gcc-debug-sanitizer-address", "sanitizer-undefined"]
      },
      {
        "name": "linux-clang-debug-sanitizer-address",
        "inherits": ["linux-clang-debug", "sanitizer-address"]
+     },
+     {
+       "name": "linux-clang-debug-sanitizer-ub",
+       "inherits": ["linux-clang-debug", "sanitizer-undefined"]
+     },
+     {
+       "name": "linux-clang-debug-sanitizer-thread",
+       "inherits": ["linux-clang-debug", "sanitizer-thread"]
      },
      {
        "name": "linux-clang-debug-sanitizer-address-ub",
