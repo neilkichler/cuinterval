@@ -48,6 +48,6 @@ int main(int argc, char *argv[])
 
     CUDA_CHECK(cudaFree(device_backing_buffer));
     CUDA_CHECK(cudaFreeHost(host_backing_buffer));
-
+    CUDA_CHECK(cudaDeviceReset());
     return 0;
 }
