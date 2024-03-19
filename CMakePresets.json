@@ -176,10 +176,6 @@
         {
           "type": "configure",
           "name": "linux-gcc-debug-sanitizer-address"
-        },
-        {
-          "type": "build",
-          "name": "debug"
         }
       ]
     }
