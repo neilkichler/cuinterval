@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 6,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 21,
@@ -130,25 +130,59 @@
   ],
   "buildPresets": [
     {
-      "name": "build-gcc-all",
-      "displayName": "Build All",
+      "name": "debug",
+      "displayName": "Build configuration in debug mode",
       "configurePreset": "linux-gcc-debug-sanitizer-address"
+    },
+    {
+      "name": "release",
+      "displayName": "Build configuration in release mode",
+      "configurePreset": "release"
     }
   ],
   "testPresets": [
     {
-      "name": "test-all",
-      "displayName": "Test All",
-      "configurePreset": "linux-gcc-debug-sanitizer-address",
-      "environment": {
-        "ASAN_OPTIONS": "protect_shadow_gap=0"     
-      },
+      "name": "common",
+      "hidden": true,
       "output": {
         "outputOnFailure": true
       },
       "execution": {
         "stopOnFailure": true
       }
+    },
+    {
+      "name": "sanitizer-address",
+      "hidden": true,
+      "configurePreset": "sanitizer-address",
+      "environment": {
+        "ASAN_OPTIONS": "protect_shadow_gap=0"     
+      }
+    },
+    {
+      "name": "linux-gcc-debug-sanitizer-address",
+      "configurePreset": "linux-gcc-debug-sanitizer-address",
+      "inherits": ["common", "sanitizer-address"]
+    }
+  ],
+  "workflowPresets": [
+    {
+      "description": "Developer workflow without installation",
+      "name": "dev",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "linux-gcc-debug-sanitizer-address"
+        },
+        {
+          "type": "build",
+          "name": "debug"
+        },
+        {
+          "type": "test",
+          "name": "linux-gcc-debug-sanitizer-address"
+        }
+      ]
     }
   ]
 }
