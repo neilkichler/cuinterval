@@ -315,7 +315,7 @@ inline __device__ interval<T> operator-(interval<T> a, interval<T> b)
 template<typename T>
 inline __device__ interval<T> operator-(T a, interval<T> b)
 {
-    if (std::isnan(a) || empty(b)) {
+    if (isnan(a) || empty(b)) {
         return empty<T>();
     }
 
@@ -325,7 +325,7 @@ inline __device__ interval<T> operator-(T a, interval<T> b)
 template<typename T>
 inline __device__ interval<T> operator-(interval<T> a, T b)
 {
-    if (empty(a) || std::isnan(b)) {
+    if (empty(a) || isnan(b)) {
         return empty<T>();
     }
 
@@ -341,7 +341,7 @@ inline __device__ interval<T> operator*(interval<T> a, interval<T> b)
 template<typename T>
 inline __device__ interval<T> operator*(T a, interval<T> b)
 {
-    if (std::isnan(a) || empty(b)) {
+    if (isnan(a) || empty(b)) {
         return empty<T>();
     }
 
