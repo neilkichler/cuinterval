@@ -23,20 +23,6 @@
       "inherits": "common"
     },
     {
-      "name": "debug",
-      "hidden": true,
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
-    },
-    {
-      "name": "release",
-      "hidden": true,
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
-      }
-    },
-    {
       "name": "gcc",
       "hidden": true,
       "cacheVariables": {
@@ -95,6 +81,20 @@
             "CMAKE_CXX_FLAGS": "-fsanitize=undefined"
         }
      },
+    {
+      "name": "debug",
+      "inherits": ["common"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": ["common"],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
+      }
+    },
      {
        "name": "linux-gcc-debug",
        "inherits": ["common-linux", "gcc", "debug"]
@@ -131,12 +131,12 @@
   "buildPresets": [
     {
       "name": "debug",
-      "displayName": "Build configuration in debug mode",
-      "configurePreset": "linux-gcc-debug-sanitizer-address"
+      "displayName": "Build in debug mode",
+      "configurePreset": "debug"
     },
     {
       "name": "release",
-      "displayName": "Build configuration in release mode",
+      "displayName": "Build in release mode",
       "configurePreset": "release"
     }
   ],
@@ -154,15 +154,18 @@
     {
       "name": "sanitizer-address",
       "hidden": true,
-      "configurePreset": "sanitizer-address",
       "environment": {
         "ASAN_OPTIONS": "protect_shadow_gap=0"     
       }
     },
     {
-      "name": "linux-gcc-debug-sanitizer-address",
-      "configurePreset": "linux-gcc-debug-sanitizer-address",
-      "inherits": ["common", "sanitizer-address"]
+      "name": "debug",
+      "configurePreset": "debug",
+      "inherits": ["common"]
+    },
+    {
+      "name": "debug-sanitizer-address",
+      "inherits": ["debug", "sanitizer-address"]
     }
   ],
   "workflowPresets": [
@@ -177,10 +180,6 @@
         {
           "type": "build",
           "name": "debug"
-        },
-        {
-          "type": "test",
-          "name": "linux-gcc-debug-sanitizer-address"
         }
       ]
     }

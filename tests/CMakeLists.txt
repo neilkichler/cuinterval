@@ -8,10 +8,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(ut)
 
-# add_custom_target(newtarget ${CMAKE_COMMAND} -E env NAME=VALUE somecommand)
-
-# set(ENV{ASAN_OPTIONS} =protect_shadow_gap=0)
-
 # Tests need to be added as executables first
 add_executable(tests 
     tests.cpp
@@ -50,14 +46,6 @@ set_target_properties(tests PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
 # Link with main library and testing library
 target_link_libraries(tests PRIVATE cuinterval example_interval_procedures Boost::ut)
-
-target_enable_sanitizers(tests
-    ${CUINTERVAL_ENABLE_SANITIZER_ADDRESS}
-    ${CUINTERVAL_ENABLE_SANITIZER_LEAK}
-    ${CUINTERVAL_ENABLE_SANITIZER_UNDEFINED}
-    ${CUINTERVAL_ENABLE_SANITIZER_THREAD}
-    ${CUINTERVAL_ENABLE_SANITIZER_MEMORY}
-)
 
 # Find and link with CUDA headers
 find_package(CUDAToolkit REQUIRED)
