@@ -4,6 +4,8 @@
 
 #include <cuinterval/arithmetic/interval.h>
 
+#include <numbers>
+
 #include <omp.h>
 #include <thrust/host_vector.h>
 
