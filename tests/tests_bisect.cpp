@@ -176,7 +176,6 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
         CUDA_CHECK(cudaMemcpyAsync(d_offsets, h_offsets, (n_results + 1) * sizeof(int), cudaMemcpyHostToDevice, stream));
         tests_mince_call(numBlocks, blockSize, stream, n, d_xs, d_offsets, d_res);
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n_results * sizeof(I), cudaMemcpyDeviceToHost, stream));
-        // CUDA_CHECK(cudaStreamSynchronize(stream));
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
