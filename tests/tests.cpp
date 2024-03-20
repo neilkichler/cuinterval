@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
     tests_additional<double>(buffers, streams, events);
     tests_generated(buffers, streams, events);
 
-
     for (auto &event : events)
         CUDA_CHECK(cudaEventDestroy(event));
 

@@ -141,12 +141,12 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
             { -1.0, 1.0 },
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(int));
         int *h_offsets = new (h_buffer) int[n_results] {
             0, 4, 8, 12, 14, 16
         };
 
-        h_buffer += (n_results + 1) * sizeof(int);
+        h_buffer += align_to((n_results + 1) * sizeof(int), alignof(I));
 
         I *h_res = new (h_buffer) I[n_results] {};
 

@@ -107,6 +107,7 @@ def convert_to_test(file_path):
 #include "../tests.h"
 #include "../tests_common.h"
 #include "../tests_ops.h"
+#include "../tests_utils.h"
 
 #include <omp.h>
 
@@ -173,6 +174,7 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
                     var_types.append(supported[instr]['ret'])
                     max_ulp_diff = supported[instr]['ulp_error']
                     test_code = indent_one + f'{{\n'
+                    test_code += indent_two + 'char *h_buffer = buffer.host;\n'
 
                     for i in range(n_vars):
                         var_codes[i] = indent_two + f'{var_types[i].name} *h_{vars[i]} = new (h_buffer) {var_types[i].name}[n]{{\n'
@@ -200,8 +202,10 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
                     for i in reversed(range(n_vars)):
                         extra = '}' if i == n_vars-1 else ''
                         var_codes[i] += indent_two + extra + '};\n\n'
-                        var_codes[i] += indent_two + f'h_buffer += n * sizeof({var_types[i].name});\n'
                         var_codes[n_args] += indent_two + f'{var_types[i].name} *d_{vars[i]} = ({var_types[i].name} *)d_{vars[i]}_;\n'
+
+                    for i in range(1, n_vars):
+                        var_codes[i-1] += indent_two + f'h_buffer += align_to(n * sizeof({var_types[i-1].name}), alignof({var_types[i].name}));\n'
 
                     for i in range(n_args):
                         cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(d_{vars[i]}, h_{vars[i]}, n*sizeof({var_types[i].name}), cudaMemcpyHostToDevice, stream));\n'
@@ -234,7 +238,6 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
     char *d_buffer = buffer.device;
-    char *h_buffer = buffer.host;
 
     I *d_xs_  = (I *) d_buffer;
     I *d_ys_  = (I *) d_buffer + 1 * n_bytes;

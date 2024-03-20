@@ -4,6 +4,7 @@
 #include "../tests.h"
 #include "../tests_common.h"
 #include "../tests_ops.h"
+#include "../tests_utils.h"
 
 #include <omp.h>
 
@@ -26,7 +27,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
     char *d_buffer = buffer.device;
-    char *h_buffer = buffer.host;
 
     I *d_xs_  = (I *) d_buffer;
     I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
@@ -34,6 +34,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -52,7 +53,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             -0.0,
@@ -71,7 +72,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             +infinity,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -84,6 +84,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -102,7 +103,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             0.0,
@@ -121,7 +122,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             -infinity,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -134,6 +134,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0X0.0000000000001P-1022,0X0.0000000000002P-1022},
@@ -150,7 +151,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             0.0,
@@ -167,7 +168,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             NaN,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -180,6 +180,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 9;
         I *h_xs = new (h_buffer) I[n]{
             {-0X0.0000000000002P-1022,0X0.0000000000001P-1022},
@@ -193,7 +194,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             0X0.0000000000002P-1022,
@@ -207,7 +208,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             NaN,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -220,6 +220,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+infinity},
@@ -232,7 +233,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             infinity,
@@ -245,7 +246,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             NaN,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -258,6 +258,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -270,7 +271,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             0.0,
@@ -283,7 +284,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             NaN,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -296,6 +296,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,-0.0},
@@ -311,7 +312,7 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             0.0,
@@ -327,7 +328,6 @@ void tests_libieeep1788_num(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
             NaN,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));

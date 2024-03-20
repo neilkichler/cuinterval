@@ -4,6 +4,7 @@
 #include "../tests.h"
 #include "../tests_common.h"
 #include "../tests_ops.h"
+#include "../tests_utils.h"
 
 #include <omp.h>
 
@@ -26,7 +27,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
     char *d_buffer = buffer.device;
-    char *h_buffer = buffer.host;
 
     I *d_xs_  = (I *) d_buffer;
     I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
@@ -34,6 +34,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0x123456789p-16,0x123456799p-16},
@@ -50,7 +51,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,0x123456799p-16},
@@ -67,7 +68,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+infinity},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -80,6 +80,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -92,7 +93,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.25,0.625},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0x10c152382d7365p-52,0x860a91c16b9b3p-50},
@@ -105,7 +106,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x1ca94936b98a21p-53,0x151700e0c14b25p-52},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -118,6 +118,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 5;
         I *h_xs = new (h_buffer) I[n]{
             {+1.0,+infinity},
@@ -127,7 +128,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {2.0,1000.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,+infinity},
@@ -137,7 +138,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x544909c66010dp-50,0x799d4ba2a13b5p-48},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -150,6 +150,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {+4.0,+8.0},
@@ -173,7 +174,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-4.0,-2.0},
             {-9.0,-8.0},
@@ -196,7 +197,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,+6.0},
@@ -220,7 +221,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -235,6 +235,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 32;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1fffffffffffffp-52,-0x1p-550},
@@ -271,7 +272,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-4097.5,-4097.5},
             {4097.5,4097.5},
@@ -307,7 +308,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0e-17,0.0e-17},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x10038p-4,-0x10018p-4},
@@ -344,7 +345,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -359,6 +359,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -371,7 +372,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.25,0.625},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x860a91c16b9b3p-52,0x860a91c16b9b3p-52},
@@ -384,7 +385,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x102be9ce0b87cdp-54,0x159aad71ced00fp-53},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -397,6 +397,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -420,7 +421,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0xf661657628b05p-53,0xf661657628b05p-53},
@@ -444,7 +445,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -457,6 +457,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -480,7 +481,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1dac670561bb5p-50,0x1dac670561bb5p-50},
@@ -504,7 +505,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-0x1921fb54442d19p-52,0x1921fb54442d19p-52},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -517,6 +517,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 18;
         I *h_xs = new (h_buffer) I[n]{
             {-17.0,-5.0},
@@ -539,7 +540,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-4002.0,-1.0},
             {1.0,4002.0},
@@ -561,7 +562,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x191f6c4c09a81bp-51,-0x1a12a5465464cfp-52},
@@ -584,7 +585,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-0x1921fb54442d19p-52,0x1921fb54442d19p-52},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -599,6 +599,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 9;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -612,7 +613,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.25,0.625},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1193ea7aad030bp-53,0x1193ea7aad030bp-53},
@@ -626,7 +627,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x1058aefa811451p-54,0x2eec3bb76c2b3p-50},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -639,6 +639,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
@@ -659,7 +660,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(B));
         B *h_res = new (h_buffer) B[n]{};
         std::array<B, n> h_ref {{
             true,
@@ -680,7 +681,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             false,
         }};
 
-        h_buffer += n * sizeof(B);
         B *d_res = (B *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -693,6 +693,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1856e4be527197p-354,0xd8p0},
@@ -707,7 +708,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x2e5e58c0083b7bp-154,6.0},
@@ -722,7 +723,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -735,6 +735,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 46;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -785,7 +786,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0x1c1528065b7d4fp-53,1.0},
@@ -836,7 +837,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-1.0,1.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -849,6 +849,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -867,7 +868,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {1.0,0x10200aac16db6fp-52},
@@ -886,7 +887,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {1.0,+infinity},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -899,6 +899,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {+0x170ef54646d497p-105,+0x170ef54646d497p-105},
@@ -933,7 +934,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {33.125,33.125},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             entire,
             {0.0,7.0},
@@ -967,7 +968,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {8.28125,530.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             entire,
@@ -1002,7 +1003,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x1p-4,4.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1017,6 +1017,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-34.0,-17.0},
@@ -1031,7 +1032,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             17,
@@ -1046,7 +1047,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             +infinity,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -1059,6 +1059,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 62;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1.02f0415f9f596p+0,-0x1.489c07caba163p-4},
@@ -1125,7 +1126,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-0x2.e8e36e560704ap+0,-0x7.62ce64fbacd2cp-8},
             {-0x11ep0,-0x7.62ce64fbacd2cp-8},
@@ -1191,7 +1192,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0x7.0ef61537b1704p-8,0x2.30ee5eef9c36cp+4},
@@ -1258,7 +1259,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1273,6 +1273,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 25;
         I *h_xs = new (h_buffer) I[n]{
             {-0x10000000000001p-20,-0x10000000000001p-53},
@@ -1302,7 +1303,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-1.0,-1.0},
             {0x10000000000001p-53,0x10000000000001p-53},
@@ -1331,7 +1332,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0e-17,0.0e-17},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0x10000000000001p-53,0x10000000000001p-20},
@@ -1361,7 +1362,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             empty,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1376,6 +1376,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 32;
         I *h_xs = new (h_buffer) I[n]{
             {-0x114b37f4b51f71p-107,-0x114b37f4b51f71p-107},
@@ -1412,7 +1413,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {4097.5,4097.5},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,8.0},
             {0.0,+infinity},
@@ -1448,7 +1449,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x1p-550,0x1fffffffffffffp-52},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x10000000000001p-49,-0x114b37f4b51f71p-107},
@@ -1485,7 +1486,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0xfff8p-4,0x10018p-4},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1500,6 +1500,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -1516,7 +1517,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0x1c3d6a24ed8221p-53,1.0},
@@ -1533,7 +1534,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+infinity},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -1546,6 +1546,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -1563,7 +1564,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0x1d5818dcfba487p-53,1.0},
@@ -1581,7 +1582,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+infinity},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -1594,6 +1594,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -1610,7 +1611,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1e14aed893eef4p-56,0.0},
@@ -1627,7 +1628,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-1.0,+infinity},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -1640,6 +1640,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},
@@ -1658,7 +1659,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,+8.0},
             {-1.0,+8.0},
@@ -1676,7 +1677,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,+8.0},
@@ -1695,7 +1696,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1710,6 +1710,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0xae83b95effd69p-52,-0x63e3cb4ed72a3p-53},
@@ -1725,7 +1726,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1480a9b5772a23p-50,-0x177887d65484c9p-52},
@@ -1741,7 +1742,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -1754,6 +1754,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
@@ -1774,7 +1775,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,0.0},
             {0.0,0.0},
@@ -1794,7 +1795,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(B));
         B *h_res = new (h_buffer) B[n]{};
         std::array<B, n> h_ref {{
             false,
@@ -1815,7 +1816,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             false,
         }};
 
-        h_buffer += n * sizeof(B);
         B *d_res = (B *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1830,6 +1830,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},
@@ -1850,7 +1851,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
             {+8.0,+0x7fffffffffffbp+51},
@@ -1870,7 +1871,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(B));
         B *h_res = new (h_buffer) B[n]{};
         std::array<B, n> h_ref {{
             true,
@@ -1891,7 +1892,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             false,
         }};
 
-        h_buffer += n * sizeof(B);
         B *d_res = (B *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1906,6 +1906,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1921fb54442d18p-51,0x1921fb54442d19p-51},
@@ -1926,7 +1927,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,0.0},
             {0.0,0.0},
@@ -1946,7 +1947,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(B));
         B *h_res = new (h_buffer) B[n]{};
         std::array<B, n> h_ref {{
             false,
@@ -1967,7 +1968,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             false,
         }};
 
-        h_buffer += n * sizeof(B);
         B *d_res = (B *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -1982,6 +1982,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},
@@ -2002,7 +2003,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
             {+8.0,+0x7fffffffffffbp+51},
@@ -2022,7 +2023,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(B));
         B *h_res = new (h_buffer) B[n]{};
         std::array<B, n> h_ref {{
             true,
@@ -2043,7 +2044,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             false,
         }};
 
-        h_buffer += n * sizeof(B);
         B *d_res = (B *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -2058,6 +2058,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
@@ -2078,7 +2079,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,0.0},
             {0.0,0.0},
@@ -2098,7 +2099,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(B));
         B *h_res = new (h_buffer) B[n]{};
         std::array<B, n> h_ref {{
             false,
@@ -2119,7 +2120,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             false,
         }};
 
-        h_buffer += n * sizeof(B);
         B *d_res = (B *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -2134,6 +2134,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 16;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,0.0},
@@ -2154,7 +2155,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {+0x1fffffffffffffp-53,2.0},
             {+8.0,+0x7fffffffffffbp+51},
@@ -2174,7 +2175,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(B));
         B *h_res = new (h_buffer) B[n]{};
         std::array<B, n> h_ref {{
             true,
@@ -2195,7 +2196,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             false,
         }};
 
-        h_buffer += n * sizeof(B);
         B *d_res = (B *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -2210,6 +2210,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {+1.0,+1.0},
@@ -2221,7 +2222,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0xb616ab8b683b5p-52,+1.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,0.0},
@@ -2233,7 +2234,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-0x2b9b8b1fb2fb9p-51,0.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2246,6 +2246,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {-0xb616ab8b683b5p-52,0.0},
@@ -2257,7 +2258,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x4c322657ec89bp-16,0x4d68ba5f26bf1p-11},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x13e080325bab7bp-52,0.0},
@@ -2269,7 +2270,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x17bdce451a337fp-48,0x1b3913fc99f6fcp-48},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2282,6 +2282,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 6;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,+1.0},
@@ -2292,7 +2293,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {1.0,1.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-infinity,0.0},
@@ -2303,7 +2304,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2316,6 +2316,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,+infinity},
@@ -2327,7 +2328,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {100.0,0x8ac74d932fae3p-21},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             entire,
@@ -2339,7 +2340,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {2.0,0x1221cc590b9946p-49},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2352,6 +2352,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-34.0,-17.0},
@@ -2366,7 +2367,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             34,
@@ -2381,7 +2382,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             +infinity,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2394,6 +2394,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1921fb54442d19p-51,-0x1921fb54442d18p-51},
@@ -2409,7 +2410,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0x1921fb54442d18p-51,0x1921fb54442d19p-51},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             -0x1921fb54442d18p-51,
@@ -2425,7 +2426,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             0x1921fb54442d18p-51,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2438,6 +2438,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 10;
         I *h_xs = new (h_buffer) I[n]{
             {-34.0,-17.0},
@@ -2452,7 +2453,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(T));
         T *h_res = new (h_buffer) T[n]{};
         std::array<T, n> h_ref {{
             17,
@@ -2467,7 +2468,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             +0,
         }};
 
-        h_buffer += n * sizeof(T);
         T *d_res = (T *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2480,6 +2480,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 50;
         I *h_xs = new (h_buffer) I[n]{
             {-0x01p0,0x1.90aa487ecf153p+0},
@@ -2534,7 +2535,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0x01p-53,0x1.442e2695ac81ap+0},
             {-0x02p0,0x03p0},
@@ -2588,7 +2589,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1.442e2695ac81ap+0,0x1.fb5fbebd0cbc6p+0},
@@ -2643,7 +2644,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -2658,6 +2658,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 45;
         I *h_xs = new (h_buffer) I[n]{
             {-0x10000000000001p0,-0x1aaaaaaaaaaaaap-123},
@@ -2707,7 +2708,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {1.5,1.5},
             {1.5,1.5},
@@ -2756,7 +2757,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0e-17,0.0e-17},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x18000000000002p0,-0x27fffffffffffep-123},
@@ -2806,7 +2807,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -2821,6 +2821,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 8;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},
@@ -2833,7 +2834,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-8.0,+infinity},
@@ -2846,7 +2847,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -2859,6 +2859,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 3;
         I *h_xs = new (h_buffer) I[n]{
             {+5.0,+5.0},
@@ -2866,14 +2867,14 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,0.0},
             {-8.0,-8.0},
             {0.0,0.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,+5.0},
@@ -2881,7 +2882,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -2896,6 +2896,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 128;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -3028,7 +3029,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1eaee8744b05f0p-54,0x1eaee8744b05f0p-54},
@@ -3161,7 +3162,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-1.0,1.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -3174,6 +3174,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -3191,7 +3192,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x100aaccd00d2f1p-55,0.0},
@@ -3209,7 +3210,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -3222,6 +3222,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1.64722ad2480c9p+0,0x1p0},
@@ -3237,7 +3238,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,0x1.f04dba0302d4dp+0},
@@ -3253,7 +3254,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+infinity},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -3266,6 +3266,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 7;
         I *h_xs = new (h_buffer) I[n]{
             {0.0,+9.0},
@@ -3277,7 +3278,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0xe.49ae7969e41bp-4,0xaaa1p0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,+3.0},
@@ -3289,7 +3290,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0xf.1ea42821b27a8p-4,0xd1p0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -3302,6 +3302,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 19;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1000100010001p+8,0x1p+60},
@@ -3325,7 +3326,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-3e300,0x1000100010001p0},
             {-0x789abcdp0,0x10000000000000p-93},
@@ -3348,7 +3349,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x10101010101011p+4,0x8f596b3002c1bp+947},
@@ -3372,7 +3373,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -3387,6 +3387,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 32;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1fffffffffffffp-52,-0x1p-550},
@@ -3423,7 +3424,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-4097.5,-4097.5},
             {4097.5,4097.5},
@@ -3459,7 +3460,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0e-17,0.0e-17},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0xfff8p-4,0x10018p-4},
@@ -3496,7 +3497,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -3511,6 +3511,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 128;
         I *h_xs = new (h_buffer) I[n]{
             {-0.5,0.5},
@@ -3643,7 +3644,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x117b4f5bf3474bp-53,0x117b4f5bf3474bp-53},
@@ -3776,7 +3777,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -3789,6 +3789,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-0.125,0.0},
@@ -3807,7 +3808,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1fd5992bc4b835p-56,0.0},
@@ -3826,7 +3827,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-1.0,+1.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -3839,6 +3839,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 13;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},
@@ -3856,7 +3857,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,+8.0},
             {-1.0,+8.0},
@@ -3873,7 +3874,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-infinity,+8.0},
@@ -3891,7 +3892,6 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;

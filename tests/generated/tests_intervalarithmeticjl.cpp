@@ -4,6 +4,7 @@
 #include "../tests.h"
 #include "../tests_common.h"
 #include "../tests_ops.h"
+#include "../tests_utils.h"
 
 #include <omp.h>
 
@@ -26,7 +27,6 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
     char *d_buffer = buffer.device;
-    char *h_buffer = buffer.host;
 
     I *d_xs_  = (I *) d_buffer;
     I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
@@ -34,6 +34,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.25,0.25},
@@ -50,7 +51,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1.6a09e667f3bcdp-1,0x1.6a09e667f3bcdp-1},
@@ -67,7 +68,6 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             {-1.0,1.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -80,6 +80,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 12;
         I *h_xs = new (h_buffer) I[n]{
             {-0.25,0.25},
@@ -96,7 +97,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0x1.6a09e667f3bcdp-1,1.0},
@@ -113,7 +114,6 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             {-1.0,1.0},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -126,6 +126,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 4;
         I *h_xs = new (h_buffer) I[n]{
             {0.5,0.5},
@@ -134,7 +135,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             {6.638314112824137,8.38263151220128},
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.54630248984379048,0.5463024898437906},
@@ -143,7 +144,6 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_xs = (I *)d_xs_;
         CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
@@ -156,6 +156,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 11;
         I *h_xs = new (h_buffer) I[n]{
             {0,27},
@@ -171,7 +172,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             empty,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(N));
         N *h_ys = new (h_buffer) N[n]{
             3,
             4,
@@ -186,7 +187,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             4,
         };
 
-        h_buffer += n * sizeof(N);
+        h_buffer += align_to(n * sizeof(N), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0,3},
@@ -202,7 +203,6 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
             empty,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         N *d_ys = (N *)d_ys_;
         I *d_xs = (I *)d_xs_;

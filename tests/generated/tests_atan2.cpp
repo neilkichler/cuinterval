@@ -4,6 +4,7 @@
 #include "../tests.h"
 #include "../tests_common.h"
 #include "../tests_ops.h"
+#include "../tests_utils.h"
 
 #include <omp.h>
 
@@ -26,7 +27,6 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
     char *d_buffer = buffer.device;
-    char *h_buffer = buffer.host;
 
     I *d_xs_  = (I *) d_buffer;
     I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
@@ -34,6 +34,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 37;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1p-1022,-0x1p-1022},
@@ -75,7 +76,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-0x1p-1022,0x1p-1022},
             {-0x1p-1022,-0x1p-1022},
@@ -116,7 +117,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0x1.2D97C7F3321D3p1,-0x1.921FB54442D18p-1},
@@ -158,7 +159,6 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-0x1.921FB54442D19p1,+0x1.921FB54442D19p1},
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;

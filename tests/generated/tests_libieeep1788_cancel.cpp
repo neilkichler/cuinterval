@@ -4,6 +4,7 @@
 #include "../tests.h"
 #include "../tests_common.h"
 #include "../tests_ops.h"
+#include "../tests_utils.h"
 
 #include <omp.h>
 
@@ -26,7 +27,6 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
 
     char *d_buffer = buffer.device;
-    char *h_buffer = buffer.host;
 
     I *d_xs_  = (I *) d_buffer;
     I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
@@ -34,6 +34,7 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 58;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0},
@@ -96,7 +97,7 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {-0X1.999999999999AP-4,0.01},
             {-0x1.FFFFFFFFFFFFFp1023,0x1.FFFFFFFFFFFFFp1023},
@@ -158,7 +159,7 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {-0X1.70A3D70A3D70BP-4,0X1.E666666666657P+0},
@@ -221,7 +222,6 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
@@ -236,6 +236,7 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
     };
 
     {
+        char *h_buffer = buffer.host;
         constexpr int n = 63;
         I *h_xs = new (h_buffer) I[n]{
             {-0.0,5.1},
@@ -303,7 +304,7 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {0.0,5.0},
             {-0.01,0X1.999999999999AP-4},
@@ -370,7 +371,7 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
             entire,
         };
 
-        h_buffer += n * sizeof(I);
+        h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {0.0,0X1.999999999998P-4},
@@ -438,7 +439,6 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
             entire,
         }};
 
-        h_buffer += n * sizeof(I);
         I *d_res = (I *)d_res_;
         I *d_ys = (I *)d_ys_;
         I *d_xs = (I *)d_xs_;
