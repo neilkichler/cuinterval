@@ -5,6 +5,7 @@ FetchContent_Declare(
   ut
   GIT_REPOSITORY https://github.com/boost-ext/ut.git
   GIT_TAG v2.0.1
+  EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(ut)
 
@@ -38,14 +39,13 @@ target_compile_features(tests PRIVATE cxx_std_20)
 target_compile_features(tests PRIVATE cuda_std_20)
 
 # Specify the CUDA architecture to compile to
-# set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES "61;70;86")
 set_target_properties(tests PROPERTIES CUDA_ARCHITECTURES native)
 
 # Enable separate compilation
 set_target_properties(tests PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
 # Link with main library and testing library
-target_link_libraries(tests PRIVATE cuinterval example_interval_procedures Boost::ut)
+target_link_libraries(tests PRIVATE cuinterval example_interval_procedures ut)
 
 # Find and link with CUDA headers
 find_package(CUDAToolkit REQUIRED)
@@ -59,7 +59,6 @@ if(OpenMP_CXX_FOUND)
 endif()
 
 target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>")
-# target_link_options(tests PRIVATE "-fuse-ld=lld")
 
 # Register tests for use in ctest
 add_test(NAME testcuinterval COMMAND tests)

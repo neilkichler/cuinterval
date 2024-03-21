@@ -25,6 +25,14 @@ source_group(
     PREFIX "Header Files"
     FILES ${headers})
 
+include(FetchContent)
+FetchContent_Declare(
+  PackageProject
+  GIT_REPOSITORY https://github.com/TheLartians/PackageProject.cmake.git
+  GIT_TAG v1.11.2
+)
+FetchContent_MakeAvailable(PackageProject)
+
 packageProject(
     NAME ${PROJECT_NAME}
     VERSION ${PROJECT_VERSION}
