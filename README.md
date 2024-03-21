@@ -179,8 +179,13 @@ The documentation is available [here](https://neilkichler.github.io/cuinterval).
 ### Build Requirements
 We require C++17, CMake v3.21+, Ninja, and recent C++ and CUDA compilers.
 
+#### Ubuntu
 ```bash
-apt install cmake ninja-build gcc
+apt install cmake gcc ninja-build
+```
+#### Cluster
+```bash
+module load CMake CUDA GCC Ninja
 ```
 
 ### Build and run tests
