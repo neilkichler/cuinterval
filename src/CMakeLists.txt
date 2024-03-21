@@ -9,7 +9,10 @@ set(headers
 
 add_library(cuinterval "main.cu" ${headers})
 
-target_include_directories(cuinterval PUBLIC "${INCLUDE_PATH}")
+target_include_directories(
+    cuinterval PUBLIC $<BUILD_INTERFACE:${INCLUDE_PATH}>
+                      $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
+)
 
 # C++17 is required for all users of the library
 target_compile_features(cuinterval PUBLIC cxx_std_17)
@@ -22,3 +25,11 @@ source_group(
     PREFIX "Header Files"
     FILES ${headers})
 
+packageProject(
+    NAME ${PROJECT_NAME}
+    VERSION ${PROJECT_VERSION}
+    BINARY_DIR ${PROJECT_BINARY_DIR}
+    INCLUDE_DIR ${INCLUDE_PATH}
+    INCLUDE_DESTINATION include/${PROJECT_NAME}-${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
