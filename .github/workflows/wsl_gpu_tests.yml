@@ -24,13 +24,13 @@ jobs:
       run: nvcc --version
 
     - name: setup cmake
-      run: cmake --preset linux-gcc-debug-sanitizer-address
+      run: cmake --preset linux-gcc-debug-sanitizer-ub
 
     - name: build
       run: cmake --build --preset debug
 
     - name: run ctest
-      run: ctest --preset debug-sanitizer-address
+      run: ctest --preset debug
         
     - name: run checks
       run: |
