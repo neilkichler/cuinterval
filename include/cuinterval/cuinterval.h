@@ -1,8 +1,8 @@
-#ifndef CUINTERVAL_CUH
-#define CUINTERVAL_CUH
+#ifndef CUINTERVAL_H
+#define CUINTERVAL_H
 
 #include <cuinterval/arithmetic/basic.cuh>
 #include <cuinterval/arithmetic/interval.h>
 #include <cuinterval/arithmetic/intrinsic.cuh>
 
-#endif // CUINTERVAL_CUH
+#endif // CUINTERVAL_H
