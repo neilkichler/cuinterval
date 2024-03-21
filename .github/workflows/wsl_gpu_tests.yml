@@ -24,13 +24,13 @@ jobs:
       run: nvcc --version
 
     - name: setup cmake
-      run: CUDACXX=/usr/local/cuda-12.2/bin/nvcc cmake -S . -B build -GNinja
+      run: cmake --preset linux-gcc-debug-sanitizer-address
 
     - name: build
       run: cmake --build --preset debug
 
     - name: run ctest
-      run: ctest --preset debug
+      run: ctest --preset debug-sanitizer-address
         
     - name: run checks
       run: |
