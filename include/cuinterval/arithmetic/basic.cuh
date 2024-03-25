@@ -382,7 +382,7 @@ inline __device__ interval<T> operator/(interval<T> a, T b)
         return empty<T>();
     }
 
-    if (zero(a)) {
+    if (just_zero(a)) {
         return { zero, zero };
     }
 
