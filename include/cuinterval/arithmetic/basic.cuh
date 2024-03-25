@@ -346,6 +346,7 @@ inline __device__ interval<T> operator*(T a, interval<T> b)
     }
 
     constexpr auto zero = static_cast<T>(0);
+    // TODO: maybe use ternary instead?
     if (a < zero) {
         return { intrinsic::mul_down(a, b.ub), intrinsic::mul_up(a, b.lb) };
     } else if (a == zero) {
@@ -361,9 +362,33 @@ inline __device__ interval<T> operator*(interval<T> a, T b)
     return b * a;
 }
 
-inline __device__ interval<double> operator/(interval<double> a, interval<double> b)
+template<typename T>
+inline __device__ interval<T> operator/(interval<T> a, interval<T> b)
 {
     return div(a, b);
+}
+
+template<typename T>
+inline __device__ interval<T> operator/(T a, interval<T> b)
+{
+    return div({ a, a }, b);
+}
+
+template<typename T>
+inline __device__ interval<T> operator/(interval<T> a, T b)
+{
+    constexpr auto zero = static_cast<T>(0);
+    if (empty(a) || isnan(b) || b == zero) {
+        return empty<T>();
+    }
+
+    if (zero(a)) {
+        return { zero, zero };
+    }
+
+    bool neg = b < zero;
+    return { intrinsic::div_down(neg ? a.ub : a.lb, b),
+             intrinsic::div_up(neg ? a.lb : a.ub, b) };
 }
 
 template<typename T>
