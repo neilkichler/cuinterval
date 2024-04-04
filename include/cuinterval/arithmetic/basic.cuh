@@ -144,15 +144,16 @@ inline __device__ interval<T> recip(interval<T> a)
         return a;
     }
 
-    if (contains(a, T {})) {
-        if (a.lb < 0 && 0 == a.ub) {
+    constexpr auto zero = static_cast<T>(0);
+
+    if (contains(a, zero)) {
+        if (a.lb < zero && zero == a.ub) {
             return { intrinsic::neg_inf<T>(), intrinsic::rcp_up(a.lb) };
-            // return { intrinsic::neg_inf<T>(), __drcp_ru(a.lb) };
-        } else if (a.lb == 0 && 0 < a.ub) {
+        } else if (a.lb == zero && zero < a.ub) {
             return { intrinsic::rcp_down(a.ub), intrinsic::pos_inf<T>() };
-        } else if (a.lb < 0 && 0 < a.ub) {
+        } else if (a.lb < zero && zero < a.ub) {
             return ::entire<T>();
-        } else if (a.lb == 0 && 0 == a.ub) {
+        } else if (a.lb == zero && zero == a.ub) {
             return ::empty<T>();
         }
     }
