@@ -308,6 +308,22 @@ inline __device__ interval<T> operator+(interval<T> a, interval<T> b)
 }
 
 template<typename T>
+inline __device__ interval<T> operator+(T a, interval<T> b)
+{
+    if (isnan(a) || empty(b)) {
+        return empty<T>();
+    }
+
+    return { intrinsic::add_down(a, b.lb), intrinsic::add_up(a, b.ub) };
+}
+
+template<typename T>
+inline __device__ interval<T> operator+(interval<T> a, T b)
+{
+    return b + a;
+}
+
+template<typename T>
 inline __device__ interval<T> operator-(interval<T> a, interval<T> b)
 {
     return sub(a, b);
