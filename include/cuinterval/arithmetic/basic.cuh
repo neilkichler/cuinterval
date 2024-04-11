@@ -1463,12 +1463,10 @@ inline __device__ void mince(interval<T> x, interval<T> *xs, std::size_t out_xs_
     } else {
         T lb = x.lb;
         T ub = x.ub;
-
         T step = (ub - lb) / static_cast<T>(out_xs_size);
 
         for (std::size_t i = 0; i < out_xs_size; i++) {
-            xs[i].lb = lb + i * step;
-            xs[i].ub = lb + (i + 1) * step;
+            xs[i] = { lb + i * step, lb + (i + 1) * step };
         }
     }
 }
