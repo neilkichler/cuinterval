@@ -24,13 +24,19 @@ jobs:
       run: nvcc --version
 
     - name: setup cmake
-      run: cmake --preset linux-gcc-debug-sanitizer-ub
+      run: cmake --preset linux-gcc-debug-sanitizer-ub-coverage
 
     - name: build
       run: cmake --build --preset debug
 
     - name: run ctest
       run: ctest --preset debug
+
+    - name: upload coverage reports to codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: neilkichler/cuinterval
         
     - name: run checks
       run: |

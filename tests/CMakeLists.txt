@@ -63,3 +63,8 @@ target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-
 # Register tests for use in ctest
 add_test(NAME testcuinterval COMMAND tests)
 
+option(ENABLE_TEST_COVERAGE "Enable test coverage" OFF)
+if(ENABLE_TEST_COVERAGE)
+    target_compile_options(tests PUBLIC -O0 -g -fprofile-arcs -ftest-coverage)
+    target_link_options(tests PUBLIC -fprofile-arcs -ftest-coverage)
+endif()

@@ -81,6 +81,13 @@
             "CMAKE_CXX_FLAGS": "-fsanitize=undefined"
         }
      },
+     {
+        "name": "coverage",
+        "hidden": true,
+        "cacheVariables": {
+            "ENABLE_TEST_COVERAGE": "ON"
+        }
+     },
     {
       "name": "debug",
       "inherits": ["common"],
@@ -118,6 +125,10 @@
      {
        "name": "linux-gcc-debug-sanitizer-ub",
        "inherits": ["linux-gcc-debug", "sanitizer-undefined"]
+     },
+     {
+       "name": "linux-gcc-debug-sanitizer-ub-coverage",
+       "inherits": ["linux-gcc-debug-sanitizer-ub", "coverage"]
      },
      {
        "name": "linux-gcc-debug-sanitizer-thread",
