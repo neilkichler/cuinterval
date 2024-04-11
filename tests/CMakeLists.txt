@@ -1,5 +1,7 @@
 include(FetchContent)
 
+set(BOOST_UT_DISABLE_MODULE ON)
+
 # Testing library
 FetchContent_Declare(
   ut
