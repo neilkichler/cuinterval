@@ -2,8 +2,8 @@
   "version": 6,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 21,
-    "patch": 0
+    "patch": 0,
+    "minor": 21
   },
   "configurePresets": [
     {
@@ -19,147 +19,206 @@
     },
     {
       "name": "common-windows",
-      "hidden": true,
-      "inherits": "common"
+      "inherits": "common",
+      "hidden": true
     },
     {
       "name": "gcc",
-      "hidden": true,
       "cacheVariables": {
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++"
-       }
-     },
-     {
+      },
+      "hidden": true
+    },
+    {
       "name": "clang",
-      "hidden": true,
       "cacheVariables": {
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
-       }
-     },
-     {
+      },
+      "hidden": true
+    },
+    {
       "name": "msvc",
       "hidden": true,
       "cacheVariables": {
         "CMAKE_C_COMPILER": "cl",
         "CMAKE_CXX_COMPILER": "cl"
-       }
-     },
-     {
-        "name": "sanitizer-address",
-        "hidden": true,
-        "cacheVariables": {
-            "CMAKE_CXX_FLAGS": "-fsanitize=address"
-        }
-     },
-     {
-        "name": "sanitizer-leak",
-        "hidden": true,
-        "cacheVariables": {
-            "CMAKE_CXX_FLAGS": "-fsanitize=leak"
-        }
-     },
-     {
-        "name": "sanitizer-memory",
-        "hidden": true,
-        "cacheVariables": {
-            "CMAKE_CXX_FLAGS": "-fsanitize=memory"
-        }
-     },
-     {
-        "name": "sanitizer-thread",
-        "hidden": true,
-        "cacheVariables": {
-            "CMAKE_CXX_FLAGS": "-fsanitize=thread"
-        }
-     },
-     {
-        "name": "sanitizer-undefined",
-        "hidden": true,
-        "cacheVariables": {
-            "CMAKE_CXX_FLAGS": "-fsanitize=undefined"
-        }
-     },
-     {
-        "name": "coverage",
-        "hidden": true,
-        "cacheVariables": {
-            "ENABLE_TEST_COVERAGE": "ON"
-        }
-     },
+      }
+    },
+    {
+      "name": "sanitizer-address",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=address"
+      }
+    },
+    {
+      "name": "sanitizer-leak",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=leak"
+      }
+    },
+    {
+      "name": "sanitizer-memory",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=memory"
+      }
+    },
+    {
+      "name": "sanitizer-thread",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=thread"
+      },
+      "hidden": true
+    },
+    {
+      "name": "sanitizer-undefined",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=undefined"
+      },
+      "hidden": true
+    },
+    {
+      "name": "coverage",
+      "cacheVariables": {
+        "ENABLE_TEST_COVERAGE": "ON"
+      },
+      "hidden": true
+    },
     {
       "name": "debug",
-      "inherits": ["common"],
+      "inherits": [
+        "common"
+      ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
       "name": "release",
-      "inherits": ["common"],
+      "inherits": [
+        "common"
+      ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
       }
     },
-     {
-       "name": "linux-gcc-debug",
-       "inherits": ["common-linux", "gcc", "debug"]
-     },
-     {
-       "name": "linux-gcc-release",
-       "inherits": ["common-linux", "gcc", "release"]
-     },
-     {
-       "name": "linux-clang-debug",
-       "inherits": ["common-linux", "clang", "debug"]
-     },
-     {
-       "name": "linux-clang-release",
-       "inherits": ["common-linux", "clang", "release"]
-     },
-     {
-       "name": "linux-gcc-debug-sanitizer-address",
-       "inherits": ["linux-gcc-debug", "sanitizer-address"]
-     },
-     {
-       "name": "linux-gcc-debug-sanitizer-ub",
-       "inherits": ["linux-gcc-debug", "sanitizer-undefined"]
-     },
-     {
-       "name": "linux-gcc-debug-sanitizer-ub-coverage",
-       "inherits": ["linux-gcc-debug-sanitizer-ub", "coverage"]
-     },
-     {
-       "name": "linux-gcc-debug-sanitizer-thread",
-       "inherits": ["linux-gcc-debug", "sanitizer-thread"]
-     },
-     {
-       "name": "linux-gcc-debug-sanitizer-address-ub",
-       "inherits": ["linux-gcc-debug-sanitizer-address", "sanitizer-undefined"]
-     },
-     {
-       "name": "linux-clang-debug-sanitizer-address",
-       "inherits": ["linux-clang-debug", "sanitizer-address"]
-     },
-     {
-       "name": "linux-clang-debug-sanitizer-ub",
-       "inherits": ["linux-clang-debug", "sanitizer-undefined"]
-     },
-     {
-       "name": "linux-clang-debug-sanitizer-thread",
-       "inherits": ["linux-clang-debug", "sanitizer-thread"]
-     },
-     {
-       "name": "linux-clang-debug-sanitizer-address-ub",
-       "inherits": ["linux-clang-debug-sanitizer-address", "sanitizer-undefined"]
-     }
+    {
+      "name": "linux-debug",
+      "hidden": true,
+      "inherits": [
+        "common-linux",
+        "debug"
+      ]
+    },
+    {
+      "name": "linux-release",
+      "hidden": true,
+      "inherits": [
+        "common-linux",
+        "release"
+      ]
+    },
+    {
+      "name": "linux-gcc-debug",
+      "inherits": [
+        "linux-debug",
+        "gcc"
+      ]
+    },
+    {
+      "name": "linux-gcc-release",
+      "inherits": [
+        "linux-release",
+        "gcc"
+      ]
+    },
+    {
+      "name": "linux-clang-debug",
+      "inherits": [
+        "linux-debug",
+        "clang"
+      ]
+    },
+    {
+      "name": "linux-clang-release",
+      "inherits": [
+        "linux-release",
+        "clang"
+      ]
+    },
+    {
+      "name": "linux-gcc-debug-sanitizer-address",
+      "inherits": [
+        "linux-gcc-debug",
+        "sanitizer-address"
+      ]
+    },
+    {
+      "name": "linux-gcc-debug-sanitizer-ub",
+      "inherits": [
+        "linux-gcc-debug",
+        "sanitizer-undefined"
+      ]
+    },
+    {
+      "name": "linux-gcc-debug-sanitizer-ub-coverage",
+      "inherits": [
+        "linux-gcc-debug-sanitizer-ub",
+        "coverage"
+      ]
+    },
+    {
+      "name": "linux-gcc-debug-sanitizer-thread",
+      "inherits": [
+        "linux-gcc-debug",
+        "sanitizer-thread"
+      ]
+    },
+    {
+      "name": "linux-gcc-debug-sanitizer-address-ub",
+      "inherits": [
+        "linux-gcc-debug-sanitizer-address",
+        "sanitizer-undefined"
+      ]
+    },
+    {
+      "name": "linux-clang-debug-sanitizer-address",
+      "inherits": [
+        "linux-clang-debug",
+        "sanitizer-address"
+      ]
+    },
+    {
+      "name": "linux-clang-debug-sanitizer-ub",
+      "inherits": [
+        "linux-clang-debug",
+        "sanitizer-undefined"
+      ]
+    },
+    {
+      "name": "linux-clang-debug-sanitizer-thread",
+      "inherits": [
+        "linux-clang-debug",
+        "sanitizer-thread"
+      ]
+    },
+    {
+      "name": "linux-clang-debug-sanitizer-address-ub",
+      "inherits": [
+        "linux-clang-debug-sanitizer-address",
+        "sanitizer-undefined"
+      ]
+    }
   ],
   "buildPresets": [
     {
       "name": "debug",
-      "displayName": "Build in debug mode",
-      "configurePreset": "debug"
+      "configurePreset": "debug",
+      "displayName": "Build in debug mode"
     },
     {
       "name": "release",
@@ -171,38 +230,65 @@
     {
       "name": "common",
       "hidden": true,
-      "output": {
-        "outputOnFailure": true
-      },
       "execution": {
         "stopOnFailure": true
+      },
+      "output": {
+        "outputOnFailure": true
       }
     },
     {
       "name": "sanitizer-address",
-      "hidden": true,
       "environment": {
-        "ASAN_OPTIONS": "protect_shadow_gap=0"     
-      }
+        "ASAN_OPTIONS": "protect_shadow_gap=0"
+      },
+      "hidden": true
     },
     {
       "name": "debug",
       "configurePreset": "debug",
-      "inherits": ["common"]
+      "inherits": [
+        "common"
+      ]
     },
     {
       "name": "debug-sanitizer-address",
-      "inherits": ["debug", "sanitizer-address"]
+      "inherits": [
+        "debug",
+        "sanitizer-address"
+      ]
     }
   ],
   "workflowPresets": [
     {
-      "description": "Developer workflow without installation",
       "name": "dev",
+      "description": "Developer workflow without installation",
       "steps": [
         {
           "type": "configure",
-          "name": "linux-gcc-debug-sanitizer-address"
+          "name": "debug"
+        },
+        {
+          "type": "build",
+          "name": "debug"
+        },
+        {
+          "type": "test",
+          "name": "debug"
+        }
+      ]
+    },
+    {
+      "name": "release",
+      "description": "Release build without installation",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "release"
+        },
+        {
+          "type": "build",
+          "name": "release"
         }
       ]
     }
