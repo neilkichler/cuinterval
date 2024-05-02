@@ -165,7 +165,9 @@ The error for a paricular operation is given below.
 ```bash
 git clone https://github.com/neilkichler/cuinterval.git
 cd cuinterval
-cmake --workflow --preset install
+cmake --preset release
+cmake --build build
+cmake --install build
 ```
 
 ## Example
