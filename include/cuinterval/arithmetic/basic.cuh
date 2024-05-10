@@ -470,6 +470,18 @@ inline __device__ bool equal(interval<T> a, interval<T> b)
 }
 
 template<typename T>
+inline __device__ interval<T> operator==(interval<T> a, interval<T> b)
+{
+    return equal(a, b);
+}
+
+template<typename T>
+inline __device__ interval<T> operator!=(interval<T> a, interval<T> b)
+{
+    return !equal(a, b);
+}
+
+template<typename T>
 inline __device__ bool strict_less_or_both_inf(T x, T y)
 {
     return (x < y) || ((isinf(x) || isinf(y)) && (x == y));
