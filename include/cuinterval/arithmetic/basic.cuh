@@ -7,17 +7,9 @@
 #include <cassert>
 #include <numbers>
 
-// IEEE Std 1788.1-2017, Table 4.1
-
 //
 // Constant intervals
 //
-
-template<typename T>
-inline __device__ interval<T> pos_inf()
-{
-    return { intrinsic::pos_inf<T>(), intrinsic::pos_inf<T>() };
-}
 
 template<typename T>
 constexpr inline __device__ interval<T> empty()
