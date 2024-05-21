@@ -175,12 +175,12 @@ cmake --install build
 ### CMake Project
 
 
-#### CPM
+#### [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake)
 ```cmake
 CPMAddPackage("gh:neilkichler/cuinterval@0.0.1")
 ```
 
-#### FetchContent
+#### [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html)
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
