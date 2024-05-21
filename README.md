@@ -162,12 +162,38 @@ The error for a paricular operation is given below.
 
 ## Installation
 > Please make sure that you have installed everything mentioned in the section [Build Requirements](#build-requirements).
+
+### System-wide
 ```bash
 git clone https://github.com/neilkichler/cuinterval.git
 cd cuinterval
 cmake --preset release
 cmake --build build
 cmake --install build
+```
+
+### CMake Project
+
+
+#### CPM
+```cmake
+CPMAddPackage("gh:neilkichler/cuinterval@0.0.1")
+```
+
+#### FetchContent
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+  cuinterval
+  GIT_REPOSITORY git@github.com:neilkichler/cuinterval.git
+  GIT_TAG main
+)
+FetchContent_MakeAvailable(cuinterval)
+```
+
+In either case, you can link to the library using:
+```cmake
+target_link_libraries(${PROJECT_NAME} PUBLIC cuinterval)
 ```
 
 ## Example
