@@ -13,36 +13,36 @@ The error for a paricular operation is given below.
 
 | Operation          | Function Description                        | Error [ulps] |
 |--------------------|---------------------------------------------|--------------|
-| pos                | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 0            |
-| neg                | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 0            |
-| add                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
-| sub                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
-| mul                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
-| div                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
-| recip              | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 0            |
-| sqr                | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 0            |
-| sqrt               | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 0            |
-| fma                | $\mathbb{IR}^3 \rightarrow \mathbb{IR}$ | 0            |
+| pos                | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 0            |
+| neg                | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 0            |
+| add                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
+| sub                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
+| mul                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
+| div                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
+| recip              | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 0            |
+| sqr                | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 0            |
+| sqrt               | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 0            |
+| fma                | $\mathbb{IR}^3 \rightarrow \mathbb{IR}$     | 0            |
 
 </details>
 
 <details>
 <summary>Power functions</summary>
 
-| Operation | Function Description                        | Error [ulps] |
-|-----------|---------------------------------------------|--------------|
-| pown      | $\mathbb{IR} \times \mathbb{N} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$ | 1 |
-| pow       | $\mathbb{IR}^2 \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$ | 1 |
-| rootn     | $\mathbb{IR}_{\ge \mathbf{0}} \times \mathbb{N} \rightarrow \mathbb{IR}$ | 2 |
-| cbrt      | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$     | 1            |
-| exp       | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 3            |
-| exp2      | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 3            |
-| exp10     | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 3            |
-| expm1     | $\mathbb{IR} \rightarrow \mathbb{IR}$     | 3            |
-| log       | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$     | 3            |
-| log2      | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$     | 3            |
-| log10     | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$ | 3 |
-| log1p     | $\mathbb{IR}_{\ge \mathbf{-1}} \rightarrow \mathbb{IR}$ | 3 |
+| Operation | Function Description                                                     | Error [ulps] |
+|-----------|--------------------------------------------------------------------------|--------------|
+| pown      | $\mathbb{IR} \times \mathbb{N} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$ | 1            |
+| pow       | $\mathbb{IR}^2 \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$                 | 1            |
+| rootn     | $\mathbb{IR}_{\ge \mathbf{0}} \times \mathbb{N} \rightarrow \mathbb{IR}$ | 2            |
+| cbrt      | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$                   | 1            |
+| exp       | $\mathbb{IR} \rightarrow \mathbb{IR}$                                    | 3            |
+| exp2      | $\mathbb{IR} \rightarrow \mathbb{IR}$                                    | 3            |
+| exp10     | $\mathbb{IR} \rightarrow \mathbb{IR}$                                    | 3            |
+| expm1     | $\mathbb{IR} \rightarrow \mathbb{IR}$                                    | 3            |
+| log       | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$                   | 3            |
+| log2      | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$                   | 3            |
+| log10     | $\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}$                   | 3            |
+| log1p     | $\mathbb{IR}_{\ge \mathbf{-1}} \rightarrow \mathbb{IR}$                  | 3            |
 
 </details>
 
@@ -51,15 +51,15 @@ The error for a paricular operation is given below.
   
 | Operation | Function Description                        | Error [ulps] |
 |-----------|---------------------------------------------|--------------|
-| sin       | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 2 |
-| cos       | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 2 |
-| tan       | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| asin      | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| acos      | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| atan      | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| atan2     | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 3 |
-| sinpi     | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| cospi     | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
+| sin       | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 2            |
+| cos       | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 2            |
+| tan       | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
+| asin      | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
+| acos      | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
+| atan      | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
+| atan2     | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 3            |
+| sinpi     | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
+| cospi     | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
 
 </details>
 
@@ -68,12 +68,12 @@ The error for a paricular operation is given below.
   
 | Operation | Function Description                        | Error [ulps] |
 |-----------|---------------------------------------------|--------------|
-| sinh      | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| cosh      | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 2 |
-| tanh      | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 2 |
-| asinh     | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| acosh     | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
-| atanh     | $\mathbb{IR} \rightarrow \mathbb{IR}$ | 3 |
+| sinh      | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
+| cosh      | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 2            |
+| tanh      | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 2            |
+| asinh     | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
+| acosh     | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
+| atanh     | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
 
 </details>
 
@@ -83,23 +83,23 @@ The error for a paricular operation is given below.
   
 | Operation          | Function Description                        | Error [ulps] |
 |--------------------|---------------------------------------------|--------------|
-| sign               | $\mathbb{IR} \rightarrow \\{-1, 0, 1\\}$      | 0            |
-| ceil               | $\mathbb{IR} \rightarrow \mathbb{Z}$     | 0            |
-| floor              | $\mathbb{IR} \rightarrow \mathbb{Z}$     | 0            |
-| trunc              | $\mathbb{IR} \rightarrow \mathbb{Z}$     | 0            |
-| roundTiesToEven    | $\mathbb{IR} \rightarrow \mathbb{Z}$     | 0            |
-| roundTiesToAway    | $\mathbb{IR} \rightarrow \mathbb{Z}$     | 0            |
+| sign               | $\mathbb{IR} \rightarrow \\{-1, 0, 1\\}$    | 0            |
+| ceil               | $\mathbb{IR} \rightarrow \mathbb{Z}$        | 0            |
+| floor              | $\mathbb{IR} \rightarrow \mathbb{Z}$        | 0            |
+| trunc              | $\mathbb{IR} \rightarrow \mathbb{Z}$        | 0            |
+| roundTiesToEven    | $\mathbb{IR} \rightarrow \mathbb{Z}$        | 0            |
+| roundTiesToAway    | $\mathbb{IR} \rightarrow \mathbb{Z}$        | 0            |
 
 </details>
 
 <details>
   <summary>Absmax functions</summary>
   
-| Operation          | Function Description                        | Error [ulps] |
-|--------------------|---------------------------------------------|--------------|
-| abs                | $\mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$     | 0            |
-| min                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
-| max                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
+| Operation          | Function Description                                   | Error [ulps] |
+|--------------------|--------------------------------------------------------|--------------|
+| abs                | $\mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$ | 0            |
+| min                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$                | 0            |
+| max                | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$                | 0            |
 
 </details>
 
@@ -121,21 +121,21 @@ The error for a paricular operation is given below.
 <details>
 <summary>Boolean functions</summary>
   
-| Operation          | Function Description                        | Error [ulps] |
-|--------------------|---------------------------------------------|--------------|
-| equal              | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
-| subset             | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
-| interior           | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
-| disjoint           | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
-| isEmpty            | $\mathbb{IR} \rightarrow \mathbb{B}$     | 0            |
-| isEntire           | $\mathbb{IR} \rightarrow \mathbb{B}$     | 0            |
-| less               | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
-| strictLess         | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
-| precedes           | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
-| strictPrecedes     | $\mathbb{IR}^2 \rightarrow \mathbb{B}$ | 0            |
+| Operation          | Function Description                                   | Error [ulps] |
+|--------------------|--------------------------------------------------------|--------------|
+| equal              | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
+| subset             | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
+| interior           | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
+| disjoint           | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
+| isEmpty            | $\mathbb{IR} \rightarrow \mathbb{B}$                   | 0            |
+| isEntire           | $\mathbb{IR} \rightarrow \mathbb{B}$                   | 0            |
+| less               | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
+| strictLess         | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
+| precedes           | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
+| strictPrecedes     | $\mathbb{IR}^2 \rightarrow \mathbb{B}$                 | 0            |
 | isMember           | $\mathbb{R} \times \mathbb{IR} \rightarrow \mathbb{B}$ | 0            |
-| isSingleton        | $\mathbb{IR} \rightarrow \mathbb{B}$     | 0            |
-| isCommonInterval   | $\mathbb{IR} \rightarrow \mathbb{B}$     | 0            |
+| isSingleton        | $\mathbb{IR} \rightarrow \mathbb{B}$                   | 0            |
+| isCommonInterval   | $\mathbb{IR} \rightarrow \mathbb{B}$                   | 0            |
 
 </details>
 
@@ -145,8 +145,8 @@ The error for a paricular operation is given below.
   
 | Operation          | Function Description                        | Error [ulps] |
 |--------------------|---------------------------------------------|--------------|
-| intersection       | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
-| convexHull         | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
+| intersection       | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
+| convexHull         | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
 </details>
 
 
@@ -155,8 +155,8 @@ The error for a paricular operation is given below.
   
 | Operation          | Function Description                        | Error [ulps] |
 |--------------------|---------------------------------------------|--------------|
-| cancelMinus        | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
-| cancelPlus         | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$ | 0            |
+| cancelMinus        | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
+| cancelPlus         | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 0            |
 
 </details>
 
