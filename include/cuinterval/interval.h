@@ -1,5 +1,5 @@
-#ifndef CUINTERVAL_ARITHMETIC_INTERVAL_H
-#define CUINTERVAL_ARITHMETIC_INTERVAL_H
+#ifndef CUINTERVAL_INTERVAL_H
+#define CUINTERVAL_INTERVAL_H
 
 template<typename T>
 struct interval
@@ -30,4 +30,4 @@ struct split
     auto operator<=>(const split &) const = default;
 };
 
-#endif // CUINTERVAL_ARITHMETIC_INTERVAL_H
+#endif // CUINTERVAL_INTERVAL_H

@@ -1,5 +1,5 @@
-#ifndef CUINTERVAL_ARITHMETIC_ROUNDED_CUH
-#define CUINTERVAL_ARITHMETIC_ROUNDED_CUH
+#ifndef CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
+#define CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
 
 namespace intrinsic
 {
@@ -106,4 +106,4 @@ namespace intrinsic
 // clang-format on
 } // namespace intrinsic
 
-#endif // CUINTERVAL_ARITHMETIC_ROUNDED_CUH
+#endif // CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
