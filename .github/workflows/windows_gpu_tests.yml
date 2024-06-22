@@ -25,14 +25,14 @@ jobs:
     - name: gpu info
       run: nvidia-smi
     
-    - name: directory info
-      run: ls
-    
     - name: nvidia compiler info
       run: nvcc --version
 
     - name: setup cmake
-      run: cmake -S . -B build -GNinja
-
+      run: cmake --preset debug
+      
     - name: build
-      run: cmake --build build
+      run: cmake --build --preset build
+      
+    - name: run ctest
+      run: ctest --preset debug
