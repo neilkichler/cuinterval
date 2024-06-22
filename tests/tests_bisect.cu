@@ -1,5 +1,5 @@
 
-#include <cuinterval/arithmetic/interval.h>
+#include <cuinterval/interval.h>
 #include <cuinterval/examples/bisection.cuh>
 
 #include <thrust/async/copy.h>

@@ -16,7 +16,7 @@
 #include <boost/ut.hpp>
 #endif
 
-#include <cuinterval/arithmetic/interval.h>
+#include <cuinterval/interval.h>
 
 #include <cmath>
 #include <ostream>

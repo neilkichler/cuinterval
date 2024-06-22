@@ -2,7 +2,7 @@
 #include <omp.h>
 #include <thrust/host_vector.h>
 
-#include <cuinterval/arithmetic/interval.h>
+#include <cuinterval/interval.h>
 
 #include "tests_bisect.h"
 #include "tests_ops.h"

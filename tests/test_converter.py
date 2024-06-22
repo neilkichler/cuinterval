@@ -18,6 +18,7 @@ I = ParamType.I
 B = ParamType.B
 T = ParamType.T
 N = ParamType.N
+
 supported = {
     "pos": {"args": [I], "ret": I, "ulp_error": 0},
     "neg": {"args": [I], "ret": I, "ulp_error": 0},
@@ -173,7 +174,7 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
                     var_types = arg_types
                     var_types.append(supported[instr]['ret'])
                     max_ulp_diff = supported[instr]['ulp_error']
-                    test_code = indent_one + f'{{\n'
+                    test_code = indent_one + '{\n'
                     test_code += indent_two + 'char *h_buffer = buffer.host;\n'
 
                     for i in range(n_vars):
@@ -215,8 +216,8 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
 
                     cuda_code += indent_two + f'tests_{instr}_call(numBlocks, blockSize, stream, n{device_vars});\n'
                     cuda_code += indent_two + f'CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof({var_types[n_args].name}), cudaMemcpyDeviceToHost, stream));\n'
-                    cuda_code += indent_two + f'CUDA_CHECK(cudaEventRecord(event, stream));\n'
-                    cuda_code += indent_two + f'CUDA_CHECK(cudaEventSynchronize(event));\n'
+                    cuda_code += indent_two + 'CUDA_CHECK(cudaEventRecord(event, stream));\n'
+                    cuda_code += indent_two + 'CUDA_CHECK(cudaEventSynchronize(event));\n'
 
                     cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
                     cuda_code += indent_two + f'check_all_equal<{var_types[n_args].name}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_input_vars});\n'
@@ -258,12 +259,8 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
 def generate_kernel_wrappers(ops: dict):
 
     wrappers_cpp = auto_generated_comment + '#include "tests_ops.cuh"\n#include "tests_common.h"\n'
-    wrappers_h = auto_generated_comment + '#include "tests_common.h"\n#include <cuinterval/arithmetic/interval.h>\n'
-    
-    I = ParamType.I
-    B = ParamType.B
-    T = ParamType.T
-    N = ParamType.N
+    wrappers_h = auto_generated_comment + '#include "tests_common.h"\n#include <cuinterval/interval.h>\n'
+
     template = {I: 'interval<double>',
                 B: 'bool',
                 T: 'double',
@@ -322,7 +319,7 @@ if __name__ == '__main__':
         with open(cpp_out_file, 'w') as f:
             f.write(test_code)
         # main_includes += f'#include "{out_file}"\n'
-        main_declares += "void " + tests_name + f'(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);\n'
+        main_declares += "void " + tests_name + '(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event);\n'
         main_tests += indent_three + f"#pragma omp task depend(inout:buffers[{i%4}].host,buffers[{i%4}].device)\n" + indent_three + tests_name + f'(buffers[{i%4}], streams[{i%4}], events[{i%4}]);\n'
         print('generated ' + cpp_out_file)
 

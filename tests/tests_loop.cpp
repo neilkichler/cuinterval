@@ -2,7 +2,7 @@
 #include "tests.h"
 #include "tests_utils.h"
 
-#include <cuinterval/arithmetic/interval.h>
+#include <cuinterval/interval.h>
 
 #include <numbers>
 

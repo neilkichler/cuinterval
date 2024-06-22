@@ -1,7 +1,7 @@
 #ifndef CUINTERVAL_ARITHMETIC_BASIC_CUH
 #define CUINTERVAL_ARITHMETIC_BASIC_CUH
 
-#include "interval.h"
+#include <cuinterval/interval.h>
 #include "intrinsic.cuh"
 
 #include <cassert>
