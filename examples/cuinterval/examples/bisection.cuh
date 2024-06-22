@@ -23,7 +23,6 @@ typedef interval<double> (*fn_t)(interval<double>);
 // Example implementation of the bisection method for finding all roots in a given interval.
 template<typename T, int max_depth>
 __global__ void bisection(fn_t f, interval<T> x_init, double tol, interval<T> *roots, std::size_t *max_roots)
-// __global__ void bisection(interval<T> x_init, double tol, interval<T> *roots, std::size_t *max_roots)
 {
     using I = interval<T>;
 
