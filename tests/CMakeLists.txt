@@ -57,7 +57,7 @@ target_link_libraries(tests PRIVATE CUDA::cudart)
 # Enable OpenMP
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)
-    target_link_libraries(tests PUBLIC OpenMP::OpenMP_CXX)
+    target_link_options(tests PUBLIC "$<IF:$<CXX_COMPILER_ID:MSVC>,-openmp:llvm,OpenMP::OpenMP_CXX>")
 endif()
 
 target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>")

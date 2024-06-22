@@ -13,9 +13,9 @@ set_target_properties(examples PROPERTIES CUDA_ARCHITECTURES native)
 target_link_libraries(examples PRIVATE cuinterval)
 
 # Add example procedures using the cuinterval library which are then used in testing code.
-add_library(example_interval_procedures ${headers})
-target_compile_features(example_interval_procedures PUBLIC cxx_std_17)
-target_compile_features(example_interval_procedures PUBLIC cuda_std_17)
-target_include_directories(example_interval_procedures PUBLIC "${cuinterval_SOURCE_DIR}/examples")
-target_link_libraries(example_interval_procedures PRIVATE cuinterval)
+add_library(example_interval_procedures INTERFACE ${headers})
+target_compile_features(example_interval_procedures INTERFACE cxx_std_17)
+target_compile_features(example_interval_procedures INTERFACE cuda_std_17)
+target_include_directories(example_interval_procedures INTERFACE "${cuinterval_SOURCE_DIR}/examples")
+target_link_libraries(example_interval_procedures INTERFACE cuinterval)
 
