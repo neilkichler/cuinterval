@@ -32,7 +32,7 @@ jobs:
       run: cmake --preset debug
       
     - name: build
-      run: cmake --build --preset build
+      run: cmake --build --preset debug
       
     - name: run ctest
       run: ctest --preset debug
