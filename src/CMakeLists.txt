@@ -16,8 +16,7 @@ target_include_directories(
 )
 
 # C++20 is required for all users of the library
-target_compile_features(cuinterval PUBLIC cxx_std_20)
-target_compile_features(cuinterval PUBLIC cuda_std_20)
+target_compile_features(cuinterval PUBLIC cxx_std_20 cuda_std_20)
 
 target_compile_options(cuinterval PUBLIC "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>")
 
