@@ -16,25 +16,13 @@
 #include <boost/ut.hpp>
 #endif
 
+#include <cuinterval/format.h>
 #include <cuinterval/interval.h>
 
 #include <cmath>
-#include <ostream>
 #include <source_location>
 #include <span>
 #include <vector>
-
-template<typename T>
-std::ostream &operator<<(std::ostream &os, const interval<T> &x)
-{
-    return os << '[' << x.lb << ',' << x.ub << ']';
-}
-
-template<typename T>
-std::ostream &operator<<(std::ostream &os, const split<T> &x)
-{
-    return os << '(' << x.lower_half << ',' << x.upper_half << ')';
-}
 
 template<typename T>
 bool check_within_ulps(T x, T y, std::size_t n, T direction)
@@ -76,7 +64,7 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::so
         if (h_res[i] != h_res[i] && h_ref[i] != h_ref[i]) // both are NaN
             continue;
 
-        if constexpr (std::is_same_v<T, interval<double>>) {
+        if constexpr (std::is_same_v<T, cu::interval<double>>) {
             if (!empty(h_res[i]) || !empty(h_ref[i])) {
                 bool lb_within_ulps = check_within_ulps(h_res[i].lb, h_ref[i].lb, max_ulps_diff, -std::numeric_limits<double>::infinity());
                 bool ub_within_ulps = check_within_ulps(h_res[i].ub, h_ref[i].ub, max_ulps_diff, std::numeric_limits<double>::infinity());

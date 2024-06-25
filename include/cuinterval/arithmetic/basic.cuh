@@ -1,11 +1,15 @@
 #ifndef CUINTERVAL_ARITHMETIC_BASIC_CUH
 #define CUINTERVAL_ARITHMETIC_BASIC_CUH
 
-#include <cuinterval/interval.h>
 #include "intrinsic.cuh"
+#include <cuinterval/interval.h>
 
 #include <cassert>
+#include <cmath>
 #include <numbers>
+
+namespace cu
+{
 
 //
 // Constant intervals
@@ -120,6 +124,8 @@ inline constexpr __device__ interval<T> sqrt(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cbrt(interval<T> x)
 {
+    using std::cbrt;
+
     if (empty(x)) {
         return x;
     }
@@ -144,9 +150,9 @@ inline constexpr __device__ interval<T> recip(interval<T> a)
         } else if (a.lb == zero && zero < a.ub) {
             return { intrinsic::rcp_down(a.ub), intrinsic::pos_inf<T>() };
         } else if (a.lb < zero && zero < a.ub) {
-            return ::entire<T>();
+            return entire<T>();
         } else if (a.lb == zero && zero == a.ub) {
-            return ::empty<T>();
+            return empty<T>();
         }
     }
 
@@ -214,6 +220,8 @@ inline constexpr __device__ interval<T> div(interval<T> x, interval<T> y)
 template<typename T>
 inline constexpr __device__ T mag(interval<T> x)
 {
+    using std::max;
+
     if (empty(x)) {
         return intrinsic::nan<T>();
     }
@@ -223,6 +231,8 @@ inline constexpr __device__ T mag(interval<T> x)
 template<typename T>
 inline constexpr __device__ T mig(interval<T> x)
 {
+    using std::min;
+
     // TODO: we might want to split up the function into the bare interval operation and this part.
     //       we could perhaps use a monad for either result or empty using expected?
     if (empty(x)) {
@@ -264,6 +274,8 @@ inline constexpr __device__ interval<T> abs(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> max(interval<T> x, interval<T> y)
 {
+    using std::max;
+
     if (empty(x) || empty(y)) {
         return empty<T>();
     }
@@ -274,6 +286,8 @@ inline constexpr __device__ interval<T> max(interval<T> x, interval<T> y)
 template<typename T>
 inline constexpr __device__ interval<T> min(interval<T> x, interval<T> y)
 {
+    using std::min;
+
     if (empty(x) || empty(y)) {
         return empty<T>();
     }
@@ -565,6 +579,9 @@ inline constexpr __device__ interval<T> cancel_plus(interval<T> x, interval<T> y
 template<typename T>
 inline constexpr __device__ interval<T> intersection(interval<T> x, interval<T> y)
 {
+    using std::max;
+    using std::min;
+
     // extended
     if (disjoint(x, y)) {
         return empty<T>();
@@ -576,6 +593,9 @@ inline constexpr __device__ interval<T> intersection(interval<T> x, interval<T> 
 template<typename T>
 inline constexpr __device__ interval<T> convex_hull(interval<T> x, interval<T> y)
 {
+    using std::max;
+    using std::min;
+
     // extended
     if (empty(x)) {
         return y;
@@ -770,9 +790,9 @@ inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n
         return empty<T>();
     }
 
+    using intrinsic::next_after;
     using intrinsic::next_floating;
     using intrinsic::prev_floating;
-    using intrinsic::next_after;
 
     if (n % 2) { // odd power
         if (entire(x)) {
@@ -857,6 +877,8 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
 template<typename T>
 inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto n)
 {
+    using std::pow;
+
     if (empty(x)) {
         return x;
     }
@@ -941,6 +963,10 @@ inline constexpr __device__ unsigned int quadrant_pi(T v)
 template<typename T>
 inline constexpr __device__ interval<T> sin(interval<T> x)
 {
+    using std::max;
+    using std::min;
+    using std::sin;
+
     if (empty(x)) {
         return x;
     }
@@ -1016,6 +1042,10 @@ inline constexpr __device__ interval<T> sin(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> sinpi(interval<T> x)
 {
+    using ::sinpi;
+    using std::max;
+    using std::min;
+
     if (empty(x)) {
         return x;
     }
@@ -1064,6 +1094,10 @@ inline constexpr __device__ interval<T> sinpi(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cos(interval<T> x)
 {
+    using std::cos;
+    using std::max;
+    using std::min;
+
     if (empty(x)) {
         return x;
     }
@@ -1114,6 +1148,10 @@ inline constexpr __device__ interval<T> cos(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cospi(interval<T> x)
 {
+    using ::cospi;
+    using std::max;
+    using std::min;
+
     if (empty(x)) {
         return x;
     }
@@ -1161,6 +1199,8 @@ inline constexpr __device__ interval<T> cospi(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> tan(interval<T> x)
 {
+    using std::tan;
+
     if (empty(x)) {
         return x;
     }
@@ -1192,6 +1232,8 @@ inline constexpr __device__ interval<T> tan(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> asin(interval<T> x)
 {
+    using std::asin;
+
     if (empty(x)) {
         return x;
     }
@@ -1207,6 +1249,8 @@ inline constexpr __device__ interval<T> asin(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> acos(interval<T> x)
 {
+    using std::acos;
+
     if (empty(x)) {
         return x;
     }
@@ -1222,6 +1266,8 @@ inline constexpr __device__ interval<T> acos(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> atan(interval<T> x)
 {
+    using std::atan;
+
     if (empty(x)) {
         return x;
     }
@@ -1235,6 +1281,9 @@ inline constexpr __device__ interval<T> atan(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
 {
+    using std::abs;
+    using std::atan2;
+
     if (empty(x) || empty(y)) {
         return empty<T>();
     }
@@ -1324,6 +1373,8 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> sinh(interval<T> x)
 {
+    using std::sinh;
+
     if (empty(x)) {
         return x;
     }
@@ -1335,6 +1386,8 @@ inline constexpr __device__ interval<T> sinh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cosh(interval<T> x)
 {
+    using std::cosh;
+
     if (empty(x)) {
         return x;
     }
@@ -1348,6 +1401,8 @@ inline constexpr __device__ interval<T> cosh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> tanh(interval<T> x)
 {
+    using std::tanh;
+
     if (empty(x)) {
         return x;
     }
@@ -1361,6 +1416,8 @@ inline constexpr __device__ interval<T> tanh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> asinh(interval<T> x)
 {
+    using std::asinh;
+
     if (empty(x)) {
         return x;
     }
@@ -1372,6 +1429,8 @@ inline constexpr __device__ interval<T> asinh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> acosh(interval<T> x)
 {
+    using std::acosh;
+
     if (empty(x)) {
         return x;
     }
@@ -1388,6 +1447,8 @@ inline constexpr __device__ interval<T> acosh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> atanh(interval<T> x)
 {
+    using std::atanh;
+
     if (empty(x)) {
         return x;
     }
@@ -1465,8 +1526,8 @@ inline constexpr __device__ void mince(interval<T> x, interval<T> *xs, std::size
             xs[i] = empty<T>();
         }
     } else {
-        T lb = x.lb;
-        T ub = x.ub;
+        T lb   = x.lb;
+        T ub   = x.ub;
         T step = (ub - lb) / static_cast<T>(out_xs_size);
 
         for (std::size_t i = 0; i < out_xs_size; i++) {
@@ -1474,5 +1535,7 @@ inline constexpr __device__ void mince(interval<T> x, interval<T> *xs, std::size
         }
     }
 }
+
+} // namespace cu
 
 #endif // CUINTERVAL_ARITHMETIC_BASIC_CUH

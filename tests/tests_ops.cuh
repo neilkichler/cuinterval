@@ -4,7 +4,7 @@
 #include <cuinterval/cuinterval.h>
 
 template<typename T>
-__global__ void test_pos(int n, interval<T> *x, interval<T> *res)
+__global__ void test_pos(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -13,7 +13,7 @@ __global__ void test_pos(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_neg(int n, interval<T> *x, interval<T> *res)
+__global__ void test_neg(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -22,7 +22,7 @@ __global__ void test_neg(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_recip(int n, interval<T> *x, interval<T> *res)
+__global__ void test_recip(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -31,7 +31,7 @@ __global__ void test_recip(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_sqr(int n, interval<T> *x, interval<T> *res)
+__global__ void test_sqr(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -40,7 +40,7 @@ __global__ void test_sqr(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_sqrt(int n, interval<T> *x, interval<T> *res)
+__global__ void test_sqrt(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -49,7 +49,7 @@ __global__ void test_sqrt(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_cbrt(int n, interval<T> *x, interval<T> *res)
+__global__ void test_cbrt(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -58,7 +58,7 @@ __global__ void test_cbrt(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_add(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_add(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -67,7 +67,7 @@ __global__ void test_add(int n, interval<T> *x, interval<T> *y, interval<T> *res
 }
 
 template<typename T>
-__global__ void test_cancelPlus(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_cancelPlus(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -76,7 +76,7 @@ __global__ void test_cancelPlus(int n, interval<T> *x, interval<T> *y, interval<
 }
 
 template<typename T>
-__global__ void test_cancelMinus(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_cancelMinus(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -85,7 +85,7 @@ __global__ void test_cancelMinus(int n, interval<T> *x, interval<T> *y, interval
 }
 
 template<typename T>
-__global__ void test_sub(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_sub(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -94,7 +94,7 @@ __global__ void test_sub(int n, interval<T> *x, interval<T> *y, interval<T> *res
 }
 
 template<typename T>
-__global__ void test_mul(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_mul(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -103,7 +103,7 @@ __global__ void test_mul(int n, interval<T> *x, interval<T> *y, interval<T> *res
 }
 
 template<typename T>
-__global__ void test_div(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_div(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -112,7 +112,7 @@ __global__ void test_div(int n, interval<T> *x, interval<T> *y, interval<T> *res
 }
 
 template<typename T>
-__global__ void test_fma(int n, interval<T> *x, interval<T> *y, interval<T> *z, interval<T> *res)
+__global__ void test_fma(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *z, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -121,7 +121,7 @@ __global__ void test_fma(int n, interval<T> *x, interval<T> *y, interval<T> *z, 
 }
 
 template<typename T>
-__global__ void test_inf(int n, interval<T> *x, T *res)
+__global__ void test_inf(int n, cu::interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -130,7 +130,7 @@ __global__ void test_inf(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_sup(int n, interval<T> *x, T *res)
+__global__ void test_sup(int n, cu::interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -139,7 +139,7 @@ __global__ void test_sup(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_mid(int n, interval<T> *x, T *res)
+__global__ void test_mid(int n, cu::interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -148,7 +148,7 @@ __global__ void test_mid(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_rad(int n, interval<T> *x, T *res)
+__global__ void test_rad(int n, cu::interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -157,7 +157,7 @@ __global__ void test_rad(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_mag(int n, interval<T> *x, T *res)
+__global__ void test_mag(int n, cu::interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -166,7 +166,7 @@ __global__ void test_mag(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_mig(int n, interval<T> *x, T *res)
+__global__ void test_mig(int n, cu::interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -175,7 +175,7 @@ __global__ void test_mig(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_wid(int n, interval<T> *x, T *res)
+__global__ void test_wid(int n, cu::interval<T> *x, T *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -184,7 +184,7 @@ __global__ void test_wid(int n, interval<T> *x, T *res)
 }
 
 template<typename T>
-__global__ void test_floor(int n, interval<T> *x, interval<T> *res)
+__global__ void test_floor(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -193,7 +193,7 @@ __global__ void test_floor(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_ceil(int n, interval<T> *x, interval<T> *res)
+__global__ void test_ceil(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -202,7 +202,7 @@ __global__ void test_ceil(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_trunc(int n, interval<T> *x, interval<T> *res)
+__global__ void test_trunc(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -211,7 +211,7 @@ __global__ void test_trunc(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_sign(int n, interval<T> *x, interval<T> *res)
+__global__ void test_sign(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -220,7 +220,7 @@ __global__ void test_sign(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_abs(int n, interval<T> *x, interval<T> *res)
+__global__ void test_abs(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -229,7 +229,7 @@ __global__ void test_abs(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_min(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_min(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -238,7 +238,7 @@ __global__ void test_min(int n, interval<T> *x, interval<T> *y, interval<T> *res
 }
 
 template<typename T>
-__global__ void test_max(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_max(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -247,7 +247,7 @@ __global__ void test_max(int n, interval<T> *x, interval<T> *y, interval<T> *res
 }
 
 template<typename T>
-__global__ void test_intersection(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_intersection(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -256,7 +256,7 @@ __global__ void test_intersection(int n, interval<T> *x, interval<T> *y, interva
 }
 
 template<typename T>
-__global__ void test_convexHull(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_convexHull(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -265,7 +265,7 @@ __global__ void test_convexHull(int n, interval<T> *x, interval<T> *y, interval<
 }
 
 template<typename T>
-__global__ void test_equal(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_equal(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -274,7 +274,7 @@ __global__ void test_equal(int n, interval<T> *x, interval<T> *y, bool *res)
 }
 
 template<typename T>
-__global__ void test_subset(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_subset(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -283,7 +283,7 @@ __global__ void test_subset(int n, interval<T> *x, interval<T> *y, bool *res)
 }
 
 template<typename T>
-__global__ void test_interior(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_interior(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -292,7 +292,7 @@ __global__ void test_interior(int n, interval<T> *x, interval<T> *y, bool *res)
 }
 
 template<typename T>
-__global__ void test_disjoint(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_disjoint(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -301,7 +301,7 @@ __global__ void test_disjoint(int n, interval<T> *x, interval<T> *y, bool *res)
 }
 
 template<typename T>
-__global__ void test_isEmpty(int n, interval<T> *x, bool *res)
+__global__ void test_isEmpty(int n, cu::interval<T> *x, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -310,7 +310,7 @@ __global__ void test_isEmpty(int n, interval<T> *x, bool *res)
 }
 
 template<typename T>
-__global__ void test_isEntire(int n, interval<T> *x, bool *res)
+__global__ void test_isEntire(int n, cu::interval<T> *x, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -319,7 +319,7 @@ __global__ void test_isEntire(int n, interval<T> *x, bool *res)
 }
 
 template<typename T>
-__global__ void test_less(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_less(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -328,7 +328,7 @@ __global__ void test_less(int n, interval<T> *x, interval<T> *y, bool *res)
 }
 
 template<typename T>
-__global__ void test_strictLess(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_strictLess(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -337,7 +337,7 @@ __global__ void test_strictLess(int n, interval<T> *x, interval<T> *y, bool *res
 }
 
 template<typename T>
-__global__ void test_precedes(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_precedes(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -346,7 +346,7 @@ __global__ void test_precedes(int n, interval<T> *x, interval<T> *y, bool *res)
 }
 
 template<typename T>
-__global__ void test_strictPrecedes(int n, interval<T> *x, interval<T> *y, bool *res)
+__global__ void test_strictPrecedes(int n, cu::interval<T> *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -355,7 +355,7 @@ __global__ void test_strictPrecedes(int n, interval<T> *x, interval<T> *y, bool 
 }
 
 template<typename T>
-__global__ void test_isMember(int n, T *x, interval<T> *y, bool *res)
+__global__ void test_isMember(int n, T *x, cu::interval<T> *y, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -364,7 +364,7 @@ __global__ void test_isMember(int n, T *x, interval<T> *y, bool *res)
 }
 
 template<typename T>
-__global__ void test_isSingleton(int n, interval<T> *x, bool *res)
+__global__ void test_isSingleton(int n, cu::interval<T> *x, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -373,7 +373,7 @@ __global__ void test_isSingleton(int n, interval<T> *x, bool *res)
 }
 
 template<typename T>
-__global__ void test_isCommonInterval(int n, interval<T> *x, bool *res)
+__global__ void test_isCommonInterval(int n, cu::interval<T> *x, bool *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -382,7 +382,7 @@ __global__ void test_isCommonInterval(int n, interval<T> *x, bool *res)
 }
 
 template<typename T>
-__global__ void test_roundTiesToEven(int n, interval<T> *x, interval<T> *res)
+__global__ void test_roundTiesToEven(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -391,7 +391,7 @@ __global__ void test_roundTiesToEven(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_roundTiesToAway(int n, interval<T> *x, interval<T> *res)
+__global__ void test_roundTiesToAway(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -400,7 +400,7 @@ __global__ void test_roundTiesToAway(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_exp(int n, interval<T> *x, interval<T> *res)
+__global__ void test_exp(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -409,7 +409,7 @@ __global__ void test_exp(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_exp2(int n, interval<T> *x, interval<T> *res)
+__global__ void test_exp2(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -418,7 +418,7 @@ __global__ void test_exp2(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_exp10(int n, interval<T> *x, interval<T> *res)
+__global__ void test_exp10(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -427,7 +427,7 @@ __global__ void test_exp10(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_expm1(int n, interval<T> *x, interval<T> *res)
+__global__ void test_expm1(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -436,7 +436,7 @@ __global__ void test_expm1(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_log(int n, interval<T> *x, interval<T> *res)
+__global__ void test_log(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -445,7 +445,7 @@ __global__ void test_log(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_log2(int n, interval<T> *x, interval<T> *res)
+__global__ void test_log2(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -454,7 +454,7 @@ __global__ void test_log2(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_log10(int n, interval<T> *x, interval<T> *res)
+__global__ void test_log10(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -463,7 +463,7 @@ __global__ void test_log10(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_log1p(int n, interval<T> *x, interval<T> *res)
+__global__ void test_log1p(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -472,7 +472,7 @@ __global__ void test_log1p(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_pown(int n, interval<T> *x, int p, interval<T> *res)
+__global__ void test_pown(int n, cu::interval<T> *x, int p, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -481,7 +481,7 @@ __global__ void test_pown(int n, interval<T> *x, int p, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_sin(int n, interval<T> *x, interval<T> *res)
+__global__ void test_sin(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -490,7 +490,7 @@ __global__ void test_sin(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_cos(int n, interval<T> *x, interval<T> *res)
+__global__ void test_cos(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -499,7 +499,7 @@ __global__ void test_cos(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_tan(int n, interval<T> *x, interval<T> *res)
+__global__ void test_tan(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -508,7 +508,7 @@ __global__ void test_tan(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_asin(int n, interval<T> *x, interval<T> *res)
+__global__ void test_asin(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -517,7 +517,7 @@ __global__ void test_asin(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_acos(int n, interval<T> *x, interval<T> *res)
+__global__ void test_acos(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -526,7 +526,7 @@ __global__ void test_acos(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_atan(int n, interval<T> *x, interval<T> *res)
+__global__ void test_atan(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -535,7 +535,7 @@ __global__ void test_atan(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_sinh(int n, interval<T> *x, interval<T> *res)
+__global__ void test_sinh(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -544,7 +544,7 @@ __global__ void test_sinh(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_cosh(int n, interval<T> *x, interval<T> *res)
+__global__ void test_cosh(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -553,7 +553,7 @@ __global__ void test_cosh(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_tanh(int n, interval<T> *x, interval<T> *res)
+__global__ void test_tanh(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -562,7 +562,7 @@ __global__ void test_tanh(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_asinh(int n, interval<T> *x, interval<T> *res)
+__global__ void test_asinh(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -571,7 +571,7 @@ __global__ void test_asinh(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_acosh(int n, interval<T> *x, interval<T> *res)
+__global__ void test_acosh(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -580,7 +580,7 @@ __global__ void test_acosh(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_atanh(int n, interval<T> *x, interval<T> *res)
+__global__ void test_atanh(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -589,7 +589,7 @@ __global__ void test_atanh(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_atan2(int n, interval<T> *y, interval<T> *x, interval<T> *res)
+__global__ void test_atan2(int n, cu::interval<T> *y, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -598,7 +598,7 @@ __global__ void test_atan2(int n, interval<T> *y, interval<T> *x, interval<T> *r
 }
 
 template<typename T>
-__global__ void test_sinpi(int n, interval<T> *x, interval<T> *res)
+__global__ void test_sinpi(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -607,7 +607,7 @@ __global__ void test_sinpi(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_cospi(int n, interval<T> *x, interval<T> *res)
+__global__ void test_cospi(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -616,7 +616,7 @@ __global__ void test_cospi(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_cot(int n, interval<T> *x, interval<T> *res)
+__global__ void test_cot(int n, cu::interval<T> *x, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -625,7 +625,7 @@ __global__ void test_cot(int n, interval<T> *x, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_pown(int n, interval<T> *x, int *n_pow, interval<T> *res)
+__global__ void test_pown(int n, cu::interval<T> *x, int *n_pow, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -634,7 +634,7 @@ __global__ void test_pown(int n, interval<T> *x, int *n_pow, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_rootn(int n, interval<T> *x, int *n_pow, interval<T> *res)
+__global__ void test_rootn(int n, cu::interval<T> *x, int *n_pow, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -643,7 +643,7 @@ __global__ void test_rootn(int n, interval<T> *x, int *n_pow, interval<T> *res)
 }
 
 template<typename T>
-__global__ void test_pow(int n, interval<T> *x, interval<T> *y, interval<T> *res)
+__global__ void test_pow(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -652,7 +652,7 @@ __global__ void test_pow(int n, interval<T> *x, interval<T> *y, interval<T> *res
 }
 
 template<typename T>
-__global__ void test_bisect(int n, interval<T> *x, T *y, split<T> *res)
+__global__ void test_bisect(int n, cu::interval<T> *x, T *y, cu::split<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {
@@ -661,7 +661,7 @@ __global__ void test_bisect(int n, interval<T> *x, T *y, split<T> *res)
 }
 
 template<typename T>
-__global__ void test_mince(int n, interval<T> *x, int *d_offsets, interval<T> *res)
+__global__ void test_mince(int n, cu::interval<T> *x, int *d_offsets, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i < n) {

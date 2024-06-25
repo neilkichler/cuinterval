@@ -18,13 +18,13 @@ struct local_stack
     size_type len {};
 };
 
-typedef interval<double> (*fn_t)(interval<double>);
+typedef cu::interval<double> (*fn_t)(cu::interval<double>);
 
 // Example implementation of the bisection method for finding all roots in a given interval.
 template<typename T, int max_depth>
-__global__ void bisection(fn_t f, interval<T> x_init, double tol, interval<T> *roots, std::size_t *max_roots)
+__global__ void bisection(fn_t f, cu::interval<T> x_init, double tol, cu::interval<T> *roots, std::size_t *max_roots)
 {
-    using I = interval<T>;
+    using I = cu::interval<T>;
 
     std::size_t n_roots = 0;
     local_stack<I, max_depth> intervals;
@@ -66,7 +66,7 @@ __global__ void bisection(fn_t f, interval<T> x_init, double tol, interval<T> *r
             }
         } else {
             // interval could still contain a root -> bisect
-            split<T> c = bisect(x, 0.5);
+            cu::split<T> c = bisect(x, 0.5);
             // we do depth-first search which often will not be optimal
             intervals.push(c.upper_half);
             intervals.push(c.lower_half);

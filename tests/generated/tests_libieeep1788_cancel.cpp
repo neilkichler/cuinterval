@@ -12,7 +12,7 @@ void tests_libieeep1788_cancel(cuda_buffer buffer, cudaStream_t stream, cudaEven
     using namespace boost::ut;
 
     using T = double;
-    using I = interval<T>;
+    using I = cu::interval<T>;
     using B = bool;
     using N = int;
 

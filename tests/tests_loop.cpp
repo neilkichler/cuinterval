@@ -9,6 +9,9 @@
 #include <omp.h>
 #include <thrust/host_vector.h>
 
+using cu::interval;
+using cu::split;
+
 thrust::host_vector<interval<double>> compute_pi_approximation(cudaStream_t stream);
 
 void tests_pi_approximation(cudaStream_t stream, cudaEvent_t event)

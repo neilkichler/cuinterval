@@ -6,7 +6,7 @@
 #include <cassert>
 
 template<typename T>
-void contains(interval<T> x, T y)
+void contains(cu::interval<T> x, T y)
 {
     using namespace boost::ut;
 

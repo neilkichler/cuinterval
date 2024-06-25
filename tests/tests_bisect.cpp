@@ -8,6 +8,9 @@
 #include "tests_ops.h"
 #include "tests_utils.h"
 
+using cu::interval;
+using cu::split;
+
 void test_bisect_call(cudaStream_t stream, int n,
                       interval<double> *x, double *y, split<double> *res);
 

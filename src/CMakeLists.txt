@@ -5,6 +5,7 @@ set(headers
     "${LIB_PATH}/arithmetic/intrinsic.cuh"
     "${LIB_PATH}/arithmetic/basic.cuh"
     "${LIB_PATH}/cuinterval.h"
+    "${LIB_PATH}/format.h"
 )
 
 add_library(cuinterval "main.cu" ${headers})

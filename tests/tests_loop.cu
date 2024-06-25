@@ -10,6 +10,7 @@
 #include <thrust/iterator/transform_iterator.h>
 #include <thrust/transform.h>
 
+using cu::interval;
 
 struct to_interval_fn
 {

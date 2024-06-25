@@ -12,7 +12,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     using namespace boost::ut;
 
     using T = double;
-    using I = interval<T>;
+    using I = cu::interval<T>;
     using B = bool;
     using N = int;
 

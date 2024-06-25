@@ -1,6 +1,9 @@
 #ifndef CUINTERVAL_INTERVAL_H
 #define CUINTERVAL_INTERVAL_H
 
+namespace cu
+{
+
 template<typename T>
 struct interval
 {
@@ -11,7 +14,6 @@ struct interval
 template<typename T>
 bool operator==(interval<T> lhs, interval<T> rhs)
 {
-
     auto empty = [](interval<T> x) { return !(x.lb <= x.ub); };
 
     if (empty(lhs) && empty(rhs)) {
@@ -29,5 +31,7 @@ struct split
 
     auto operator<=>(const split &) const = default;
 };
+
+} // namespace cu
 
 #endif // CUINTERVAL_INTERVAL_H

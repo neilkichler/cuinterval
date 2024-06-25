@@ -6,6 +6,7 @@
 
 #include "utils.h"
 
+using cu::interval;
 
 template<typename I>
 __device__ I f(I x)

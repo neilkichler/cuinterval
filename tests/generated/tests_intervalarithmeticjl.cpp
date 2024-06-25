@@ -12,7 +12,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
     using namespace boost::ut;
 
     using T = double;
-    using I = interval<T>;
+    using I = cu::interval<T>;
     using B = bool;
     using N = int;
 

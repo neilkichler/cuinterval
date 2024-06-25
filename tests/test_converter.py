@@ -116,7 +116,7 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
     using namespace boost::ut;
 
     using T = double;
-    using I = interval<T>;
+    using I = cu::interval<T>;
     using B = bool;
     using N = int;
 
@@ -261,7 +261,7 @@ def generate_kernel_wrappers(ops: dict):
     wrappers_cpp = auto_generated_comment + '#include "tests_ops.cuh"\n#include "tests_common.h"\n'
     wrappers_h = auto_generated_comment + '#include "tests_common.h"\n#include <cuinterval/interval.h>\n'
 
-    template = {I: 'interval<double>',
+    template = {I: 'cu::interval<double>',
                 B: 'bool',
                 T: 'double',
                 N: 'int'}

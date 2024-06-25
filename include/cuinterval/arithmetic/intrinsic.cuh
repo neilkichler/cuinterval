@@ -1,7 +1,7 @@
 #ifndef CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
 #define CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
 
-namespace intrinsic
+namespace cu::intrinsic
 {
 // clang-format off
     template<typename T> inline __device__ T fma_down  (T x, T y, T z);
@@ -104,6 +104,6 @@ namespace intrinsic
     template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
 
 // clang-format on
-} // namespace intrinsic
+} // namespace cu::intrinsic
 
 #endif // CUINTERVAL_ARITHMETIC_INTRINSIC_CUH

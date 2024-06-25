@@ -3,421 +3,421 @@
 #include "tests_common.h"
 
 void tests_pos_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_pos<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_neg_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_neg<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_add_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_add<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_sub_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_sub<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_mul_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_mul<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_div_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_div<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_recip_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_recip<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_sqr_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_sqr<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_sqrt_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_sqrt<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_fma_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_zs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_zs, cu::interval<double> *d_res)
 {
     test_fma<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_zs, d_res); 
 }
             
 void tests_mig_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, double *d_res)
+                 int n, cu::interval<double> *d_xs, double *d_res)
 {
     test_mig<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_mag_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, double *d_res)
+                 int n, cu::interval<double> *d_xs, double *d_res)
 {
     test_mag<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_wid_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, double *d_res)
+                 int n, cu::interval<double> *d_xs, double *d_res)
 {
     test_wid<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_inf_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, double *d_res)
+                 int n, cu::interval<double> *d_xs, double *d_res)
 {
     test_inf<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_sup_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, double *d_res)
+                 int n, cu::interval<double> *d_xs, double *d_res)
 {
     test_sup<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_mid_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, double *d_res)
+                 int n, cu::interval<double> *d_xs, double *d_res)
 {
     test_mid<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_rad_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, double *d_res)
+                 int n, cu::interval<double> *d_xs, double *d_res)
 {
     test_rad<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_floor_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_floor<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_ceil_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_ceil<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_abs_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_abs<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_min_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_min<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_max_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_max<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_trunc_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_trunc<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_sign_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_sign<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_intersection_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_intersection<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_convexHull_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_convexHull<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_equal_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_equal<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_subset_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_subset<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_interior_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_interior<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_disjoint_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_disjoint<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_isEmpty_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, bool *d_res)
+                 int n, cu::interval<double> *d_xs, bool *d_res)
 {
     test_isEmpty<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_isEntire_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, bool *d_res)
+                 int n, cu::interval<double> *d_xs, bool *d_res)
 {
     test_isEntire<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_less_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_less<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_strictLess_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_strictLess<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_precedes_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_precedes<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_strictPrecedes_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_strictPrecedes<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_isMember_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, double *d_xs, interval<double> *d_ys, bool *d_res)
+                 int n, double *d_xs, cu::interval<double> *d_ys, bool *d_res)
 {
     test_isMember<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_isSingleton_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, bool *d_res)
+                 int n, cu::interval<double> *d_xs, bool *d_res)
 {
     test_isSingleton<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_isCommonInterval_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, bool *d_res)
+                 int n, cu::interval<double> *d_xs, bool *d_res)
 {
     test_isCommonInterval<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_cancelMinus_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_cancelMinus<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_cancelPlus_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_cancelPlus<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_roundTiesToEven_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_roundTiesToEven<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_roundTiesToAway_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_roundTiesToAway<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_cbrt_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_cbrt<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_exp_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_exp<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_exp2_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_exp2<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_exp10_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_exp10<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_expm1_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_expm1<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_log_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_log<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_log2_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_log2<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_log10_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_log10<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_log1p_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_log1p<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_sin_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_sin<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_cos_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_cos<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_tan_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_tan<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_asin_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_asin<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_acos_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_acos<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_atan_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_atan<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_atan2_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_atan2<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_sinh_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_sinh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_cosh_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_cosh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_tanh_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_tanh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_asinh_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_asinh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_acosh_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_acosh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_atanh_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_atanh<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_sinpi_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_sinpi<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_cospi_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
     test_cospi<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
 void tests_pown_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, int *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, int *d_ys, cu::interval<double> *d_res)
 {
     test_pown<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_pow_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, interval<double> *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
 {
     test_pow<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
 void tests_rootn_call(int numBlocks, int blockSize, cudaStream_t stream,
-                 int n, interval<double> *d_xs, int *d_ys, interval<double> *d_res)
+                 int n, cu::interval<double> *d_xs, int *d_ys, cu::interval<double> *d_res)
 {
     test_rootn<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
