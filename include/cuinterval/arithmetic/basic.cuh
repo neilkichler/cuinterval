@@ -838,11 +838,11 @@ inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n
     } else { // even power
         if (n > 0) {
             if (inf(x) >= 0) {
-                return { next_after(pow(inf(x), n), 0.0), next_floating(pow(sup(x), n)) };
+                return { next_after(pow(inf(x), n), T{0.0}), next_floating(pow(sup(x), n)) };
             } else if (sup(x) <= 0) {
-                return { next_after(pow(sup(x), n), 0.0), next_floating(pow(inf(x), n)) };
+                return { next_after(pow(sup(x), n), T{0.0}), next_floating(pow(inf(x), n)) };
             } else {
-                return { next_after(pow(mig(x), n), 0.0), next_floating(pow(mag(x), n)) };
+                return { next_after(pow(mig(x), n), T{0.0}), next_floating(pow(mag(x), n)) };
             }
         } else {
             if (inf(x) >= 0) {
