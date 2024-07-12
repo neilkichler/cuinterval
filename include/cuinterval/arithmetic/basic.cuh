@@ -452,21 +452,19 @@ inline constexpr __device__ T sup(interval<T> x) { return x.ub; }
 template<typename T>
 inline constexpr __device__ T mid(interval<T> x)
 {
+    using namespace intrinsic;
+
     if (empty(x)) {
-        return intrinsic::nan<T>();
+        return nan<T>();
     } else if (entire(x)) {
         return static_cast<T>(0);
-    } else if (x.lb == intrinsic::neg_inf<T>()) {
-        // return std::numeric_limits<T>::lowest();
-        return -0x1.fffffffffffffp+1023;
-    } else if (x.ub == intrinsic::pos_inf<T>()) {
-        // return std::numeric_limits<T>::max();
-        return 0x1.fffffffffffffp+1023;
+    } else if (x.lb == neg_inf<T>()) {
+        return std::numeric_limits<T>::lowest();
+    } else if (x.ub == pos_inf<T>()) {
+        return std::numeric_limits<T>::max();
     } else {
-        return __dmul_rd(0.5, x.lb) + __dmul_ru(0.5, x.ub);
+        return mul_down(0.5, x.lb) + mul_up(0.5, x.ub);
     }
-
-    // return (x.lb == x.ub) * x.lb + (abs(x.lb) != abs(x.ub)) * (0.5 * (x.lb + x.ub));
 }
 
 template<typename T>
