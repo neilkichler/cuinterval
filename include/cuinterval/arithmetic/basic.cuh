@@ -606,6 +606,12 @@ inline constexpr __device__ interval<T> convex_hull(interval<T> x, interval<T> y
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> hull(interval<T> x, interval<T> y)
+{
+    return convex_hull(x, y);
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> ceil(interval<T> x)
 {
     return { intrinsic::int_up(x.lb), intrinsic::int_up(x.ub) };
