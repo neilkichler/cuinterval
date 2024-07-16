@@ -387,6 +387,18 @@ inline constexpr __device__ interval<T> operator*(interval<T> a, T b)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> operator*(interval<T> a, std::integral auto b)
+{
+    return a * static_cast<T>(b);
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> operator*(std::integral auto a, interval<T> b)
+{
+    return static_cast<T>(a) * b;
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> operator/(interval<T> a, interval<T> b)
 {
     return div(a, b);
@@ -868,6 +880,9 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
 
     using intrinsic::next_floating;
     using intrinsic::prev_floating;
+    using std::pow;
+    using std::lrint;
+    using std::sqrt;
 
     if (sup(x) == 0) {
         if (y > 0) {
@@ -929,12 +944,6 @@ inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto 
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> pow(interval<T> x, std::integral auto y)
-{
-    return pown(x, y);
-}
-
-template<typename T>
 inline constexpr __device__ interval<T> pow(interval<T> x, interval<T> y)
 {
     if (empty(y)) {
@@ -951,6 +960,12 @@ inline constexpr __device__ interval<T> pow(interval<T> x, interval<T> y)
     } else {
         return convex_hull(pow_(x, y.lb), pow_(x, y.ub));
     }
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> pow(interval<T> x, auto y)
+{
+    return pown(x, y);
 }
 
 //
