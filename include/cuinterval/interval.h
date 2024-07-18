@@ -7,6 +7,8 @@ namespace cu
 template<typename T>
 struct interval
 {
+    using value_type = T;
+
     T lb;
     T ub;
 };
