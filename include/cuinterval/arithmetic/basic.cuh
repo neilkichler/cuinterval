@@ -880,8 +880,8 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
 
     using intrinsic::next_floating;
     using intrinsic::prev_floating;
-    using std::pow;
     using std::lrint;
+    using std::pow;
     using std::sqrt;
 
     if (sup(x) == 0) {
