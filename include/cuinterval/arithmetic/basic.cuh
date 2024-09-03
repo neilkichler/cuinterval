@@ -1508,6 +1508,34 @@ inline constexpr __device__ interval<T> cot(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> erf(interval<T> x)
+{
+    using std::erf;
+
+    if (empty(x)) {
+        return x;
+    }
+
+    // TODO: account for 2 ulp error
+    return { intrinsic::next_after(erf(x.lb), static_cast<T>(-1)),
+             intrinsic::next_after(erf(x.ub), static_cast<T>(1)) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> erfc(interval<T> x)
+{
+    using std::erfc;
+
+    if (empty(x)) {
+        return x;
+    }
+
+    // TODO: account for 5 ulp error
+    return { intrinsic::next_after(erfc(x.ub), static_cast<T>(0)),
+             intrinsic::next_after(erfc(x.lb), static_cast<T>(2)) };
+}
+
+template<typename T>
 inline constexpr __device__ split<T> bisect(interval<T> x, T split_ratio)
 {
     assert(0 <= split_ratio && split_ratio <= 1);
