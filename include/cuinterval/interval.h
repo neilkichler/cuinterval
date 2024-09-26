@@ -14,15 +14,11 @@ struct interval
 };
 
 template<typename T>
-bool operator==(interval<T> lhs, interval<T> rhs)
+constexpr bool operator==(interval<T> lhs, interval<T> rhs)
 {
     auto empty = [](interval<T> x) { return !(x.lb <= x.ub); };
 
-    if (empty(lhs) && empty(rhs)) {
-        return true;
-    }
-
-    return lhs.lb == rhs.lb && lhs.ub == rhs.ub;
+    return (empty(lhs) && empty(rhs)) || lhs.lb == rhs.lb && lhs.ub == rhs.ub;
 }
 
 template<typename T>

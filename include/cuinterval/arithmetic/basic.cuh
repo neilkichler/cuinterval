@@ -487,12 +487,6 @@ inline constexpr __device__ bool equal(interval<T> a, interval<T> b)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator==(interval<T> a, interval<T> b)
-{
-    return equal(a, b);
-}
-
-template<typename T>
 inline constexpr __device__ interval<T> operator!=(interval<T> a, interval<T> b)
 {
     return !equal(a, b);
