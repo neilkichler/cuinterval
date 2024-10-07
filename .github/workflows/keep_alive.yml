@@ -1,4 +1,4 @@
-name: keep-alive
+name: Keep runners alive
 
 on:
   schedule:
@@ -9,8 +9,15 @@ on:
   workflow_dispatch:
 
 jobs: 
-  keep-alive:
-    runs-on: [self-hosted]
+  windows_gpu:
+    runs-on: [self-hosted,Windows]
     steps:
-      - name: gpu info
-        run: nvidia-smi
+      - name: Windows keep alive
+        shell: powershell
+        run: Write-Host "Keep alive"
+
+  wsl_gpu:
+    runs-on: [self-hosted,WSL]
+    steps:
+      - name: WSL keep alive
+        run: echo "Keep alive"
