@@ -1,0 +1,16 @@
+name: keep-alive
+
+on:
+  schedule:
+    # times in UTC, standard Chron format
+    # - cron:  '0 05 01,10,20 * *' # 5am 1st/10th/20th day of month
+    - cron: '*/5 * * * *'
+
+  workflow_dispatch:
+
+jobs: 
+  keep-alive:
+    runs-on: [self-hosted]
+    steps:
+      - name: gpu info
+        run: nvidia-smi
