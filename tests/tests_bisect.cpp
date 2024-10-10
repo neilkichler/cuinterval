@@ -1,6 +1,6 @@
 #include <cuda_runtime.h>
 #include <omp.h>
-#include <thrust/host_vector.h>
+#include <vector>
 
 #include <cuinterval/interval.h>
 
@@ -186,7 +186,7 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
     };
 }
 
-thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffer buffer, interval<double> x, double tolerance);
+std::vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffer buffer, interval<double> x, double tolerance);
 
 void tests_bisection(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
 {
@@ -205,7 +205,7 @@ void tests_bisection(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
     };
 
     constexpr double tolerance = 1e-12;
-    thrust::host_vector<I> h_roots = test_bisection_kernel(stream, buffer, x, tolerance);
+    std::vector<I> h_roots     = test_bisection_kernel(stream, buffer, x, tolerance);
 
     for (std::size_t i = 0; i < h_roots.size(); i++) {
         contains(h_roots[i], ref_roots[i]);

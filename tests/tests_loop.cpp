@@ -5,14 +5,14 @@
 #include <cuinterval/interval.h>
 
 #include <numbers>
+#include <vector>
 
 #include <omp.h>
-#include <thrust/host_vector.h>
 
 using cu::interval;
 using cu::split;
 
-thrust::host_vector<interval<double>> compute_pi_approximation(cudaStream_t stream);
+std::vector<interval<double>> compute_pi_approximation(cudaStream_t stream);
 
 void tests_pi_approximation(cudaStream_t stream, cudaEvent_t event)
 {
@@ -23,7 +23,7 @@ void tests_pi_approximation(cudaStream_t stream, cudaEvent_t event)
 
     printf("Pi Approx: Inside OpenMP thread %i\n", omp_get_thread_num());
 
-    thrust::host_vector<I> h_pi = compute_pi_approximation(stream);
+    std::vector<I> h_pi = compute_pi_approximation(stream);
 
     for (I pi_approx : h_pi) {
         contains(pi_approx, std::numbers::pi);
@@ -32,7 +32,7 @@ void tests_pi_approximation(cudaStream_t stream, cudaEvent_t event)
     }
 }
 
-thrust::host_vector<interval<double>> compute_horner(cudaStream_t stream);
+std::vector<interval<double>> compute_horner(cudaStream_t stream);
 
 void tests_horner(cudaStream_t stream, cudaEvent_t event)
 {
@@ -43,7 +43,8 @@ void tests_horner(cudaStream_t stream, cudaEvent_t event)
 
     printf("Horner: Inside OpenMP thread %i\n", omp_get_thread_num());
 
-    thrust::host_vector<I> res = compute_horner(stream);
+    // thrust::host_vector<I> res = compute_horner(stream);
+    std::vector<I> res = compute_horner(stream);
 
     I exp_approx = res[res.size() - 1];
     T exp_true   = std::numbers::e;

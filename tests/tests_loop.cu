@@ -1,3 +1,5 @@
+#include <vector>
+
 #include <cuinterval/cuinterval.h>
 
 // #include <thrust/execution_policy.h>
@@ -5,6 +7,7 @@
 // #include <thrust/functional.h>
 // #include <thrust/sequence.h>
 
+#include <thrust/copy.h>
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 #include <thrust/iterator/transform_iterator.h>
@@ -78,7 +81,7 @@ struct final_decrement_fn
     }
 };
 
-thrust::host_vector<interval<double>> compute_pi_approximation(cudaStream_t stream)
+std::vector<interval<double>> compute_pi_approximation(cudaStream_t stream)
 {
     using T = double;
     using I = interval<T>;
@@ -107,7 +110,9 @@ thrust::host_vector<interval<double>> compute_pi_approximation(cudaStream_t stre
     thrust::transform(thrust::cuda::par.on(stream), d_pi.begin(), d_pi.end(), d_pi.begin(), final_decrement_fn(n));
     thrust::transform(thrust::cuda::par.on(stream), d_pi.begin(), d_pi.end(), d_pi.begin(), scale_fn());
 
-    thrust::host_vector<I> h_pi = d_pi;
+    std::vector<I> h_pi(d_pi.size());
+    thrust::copy(d_pi.begin(), d_pi.end(), h_pi.begin());
+
     return h_pi;
 }
 
@@ -136,7 +141,7 @@ struct horner_fn
     }
 };
 
-thrust::host_vector<interval<double>> compute_horner(cudaStream_t stream)
+std::vector<interval<double>> compute_horner(cudaStream_t stream)
 {
     using T = double;
     using I = interval<T>;
@@ -162,6 +167,9 @@ thrust::host_vector<interval<double>> compute_horner(cudaStream_t stream)
     thrust::inclusive_scan(d_coefficients.rbegin(), d_coefficients.rend(), d_res.begin(), horner_fn<I>(x));
 
     thrust::host_vector<I> coefficients = d_coefficients;
-    thrust::host_vector<I> res          = d_res;
-    return res;
+
+    std::vector<I> h_res(d_res.size());
+    thrust::copy(d_res.begin(), d_res.end(), h_res.begin());
+
+    return h_res;
 }

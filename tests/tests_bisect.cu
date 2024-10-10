@@ -1,10 +1,12 @@
 
-#include <cuinterval/interval.h>
 #include <cuinterval/examples/bisection.cuh>
+#include <cuinterval/interval.h>
 
 #include <thrust/async/copy.h>
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
+
+#include <vector>
 
 #include "tests_common.h"
 #include "tests_ops.cuh"
@@ -30,7 +32,10 @@ __host__ __device__ I f(I x)
 typedef interval<double> (*fn_t)(interval<double>);
 __device__ fn_t d_f = f<interval<double>>;
 
-thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream, cuda_buffer buffer, interval<double> x, double tolerance)
+std::vector<interval<double>> test_bisection_kernel(cudaStream_t stream,
+                                                    cuda_buffer buffer,
+                                                    interval<double> x,
+                                                    double tolerance)
 {
     using T                         = double;
     using I                         = interval<T>;
@@ -48,7 +53,7 @@ thrust::host_vector<interval<double>> test_bisection_kernel(cudaStream_t stream,
     bisection<T, max_depth><<<1, 1, 0, stream>>>(h_f, x, tolerance, d_roots, d_max_roots);
 
     CUDA_CHECK(cudaMemcpyAsync(&max_roots, d_max_roots, sizeof(*d_max_roots), cudaMemcpyDeviceToHost, stream));
-    thrust::host_vector<I> h_roots(max_roots);
+    std::vector<I> h_roots(max_roots);
     CUDA_CHECK(cudaStreamSynchronize(stream));
     thrust::device_event e = thrust::async::copy(roots.begin(), roots.begin() + max_roots, h_roots.begin());
 
