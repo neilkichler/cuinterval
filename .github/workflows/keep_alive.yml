@@ -24,3 +24,11 @@ jobs:
         run: echo "Keep alive"
       - name: GPU info
         run: nvidia-smi
+        
+  linux_gpu:
+    runs-on: [self-hosted,Linux]
+    steps:
+      - name: Linux keep alive
+        run: echo "Keep alive"
+      - name: GPU info
+        run: nvidia-smi
