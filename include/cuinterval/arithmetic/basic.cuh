@@ -357,6 +357,17 @@ inline constexpr __device__ interval<T> operator-(interval<T> a, T b)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> operator-(interval<T> a, auto b)
+{
+    using namespace intrinsic;
+    if (empty(a) || isnan(b)) {
+        return empty<T>();
+    }
+
+    return { sub_down(a.lb, b), sub_up(a.ub, b) };
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> operator*(interval<T> a, interval<T> b)
 {
     return mul(a, b);
