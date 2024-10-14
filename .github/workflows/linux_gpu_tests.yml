@@ -1,0 +1,39 @@
+name: Linux GPU
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    branches: '*'
+
+jobs:
+  build:
+
+    runs-on: [self-hosted, Linux, GPU]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Display the path
+      run: echo $PATH
+  
+    - name: gpu info
+      run: nvidia-smi
+
+    - name: nvidia compiler info
+      run: nvcc --version
+
+    - name: setup cmake
+      run: cmake --preset linux-gcc-debug-sanitizer-ub-coverage
+
+    - name: build
+      run: cmake --build --preset debug
+
+    - name: run ctest
+      run: ctest --preset debug
+
+    - name: run checks
+      run: |
+        ./tools/memcheck.sh ./build/tests/tests
+        ./tools/racecheck.sh ./build/tests/tests
+        ./tools/synccheck.sh ./build/tests/tests
