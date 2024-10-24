@@ -6,7 +6,7 @@ set(BOOST_UT_DISABLE_MODULE ON)
 FetchContent_Declare(
   ut
   GIT_REPOSITORY https://github.com/boost-ext/ut.git
-  GIT_TAG v2.0.1
+  GIT_TAG v2.1.0
   EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(ut)

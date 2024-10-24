@@ -29,7 +29,7 @@ include(FetchContent)
 FetchContent_Declare(
   PackageProject
   GIT_REPOSITORY https://github.com/TheLartians/PackageProject.cmake.git
-  GIT_TAG v1.11.2
+  GIT_TAG v1.12.0
 )
 FetchContent_MakeAvailable(PackageProject)
 
