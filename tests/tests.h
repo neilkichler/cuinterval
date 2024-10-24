@@ -31,7 +31,7 @@ bool check_within_ulps(T x, T y, std::size_t n, T direction)
         return true;
     }
 
-    for (int i = 0; i < n; ++i) {
+    for (auto i = 0u; i < n; ++i) {
         y = std::nextafter(y, direction);
 
         if (x == y) {

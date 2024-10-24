@@ -94,8 +94,6 @@ std::vector<interval<double>> compute_pi_approximation(cudaStream_t stream)
     auto tr_last      = thrust::make_transform_iterator(seq_last, to_interval_fn());
     auto pi_rcp_first = thrust::make_transform_iterator(tr_first, pi_recip_fn());
     auto pi_rcp_last  = thrust::make_transform_iterator(tr_last, pi_recip_fn());
-    auto pi_pow_first = thrust::make_transform_iterator(tr_first, pi_pow_fn());
-    auto pi_pow_last  = thrust::make_transform_iterator(tr_last, pi_pow_fn());
     auto pi_inv_first = thrust::make_transform_iterator(tr_first, pi_inv_fn());
     auto pi_inv_last  = thrust::make_transform_iterator(tr_last, pi_inv_fn());
 

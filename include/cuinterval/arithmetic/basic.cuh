@@ -919,25 +919,25 @@ inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto 
         return x;
     }
 
-    auto rootn_pos_n = [](interval<T> x, std::integral auto n) -> interval<T> {
-        if (n == 0) {
+    auto rootn_pos_n = [](interval<T> y, std::integral auto m) -> interval<T> {
+        if (m == 0) {
             return empty<T>();
-        } else if (n == 1) {
-            return x;
-        } else if (n == 2) {
-            return sqrt(x);
+        } else if (m == 1) {
+            return y;
+        } else if (m == 2) {
+            return sqrt(y);
         } else {
-            bool is_odd = n % 2;
+            bool is_odd = m % 2;
             interval<T> domain { is_odd ? intrinsic::neg_inf<T>() : static_cast<T>(0),
                                  intrinsic::pos_inf<T>() };
 
-            x = intersection(x, domain);
-            if (empty(x)) {
+            y = intersection(y, domain);
+            if (empty(y)) {
                 return empty<T>();
             }
 
-            return { intrinsic::next_after(pow(inf(x), 1.0 / n), domain.lb),
-                     intrinsic::next_after(pow(sup(x), 1.0 / n), domain.ub) };
+            return { intrinsic::next_after(pow(inf(y), 1.0 / m), domain.lb),
+                     intrinsic::next_after(pow(sup(y), 1.0 / m), domain.ub) };
         }
     };
 
