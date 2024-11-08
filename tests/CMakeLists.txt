@@ -22,6 +22,8 @@ add_executable(tests
     tests_loop.h
     tests_loop.cu
     tests_loop.cpp
+    tests_operator_overloading.h
+    tests_operator_overloading.cu
     generated/tests_generated.cpp
     generated/tests_c_xsc.cpp
     generated/tests_libieeep1788_elem.cpp
@@ -61,6 +63,7 @@ if(OpenMP_CXX_FOUND)
 endif()
 
 target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>")
+target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-extended-lambda>")
 
 # Register tests for use in ctest
 add_test(NAME testcuinterval COMMAND tests)

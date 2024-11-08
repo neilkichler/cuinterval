@@ -439,6 +439,34 @@ inline constexpr __device__ interval<T> operator/(interval<T> a, T b)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> &operator+=(interval<T> &a, auto b)
+{
+    a = a + b;
+    return a;
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> &operator-=(interval<T> &a, auto b)
+{
+    a = a - b;
+    return a;
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> &operator*=(interval<T> &a, auto b)
+{
+    a = a * b;
+    return a;
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> &operator/=(interval<T> &a, auto b)
+{
+    a = a / b;
+    return a;
+}
+
+template<typename T>
 inline constexpr __device__ __host__ bool contains(interval<T> x, T y)
 {
     return x.lb <= y && y <= x.ub;
@@ -498,7 +526,7 @@ inline constexpr __device__ bool equal(interval<T> a, interval<T> b)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator!=(interval<T> a, interval<T> b)
+inline constexpr __device__ bool operator!=(interval<T> a, interval<T> b)
 {
     return !equal(a, b);
 }
