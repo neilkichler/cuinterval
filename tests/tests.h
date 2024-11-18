@@ -7,7 +7,13 @@
 #pragma nv_diag_suppress 2811
 #pragma push_macro("__cpp_consteval")
 #define consteval constexpr
+#ifdef _MSC_VER
+#define static_assert(...)
+#endif
 #include <boost/ut.hpp>
+#ifdef _MSC_VER
+#undef static_assert
+#endif
 #undef consteval
 #pragma nv_diagnostic pop
 #pragma nv_diag_default 2811
