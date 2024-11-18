@@ -1,10 +1,10 @@
 #ifndef CUDA_INTERVAL_TESTS_H
 #define CUDA_INTERVAL_TESTS_H
 
-// compiler bug fix; TODO: remove when fixed
 #ifdef __CUDACC__
 #pragma nv_diagnostic push
 #pragma nv_diag_suppress 2811
+// TODO: remove when static_asserts are fixed upstream for nvcc
 #ifdef _MSC_VER
 #define static_assert(...)
 #endif
