@@ -5,8 +5,6 @@
 #ifdef __CUDACC__
 #pragma nv_diagnostic push
 #pragma nv_diag_suppress 2811
-#pragma push_macro("__cpp_consteval")
-#define consteval constexpr
 #ifdef _MSC_VER
 #define static_assert(...)
 #endif
@@ -14,10 +12,8 @@
 #ifdef _MSC_VER
 #undef static_assert
 #endif
-#undef consteval
 #pragma nv_diagnostic pop
 #pragma nv_diag_default 2811
-#pragma pop_macro("__cpp_consteval")
 #else
 #include <boost/ut.hpp>
 #endif
