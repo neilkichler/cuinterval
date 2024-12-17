@@ -381,7 +381,7 @@ inline constexpr __device__ interval<T> operator*(T a, interval<T> b)
     }
 
     constexpr auto zero = static_cast<T>(0);
-    // TODO: maybe use ternary instead?
+
     if (a < zero) {
         return { intrinsic::mul_down(a, b.ub), intrinsic::mul_up(a, b.lb) };
     } else if (a == zero) {
