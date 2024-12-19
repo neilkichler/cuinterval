@@ -1536,8 +1536,43 @@ inline constexpr __device__ interval<T> atanh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cot(interval<T> x)
 {
-    // return cos(x) / sin(x);
-    return {};
+    auto cot = [](T x) -> T { using std::tan; return 1 / tan(x); };
+
+    if (empty(x)) {
+        return x;
+    }
+
+    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+
+    T w = width(x);
+
+    if (w >= sup(pi)) {
+        // interval contains at least one full period -> return range of cot
+        return entire<T>();
+    }
+
+    auto quadrant_lb     = quadrant(x.lb);
+    auto quadrant_ub     = quadrant(x.ub);
+    auto quadrant_lb_mod = quadrant_lb % 2;
+    auto quadrant_ub_mod = quadrant_ub % 2;
+
+    if ((quadrant_lb_mod == 1 && quadrant_ub_mod == 0)
+        || (quadrant_lb_mod == quadrant_ub_mod && quadrant_lb != quadrant_ub)) {
+
+        // NOTE: some test cases treat an interval [-1, 0] in such a way that 0 is only approached from the left and thus
+        //       the output range should have -infinity as lower bound. This check covers this special case.
+        //       For other similar scenarios with [x, k * pi] we do not have this issue because in floating point precision
+        //       we never exactly reach k * pi, i.e. float64(k * pi) < k * pi.
+        if (sup(x) == 0) {
+            return { intrinsic::neg_inf<T>(), intrinsic::next_floating(intrinsic::next_floating(cot(x.lb))) };
+        }
+
+        // crossing an asymptote -> return range of cot
+        return entire<T>();
+    } else {
+        return { intrinsic::prev_floating(intrinsic::prev_floating(cot(x.ub))),
+                 intrinsic::next_floating(intrinsic::next_floating(cot(x.lb))) };
+    }
 }
 
 template<typename T>

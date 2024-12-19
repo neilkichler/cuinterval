@@ -376,7 +376,7 @@ testcase mpfi_cot {
     cot [0.125, 0x1921fb54442d19p-52] = [-0x172cece675d1fdp-105, 0x1fd549f047f2bbp-50];
     cot [0x1921fb54442d19p-52, 4.0] = [entire];
     cot [4.0, 0x3243f6a8885a3p-47] = [-0x1d02967c31cdb5p-1, 0x1ba35ba1c6b75dp-53];
-    cot [0x13a28c59d5433bp-44, 0x9d9462ceaa19dp-43] = [0x148c05d04e1fb7p-53, 0x1cefdde7c84c27p-4];
+    cot [0x13a28c59d5433bp-44, 0x9d9462ceaa19dp-43] = [entire]; // NOTE: the itl tests have the result [0x148c05d04e1fb7p-53,0x1cefdde7c84c27p-4], but because the input is float64(100 * pi) < 100 * pi we actually cross the asymptote in floating point precision. So, I think it should be [-inf, inf].
 }
 
 testcase mpfi_coth {

@@ -81,6 +81,7 @@ supported = {
     "atan2": {"args": [I, I], "ret": I, "ulp_error": 3},
     "sinh": {"args": [I], "ret": I, "ulp_error": 3},
     "cosh": {"args": [I], "ret": I, "ulp_error": 2},
+    "cot": {"args": [I], "ret": I, "ulp_error": 4},
     "tanh": {"args": [I], "ret": I, "ulp_error": 2},
     "asinh": {"args": [I], "ret": I, "ulp_error": 3},
     "acosh": {"args": [I], "ret": I, "ulp_error": 3},

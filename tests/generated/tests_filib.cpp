@@ -1110,6 +1110,88 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
+        constexpr int n = 30;
+        I *h_xs = new (h_buffer) I[n]{
+            {0X1.192C2C9A683C1P+12,0X1.192C2FEE59517P+12},
+            {0X1.5FDBBE9CFF344P+4,0X1.601482AE90BD8P+4},
+            {0X1.87E07A6BC787DP+16,0X1.87E07BE653F0BP+16},
+            {0X1.921FB745205B6P+4,0X1.9CA9D998C8F0CP+4},
+            {0X1.921FBC1E1D6F1P+4,0X1.9274C7419D752P+4},
+            {0X1.A81D71899E3A2P+8,0X1.A81D871B2A11CP+8},
+            {0X1.C463AC2D25E2EP+4,0X1.C4678949B9C38P+4},
+            {0X1.C463BF5757828P+4,0X1.C46464EDF77DBP+4},
+            {0X2.5B2F8FE76B8ACP+4,0X2.5B2F929161DF0P+4},
+            {0X2.5BA3D0708DC04P+16,0X2.5BA413F0B89B0P+16},
+            {0X2.F51FB358D6800P+8,0X2.F51FCB23CA942P+8},
+            {0X2.F79729158124CP+16,0X2.F798A413537EEP+16},
+            {0X3.243F6AE2FD3D8P+0,0X3.243FB3C602324P+0},
+            {0X3.371943E536E9EP+8,0X3.371D0784693FAP+8},
+            {0X3.88C757DD16D52P+4,0X3.8A405475741F0P+4},
+            {0X3.88C7990326C68P+4,0X3.88D4315F9483CP+4},
+            {0X3.C4780CC209478P+8,0X3.C47856FD49FFEP+8},
+            {0X4.14361E6FD662CP+16,0X4.1438105ED190CP+16},
+            {0X4.4EB2F3113085CP+8,0X4.4EB2F4C8B0144P+8},
+            {0X4.51D73651EA89CP+4,0X4.52EB8E58B411CP+4},
+            {0X4.C2F01D76EC8D4P+8,0X4.C2F0BEF8F51A0P+8},
+            {0X5.46E61C5D6BD60P+8,0X5.46E643F35C84CP+8},
+            {0X6.487ED519B0E68P+0,0X6.488A1AA011958P+0},
+            {0X6.487ED56D74E68P+0,0X7.5283077755B9CP+0},
+            {0X6.487ED6E2382ECP+0,0X9.3AA74D45D1138P+0},
+            {0X7.633D20850D51CP+8,0X7.633F1A3C4CEB8P+8},
+            {0X9.9F02364234BC8P+4,0X9.9F1458C26EEB8P+4},
+            {0XB.C1A554F7480E0P+8,0XB.C1A56FE0FC750P+8},
+            {0XC.90FDB8A26FBF8P+0,0XC.9101A0545D040P+0},
+            {0XC.CA857372B5428P+12,0XC.CA86C93A948E0P+12},
+        };
+
+        h_buffer += align_to(n * sizeof(I), alignof(I));
+        I *h_res = new (h_buffer) I[n]{};
+        std::array<I, n> h_ref {{
+            {0X3.D27F074ED4C1AP+8,0X1.2A53ECF8BBB09P+12},
+            {0X4.826BF805C583CP+4,0XC.9CFDB05DEF930P+24},
+            {0XA.D1F5D5DED35E0P+4,0X7.55F4ABD4357C8P+28},
+            {0X1.4AB8A7BB8153CP+0,0X7.FC8B575A99618P+16},
+            {0X3.02439C1295BB8P+4,0X2.55DE9F3FCCF28P+16},
+            {0XB.ACE6E2E9DA370P+8,0X2.CB45525DF368EP+16},
+            {0X4.23D96B037E734P+8,0X3.FA5C8B4EB13BAP+20},
+            {0X1.623D682405E56P+12,0XD.2F53386F7DF28P+12},
+            {0X5.FF45640D6BF8CP+16,0XF.8E38A1B8F3CE0P+24},
+            {0X3.84ED5845DBFB2P+0,0X4.BDE3C91120740P+4},
+            {0XA.BBFD5C1B7C1D8P+8,0X1.1E2116D584957P+20},
+            {0X1.731B7ACF66E92P-4,0X2.F8C19331ECBFCP+16},
+            {0X3.7ECF31F964F42P+16,0X2.D46AD05A0B746P+24},
+            {0X3.E06D09FC7DDC2P+4,0X2.C1B5E6F32FDEEP+8},
+            {0XA.D59BACA695410P+0,0X4.91A509DE53224P+24},
+            {0X1.3EC2E09B0928AP+8,0X3.EDBBE6390EF44P+12},
+            {0X3.72D85B3269A44P+8,0X3.28E454E439A90P+24},
+            {-0X6.48C7464AC3A74P-4,+0X1.3AD6ED9B4C193P+24},
+            {0X9.51D206F220E70P+12,0XC.5DDA26E3680B8P+28},
+            {0XE.CC7EFFC39DE08P+0,0X4.2B94A5E391E20P+16},
+            {0X1.95C659F50F06FP+8,0X7.F76EB663A7898P+28},
+            {0X4.4551872667304P+4,0X4.7465D978E9638P+4},
+            {0X1.6B6333E883806P+12,0X1.D9B101DF34E20P+28},
+            {0X9.691CCDB975190P-4,0X2.C52AD6475D346P+24},
+            {-0X5.0BA299C8F7644P+0,+0X8.CE26D93009840P+20},
+            {0X8.19686283704C0P+4,0X5.38D928BC4D11CP+28},
+            {0XE.1DCEBD0AA72D0P+4,0X9.516DD4FA21CF0P+28},
+            {0X8.33C065BCB81C8P+8,0X3.B8E9A35DDF6BCP+12},
+            {0X4.09E5FC0006C38P+12,0X1.1A74CC76B6B71P+20},
+            {0XB.F4CB43CC4C9E8P+0,0X9.40D848DDFC130P+16},
+        }};
+
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        tests_cot_call(numBlocks, blockSize, stream, n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
+        int max_ulp_diff = 4;
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+    };
+
+    {
+        char *h_buffer = buffer.host;
         constexpr int n = 26;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.0000000000000P+0,+0X2.0000000000000P+0},

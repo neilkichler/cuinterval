@@ -900,6 +900,64 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
+        constexpr int n = 18;
+        I *h_xs = new (h_buffer) I[n]{
+            {-1.0,0.0},
+            {-2.0,0x1921fb54442d19p-52},
+            {-3.0,-0x1921fb54442d19p-52},
+            {-3.0,-2.0},
+            {-3.0,0.0},
+            {-8.0,0.0},
+            {-infinity,+8.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {0.0,+1.0},
+            {0.0,+3.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.125,0.5},
+            {0.125,0x1921fb54442d19p-52},
+            {0x1921fb54442d19p-52,4.0},
+            {4.0,0x3243f6a8885a3p-47},
+            entire,
+        };
+
+        h_buffer += align_to(n * sizeof(I), alignof(I));
+        I *h_res = new (h_buffer) I[n]{};
+        std::array<I, n> h_ref {{
+            {-infinity,-0x148c05d04e1cfdp-53},
+            entire,
+            {0x5cb3b399d747fp-103,0xe07cf2eb32f0bp-49},
+            {0x1d4a42e92faa4dp-54,0xe07cf2eb32f0bp-49},
+            {-infinity,0xe07cf2eb32f0bp-49},
+            entire,
+            entire,
+            entire,
+            entire,
+            {0x148c05d04e1cfdp-53,+infinity},
+            {-0xe07cf2eb32f0bp-49,+infinity},
+            entire,
+            entire,
+            {0xea4d6bf23e051p-51,0x1fd549f047f2bbp-50},
+            {-0x172cece675d1fdp-105,0x1fd549f047f2bbp-50},
+            entire,
+            {-0x1d02967c31cdb5p-1,0x1ba35ba1c6b75dp-53},
+            entire,
+        }};
+
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        tests_cot_call(numBlocks, blockSize, stream, n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
+        int max_ulp_diff = 4;
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+    };
+
+    {
+        char *h_buffer = buffer.host;
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {+0x170ef54646d497p-105,+0x170ef54646d497p-105},
