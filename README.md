@@ -58,6 +58,7 @@ The error for a paricular operation is given below.
 | acos      | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
 | atan      | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
 | atan2     | $\mathbb{IR}^2 \rightarrow \mathbb{IR}$     | 3            |
+| cot       | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 2            |
 | sinpi     | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
 | cospi     | $\mathbb{IR}   \rightarrow \mathbb{IR}$     | 3            |
 
@@ -77,6 +78,15 @@ The error for a paricular operation is given below.
 
 </details>
 
+<details>
+<summary>Special functions</summary>
+  
+| Operation | Function Description                        | Error [ulps] |
+|-----------|---------------------------------------------|--------------|
+| erf       | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 2            |
+| erfc      | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 5            |
+
+</details>
 
 <details>
 <summary>Integer functions</summary>
