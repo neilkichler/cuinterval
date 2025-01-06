@@ -14,9 +14,9 @@ __global__ void test_overload(auto &&f, cu::interval<T> *x,
     }
 }
 
+template<typename T>
 void test_compare_fns(auto &&fn_a, auto &&fn_b, cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
 {
-    using T = double;
     using I = cu::interval<T>;
 
     T infinity = std::numeric_limits<T>::infinity();
@@ -134,7 +134,8 @@ void tests_operator_overloading(cuda_buffer buffer, cudaStream_t stream, cudaEve
     };
 
     auto compare_fns = [&](auto &&fn_a, auto &&fn_b) {
-        test_compare_fns(fn_a, fn_b, buffer, stream, event);
+        test_compare_fns<float>(fn_a, fn_b, buffer, stream, event);
+        test_compare_fns<double>(fn_a, fn_b, buffer, stream, event);
     };
 
     compare_fns(add_assign, add);
