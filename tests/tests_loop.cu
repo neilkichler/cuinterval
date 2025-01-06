@@ -139,9 +139,9 @@ struct horner_fn
     }
 };
 
-std::vector<interval<double>> compute_horner(cudaStream_t stream)
+template<typename T>
+std::vector<interval<T>> compute_horner(cudaStream_t stream)
 {
-    using T = double;
     using I = interval<T>;
 
     // Approximate exp with Horner's scheme.
@@ -159,8 +159,9 @@ std::vector<interval<double>> compute_horner(cudaStream_t stream)
     d_coefficients[0] = I { 1.0, 1.0 };
 
     // example input
+    T one = 1.0;
     T eps = 1.0e-12;
-    I x { 1.0 - eps, 1.0 + eps };
+    I x { one - eps, one + eps };
     thrust::device_vector<I> d_res(n_coefficients);
     thrust::inclusive_scan(d_coefficients.rbegin(), d_coefficients.rend(), d_res.begin(), horner_fn<I>(x));
 
@@ -171,3 +172,6 @@ std::vector<interval<double>> compute_horner(cudaStream_t stream)
 
     return h_res;
 }
+
+template std::vector<interval<float>> compute_horner<float>(cudaStream_t stream);
+template std::vector<interval<double>> compute_horner<double>(cudaStream_t stream);
