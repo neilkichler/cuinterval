@@ -24,6 +24,9 @@ add_executable(tests
     tests_loop.cpp
     tests_operator_overloading.h
     tests_operator_overloading.cu
+    tests_powf.h
+    tests_powf.cu
+    tests_powf.cpp
     generated/tests_generated.cpp
     generated/tests_c_xsc.cpp
     generated/tests_libieeep1788_elem.cpp

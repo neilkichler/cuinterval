@@ -837,7 +837,15 @@ inline constexpr __device__ interval<T> log1p(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n)
 {
-    using std::pow;
+    auto pow = [](T x, std::integral auto n) -> T {
+        // The default std::pow implementation returns a double for std::pow(float, int). We want a float.
+        if constexpr (std::is_same_v<T, float>) {
+            return powf(x, n);
+        } else {
+            using std::pow;
+            return pow(x, n);
+        }
+    };
 
     if (empty(x)) {
         return x;
