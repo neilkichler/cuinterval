@@ -2,8 +2,8 @@ name: Keep runners alive
 
 on:
   schedule:
-    # times in UTC, standard Chron format
-    - cron:  '0 05 01,10,20 * *' # 5am 1st/10th/20th day of month
+    # times in UTC, standard Cron format
+    - cron: '0 21 * * *' # 9pm UTC every day
     
   workflow_dispatch:
 
