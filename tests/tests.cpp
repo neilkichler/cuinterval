@@ -1,6 +1,7 @@
 #include "generated/tests_generated.h"
 #include "tests_additional.h"
 #include "tests_common.h"
+#include "tests_compile_time.h"
 
 #include <cuda_runtime.h>
 #include <omp.h>

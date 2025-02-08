@@ -18,7 +18,6 @@ constexpr bool operator==(interval<T> lhs, interval<T> rhs)
 {
     auto empty = [](interval<T> x) { return !(x.lb <= x.ub); };
 
-
     return (empty(lhs) && empty(rhs)) || (lhs.lb == rhs.lb && lhs.ub == rhs.ub);
 }
 
