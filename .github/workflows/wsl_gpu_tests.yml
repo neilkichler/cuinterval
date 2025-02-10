@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: [self-hosted, Linux, WSL, GPU]
+    runs-on: [self-hosted, WSL, GPU]
 
     steps:
     - uses: actions/checkout@v4
