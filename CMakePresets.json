@@ -39,6 +39,14 @@
       "hidden": true
     },
     {
+      "name": "clang-cuda",
+      "cacheVariables": {
+        "CMAKE_CUDA_COMPILER": "clang++",
+        "CMAKE_CUDA_FLAGS_INIT": "-ansi"
+      },
+      "hidden": true
+    },
+    {
       "name": "msvc",
       "hidden": true,
       "cacheVariables": {
@@ -144,10 +152,26 @@
       ]
     },
     {
+      "name": "linux-clang-host-device-debug",
+      "inherits": [
+        "linux-debug",
+        "clang",
+        "clang-cuda"
+      ]
+    },
+    {
       "name": "linux-clang-release",
       "inherits": [
         "linux-release",
         "clang"
+      ]
+    },
+    {
+      "name": "linux-clang-host-device-release",
+      "inherits": [
+        "linux-release",
+        "clang",
+        "clang-cuda"
       ]
     },
     {

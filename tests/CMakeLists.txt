@@ -65,8 +65,8 @@ if(OpenMP_CXX_FOUND)
     target_link_libraries(tests PUBLIC "$<IF:$<CXX_COMPILER_ID:MSVC>,-openmp:llvm,OpenMP::OpenMP_CXX>")
 endif()
 
-target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>")
-target_compile_options(tests PRIVATE "$<$<COMPILE_LANGUAGE:CUDA>:--expt-extended-lambda>")
+target_compile_options(tests PRIVATE "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:--expt-relaxed-constexpr>")
+target_compile_options(tests PRIVATE "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:--expt-extended-lambda>")
 
 # Register tests for use in ctest
 add_test(NAME testcuinterval COMMAND tests)
