@@ -4,6 +4,18 @@
 namespace cu::intrinsic
 {
 // clang-format off
+    #define ROUNDED_OP(OP) \
+        template<typename T> inline constexpr __device__ T OP ## _down(const T &x, typename T::value_type y); \
+        template<typename T> inline constexpr __device__ T OP ## _up  (const T &x, typename T::value_type y); \
+        template<typename T> inline constexpr __device__ T OP ## _down(typename T::value_type x, const T &y); \
+        template<typename T> inline constexpr __device__ T OP ## _up  (typename T::value_type x, const T &y); \
+
+    ROUNDED_OP(add)
+    ROUNDED_OP(sub)
+    ROUNDED_OP(mul)
+
+    #undef ROUNDED_OP
+
     template<typename T> inline __device__ T fma_down  (T x, T y, T z);
     template<typename T> inline __device__ T fma_up    (T x, T y, T z);
     template<typename T> inline __device__ T add_down  (T x, T y);
