@@ -9,6 +9,18 @@ struct interval
 {
     using value_type = T;
 
+    // to support designated initializers: return {{ .lb = lb, .ub = ub }} -> interval
+    struct initializer
+    {
+        T lb;
+        T ub;
+    };
+
+    constexpr interval() = default;
+    constexpr interval(T p) : lb(p), ub(p) { } // point interval
+    constexpr interval(T lb, T ub) : lb(lb), ub(ub) { }
+    constexpr interval(initializer init) : lb(init.lb), ub(init.ub) { }
+
     T lb;
     T ub;
 };
