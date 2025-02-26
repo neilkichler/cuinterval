@@ -17,3 +17,4 @@ target_compile_features(example_interval_procedures INTERFACE cxx_std_17 cuda_st
 target_include_directories(example_interval_procedures INTERFACE "${cuinterval_SOURCE_DIR}/examples")
 target_link_libraries(example_interval_procedures INTERFACE cuinterval)
 
+add_subdirectory(basic)
