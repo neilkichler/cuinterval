@@ -13,6 +13,11 @@
       "binaryDir": "build"
     },
     {
+      "name": "common-default-generator",
+      "hidden": true,
+      "binaryDir": "build"
+    },
+    {
       "name": "common-linux",
       "hidden": true,
       "inherits": "common"
@@ -109,6 +114,15 @@
       "name": "release",
       "inherits": [
         "common"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
+      }
+    },
+    {
+      "name": "release-default-generator",
+      "inherits": [
+        "common-default-generator"
       ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
