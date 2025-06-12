@@ -623,8 +623,7 @@ inline constexpr __device__ interval<T> cancel_plus(interval<T> x, interval<T> y
 template<typename T>
 inline constexpr __device__ interval<T> intersection(interval<T> x, interval<T> y)
 {
-    using std::max;
-    using std::min;
+    using std::max, std::min;
 
     // extended
     if (disjoint(x, y)) {
@@ -637,8 +636,7 @@ inline constexpr __device__ interval<T> intersection(interval<T> x, interval<T> 
 template<typename T>
 inline constexpr __device__ interval<T> convex_hull(interval<T> x, interval<T> y)
 {
-    using std::max;
-    using std::min;
+    using std::max, std::min;
 
     // extended
     if (empty(x)) {
@@ -859,9 +857,7 @@ inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n
         return empty<T>();
     }
 
-    using intrinsic::next_after;
-    using intrinsic::next_floating;
-    using intrinsic::prev_floating;
+    using intrinsic::next_after, intrinsic::next_floating, intrinsic::prev_floating;
 
     if (n % 2) { // odd power
         if (entire(x)) {
@@ -919,11 +915,8 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
 {
     assert(inf(x) >= 0);
 
-    using intrinsic::next_floating;
-    using intrinsic::prev_floating;
-    using std::lrint;
-    using std::pow;
-    using std::sqrt;
+    using intrinsic::next_floating, intrinsic::prev_floating;
+    using std::lrint, std::pow, std::sqrt;
 
     if (sup(x) == 0) {
         if (y > 0) {
@@ -1037,9 +1030,7 @@ inline constexpr __device__ unsigned int quadrant_pi(T v)
 template<typename T>
 inline constexpr __device__ interval<T> sin(interval<T> x)
 {
-    using std::max;
-    using std::min;
-    using std::sin;
+    using std::max, std::min, std::sin;
 
     if (empty(x)) {
         return x;
@@ -1116,9 +1107,7 @@ inline constexpr __device__ interval<T> sin(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> sinpi(interval<T> x)
 {
-    using ::sinpi;
-    using std::max;
-    using std::min;
+    using ::sinpi, std::max, std::min;
 
     if (empty(x)) {
         return x;
@@ -1168,9 +1157,7 @@ inline constexpr __device__ interval<T> sinpi(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cos(interval<T> x)
 {
-    using std::cos;
-    using std::max;
-    using std::min;
+    using std::cos, std::max, std::min;
 
     if (empty(x)) {
         return x;
@@ -1222,9 +1209,7 @@ inline constexpr __device__ interval<T> cos(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cospi(interval<T> x)
 {
-    using ::cospi;
-    using std::max;
-    using std::min;
+    using ::cospi, std::max, std::min;
 
     if (empty(x)) {
         return x;
@@ -1355,8 +1340,7 @@ inline constexpr __device__ interval<T> atan(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
 {
-    using std::abs;
-    using std::atan2;
+    using std::abs, std::atan2;
 
     if (empty(x) || empty(y)) {
         return empty<T>();
@@ -1624,8 +1608,7 @@ inline constexpr __device__ split<T> bisect(interval<T> x, T split_ratio)
     T type_min = intrinsic::neg_inf<T>();
     T type_max = intrinsic::pos_inf<T>();
 
-    using intrinsic::next_floating;
-    using intrinsic::prev_floating;
+    using intrinsic::next_floating, intrinsic::prev_floating;
 
     if (entire(x)) {
         if (split_ratio == 0.5) {
