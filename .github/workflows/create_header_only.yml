@@ -7,7 +7,9 @@ on:
   workflow_dispatch:  # allows manual triggering
 
 jobs:
-  export-include:
+  create-header-only:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -34,5 +36,8 @@ jobs:
           # Commit the include folder only
           git commit -m "Update header-only branch from main"
 
+          # Allow github actions bot to write to repository with token
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
           # Force push to the include-only branch
-          git push -f origin HEAD:header-only
+          git push -f origin header-only
