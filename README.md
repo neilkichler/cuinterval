@@ -1,4 +1,12 @@
-<h1 align='center'>CuInterval</h1>
+<h1 align='center'>CuInterval
+
+[![Cpp Version](https://img.shields.io/badge/requires-C++20-blue)](https://github.com/neilkichler/cuinterval/tree/main?tab=readme-ov-file#build-requirements)
+[![CUDA Version](https://img.shields.io/badge/CUDA-12+-8A2BE2?logo=nvidia)](https://github.com/neilkichler/cuinterval/tree/main?tab=readme-ov-file#build-requirements)
+[![CMake Version](https://img.shields.io/badge/CMake-3.25.2+-blue?logo=cmake)](https://github.com/neilkichler/cuinterval/tree/main?tab=readme-ov-file#build-requirements)
+[![Docs](https://img.shields.io/badge/documentation-latest-8A2BE2)](https://neilkichler.github.io/cuinterval)
+[![GitHub License](https://img.shields.io/github/license/neilkichler/cuinterval)](https://github.com/neilkichler/cuinterval/blob/main/LICENSE)
+
+</h1>
 
 CuInterval is a CUDA [interval arithmetic](https://en.wikipedia.org/wiki/Interval_arithmetic) library. It includes all fundamental and set-based interval operations of the [IEEE Standard for Interval Arithmetic](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7140721).
 Other flavors, including decorations are not supported. 
