@@ -28,7 +28,7 @@ jobs:
           # Remove all files except the include directory
           git rm -rf .
           git checkout main -- include LICENSE README.md
-          git mv include/cuinterval .
+          git mv include/cuinterval/* .
           git mv LICENSE cuinterval
           git mv README.md cuinterval
           rm -rf include
