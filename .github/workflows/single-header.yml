@@ -1,0 +1,47 @@
+name: Create single-header library
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # allows manual triggering
+
+jobs:
+  create-header-only:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for full history
+      
+      - name: Set up Python # required for generation of single-header
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Filter the include directory into a separate branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          # Create a new orphan branch
+          git checkout --orphan single-header
+          
+          # Remove all files except the include directory
+          git rm -rf .
+          git checkout main -- include LICENSE tools/single-header.py
+          python3 tools/single-header.py
+          git rm -rf include/ tools/ LICENSE
+          git add cuinterval.cuh
+
+          # Commit the single header
+          git commit -m "Create single-header from main"
+
+          # Allow github actions bot to write to repository with token
+          git remote add gh_repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+          # Force push to the include-only branch
+          git push -f gh_repo single-header
