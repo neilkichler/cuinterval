@@ -29,8 +29,6 @@ jobs:
           git rm -rf .
           git checkout main -- include LICENSE README.md
           git mv include/cuinterval/* .
-          git mv LICENSE cuinterval
-          git mv README.md cuinterval
           rm -rf include
 
           # Commit the include folder only
