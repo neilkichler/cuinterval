@@ -1,0 +1,38 @@
+name: Create header-only library
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # allows manual triggering
+
+jobs:
+  export-include:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for full history
+
+      - name: Filter the include directory into a separate branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          # Create a new orphan branch
+          git checkout --orphan header-only
+
+          # Remove all files except the include directory
+          git rm -rf .
+          git checkout main -- include LICENSE README.md
+          git mv include/cuinterval .
+          git mv LICENSE cuinterval
+          git mv README.md cuinterval
+          rm -rf include
+
+          # Commit the include folder only
+          git commit -m "Update header-only branch from main"
+
+          # Force push to the include-only branch
+          git push -f origin HEAD:header-only
