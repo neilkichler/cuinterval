@@ -8,7 +8,7 @@ import subprocess
 
 root_path = os.path.join("include")
 starting_header = os.path.join(root_path, "cuinterval", "cuinterval.h")
-output_header = os.path.join("extras", "cuinterval.cuh")
+output_header = "cuinterval.cuh"
 
 file_header = """\
 // SPDX-License-Identifier: MIT
@@ -87,7 +87,7 @@ def combine_files(out, filename: str) -> int:
 
 def latest_commit_hash(repo_path="."):
     result = subprocess.run(
-        ["git", "rev-parse", "HEAD"],
+        ["git", "rev-parse", "origin/main"],
         cwd=repo_path,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
