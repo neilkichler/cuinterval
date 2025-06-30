@@ -37,7 +37,7 @@ jobs:
           git commit -m "Update header-only branch from main"
 
           # Allow github actions bot to write to repository with token
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git remote add gh_repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
           # Force push to the include-only branch
-          git push -f origin header-only
+          git push -f gh_repo header-only
