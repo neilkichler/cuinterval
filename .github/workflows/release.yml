@@ -1,6 +1,9 @@
 name: Release on GitHub with automatic single-header and header-only builds
 
-on: push
+on:
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   build:
