@@ -1,0 +1,42 @@
+name: Release on GitHub with automatic single-header and header-only builds
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Set up Python # required for generation of single-header
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create single-header library cuinterval.cuh
+        run: |
+          python3 tools/single-header.py
+
+      - name: Create header-only library as folder
+        run: |
+          git mv include/cuinterval cuinterval
+          git mv LICENSE cuinterval
+          git mv README.md cuinterval
+
+      - name: Zip header-only library
+        run: |
+          zip -r cuinterval.zip cuinterval
+
+      - name: Create compressed tarball header-only library
+        run: |
+          tar -czf cuinterval.tar.gz cuinterval
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            cuinterval.zip
+            cuinterval.tar.gz
+            cuinterval.cuh
