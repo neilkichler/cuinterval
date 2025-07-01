@@ -22,4 +22,4 @@ std::ostream &operator<<(std::ostream &os, split<T> x)
 
 } // namespace cu
 
-#endif
+#endif // CUINTERVAL_FORMAT_H
