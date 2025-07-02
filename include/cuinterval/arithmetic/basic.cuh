@@ -137,7 +137,6 @@ inline constexpr __device__ interval<T> cbrt(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> recip(interval<T> a)
 {
-
     if (empty(a)) {
         return a;
     }
@@ -156,10 +155,7 @@ inline constexpr __device__ interval<T> recip(interval<T> a)
         }
     }
 
-    interval<T> b;
-    b.lb = intrinsic::rcp_down(a.ub);
-    b.ub = intrinsic::rcp_up(a.lb);
-    return b;
+    return { intrinsic::rcp_down(a.ub), intrinsic::rcp_up(a.lb) };
 }
 
 template<typename T>
