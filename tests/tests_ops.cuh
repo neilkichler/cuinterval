@@ -652,6 +652,15 @@ __global__ void test_pow(int n, cu::interval<T> *x, cu::interval<T> *y, cu::inte
 }
 
 template<typename T>
+__global__ void test_hypot(int n, cu::interval<T> *x, cu::interval<T> *y, cu::interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = hypot(x[i], y[i]);
+    }
+}
+
+template<typename T>
 __global__ void test_bisect(int n, cu::interval<T> *x, T *y, cu::split<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;

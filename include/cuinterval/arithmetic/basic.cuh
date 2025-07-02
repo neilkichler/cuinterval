@@ -1,8 +1,8 @@
 #ifndef CUINTERVAL_ARITHMETIC_BASIC_CUH
 #define CUINTERVAL_ARITHMETIC_BASIC_CUH
 
-#include <cuinterval/interval.h>
 #include <cuinterval/arithmetic/intrinsic.cuh>
+#include <cuinterval/interval.h>
 
 #include <cassert>
 #include <cmath>
@@ -293,6 +293,22 @@ inline constexpr __device__ interval<T> min(interval<T> x, interval<T> y)
     }
 
     return { min(x.lb, y.lb), min(x.ub, y.ub) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> hypot(interval<T> x, interval<T> y)
+{
+    if (empty(x) || empty(y)) {
+        return empty<T>();
+    }
+
+    // not using builtin CUDA hypot functions as it has a maximum ulp error of 2,
+    // whereas sqr and sqrt have intrinsic rounded operations with 0 ulp error.
+    auto hypot = [](interval<T> a, interval<T> b) {
+        return sqrt(sqr(a) + sqr(b));
+    };
+
+    return hypot(x, y);
 }
 
 template<typename T>

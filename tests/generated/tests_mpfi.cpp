@@ -1699,6 +1699,85 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
+        constexpr int n = 17;
+        I *h_xs = new (h_buffer) I[n]{
+            {-12.0,-5.0},
+            {-4.0,+7.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {-infinity,8.0},
+            {0.0,+infinity},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,3.0},
+            {0.0,5.0},
+            {0x1854bfb363dc39p-50,0x19f625847a5899p-48},
+            {6.0,7.0},
+            entire,
+        };
+
+        h_buffer += align_to(n * sizeof(I), alignof(I));
+        I *h_ys = new (h_buffer) I[n]{
+            {-35.0,-12.0},
+            {-25.0,3.0},
+            {-1.0,8.0},
+            {8.0,+infinity},
+            {0.0,8.0},
+            {-7.0,8.0},
+            {0.0,8.0},
+            {-infinity,-7.0},
+            {0.0,0.0},
+            {0.0,8.0},
+            {8.0,+infinity},
+            entire,
+            {-4.0,0.0},
+            {0.0,12.0},
+            {0x1854bfb363dc39p-50,0x19f625847a5899p-48},
+            {1.0,24.0},
+            {0.0,8.0},
+        };
+
+        h_buffer += align_to(n * sizeof(I), alignof(I));
+        I *h_res = new (h_buffer) I[n]{};
+        std::array<I, n> h_ref {{
+            {13.0,37.0},
+            {0.0,0x19f625847a5899p-48},
+            {7.0,+infinity},
+            {8.0,+infinity},
+            {0.0,+infinity},
+            {0.0,+infinity},
+            {0.0,+infinity},
+            {7.0,+infinity},
+            {0.0,0.0},
+            {0.0,8.0},
+            {8.0,+infinity},
+            {0.0,+infinity},
+            {0.0,5.0},
+            {0.0,13.0},
+            {0x113463fa37014dp-49,0x125b89092b8fc0p-47},
+            {0x1854bfb363dc39p-50,25.0},
+            {0.0,+infinity},
+        }};
+
+        I *d_res = (I *)d_res_;
+        I *d_ys = (I *)d_ys_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        CUDA_CHECK(cudaMemcpyAsync(d_ys, h_ys, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        tests_hypot_call(numBlocks, blockSize, stream, n, d_xs, d_ys, d_res);
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
+        int max_ulp_diff = 0;
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+    };
+
+    {
+        char *h_buffer = buffer.host;
         constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},

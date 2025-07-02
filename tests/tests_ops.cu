@@ -428,3 +428,9 @@ void tests_rootn_call(int numBlocks, int blockSize, cudaStream_t stream,
     test_rootn<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
 }
             
+void tests_hypot_call(int numBlocks, int blockSize, cudaStream_t stream,
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_ys, cu::interval<double> *d_res)
+{
+    test_hypot<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_ys, d_res); 
+}
+            

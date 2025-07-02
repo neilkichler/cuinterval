@@ -91,6 +91,7 @@ supported = {
     "pown": {"args": [I, N], "ret": I, "ulp_error": 1},
     "pow": {"args": [I, I], "ret": I, "ulp_error": 1},
     "rootn": {"args": [I, N], "ret": I, "ulp_error": 2},
+    "hypot": {"args": [I, I], "ret": I, "ulp_error": 0},
 }
 
 def convert_to_test(file_path):
