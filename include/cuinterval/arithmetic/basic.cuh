@@ -118,8 +118,7 @@ inline constexpr __device__ interval<T> sqr(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> sqrt(interval<T> x)
 {
-    return { x.lb <= 0 && x.ub > 0 ? 0 : intrinsic::sqrt_down(x.lb),
-             intrinsic::sqrt_up(x.ub) };
+    return { x.lb <= 0 && x.ub > 0 ? 0 : intrinsic::sqrt_down(x.lb), intrinsic::sqrt_up(x.ub) };
 }
 
 template<typename T>
