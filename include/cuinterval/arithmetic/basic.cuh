@@ -272,6 +272,12 @@ inline constexpr __device__ interval<T> abs(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> fabs(interval<T> x)
+{
+    return abs(x);
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> max(interval<T> x, interval<T> y)
 {
     using std::max;
@@ -281,6 +287,30 @@ inline constexpr __device__ interval<T> max(interval<T> x, interval<T> y)
     }
 
     return { max(x.lb, y.lb), max(x.ub, y.ub) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> fmax(interval<T> x, interval<T> y)
+{
+    using std::fmax;
+
+    if (empty(x) || empty(y)) {
+        return empty<T>();
+    }
+
+    return { fmax(x.lb, y.lb), fmax(x.ub, y.ub) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> fmin(interval<T> x, interval<T> y)
+{
+    using std::fmin;
+
+    if (empty(x) || empty(y)) {
+        return empty<T>();
+    }
+
+    return { fmin(x.lb, y.lb), fmin(x.ub, y.ub) };
 }
 
 template<typename T>
