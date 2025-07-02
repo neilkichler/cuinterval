@@ -687,6 +687,7 @@ inline constexpr __device__ interval<T> sign(interval<T> x)
              (x.ub != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.ub) };
 }
 
+// is not an interval
 template<typename T>
 inline constexpr __device__ __host__ bool isnai(interval<T> x)
 {
