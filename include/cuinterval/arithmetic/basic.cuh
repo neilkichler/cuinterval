@@ -532,6 +532,12 @@ inline constexpr __device__ bool bounded(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ bool isfinite(interval<T> x)
+{
+    return bounded(x);
+}
+
+template<typename T>
 inline constexpr __device__ T width(interval<T> x)
 {
     if (empty(x)) {
@@ -753,6 +759,13 @@ inline constexpr __device__ interval<T> sign(interval<T> x)
              (x.ub != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.ub) };
 }
 
+// we define isinf for an interval to mean that one of its bounds is infinity.
+template<typename T>
+inline constexpr __device__ __host__ bool isinf(interval<T> x)
+{
+    return x.lb == intrinsic::neg_inf<T>() || x.ub == intrinsic::pos_inf<T>();
+}
+
 // is not an interval
 template<typename T>
 inline constexpr __device__ __host__ bool isnai(interval<T> x)
@@ -763,6 +776,8 @@ inline constexpr __device__ __host__ bool isnai(interval<T> x)
 template<typename T>
 inline constexpr __device__ bool is_member(T x, interval<T> y)
 {
+    using std::isfinite;
+
     return isfinite(x) && inf(y) <= x && x <= sup(y);
 }
 
@@ -776,6 +791,12 @@ template<typename T>
 inline constexpr __device__ bool is_common_interval(interval<T> x)
 {
     return !empty(x) && bounded(x);
+}
+
+template<typename T>
+inline constexpr __device__ bool isnormal(interval<T> x)
+{
+    return is_common_interval(x);
 }
 
 template<typename T>
