@@ -722,6 +722,27 @@ inline constexpr __device__ interval<T> trunc(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> round(interval<T> x)
+{
+    return { intrinsic::round_away(x.lb), intrinsic::round_away(x.ub) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> nearbyint(interval<T> x)
+{
+    // NOTE: The CUDA nearbyint always rounds to nearest even, regardless of the current rounding mode
+    return { intrinsic::round_even(x.lb), intrinsic::round_even(x.ub) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> rint(interval<T> x)
+{
+    using std::rint;
+
+    return { rint(x.lb), rint(x.ub) };
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> sign(interval<T> x)
 {
     if (empty(x)) {
@@ -962,7 +983,7 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
     assert(inf(x) >= 0);
 
     using intrinsic::next_floating, intrinsic::prev_floating;
-    using std::lrint, std::pow, std::sqrt;
+    using std::rint, std::lrint, std::pow, std::sqrt;
 
     if (sup(x) == 0) {
         if (y > 0) {
