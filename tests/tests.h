@@ -69,6 +69,7 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::so
         ((out << "\n\t"
               << args),
          ...);
+        out << '\n';
     };
 
     auto empty = [](auto &&x) {
@@ -88,14 +89,15 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::so
                 bool ub_within_ulps = check_within_ulps(h_res[i].ub, h_ref[i].ub, max_ulps_diff, inf);
 
                 auto out = expect(eq(lb_within_ulps && ub_within_ulps, true), location)
-                    << std::hexfloat
-                    << "Failed at case" << i << ": " << h_res[i] << "!= " << h_ref[i] << "\n"
+                    << std::hexfloat << '\n'
+                    << "Failed at case" << i << ": " << h_res[i] << "!= " << h_ref[i] << '\n'
                     << '\t' << "with delta: [" << std::fabs(h_res[i].lb - h_ref[i].lb)
                     << ", " << std::fabs(h_res[i].ub - h_ref[i].ub) << "]\n\t";
                 show_inputs(out, std::forward<Args>(args)[i]...);
             }
         } else {
             auto out = expect(eq(h_res[i], h_ref[i]), location);
+            out << '\n';
             out << "Failed at case" << i << ":\n";
             out << std::hexfloat << '\t';
             show_inputs(out, std::forward<Args>(args)[i]...);
