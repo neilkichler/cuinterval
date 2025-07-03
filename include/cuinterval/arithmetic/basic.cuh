@@ -912,6 +912,30 @@ inline constexpr __device__ interval<T> expm1(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> ldexp(interval<T> x, int exp)
+{
+    using std::ldexp;
+
+    return { ldexp(x.lb, exp), ldexp(x.ub, exp) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> scalbln(interval<T> x, long int n)
+{
+    using std::scalbln;
+
+    return { scalbln(x.lb, n), scalbln(x.ub, n) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> scalbn(interval<T> x, int n)
+{
+    using std::scalbn;
+
+    return { scalbn(x.lb, n), scalbn(x.ub, n) };
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> log(interval<T> x)
 {
     using std::log;
