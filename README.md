@@ -83,6 +83,7 @@ The error for a particular operation is given below.
 | asinh     | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
 | acosh     | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
 | atanh     | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
+| coth      | $\mathbb{IR} \rightarrow \mathbb{IR}$       | 3            |
 
 </details>
 

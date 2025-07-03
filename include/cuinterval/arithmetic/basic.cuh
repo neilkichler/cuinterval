@@ -159,6 +159,58 @@ inline constexpr __device__ interval<T> recip(interval<T> a)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> coth(interval<T> a)
+{
+    // same logic as recip. In fact could just be:
+    //
+    // return recip(tanh(a));
+    //
+    // but that is much less tight than the below implementation
+
+    if (empty(a)) {
+        return a;
+    }
+
+    using intrinsic::prev_floating, intrinsic::next_floating, intrinsic::next_after;
+    using std::expm1;
+
+    constexpr T zero = 0.;
+    constexpr T one  = 1.;
+    constexpr T inf  = std::numeric_limits<T>::infinity();
+
+    auto coth_down = [](T x) {
+        T exp2xm1 = expm1(2.0 * x);
+
+        if (exp2xm1 == inf) {
+            return one;
+        }
+        return intrinsic::div_down(intrinsic::add_down(exp2xm1, 2.0), exp2xm1);
+    };
+
+    auto coth_up = [](T x) {
+        T exp2xm1 = expm1(2.0 * x);
+
+        if (exp2xm1 == inf) {
+            return one;
+        }
+        return intrinsic::div_up(intrinsic::add_up(exp2xm1, 2.0), exp2xm1);
+    };
+
+    if (contains(a, zero)) {
+        if (a.lb < zero && zero == a.ub) {
+            return { -inf, next_after(coth_up(a.lb), -one) };
+        } else if (a.lb == zero && zero < a.ub) {
+            return { next_after(coth_down(a.ub), one), inf };
+        } else if (a.lb < zero && zero < a.ub) {
+            return entire<T>();
+        } else if (a.lb == zero && zero == a.ub) {
+            return empty<T>();
+        }
+    }
+    return { prev_floating(coth_down(a.ub)), next_floating(coth_up(a.lb)) };
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> div(interval<T> x, interval<T> y)
 {
     // return mul(a, recip(b));

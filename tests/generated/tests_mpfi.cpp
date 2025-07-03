@@ -958,6 +958,60 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
+        constexpr int n = 16;
+        I *h_xs = new (h_buffer) I[n]{
+            {-1.0,0.0},
+            {-10.0,-8.0},
+            {-3.0,0.0},
+            {-3.0,2.0},
+            {-8.0,0.0},
+            {-infinity,+8.0},
+            {-infinity,-7.0},
+            {-infinity,0.0},
+            {0.0,+1.0},
+            {0.0,+3.0},
+            {0.0,+8.0},
+            {0.0,+infinity},
+            {0.0,0.0},
+            {0x10000000000001p-58,0x10000000000001p-53},
+            {7.0,17.0},
+            entire,
+        };
+
+        h_buffer += align_to(n * sizeof(I), alignof(I));
+        I *h_res = new (h_buffer) I[n]{};
+        std::array<I, n> h_ref {{
+            {-infinity,-0x150231499b6b1dp-52},
+            {-0x1000003c6ab7e8p-52,-0x100000011b4865p-52},
+            {-infinity,-0x10145b3cc9964bp-52},
+            entire,
+            {-infinity,-0x1000003c6ab7e7p-52},
+            entire,
+            {-0x100001be6c882fp-52,-1.0},
+            {-infinity,-1.0},
+            {0x150231499b6b1dp-52,+infinity},
+            {0x10145b3cc9964bp-52,+infinity},
+            {0x1000003c6ab7e7p-52,+infinity},
+            {1.0,+infinity},
+            empty,
+            {0x114fc6ceb099bdp-51,0x10005554fa502fp-46},
+            {0x1000000000000fp-52,0x100001be6c882fp-52},
+            entire,
+        }};
+
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        tests_coth_call(numBlocks, blockSize, stream, n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
+        int max_ulp_diff = 3;
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+    };
+
+    {
+        char *h_buffer = buffer.host;
         constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {+0x170ef54646d497p-105,+0x170ef54646d497p-105},

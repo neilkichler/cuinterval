@@ -625,6 +625,15 @@ __global__ void test_cot(int n, cu::interval<T> *x, cu::interval<T> *res)
 }
 
 template<typename T>
+__global__ void test_coth(int n, cu::interval<T> *x, cu::interval<T> *res)
+{
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i < n) {
+        res[i] = coth(x[i]);
+    }
+}
+
+template<typename T>
 __global__ void test_pown(int n, cu::interval<T> *x, int *n_pow, cu::interval<T> *res)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;

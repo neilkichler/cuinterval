@@ -374,6 +374,12 @@ void tests_cot_call(int numBlocks, int blockSize, cudaStream_t stream,
     test_cot<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
 }
             
+void tests_coth_call(int numBlocks, int blockSize, cudaStream_t stream,
+                 int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
+{
+    test_coth<<<numBlocks, blockSize, 0, stream>>>(n, d_xs, d_res); 
+}
+            
 void tests_tanh_call(int numBlocks, int blockSize, cudaStream_t stream,
                  int n, cu::interval<double> *d_xs, cu::interval<double> *d_res)
 {
