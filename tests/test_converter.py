@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Test generator from ITL test cases. Requires Python 3.*
+# Test generator from ITL test cases. Requires Python 3.9+
 
 import glob
 import re
@@ -97,7 +97,7 @@ supported = {
 
 def convert_to_test(file_path):
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             test_name = file_path.rsplit('.', 1)[0].replace('-', '_')
             tests = file.read()
 
