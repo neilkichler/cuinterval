@@ -824,7 +824,7 @@ inline constexpr __device__ __host__ bool isnai(interval<T> x)
 template<typename T>
 inline constexpr __device__ bool is_member(T x, interval<T> y)
 {
-    using std::isfinite;
+    using ::isfinite;
 
     return isfinite(x) && inf(y) <= x && x <= sup(y);
 }
