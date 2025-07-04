@@ -797,6 +797,16 @@ inline constexpr __device__ interval<T> rint(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> fdim(interval<T> x, interval<T> y)
+{
+    using std::max;
+
+    constexpr T zero {};
+    auto xmy = x - y;
+    return { max(xmy.lb, zero), max(xmy.ub, zero) };
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> sign(interval<T> x)
 {
     if (empty(x)) {
