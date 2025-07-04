@@ -5,5 +5,6 @@
 #include <cuinterval/arithmetic/intrinsic.cuh>
 #include <cuinterval/format.h>
 #include <cuinterval/interval.h>
+#include <cuinterval/numbers.h>
 
 #endif // CUINTERVAL_H

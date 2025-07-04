@@ -3,6 +3,7 @@
 
 #include <cuinterval/arithmetic/intrinsic.cuh>
 #include <cuinterval/interval.h>
+#include <cuinterval/numbers.h>
 
 #include <cassert>
 #include <cmath>
@@ -1225,8 +1226,8 @@ inline constexpr __device__ interval<T> sin(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
-    constexpr interval<T> tau { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    constexpr auto pi  = pi_v<interval<T>>;
+    constexpr auto tau = tau_v<interval<T>>;
 
     T sin_min = static_cast<T>(-1);
     T sin_max = static_cast<T>(1);
@@ -1352,8 +1353,8 @@ inline constexpr __device__ interval<T> cos(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
-    constexpr interval<T> tau { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+    constexpr auto pi  = pi_v<interval<T>>;
+    constexpr auto tau = tau_v<interval<T>>;
 
     T cos_min = static_cast<T>(-1);
     T cos_max = static_cast<T>(1);
@@ -1453,7 +1454,7 @@ inline constexpr __device__ interval<T> tan(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr auto pi = pi_v<interval<T>>;
 
     T w = width(x);
 
@@ -1486,12 +1487,12 @@ inline constexpr __device__ interval<T> asin(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi_2 { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
+    constexpr auto pi_2_ub = pi_2_v<interval<T>>.ub;
     constexpr interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
 
     auto xx = intersection(x, domain);
-    return { (xx.lb != 0) * intrinsic::next_after(intrinsic::next_after(asin(xx.lb), -pi_2.ub), -pi_2.ub),
-             (xx.ub != 0) * intrinsic::next_after(intrinsic::next_after(asin(xx.ub), pi_2.ub), pi_2.ub) };
+    return { (xx.lb != 0) * intrinsic::next_after(intrinsic::next_after(asin(xx.lb), -pi_2_ub), -pi_2_ub),
+             (xx.ub != 0) * intrinsic::next_after(intrinsic::next_after(asin(xx.ub), pi_2_ub), pi_2_ub) };
 }
 
 template<typename T>
@@ -1503,7 +1504,7 @@ inline constexpr __device__ interval<T> acos(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr auto pi = pi_v<interval<T>>;
     constexpr interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
 
     auto xx = intersection(x, domain);
@@ -1520,10 +1521,10 @@ inline constexpr __device__ interval<T> atan(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi_2 { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
+    constexpr auto pi_2_ub = pi_2_v<interval<T>>.ub;
 
-    return { intrinsic::next_after(intrinsic::next_after(atan(x.lb), -pi_2.ub), -pi_2.ub),
-             intrinsic::next_after(intrinsic::next_after(atan(x.ub), pi_2.ub), pi_2.ub) };
+    return { intrinsic::next_after(intrinsic::next_after(atan(x.lb), -pi_2_ub), -pi_2_ub),
+             intrinsic::next_after(intrinsic::next_after(atan(x.ub), pi_2_ub), pi_2_ub) };
 }
 
 template<typename T>
@@ -1535,8 +1536,8 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
         return empty<T>();
     }
 
-    constexpr interval<T> pi_2 { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
-    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr auto pi_2 = pi_2_v<interval<T>>;
+    constexpr auto pi = pi_v<interval<T>>;
     interval<T> range { -pi.ub, pi.ub };
     interval<T> half_range { -pi_2.ub, pi_2.ub };
 
@@ -1723,7 +1724,7 @@ inline constexpr __device__ interval<T> cot(interval<T> x)
         return x;
     }
 
-    constexpr interval<T> pi { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+    constexpr auto pi = pi_v<interval<T>>;
 
     T w = width(x);
 
