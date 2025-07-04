@@ -1003,6 +1003,25 @@ inline constexpr __device__ interval<T> log1p(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> logb(interval<T> x)
+{
+    using std::logb, std::max;
+
+    constexpr T zero {};
+
+    if (empty(x)) {
+        return x;
+    } else if (x.lb >= zero) {
+        return { logb(x.lb), logb(x.ub) };
+    } else if (x.ub <= zero) {
+        return { logb(x.ub), logb(x.lb) };
+    } else {
+        return { intrinsic::neg_inf<T>(),
+                 max(logb(x.lb), logb(x.ub)) };
+    }
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n)
 {
     auto pow = [](T x, std::integral auto n) -> T {
