@@ -182,6 +182,16 @@ The error for a particular operation is given below.
 ## Installation
 > Please make sure that you have installed everything mentioned in the section [Build Requirements](#build-requirements).
 
+### Single-Header
+Every [release](https://github.com/neilkichler/cuinterval/releases/) creates a single-header version.
+The latest one can directly be downloaded using, e.g.:
+```bash
+wget https://github.com/neilkichler/cuinterval/releases/download/v0.1.0/cuinterval.cuh
+```
+
+### Header-only folder
+You can grab the latest header-only version from the [releases](https://github.com/neilkichler/cuinterval/releases/) page.
+
 ### System-wide
 ```bash
 git clone https://github.com/neilkichler/cuinterval.git
