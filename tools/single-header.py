@@ -18,7 +18,7 @@ file_header = """\
     CuInterval - A CUDA interval arithmetic library
     Copyright (c) {year} Neil Kichler
 
-    Single-Header version from commit {commit_hash}
+    Single-Header version {version} from commit {commit_hash}
     Generated: {generation_time}
 */
 
@@ -102,6 +102,7 @@ def formatted_file_header():
         generation_time=datetime.datetime.now().isoformat(timespec="minutes"),
         year=datetime.date.today().year,
         commit_hash=latest_commit_hash(),
+        version="0.1.0",
     )
 
 
