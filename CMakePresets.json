@@ -30,7 +30,6 @@
     {
       "name": "gcc",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++"
       },
       "hidden": true
@@ -38,7 +37,6 @@
     {
       "name": "clang",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
       },
       "hidden": true
@@ -55,7 +53,6 @@
       "name": "msvc",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "cl",
         "CMAKE_CXX_COMPILER": "cl"
       }
     },
