@@ -68,6 +68,8 @@ namespace cu
 {
 
 using std::numbers::e_v;
+using std::numbers::inv_pi_v;
+using std::numbers::inv_sqrtpi_v;
 using std::numbers::log10e_v;
 using std::numbers::log2e_v;
 using std::numbers::pi_v;
