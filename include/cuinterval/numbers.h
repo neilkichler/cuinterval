@@ -11,14 +11,7 @@ namespace std::numbers
 {
 
 // The enclosure is chosen to be the smallest representable floating point interval
-// which still contains the real pi value.
-template<>
-inline constexpr cu::interval<double>
-    pi_v<cu::interval<double>> = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
-
-template<>
-inline constexpr cu::interval<float>
-    pi_v<cu::interval<float>> = { 0x1.921fb5p+1, 0x1.921fb6p+1 };
+// which still contains the real value.
 
 template<>
 inline constexpr cu::interval<double>
@@ -43,6 +36,22 @@ inline constexpr cu::interval<double>
 template<>
 inline constexpr cu::interval<float>
     log10e_v<cu::interval<float>> = { 0x1.bcb7b1p-2, 0x1.bcb7b2p-2 };
+
+template<>
+inline constexpr cu::interval<double>
+    pi_v<cu::interval<double>> = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
+
+template<>
+inline constexpr cu::interval<float>
+    pi_v<cu::interval<float>> = { 0x1.921fb5p+1, 0x1.921fb6p+1 };
+
+template<>
+inline constexpr cu::interval<double>
+    inv_pi_v<cu::interval<double>> = { 0x1.45f306dc9c882p-2, 0x1.45f306dc9c883p-2 };
+
+template<>
+inline constexpr cu::interval<float>
+    inv_pi_v<cu::interval<float>> = { 0x1.45f306p-2, 0x1.45f307p-2 };
 
 } // namespace std::numbers
 
