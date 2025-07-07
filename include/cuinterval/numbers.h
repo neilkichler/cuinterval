@@ -53,6 +53,14 @@ template<>
 inline constexpr cu::interval<float>
     inv_pi_v<cu::interval<float>> = { 0x1.45f306p-2, 0x1.45f307p-2 };
 
+template<>
+inline constexpr cu::interval<double>
+    inv_sqrtpi_v<cu::interval<double>> = { 0x1.20dd750429b6cp-1, 0x1.20dd750429b6dp-1 };
+
+template<>
+inline constexpr cu::interval<float>
+    inv_sqrtpi_v<cu::interval<float>> = { 0x1.20dd75p-1, 0x1.20dd76p-1 };
+
 } // namespace std::numbers
 
 // In cu:: we provide access to all the standard math constants and some additional helpful ones.
