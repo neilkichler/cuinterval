@@ -1785,6 +1785,7 @@ inline constexpr __device__ interval<T> erfc(interval<T> x)
              intrinsic::next_after(erfc(x.lb), static_cast<T>(2)) };
 }
 
+// split the interval in two at the given split_ratio
 template<typename T>
 inline constexpr __device__ split<T> bisect(interval<T> x, T split_ratio)
 {
@@ -1827,6 +1828,7 @@ inline constexpr __device__ split<T> bisect(interval<T> x, T split_ratio)
     return { { x.lb, split_point }, { split_point, x.ub } };
 }
 
+// split up the interval x into out_xs_size intervals xs of equal width
 template<typename T>
 inline constexpr __device__ void mince(interval<T> x, interval<T> *xs, std::size_t out_xs_size)
 {
