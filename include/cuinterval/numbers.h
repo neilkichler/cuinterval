@@ -16,7 +16,9 @@ template<>
 inline constexpr cu::interval<double>
     pi_v<cu::interval<double>> = { 0x1.921fb54442d18p+1, 0x1.921fb54442d19p+1 };
 
-// TODO: cu::interval<float> specialization
+template<>
+inline constexpr cu::interval<float>
+    pi_v<cu::interval<float>> = { 0x1.921fb5p+1, 0x1.921fb6p+1 };
 
 } // namespace std::numbers
 
@@ -33,12 +35,20 @@ template<>
 inline constexpr interval<double>
     pi_2_v<interval<double>> = { 0x1.921fb54442d18p+0, 0x1.921fb54442d19p+0 };
 
+template<>
+inline constexpr interval<float>
+    pi_2_v<cu::interval<float>> = { 0x1.921fb5p+0, 0x1.921fb6p+0 };
+
 template<typename T>
 inline constexpr T tau_v; // = 2 * pi
 
 template<>
 inline constexpr interval<double>
     tau_v<interval<double>> = { 0x1.921fb54442d18p+2, 0x1.921fb54442d19p+2 };
+
+template<>
+inline constexpr interval<float>
+    tau_v<interval<float>> = { 0x1.921fb5p+2, 0x1.921fb6p+2 };
 
 } // namespace cu
 
