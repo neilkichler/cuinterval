@@ -28,6 +28,14 @@ template<>
 inline constexpr cu::interval<float>
     e_v<cu::interval<float>> = { 0x1.5bf0a8p+1, 0x1.5bf0a9p+1 };
 
+template<>
+inline constexpr cu::interval<double>
+    log2e_v<cu::interval<double>> = { 0x1.71547652b82fep+0, 0x1.71547652b82ffp+0 };
+
+template<>
+inline constexpr cu::interval<float>
+    log2e_v<cu::interval<float>> = { 0x1.715476p+0, 0x1.715477p+0 };
+
 } // namespace std::numbers
 
 // In cu:: we provide access to all the standard math constants and some additional helpful ones.
@@ -35,6 +43,7 @@ namespace cu
 {
 
 using std::numbers::e_v;
+using std::numbers::log2e_v;
 using std::numbers::pi_v;
 
 template<typename T>
