@@ -15,7 +15,9 @@
 
 __device__ auto f(auto x, auto y)
 {
-    return pow(x - 1.0, 3) - sqr(x) + 4.0;
+    using T = decltype(x);
+    auto pi = std::numbers::pi_v<T>; // outward rounded pi (s.t. real pi is inside interval)
+    return pi * pow(x - 1.0, 3) - sqr(x) + 4.0;
 }
 
 __global__ void kernel(auto *xs, auto *ys, auto *res, std::integral auto n)
