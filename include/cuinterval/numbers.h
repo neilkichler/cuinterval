@@ -109,6 +109,7 @@ namespace cu
 
 using std::numbers::e_v;
 using std::numbers::inv_pi_v;
+using std::numbers::inv_sqrt3_v;
 using std::numbers::inv_sqrtpi_v;
 using std::numbers::ln10_v;
 using std::numbers::ln2_v;
@@ -116,6 +117,7 @@ using std::numbers::log10e_v;
 using std::numbers::log2e_v;
 using std::numbers::pi_v;
 using std::numbers::sqrt2_v;
+using std::numbers::sqrt3_v;
 
 template<typename T>
 inline constexpr T pi_2_v; // = pi / 2
