@@ -93,6 +93,14 @@ template<>
 inline constexpr cu::interval<float>
     sqrt3_v<cu::interval<float>> = { 0x1.bb67aep+0, 0x1.bb67afp+0 };
 
+template<>
+inline constexpr cu::interval<double>
+    inv_sqrt3_v<cu::interval<double>> = { 0x1.279a74590331cp-1, 0x1.279a74590331dp-1 };
+
+template<>
+inline constexpr cu::interval<float>
+    inv_sqrt3_v<cu::interval<float>> = { 0x1.279a74p-1, 0x1.279a75p-1 };
+
 } // namespace std::numbers
 
 // In cu:: we provide access to all the standard math constants and some additional helpful ones.
