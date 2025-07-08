@@ -101,6 +101,14 @@ template<>
 inline constexpr cu::interval<float>
     inv_sqrt3_v<cu::interval<float>> = { 0x1.279a74p-1, 0x1.279a75p-1 };
 
+template<>
+inline constexpr cu::interval<double>
+    egamma_v<cu::interval<double>> = { 0x1.2788cfc6fb618p-1, 0x1.2788cfc6fb619p-1 };
+
+template<>
+inline constexpr cu::interval<float>
+    egamma_v<cu::interval<float>> = { 0x1.2788cfp-1, 0x1.2788d0p-1 };
+
 } // namespace std::numbers
 
 // In cu:: we provide access to all the standard math constants and some additional helpful ones.
@@ -108,6 +116,7 @@ namespace cu
 {
 
 using std::numbers::e_v;
+using std::numbers::egamma_v;
 using std::numbers::inv_pi_v;
 using std::numbers::inv_sqrt3_v;
 using std::numbers::inv_sqrtpi_v;
