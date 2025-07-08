@@ -61,6 +61,22 @@ template<>
 inline constexpr cu::interval<float>
     inv_sqrtpi_v<cu::interval<float>> = { 0x1.20dd75p-1, 0x1.20dd76p-1 };
 
+template<>
+inline constexpr cu::interval<double>
+    ln2_v<cu::interval<double>> = { 0x1.62e42fefa39efp-1, 0x1.62e42fefa39f0p-1 };
+
+template<>
+inline constexpr cu::interval<float>
+    ln2_v<cu::interval<float>> = { 0x1.62e42fp-1, 0x1.62e430p-1 };
+
+template<>
+inline constexpr cu::interval<double>
+    ln10_v<cu::interval<double>> = { 0x1.26bb1bbb55515p+1, 0x1.26bb1bbb55516p+1 };
+
+template<>
+inline constexpr cu::interval<float>
+    ln10_v<cu::interval<float>> = { 0x1.26bb1bp+1, 0x1.26bb1cp+1 };
+
 } // namespace std::numbers
 
 // In cu:: we provide access to all the standard math constants and some additional helpful ones.
@@ -70,6 +86,8 @@ namespace cu
 using std::numbers::e_v;
 using std::numbers::inv_pi_v;
 using std::numbers::inv_sqrtpi_v;
+using std::numbers::ln10_v;
+using std::numbers::ln2_v;
 using std::numbers::log10e_v;
 using std::numbers::log2e_v;
 using std::numbers::pi_v;
