@@ -109,6 +109,14 @@ template<>
 inline constexpr cu::interval<float>
     egamma_v<cu::interval<float>> = { 0x1.2788cfp-1, 0x1.2788d0p-1 };
 
+template<>
+inline constexpr cu::interval<double>
+    phi_v<cu::interval<double>> = { 0x1.9e3779b97f4a8p+0, 0x1.9e3779b97f4a9p+0 };
+
+template<>
+inline constexpr cu::interval<float>
+    phi_v<cu::interval<float>> = { 0x1.9e3779p+0, 0x1.9e377ap+0 };
+
 } // namespace std::numbers
 
 // In cu:: we provide access to all the standard math constants and some additional helpful ones.
@@ -124,6 +132,7 @@ using std::numbers::ln10_v;
 using std::numbers::ln2_v;
 using std::numbers::log10e_v;
 using std::numbers::log2e_v;
+using std::numbers::phi_v;
 using std::numbers::pi_v;
 using std::numbers::sqrt2_v;
 using std::numbers::sqrt3_v;
