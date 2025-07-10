@@ -2,7 +2,7 @@ name: CUDA Build in Ubuntu 24.04 Docker image
 
 on:
   push:
-    branches: actions
+    branches: main
 
 jobs:
   build:
