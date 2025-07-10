@@ -2,7 +2,7 @@
 #include <cuinterval/examples/bisection.cuh>
 #include <cuinterval/interval.h>
 
-#include <thrust/async/copy.h>
+#include <thrust/copy.h>
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 
@@ -55,7 +55,7 @@ std::vector<interval<double>> test_bisection_kernel(cudaStream_t stream,
     CUDA_CHECK(cudaMemcpyAsync(&max_roots, d_max_roots, sizeof(*d_max_roots), cudaMemcpyDeviceToHost, stream));
     std::vector<I> h_roots(max_roots);
     CUDA_CHECK(cudaStreamSynchronize(stream));
-    thrust::device_event e = thrust::async::copy(roots.begin(), roots.begin() + max_roots, h_roots.begin());
+    auto e = thrust::copy(roots.begin(), roots.begin() + max_roots, h_roots.begin());
 
     return h_roots;
 }
