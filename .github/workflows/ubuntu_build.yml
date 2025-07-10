@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: "${{ matrix.config.name }}-${{ matrix.config.version }}"
+    name: "cuda-${{ matrix.cuda }}-${{ matrix.config.name }}-${{ matrix.config.version }}"
     runs-on: ubuntu-24.04
 
     container:
