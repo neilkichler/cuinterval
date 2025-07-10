@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-24.04
 
     container:
-      image: nvidia/cuda:12.9.1-devel-ubuntu24.04
+      image: nvidia/cuda:${{ matrix.cuda }}-devel-ubuntu24.04
 
     strategy:
       fail-fast: false
       matrix:
+        cuda: [12.6.0, 12.6.1, 12.6.2, 12.8.0, 12.9.0, 12.9.1]
         config:
           - { name: clang++, version: 17 }
           - { name: clang++, version: 18 }
