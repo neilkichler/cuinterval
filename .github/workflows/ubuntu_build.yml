@@ -1,0 +1,62 @@
+name: CUDA Build in Ubuntu 24.04 Docker image
+
+on:
+  push:
+    branches: actions
+
+jobs:
+  build:
+    name: "${{ matrix.config.name }}-${{ matrix.config.version }}"
+    runs-on: ubuntu-24.04
+
+    container:
+      image: nvidia/cuda:12.9.1-devel-ubuntu24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { name: clang++, version: 17 }
+          - { name: clang++, version: 18 }
+          - { name: g++, version: 12 }
+          - { name: g++, version: 13 }
+          - { name: g++, version: 14 }
+    env:
+      CXX: "${{ matrix.config.name }}-${{ matrix.config.version }}"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          apt-get update
+          apt-get install -y cmake git ninja-build
+
+      - name: Install compiler
+        run: apt-get install -y $CXX
+
+      - name: Install OpenMP
+        if: matrix.config.name == 'clang++'
+        run: apt-get install -y libomp-${{ matrix.config.version }}-dev
+      
+      - name: Show compiler version
+        run: $CXX --version
+
+      - name: Configure project with CMake
+        run: cmake --preset debug
+
+      - name: Build project
+        run: cmake --build build
+
+      - name: Build header-only test project
+        run: |
+          cd tests/header-only/multi-header
+          cmake -S . -B build
+          cmake --build build
+
+      - name: Build single-header test projects
+        run: |
+          cd tests/header-only/single-header
+          cmake -S . -B build
+          cmake --build build
