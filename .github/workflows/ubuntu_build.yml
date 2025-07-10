@@ -1,5 +1,4 @@
 name: CUDA Build in Ubuntu Docker images
-run-name: CUDA Build in Ubuntu ${{ matrix.os }} Docker image
 
 on:
   push:
@@ -7,8 +6,8 @@ on:
 
 jobs:
   build:
-    name: "cuda-${{ matrix.cuda }}-${{ matrix.config.name }}-${{ matrix.config.version }}"
-    runs-on: ubuntu-${{ matrix.os }}
+    name: "${{ matrix.os }}-cuda-${{ matrix.cuda }}-${{ matrix.config.name }}-${{ matrix.config.version }}"
+    runs-on: ${{ matrix.os }}
 
     container:
       image: nvidia/cuda:${{ matrix.cuda }}-devel-ubuntu24.04
@@ -16,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [22.04, 24.04]
+        os: [ubuntu-22.04, ubuntu-24.04]
         cuda: [12.6.0, 12.6.1, 12.6.2, 12.8.0, 12.9.0, 12.9.1]
         config:
           - { name: clang++, version: 17 }
