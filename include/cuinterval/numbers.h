@@ -19,7 +19,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    e_v<cu::interval<float>> = { 0x1.5bf0a8p+1, 0x1.5bf0a9p+1 };
+    e_v<cu::interval<float>> = { 0x1.5bf0a8p+1f, 0x1.5bf0aap+1f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -27,7 +27,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    log2e_v<cu::interval<float>> = { 0x1.715476p+0, 0x1.715477p+0 };
+    log2e_v<cu::interval<float>> = { 0x1.715476p+0f, 0x1.715478p+0f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -35,7 +35,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    log10e_v<cu::interval<float>> = { 0x1.bcb7b1p-2, 0x1.bcb7b2p-2 };
+    log10e_v<cu::interval<float>> = { 0x1.bcb7b0p-2f, 0x1.bcb7b2p-2f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -43,7 +43,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    pi_v<cu::interval<float>> = { 0x1.921fb5p+1, 0x1.921fb6p+1 };
+    pi_v<cu::interval<float>> = { 0x1.921fb4p+1f, 0x1.921fb6p+1f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -51,7 +51,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    inv_pi_v<cu::interval<float>> = { 0x1.45f306p-2, 0x1.45f307p-2 };
+    inv_pi_v<cu::interval<float>> = { 0x1.45f306p-2f, 0x1.45f308p-2f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -59,7 +59,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    inv_sqrtpi_v<cu::interval<float>> = { 0x1.20dd75p-1, 0x1.20dd76p-1 };
+    inv_sqrtpi_v<cu::interval<float>> = { 0x1.20dd74p-1f, 0x1.20dd76p-1f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -67,7 +67,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    ln2_v<cu::interval<float>> = { 0x1.62e42fp-1, 0x1.62e430p-1 };
+    ln2_v<cu::interval<float>> = { 0x1.62e42ep-1f, 0x1.62e430p-1f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -75,7 +75,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    ln10_v<cu::interval<float>> = { 0x1.26bb1bp+1, 0x1.26bb1cp+1 };
+    ln10_v<cu::interval<float>> = { 0x1.26bb1ap+1f, 0x1.26bb1cp+1f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -83,7 +83,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    sqrt2_v<cu::interval<float>> = { 0x1.6a09e6p+0, 0x1.6a09e7p+0 };
+    sqrt2_v<cu::interval<float>> = { 0x1.6a09e6p+0f, 0x1.6a09e8p+0f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -91,7 +91,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    sqrt3_v<cu::interval<float>> = { 0x1.bb67aep+0, 0x1.bb67afp+0 };
+    sqrt3_v<cu::interval<float>> = { 0x1.bb67aep+0f, 0x1.bb67b0p+0f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -99,7 +99,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    inv_sqrt3_v<cu::interval<float>> = { 0x1.279a74p-1, 0x1.279a75p-1 };
+    inv_sqrt3_v<cu::interval<float>> = { 0x1.279a74p-1f, 0x1.279a76p-1f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -107,7 +107,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    egamma_v<cu::interval<float>> = { 0x1.2788cfp-1, 0x1.2788d0p-1 };
+    egamma_v<cu::interval<float>> = { 0x1.2788cep-1f, 0x1.2788d0p-1f };
 
 template<>
 inline constexpr cu::interval<double>
@@ -115,7 +115,7 @@ inline constexpr cu::interval<double>
 
 template<>
 inline constexpr cu::interval<float>
-    phi_v<cu::interval<float>> = { 0x1.9e3779p+0, 0x1.9e377ap+0 };
+    phi_v<cu::interval<float>> = { 0x1.9e3778p+0f, 0x1.9e377ap+0f };
 
 } // namespace std::numbers
 
@@ -146,7 +146,7 @@ inline constexpr interval<double>
 
 template<>
 inline constexpr interval<float>
-    pi_2_v<cu::interval<float>> = { 0x1.921fb5p+0, 0x1.921fb6p+0 };
+    pi_2_v<cu::interval<float>> = { 0x1.921fb4p+0f, 0x1.921fb6p+0f };
 
 template<typename T>
 inline constexpr T tau_v; // = 2 * pi
@@ -157,7 +157,7 @@ inline constexpr interval<double>
 
 template<>
 inline constexpr interval<float>
-    tau_v<interval<float>> = { 0x1.921fb5p+2, 0x1.921fb6p+2 };
+    tau_v<interval<float>> = { 0x1.921fb4p+2f, 0x1.921fb6p+2f };
 
 } // namespace cu
 
