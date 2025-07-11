@@ -232,6 +232,11 @@ target_link_libraries(${PROJECT_NAME} PUBLIC cuinterval)
 > set_target_properties(${PROJECT_NAME} PROPERTIES CUDA_ARCHITECTURES native)
 > ```
 > where `native` could be replaced by specific versions, see the [CMake docs](https://cmake.org/cmake/help/latest/prop_tgt/CUDA_ARCHITECTURES.html) for more information.
+>
+> Also, currently `nvcc` requires relaxed constexpr support which can be enabled using
+> ```cmake
+> target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:--expt-relaxed-constexpr>")
+> ```
 
 ## Example
 Have a look at the [examples folder](https://github.com/neilkichler/cuinterval/tree/main/examples).
