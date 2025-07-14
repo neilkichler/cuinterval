@@ -53,8 +53,8 @@ namespace cu::intrinsic
     template<> inline __device__ double fma_up    (double x, double y, double z) { return __fma_ru(x, y, z); }    
     template<> inline __device__ double add_down  (double x, double y) { return __dadd_rd(x, y); }
     template<> inline __device__ double add_up    (double x, double y) { return __dadd_ru(x, y); }
-    template<> inline __device__ double sub_down  (double x, double y) { return __dadd_rd(x, -y); }
-    template<> inline __device__ double sub_up    (double x, double y) { return __dadd_ru(x, -y); }
+    template<> inline __device__ double sub_down  (double x, double y) { return __dsub_rd(x, y); }
+    template<> inline __device__ double sub_up    (double x, double y) { return __dsub_ru(x, y); }
     template<> inline __device__ double mul_down  (double x, double y) { return __dmul_rd(x, y); }
     template<> inline __device__ double mul_up    (double x, double y) { return __dmul_ru(x, y); }
     template<> inline __device__ double div_down  (double x, double y) { return __ddiv_rd(x, y); }
@@ -86,8 +86,8 @@ namespace cu::intrinsic
     template<> inline __device__ float fma_up     (float x, float y, float z) { return __fmaf_ru(x, y, z); } 
     template<> inline __device__ float add_down   (float x, float y)   { return __fadd_rd(x, y); } 
     template<> inline __device__ float add_up     (float x, float y)   { return __fadd_ru(x, y); }
-    template<> inline __device__ float sub_down   (float x, float y)   { return __fadd_rd(x, -y); }
-    template<> inline __device__ float sub_up     (float x, float y)   { return __fadd_ru(x, -y); }
+    template<> inline __device__ float sub_down   (float x, float y)   { return __fsub_rd(x, y); }
+    template<> inline __device__ float sub_up     (float x, float y)   { return __fsub_ru(x, y); }
     template<> inline __device__ float mul_down   (float x, float y)   { return __fmul_rd(x, y); }
     template<> inline __device__ float mul_up     (float x, float y)   { return __fmul_ru(x, y); }
     template<> inline __device__ float div_down   (float x, float y)   { return __fdiv_rd(x, y); }
