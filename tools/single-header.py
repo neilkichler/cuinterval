@@ -11,12 +11,12 @@ starting_header = os.path.join(root_path, "cuinterval", "cuinterval.h")
 output_header = "cuinterval.cuh"
 
 file_header = """\
+// SPDX-FileCopyrightText: {year} Neil Kichler
 // SPDX-License-Identifier: MIT
 // See end of file for full license.
 
 /* 
     CuInterval - A CUDA interval arithmetic library
-    Copyright (c) {year} Neil Kichler
 
     Single-Header version {version} from commit {commit_hash}
     Generated: {generation_time}
