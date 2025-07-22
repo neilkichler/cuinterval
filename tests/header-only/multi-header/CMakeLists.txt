@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25.2)
 
 project(cuinterval-multi-header-test LANGUAGES CUDA)
 
-# test single-header with the basic example from the examples folder
+# test multi-header with the basic example from the examples folder
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../../examples/basic/basic.cu DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
 
 # copy cuinterval folder and use it standalone
