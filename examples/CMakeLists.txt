@@ -18,3 +18,4 @@ target_include_directories(example_interval_procedures INTERFACE "${cuinterval_S
 target_link_libraries(example_interval_procedures INTERFACE cuinterval)
 
 add_subdirectory(basic)
+add_subdirectory(formatting)
