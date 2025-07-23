@@ -146,7 +146,7 @@ inline constexpr interval<double>
 
 template<>
 inline constexpr interval<float>
-    pi_2_v<cu::interval<float>> = { 0x1.921fb4p+0f, 0x1.921fb6p+0f };
+    pi_2_v<interval<float>> = { 0x1.921fb4p+0f, 0x1.921fb6p+0f };
 
 template<typename T>
 inline constexpr T tau_v; // = 2 * pi
