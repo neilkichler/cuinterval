@@ -247,7 +247,7 @@ The documentation is available [here](https://neilkichler.github.io/cuinterval).
 ## Build
 
 ### Build Requirements
-We use C++20, CMake v3.25.2+, Ninja (optional), and a recent C++ (`GCC 13+`, `Clang 17+`) and CUDA (`CUDA 12.5.1+`) compiler.
+We use C++20, CMake v3.25.2+, Ninja (optional), and a recent C++ (`GCC 13+`, `Clang 17+`) and CUDA (`12.5.1+`) compiler.
 
 #### Ubuntu
 ```bash
