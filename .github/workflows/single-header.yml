@@ -32,9 +32,9 @@ jobs:
           
           # Remove all files except the include directory
           git rm -rf .
-          git checkout main -- include LICENSE tools/single-header.py
+          git checkout main -- include LICENSE CMakeLists.txt tools/single-header.py
           python3 tools/single-header.py
-          git rm -rf include/ tools/ LICENSE
+          git rm -rf include/ tools/ LICENSE CMakeLists.txt
           git add cuinterval.cuh
 
           # Commit the single header
