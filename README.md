@@ -215,7 +215,7 @@ CPMAddPackage("gh:neilkichler/cuinterval@0.1.0")
 include(FetchContent)
 FetchContent_Declare(
   cuinterval
-  GIT_REPOSITORY git@github.com:neilkichler/cuinterval.git
+  GIT_REPOSITORY https://github.com/neilkichler/cuinterval.git
   GIT_TAG v0.1.0
 )
 FetchContent_MakeAvailable(cuinterval)
