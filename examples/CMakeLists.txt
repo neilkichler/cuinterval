@@ -29,3 +29,4 @@ target_sources(bisection PRIVATE ${headers})
 
 add_subdirectory(basic)
 add_subdirectory(formatting)
+add_subdirectory(numbers)
