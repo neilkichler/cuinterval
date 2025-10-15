@@ -1,515 +1,957 @@
-# Supported functions data converted from docs_gen.py
-# Keys are function names mapping to tables with args, ret, ulp_error, code_name, latex_name
-
+# Updated supported.toml
 [functions]
 
 [functions.pos]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 0
-code_name = "pos"
-latex_name = "+"
+code_name = 'pos'
+latex_name = '+'
 
 [functions.neg]
-args = ["I"]
-ret = "I"
+args = ['T']
+ret = 'T'
 ulp_error = 0
-code_name = "neg"
-latex_name = "-"
+code_name = 'neg'
+latex_name = '-'
+arg_names = ['']
 
 [functions.add]
-args = ["I", "I"]
-ret = "I"
+args = ['T', 'T']
+ret = 'T'
 ulp_error = 0
-code_name = "add"
-latex_name = "+"
+code_name = 'add'
+latex_name = '+'
+arg_names = ['', '']
 
 [functions.sub]
-args = ["I", "I"]
-ret = "I"
+args = ['T', 'T']
+ret = 'T'
 ulp_error = 0
-code_name = "sub"
-latex_name = "-"
+code_name = 'sub'
+latex_name = '-'
+arg_names = ['', '']
 
 [functions.mul]
-args = ["I", "I"]
-ret = "I"
+args = ['T', 'T']
+ret = 'T'
 ulp_error = 0
-code_name = "mul"
-latex_name = "\\times"
+code_name = 'mul'
+latex_name = '\\times'
+arg_names = ['', '']
 
 [functions.div]
-args = ["I", "I"]
-ret = "I"
+args = ['T', 'T', 'T']
+ret = 'T'
 ulp_error = 0
-code_name = "div"
-latex_name = "\\div"
+code_name = 'div'
+latex_name = '\\div'
+arg_names = ['a', '}', '']
 
 [functions.recip]
-args = ["I"]
-ret = "I"
+args = ['T', 'T']
+ret = 'T'
 ulp_error = 0
-code_name = "recip"
-latex_name = "\\mathrm{recip}"
+code_name = 'recip'
+latex_name = '\\mathrm{recip}'
+arg_names = ['', '']
 
 [functions.sqr]
-args = ["I"]
-ret = "I"
+args = ['T']
+ret = 'T'
 ulp_error = 0
-code_name = "sqr"
-latex_name = "\\mathrm{sqr}"
+code_name = 'sqr'
+latex_name = '\\mathrm{sqr}'
+arg_names = ['']
 
 [functions.sqrt]
-args = ["I"]
-ret = "I"
+args = ['T']
+ret = 'T'
 ulp_error = 0
-code_name = "sqrt"
-latex_name = "\\sqrt"
+code_name = 'sqrt'
+latex_name = '\\sqrt'
+arg_names = ['']
 
 [functions.fma]
-args = ["I", "I", "I"]
-ret = "I"
+args = ['I', 'I', 'I']
+ret = 'I'
 ulp_error = 0
-code_name = "fma"
-latex_name = "\\mathrm{fma}"
+code_name = 'fma'
+latex_name = '\\mathrm{fma}'
+arg_names = ['x', 'y', 'z']
 
 [functions.mig]
-args = ["I"]
-ret = "T"
+args = ['I']
+ret = 'T'
 ulp_error = 0
-code_name = "mig"
-latex_name = "\\mathrm{mig}"
+code_name = 'mig'
+latex_name = '\\mathrm{mig}'
+arg_names = ['x']
 
 [functions.mag]
-args = ["I"]
-ret = "T"
+args = ['I']
+ret = 'T'
 ulp_error = 0
-code_name = "mag"
-latex_name = "\\mathrm{mag}"
+code_name = 'mag'
+latex_name = '\\mathrm{mag}'
+arg_names = ['x']
 
 [functions.wid]
-args = ["I"]
-ret = "T"
+args = ['I']
+ret = 'T'
 ulp_error = 0
-code_name = "wid"
-latex_name = "\\mathrm{wid}"
+code_name = 'wid'
+latex_name = '\\mathrm{wid}'
 
 [functions.inf]
-args = ["I"]
-ret = "T"
+args = ['I']
+ret = 'T'
 ulp_error = 0
-code_name = "inf"
-latex_name = "\\inf"
+code_name = 'inf'
+latex_name = '\\inf'
+arg_names = ['x']
 
 [functions.sup]
-args = ["I"]
-ret = "T"
+args = ['I']
+ret = 'T'
 ulp_error = 0
-code_name = "sup"
-latex_name = "\\sup"
+code_name = 'sup'
+latex_name = '\\sup'
+arg_names = ['x']
 
 [functions.mid]
-args = ["I"]
-ret = "T"
+args = ['I']
+ret = 'T'
 ulp_error = 0
-code_name = "mid"
-latex_name = "\\mathrm{mid}"
+code_name = 'mid'
+latex_name = '\\mathrm{mid}'
+arg_names = ['x']
 
 [functions.rad]
-args = ["I"]
-ret = "T"
+args = ['I']
+ret = 'T'
 ulp_error = 0
-code_name = "rad"
-latex_name = "\\mathrm{rad}"
+code_name = 'rad'
+latex_name = '\\mathrm{rad}'
+arg_names = ['x']
 
 [functions.floor]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 0
-code_name = "floor"
-latex_name = "\\lfloor\\cdot\\rfloor"
+code_name = 'floor'
+latex_name = '\\lfloor\\cdot\\rfloor'
+arg_names = ['x']
 
 [functions.ceil]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 0
-code_name = "ceil"
-latex_name = "\\lceil\\cdot\\rceil"
+code_name = 'ceil'
+latex_name = '\\lceil\\cdot\\rceil'
+arg_names = ['x']
 
 [functions.abs]
-args = ["I"]
-ret = "I"
+args = ['T']
+ret = 'T'
 ulp_error = 0
-code_name = "abs"
-latex_name = "\\left|\\cdot\\right|"
+code_name = 'abs'
+latex_name = '\\left|\\cdot\\right|'
+arg_names = ['']
 
 [functions.min]
-args = ["I", "I"]
-ret = "I"
+args = ['I', 'I']
+ret = 'I'
 ulp_error = 0
-code_name = "min"
-latex_name = "\\min"
+code_name = 'min'
+latex_name = '\\min'
+arg_names = ['x', 'y']
 
 [functions.max]
-args = ["I", "I"]
-ret = "I"
+args = ['T']
+ret = 'T'
 ulp_error = 0
-code_name = "max"
-latex_name = "\\max"
+code_name = 'max'
+latex_name = '\\max'
+arg_names = ['']
 
 [functions.trunc]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 0
-code_name = "trunc"
-latex_name = "\\mathrm{trunc}"
+code_name = 'trunc'
+latex_name = '\\mathrm{trunc}'
+arg_names = ['x']
 
 [functions.sign]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 0
-code_name = "sign"
-latex_name = "\\mathrm{sign}"
+code_name = 'sign'
+latex_name = '\\mathrm{sign}'
+arg_names = ['x']
 
 [functions.intersection]
-args = ["I", "I"]
-ret = "I"
+args = ['I', 'I']
+ret = 'I'
 ulp_error = 0
-code_name = "intersection"
-latex_name = "\\cap"
+code_name = 'intersection'
+latex_name = '\\cap'
+arg_names = ['x', 'y']
 
 [functions.convexHull]
-args = ["I", "I"]
-ret = "I"
+args = ['I', 'I']
+ret = 'I'
 ulp_error = 0
-code_name = "convexHull"
-latex_name = "\\mathrm{convexHull}"
+code_name = 'convexHull'
+latex_name = '\\mathrm{convexHull}'
 
 [functions.equal]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "equal"
-latex_name = "="
+code_name = 'equal'
+latex_name = '='
+arg_names = ['a', 'b']
 
 [functions.subset]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "subset"
-latex_name = "\\subseteq"
+code_name = 'subset'
+latex_name = '\\subseteq'
+arg_names = ['a', 'b']
 
 [functions.interior]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "interior"
-latex_name = "\\mathrm{interior}"
+code_name = 'interior'
+latex_name = '\\mathrm{interior}'
+arg_names = ['a', 'b']
 
 [functions.disjoint]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "disjoint"
-latex_name = "\\mathrm{disjoint}"
+code_name = 'disjoint'
+latex_name = '\\mathrm{disjoint}'
+arg_names = ['a', 'b']
 
 [functions.isEmpty]
-args = ["I"]
-ret = "B"
+args = ['I']
+ret = 'B'
 ulp_error = 0
-code_name = "empty"
-latex_name = "\\varnothing"
+code_name = 'empty'
+latex_name = '\\varnothing'
 
 [functions.isEntire]
-args = ["I"]
-ret = "B"
+args = ['I']
+ret = 'B'
 ulp_error = 0
-code_name = "entire"
-latex_name = "\\mathrm{entire}"
+code_name = 'entire'
+latex_name = '\\mathrm{entire}'
 
 [functions.less]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "less"
-latex_name = "<"
+code_name = 'less'
+latex_name = '<'
+arg_names = ['a', 'b']
 
 [functions.strictLess]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "strictLess"
-latex_name = "<"
+code_name = 'strictLess'
+latex_name = '<'
 
 [functions.precedes]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "precedes"
-latex_name = "\\preceq"
+code_name = 'precedes'
+latex_name = '\\preceq'
+arg_names = ['a', 'b']
 
 [functions.strictPrecedes]
-args = ["I", "I"]
-ret = "B"
+args = ['I', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "strictPrecedes"
-latex_name = "\\prec"
+code_name = 'strictPrecedes'
+latex_name = '\\prec'
 
 [functions.isMember]
-args = ["T", "I"]
-ret = "B"
+args = ['T', 'I']
+ret = 'B'
 ulp_error = 0
-code_name = "member"
-latex_name = "\\in"
+code_name = 'member'
+latex_name = '\\in'
 
 [functions.isSingleton]
-args = ["I"]
-ret = "B"
+args = ['I']
+ret = 'B'
 ulp_error = 0
-code_name = "singleton"
-latex_name = "\\mathrm{singleton}"
+code_name = 'singleton'
+latex_name = '\\mathrm{singleton}'
 
 [functions.isCommonInterval]
-args = ["I"]
-ret = "B"
+args = ['I']
+ret = 'B'
 ulp_error = 0
-code_name = "common"
-latex_name = "\\mathrm{common}"
+code_name = 'common'
+latex_name = '\\mathrm{common}'
 
 [functions.cancelMinus]
-args = ["I", "I"]
-ret = "I"
+args = ['I', 'I']
+ret = 'I'
 ulp_error = 0
-code_name = "cancelMinus"
-latex_name = "\\mathrm{cancelMinus}"
+code_name = 'cancelMinus'
+latex_name = '\\mathrm{cancelMinus}'
 
 [functions.cancelPlus]
-args = ["I", "I"]
-ret = "I"
+args = ['I', 'I']
+ret = 'I'
 ulp_error = 0
-code_name = "cancelPlus"
-latex_name = "\\mathrm{cancelPlus}"
+code_name = 'cancelPlus'
+latex_name = '\\mathrm{cancelPlus}'
 
 [functions.roundTiesToEven]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 0
-code_name = "roundTiesToEven"
-latex_name = "\\mathrm{roundTiesToEven}"
+code_name = 'roundTiesToEven'
+latex_name = '\\mathrm{roundTiesToEven}'
 
 [functions.roundTiesToAway]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 0
-code_name = "roundTiesToAway"
-latex_name = "\\mathrm{roundTiesToAway}"
+code_name = 'roundTiesToAway'
+latex_name = '\\mathrm{roundTiesToAway}'
 
 [functions.cbrt]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 1
-code_name = "cbrt"
-latex_name = "\\sqrt[3]{\\cdot}"
+code_name = 'cbrt'
+latex_name = '\\sqrt[3]{\\cdot}'
+arg_names = ['x']
 
 [functions.exp]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "exp"
-latex_name = "\\exp"
+code_name = 'exp'
+latex_name = '\\exp'
+arg_names = ['x']
 
 [functions.exp2]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "exp2"
-latex_name = "\\exp_2"
+code_name = 'exp2'
+latex_name = '\\exp_2'
+arg_names = ['x']
 
 [functions.exp10]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "exp10"
-latex_name = "\\exp_{10}"
+code_name = 'exp10'
+latex_name = '\\exp_{10}'
+arg_names = ['x']
 
 [functions.expm1]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "expm1"
-latex_name = "\\exp_{m1}"
+code_name = 'expm1'
+latex_name = '\\exp_{m1}'
+arg_names = ['x']
 
 [functions.log]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "log"
-latex_name = "\\log"
+code_name = 'log'
+latex_name = '\\log'
+arg_names = ['x']
 
 [functions.log2]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "log2"
-latex_name = "\\log_2"
+code_name = 'log2'
+latex_name = '\\log_2'
+arg_names = ['x']
 
 [functions.log10]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "log10"
-latex_name = "\\log_{10}"
+code_name = 'log10'
+latex_name = '\\log_{10}'
+arg_names = ['x']
 
 [functions.log1p]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "log1p"
-latex_name = "\\log_{1p}"
+code_name = 'log1p'
+latex_name = '\\log_{1p}'
+arg_names = ['x']
 
 [functions.sin]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 2
-code_name = "sin"
-latex_name = "\\sin"
+code_name = 'sin'
+latex_name = '\\sin'
+arg_names = ['x']
 
 [functions.cos]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 2
-code_name = "cos"
-latex_name = "\\cos"
+code_name = 'cos'
+latex_name = '\\cos'
+arg_names = ['x']
 
 [functions.tan]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "tan"
-latex_name = "\\tan"
+code_name = 'tan'
+latex_name = '\\tan'
+arg_names = ['x']
 
 [functions.asin]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "asin"
-latex_name = "\\arcsin"
+code_name = 'asin'
+latex_name = '\\arcsin'
+arg_names = ['x']
 
 [functions.acos]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "acos"
-latex_name = "\\arccos"
+code_name = 'acos'
+latex_name = '\\arccos'
+arg_names = ['x']
 
 [functions.atan]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "atan"
-latex_name = "\\arctan"
+code_name = 'atan'
+latex_name = '\\arctan'
+arg_names = ['x']
 
 [functions.atan2]
-args = ["I", "I"]
-ret = "I"
+args = ['I', 'I']
+ret = 'I'
 ulp_error = 3
-code_name = "atan2"
-latex_name = "\\arctan2"
+code_name = 'atan2'
+latex_name = '\\arctan2'
+arg_names = ['y', 'x']
 
 [functions.sinh]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "sinh"
-latex_name = "\\sinh"
+code_name = 'sinh'
+latex_name = '\\sinh'
+arg_names = ['x']
 
 [functions.cosh]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 2
-code_name = "cosh"
-latex_name = "\\cosh"
+code_name = 'cosh'
+latex_name = '\\cosh'
+arg_names = ['x']
 
 [functions.cot]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 4
-code_name = "cot"
-latex_name = "\\cot"
+code_name = 'cot'
+latex_name = '\\cot'
+arg_names = ['x']
 
 [functions.coth]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "coth"
-latex_name = "\\coth"
+code_name = 'coth'
+latex_name = '\\coth'
+arg_names = ['a']
 
 [functions.tanh]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 2
-code_name = "tanh"
-latex_name = "\\tanh"
+code_name = 'tanh'
+latex_name = '\\tanh'
+arg_names = ['x']
 
 [functions.asinh]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "arcsinh"
-latex_name = "\\mathrm{arcsinh}"
+code_name = 'arcsinh'
+latex_name = '\\mathrm{arcsinh}'
+arg_names = ['x']
 
 [functions.acosh]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "arccosh"
-latex_name = "\\mathrm{arccosh}"
+code_name = 'arccosh'
+latex_name = '\\mathrm{arccosh}'
+arg_names = ['x']
 
 [functions.atanh]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "arctanh"
-latex_name = "\\mathrm{arctanh}"
+code_name = 'arctanh'
+latex_name = '\\mathrm{arctanh}'
+arg_names = ['x']
 
 [functions.sinpi]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "sinpi"
-latex_name = "\\sin\\pi"
+code_name = 'sinpi'
+latex_name = '\\sin\\pi'
+arg_names = ['x']
 
 [functions.cospi]
-args = ["I"]
-ret = "I"
+args = ['I']
+ret = 'I'
 ulp_error = 3
-code_name = "cospi"
-latex_name = "\\cos\\pi"
+code_name = 'cospi'
+latex_name = '\\cos\\pi'
+arg_names = ['x']
 
 [functions.pown]
-args = ["I", "N"]
-ret = "I"
+args = ['T', 'T']
+ret = 'T'
 ulp_error = 1
-code_name = "pown"
-latex_name = "\\mathrm{pown}"
+code_name = 'pown'
+latex_name = '\\mathrm{pown}'
+arg_names = ['', '']
 
 [functions.pow]
-args = ["I", "I"]
-ret = "I"
+args = ['I', 'T']
+ret = 'I'
 ulp_error = 1
-code_name = "pow"
-latex_name = "\\mathrm{pow}"
+code_name = 'pow'
+latex_name = '\\mathrm{pow}'
+arg_names = ['x', 'y']
 
 [functions.rootn]
-args = ["I", "N"]
-ret = "I"
+args = ['I', 'T']
+ret = 'I'
 ulp_error = 2
-code_name = "rootn"
-latex_name = "\\sqrt[n]{\\cdot}"
+code_name = 'rootn'
+latex_name = '\\sqrt[n]{\\cdot}'
+arg_names = ['x', 'n']
 
 [functions.hypot]
-args = ["I", "I"]
-ret = "I"
+args = ['T', 'T']
+ret = 'T'
 ulp_error = 0
-code_name = "hypot"
-latex_name = "\\mathrm{hypot}"
+code_name = 'hypot'
+latex_name = '\\mathrm{hypot}'
+arg_names = ['', '']
+
+[functions.interval]
+args = ['T']
+arg_names = ['init']
+ret = 'T'
+
+[functions.return]
+args = ['T']
+arg_names = ['<']
+ret = 'T'
+
+[functions.format]
+args = ['I', 'T']
+arg_names = ['x', 'ctx']
+ret = 'T'
+
+[functions.ROUNDED_OP]
+args = ['T']
+arg_names = ['']
+ret = 'T'
+
+[functions.fma_down]
+args = ['T', 'T', 'T']
+arg_names = ['x', 'y', 'z']
+ret = 'T'
+
+[functions.fma_up]
+args = ['T', 'T', 'T']
+arg_names = ['x', 'y', 'z']
+ret = 'T'
+
+[functions.add_down]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.add_up]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.sub_down]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.sub_up]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.mul_down]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.mul_up]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.div_down]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.div_up]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.median]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.copy_sign]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'T'
+
+[functions.next_after]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.rcp_down]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.rcp_up]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.sqrt_down]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.sqrt_up]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.int_down]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.int_up]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.round_away]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.round_even]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.nan]
+args = []
+arg_names = []
+ret = 'T'
+
+[functions.pos_inf]
+args = []
+arg_names = []
+ret = 'T'
+
+[functions.neg_inf]
+args = []
+arg_names = []
+ret = 'T'
+
+[functions.next_floating]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.prev_floating]
+args = ['T']
+arg_names = ['x']
+ret = 'T'
+
+[functions.empty]
+args = ['T']
+arg_names = ['']
+ret = 'T'
+
+[functions.entire]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+
+[functions.just_zero]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+
+[functions.if]
+args = ['T']
+arg_names = ['']
+ret = 'T'
+
+[functions.fabs]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.fmax]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+
+[functions.fmin]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+
+[functions.contains]
+args = ['I', 'T']
+arg_names = ['x', 'y']
+ret = 'B'
+
+[functions.bounded]
+args = ['T']
+arg_names = ['']
+ret = 'T'
+
+[functions.isfinite]
+args = ['T']
+arg_names = ['']
+ret = 'T'
+
+[functions.width]
+args = ['I']
+arg_names = ['x']
+ret = 'T'
+
+[functions.strict_less_or_both_inf]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.strict_less]
+args = ['I', 'I']
+arg_names = ['a', 'b']
+ret = 'B'
+
+[functions.strict_precedes]
+args = ['I', 'I']
+arg_names = ['a', 'b']
+ret = 'B'
+
+[functions.cancel_minus]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.cancel_plus]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+
+[functions.convex_hull]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.hull]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+
+[functions.round]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.nearbyint]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.rint]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.fdim]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+
+[functions.isinf]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+
+[functions.isnai]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+
+[functions.is_member]
+args = ['T', 'I']
+arg_names = ['x', 'y']
+ret = 'B'
+
+[functions.is_singleton]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+
+[functions.is_common_interval]
+args = ['T']
+arg_names = ['']
+ret = 'T'
+
+[functions.isnormal]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+
+[functions.is_atomic]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+
+[functions.round_to_nearest_even]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.round_ties_to_away]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.ldexp]
+args = ['I', 'N']
+arg_names = ['x', 'exp']
+ret = 'I'
+
+[functions.scalbln]
+args = ['I', 'N']
+arg_names = ['x', 'n']
+ret = 'I'
+
+[functions.scalbn]
+args = ['I', 'N']
+arg_names = ['x', 'n']
+ret = 'I'
+
+[functions.logb]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.constexpr]
+args = ['T']
+arg_names = ['float>']
+ret = 'T'
+
+[functions.powf]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.pow_]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.assert]
+args = ['T']
+arg_names = ['<']
+ret = 'T'
+
+[functions.rootn_pos_n]
+args = ['T', 'T']
+arg_names = ['', '']
+ret = 'T'
+
+[functions.quadrant]
+args = ['T']
+arg_names = ['v']
+ret = 'N'
+
+[functions.quadrant_pi]
+args = ['T']
+arg_names = ['v']
+ret = 'N'
+
+[functions.erf]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.erfc]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+
+[functions.bisect]
+args = ['I', 'T']
+arg_names = ['x', 'split_ratio']
+ret = 'T'
+
+[functions.mince]
+args = ['I', 'I', 'N']
+arg_names = ['x', 'xs', 'out_xs_size']
+ret = 'T'
+
+[functions.for]
+args = ['N']
+arg_names = ['i']
+ret = 'T'
