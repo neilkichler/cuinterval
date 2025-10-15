@@ -1,0 +1,515 @@
+# Supported functions data converted from docs_gen.py
+# Keys are function names mapping to tables with args, ret, ulp_error, code_name, latex_name
+
+[functions]
+
+[functions.pos]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "pos"
+latex_name = "+"
+
+[functions.neg]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "neg"
+latex_name = "-"
+
+[functions.add]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "add"
+latex_name = "+"
+
+[functions.sub]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "sub"
+latex_name = "-"
+
+[functions.mul]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "mul"
+latex_name = "\\times"
+
+[functions.div]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "div"
+latex_name = "\\div"
+
+[functions.recip]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "recip"
+latex_name = "\\mathrm{recip}"
+
+[functions.sqr]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "sqr"
+latex_name = "\\mathrm{sqr}"
+
+[functions.sqrt]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "sqrt"
+latex_name = "\\sqrt"
+
+[functions.fma]
+args = ["I", "I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "fma"
+latex_name = "\\mathrm{fma}"
+
+[functions.mig]
+args = ["I"]
+ret = "T"
+ulp_error = 0
+code_name = "mig"
+latex_name = "\\mathrm{mig}"
+
+[functions.mag]
+args = ["I"]
+ret = "T"
+ulp_error = 0
+code_name = "mag"
+latex_name = "\\mathrm{mag}"
+
+[functions.wid]
+args = ["I"]
+ret = "T"
+ulp_error = 0
+code_name = "wid"
+latex_name = "\\mathrm{wid}"
+
+[functions.inf]
+args = ["I"]
+ret = "T"
+ulp_error = 0
+code_name = "inf"
+latex_name = "\\inf"
+
+[functions.sup]
+args = ["I"]
+ret = "T"
+ulp_error = 0
+code_name = "sup"
+latex_name = "\\sup"
+
+[functions.mid]
+args = ["I"]
+ret = "T"
+ulp_error = 0
+code_name = "mid"
+latex_name = "\\mathrm{mid}"
+
+[functions.rad]
+args = ["I"]
+ret = "T"
+ulp_error = 0
+code_name = "rad"
+latex_name = "\\mathrm{rad}"
+
+[functions.floor]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "floor"
+latex_name = "\\lfloor\\cdot\\rfloor"
+
+[functions.ceil]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "ceil"
+latex_name = "\\lceil\\cdot\\rceil"
+
+[functions.abs]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "abs"
+latex_name = "\\left|\\cdot\\right|"
+
+[functions.min]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "min"
+latex_name = "\\min"
+
+[functions.max]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "max"
+latex_name = "\\max"
+
+[functions.trunc]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "trunc"
+latex_name = "\\mathrm{trunc}"
+
+[functions.sign]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "sign"
+latex_name = "\\mathrm{sign}"
+
+[functions.intersection]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "intersection"
+latex_name = "\\cap"
+
+[functions.convexHull]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "convexHull"
+latex_name = "\\mathrm{convexHull}"
+
+[functions.equal]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "equal"
+latex_name = "="
+
+[functions.subset]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "subset"
+latex_name = "\\subseteq"
+
+[functions.interior]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "interior"
+latex_name = "\\mathrm{interior}"
+
+[functions.disjoint]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "disjoint"
+latex_name = "\\mathrm{disjoint}"
+
+[functions.isEmpty]
+args = ["I"]
+ret = "B"
+ulp_error = 0
+code_name = "empty"
+latex_name = "\\varnothing"
+
+[functions.isEntire]
+args = ["I"]
+ret = "B"
+ulp_error = 0
+code_name = "entire"
+latex_name = "\\mathrm{entire}"
+
+[functions.less]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "less"
+latex_name = "<"
+
+[functions.strictLess]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "strictLess"
+latex_name = "<"
+
+[functions.precedes]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "precedes"
+latex_name = "\\preceq"
+
+[functions.strictPrecedes]
+args = ["I", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "strictPrecedes"
+latex_name = "\\prec"
+
+[functions.isMember]
+args = ["T", "I"]
+ret = "B"
+ulp_error = 0
+code_name = "member"
+latex_name = "\\in"
+
+[functions.isSingleton]
+args = ["I"]
+ret = "B"
+ulp_error = 0
+code_name = "singleton"
+latex_name = "\\mathrm{singleton}"
+
+[functions.isCommonInterval]
+args = ["I"]
+ret = "B"
+ulp_error = 0
+code_name = "common"
+latex_name = "\\mathrm{common}"
+
+[functions.cancelMinus]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "cancelMinus"
+latex_name = "\\mathrm{cancelMinus}"
+
+[functions.cancelPlus]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "cancelPlus"
+latex_name = "\\mathrm{cancelPlus}"
+
+[functions.roundTiesToEven]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "roundTiesToEven"
+latex_name = "\\mathrm{roundTiesToEven}"
+
+[functions.roundTiesToAway]
+args = ["I"]
+ret = "I"
+ulp_error = 0
+code_name = "roundTiesToAway"
+latex_name = "\\mathrm{roundTiesToAway}"
+
+[functions.cbrt]
+args = ["I"]
+ret = "I"
+ulp_error = 1
+code_name = "cbrt"
+latex_name = "\\sqrt[3]{\\cdot}"
+
+[functions.exp]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "exp"
+latex_name = "\\exp"
+
+[functions.exp2]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "exp2"
+latex_name = "\\exp_2"
+
+[functions.exp10]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "exp10"
+latex_name = "\\exp_{10}"
+
+[functions.expm1]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "expm1"
+latex_name = "\\exp_{m1}"
+
+[functions.log]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "log"
+latex_name = "\\log"
+
+[functions.log2]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "log2"
+latex_name = "\\log_2"
+
+[functions.log10]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "log10"
+latex_name = "\\log_{10}"
+
+[functions.log1p]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "log1p"
+latex_name = "\\log_{1p}"
+
+[functions.sin]
+args = ["I"]
+ret = "I"
+ulp_error = 2
+code_name = "sin"
+latex_name = "\\sin"
+
+[functions.cos]
+args = ["I"]
+ret = "I"
+ulp_error = 2
+code_name = "cos"
+latex_name = "\\cos"
+
+[functions.tan]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "tan"
+latex_name = "\\tan"
+
+[functions.asin]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "asin"
+latex_name = "\\arcsin"
+
+[functions.acos]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "acos"
+latex_name = "\\arccos"
+
+[functions.atan]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "atan"
+latex_name = "\\arctan"
+
+[functions.atan2]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 3
+code_name = "atan2"
+latex_name = "\\arctan2"
+
+[functions.sinh]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "sinh"
+latex_name = "\\sinh"
+
+[functions.cosh]
+args = ["I"]
+ret = "I"
+ulp_error = 2
+code_name = "cosh"
+latex_name = "\\cosh"
+
+[functions.cot]
+args = ["I"]
+ret = "I"
+ulp_error = 4
+code_name = "cot"
+latex_name = "\\cot"
+
+[functions.coth]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "coth"
+latex_name = "\\coth"
+
+[functions.tanh]
+args = ["I"]
+ret = "I"
+ulp_error = 2
+code_name = "tanh"
+latex_name = "\\tanh"
+
+[functions.asinh]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "arcsinh"
+latex_name = "\\mathrm{arcsinh}"
+
+[functions.acosh]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "arccosh"
+latex_name = "\\mathrm{arccosh}"
+
+[functions.atanh]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "arctanh"
+latex_name = "\\mathrm{arctanh}"
+
+[functions.sinpi]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "sinpi"
+latex_name = "\\sin\\pi"
+
+[functions.cospi]
+args = ["I"]
+ret = "I"
+ulp_error = 3
+code_name = "cospi"
+latex_name = "\\cos\\pi"
+
+[functions.pown]
+args = ["I", "N"]
+ret = "I"
+ulp_error = 1
+code_name = "pown"
+latex_name = "\\mathrm{pown}"
+
+[functions.pow]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 1
+code_name = "pow"
+latex_name = "\\mathrm{pow}"
+
+[functions.rootn]
+args = ["I", "N"]
+ret = "I"
+ulp_error = 2
+code_name = "rootn"
+latex_name = "\\sqrt[n]{\\cdot}"
+
+[functions.hypot]
+args = ["I", "I"]
+ret = "I"
+ulp_error = 0
+code_name = "hypot"
+latex_name = "\\mathrm{hypot}"
