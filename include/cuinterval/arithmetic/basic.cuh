@@ -29,18 +29,6 @@ inline constexpr __device__ interval<T> entire()
     return { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
 }
 
-template<typename T>
-inline constexpr __device__ __host__ bool empty(interval<T> x)
-{
-    return !(x.lb <= x.ub);
-}
-
-template<typename T>
-inline constexpr __device__ bool just_zero(interval<T> x)
-{
-    return x.lb == 0 && x.ub == 0;
-}
-
 //
 // Basic arithmetic operations
 //
@@ -157,58 +145,6 @@ inline constexpr __device__ interval<T> recip(interval<T> a)
     }
 
     return { intrinsic::rcp_down(a.ub), intrinsic::rcp_up(a.lb) };
-}
-
-template<typename T>
-inline constexpr __device__ interval<T> coth(interval<T> a)
-{
-    // same logic as recip. In fact could just be:
-    //
-    // return recip(tanh(a));
-    //
-    // but that is much less tight than the below implementation
-
-    if (empty(a)) {
-        return a;
-    }
-
-    using intrinsic::prev_floating, intrinsic::next_floating, intrinsic::next_after;
-    using std::expm1;
-
-    constexpr T zero = 0.;
-    constexpr T one  = 1.;
-    constexpr T inf  = std::numeric_limits<T>::infinity();
-
-    auto coth_down = [](T x) {
-        T exp2xm1 = expm1(2.0 * x);
-
-        if (exp2xm1 == inf) {
-            return one;
-        }
-        return intrinsic::div_down(intrinsic::add_down(exp2xm1, 2.0), exp2xm1);
-    };
-
-    auto coth_up = [](T x) {
-        T exp2xm1 = expm1(2.0 * x);
-
-        if (exp2xm1 == inf) {
-            return one;
-        }
-        return intrinsic::div_up(intrinsic::add_up(exp2xm1, 2.0), exp2xm1);
-    };
-
-    if (contains(a, zero)) {
-        if (a.lb < zero && zero == a.ub) {
-            return { -inf, next_after(coth_up(a.lb), -one) };
-        } else if (a.lb == zero && zero < a.ub) {
-            return { next_after(coth_down(a.ub), one), inf };
-        } else if (a.lb < zero && zero < a.ub) {
-            return entire<T>();
-        } else if (a.lb == zero && zero == a.ub) {
-            return empty<T>();
-        }
-    }
-    return { prev_floating(coth_down(a.ub)), next_floating(coth_up(a.lb)) };
 }
 
 template<typename T>
@@ -372,22 +308,6 @@ inline constexpr __device__ interval<T> min(interval<T> x, interval<T> y)
     }
 
     return { min(x.lb, y.lb), min(x.ub, y.ub) };
-}
-
-template<typename T>
-inline constexpr __device__ interval<T> hypot(interval<T> x, interval<T> y)
-{
-    if (empty(x) || empty(y)) {
-        return empty<T>();
-    }
-
-    // not using builtin CUDA hypot functions as it has a maximum ulp error of 2,
-    // whereas sqr and sqrt have intrinsic rounded operations with 0 ulp error.
-    auto hypot = [](interval<T> a, interval<T> b) {
-        return sqrt(sqr(a) + sqr(b));
-    };
-
-    return hypot(x, y);
 }
 
 template<typename T>
@@ -560,6 +480,22 @@ inline constexpr __device__ interval<T> &operator/=(interval<T> &a, auto b)
     return a;
 }
 
+//
+// Boolean operations
+//
+
+template<typename T>
+inline constexpr __device__ __host__ bool empty(interval<T> x)
+{
+    return !(x.lb <= x.ub);
+}
+
+template<typename T>
+inline constexpr __device__ bool just_zero(interval<T> x)
+{
+    return x.lb == 0 && x.ub == 0;
+}
+
 template<typename T>
 inline constexpr __device__ __host__ bool contains(interval<T> x, T y)
 {
@@ -584,39 +520,6 @@ template<typename T>
 inline constexpr __device__ bool isfinite(interval<T> x)
 {
     return bounded(x);
-}
-
-template<typename T>
-inline constexpr __device__ T width(interval<T> x)
-{
-    if (empty(x)) {
-        return intrinsic::nan<T>();
-    }
-    return intrinsic::sub_up(x.ub, x.lb);
-}
-
-template<typename T>
-inline constexpr __device__ T inf(interval<T> x) { return x.lb; }
-
-template<typename T>
-inline constexpr __device__ T sup(interval<T> x) { return x.ub; }
-
-template<typename T>
-inline constexpr __device__ T mid(interval<T> x)
-{
-    using namespace intrinsic;
-
-    if (empty(x)) {
-        return nan<T>();
-    } else if (entire(x)) {
-        return static_cast<T>(0);
-    } else if (x.lb == neg_inf<T>()) {
-        return std::numeric_limits<T>::lowest();
-    } else if (x.ub == pos_inf<T>()) {
-        return std::numeric_limits<T>::max();
-    } else {
-        return mul_down(0.5, x.lb) + mul_up(0.5, x.ub);
-    }
 }
 
 template<typename T>
@@ -683,6 +586,56 @@ inline constexpr __device__ bool strict_precedes(interval<T> a, interval<T> b)
     return empty(a) || empty(b) || a.ub < b.lb;
 }
 
+// we define isinf for an interval to mean that one of its bounds is infinity.
+template<typename T>
+inline constexpr __device__ __host__ bool isinf(interval<T> x)
+{
+    return x.lb == intrinsic::neg_inf<T>() || x.ub == intrinsic::pos_inf<T>();
+}
+
+// is not an interval
+template<typename T>
+inline constexpr __device__ __host__ bool isnai(interval<T> x)
+{
+    return x.lb != x.lb && x.ub != x.ub;
+}
+
+template<typename T>
+inline constexpr __device__ bool is_member(T x, interval<T> y)
+{
+    using ::isfinite;
+
+    return isfinite(x) && inf(y) <= x && x <= sup(y);
+}
+
+template<typename T>
+inline constexpr __device__ bool is_singleton(interval<T> x)
+{
+    return x.lb == x.ub;
+}
+
+template<typename T>
+inline constexpr __device__ bool is_common_interval(interval<T> x)
+{
+    return !empty(x) && bounded(x);
+}
+
+template<typename T>
+inline constexpr __device__ bool isnormal(interval<T> x)
+{
+    return is_common_interval(x);
+}
+
+template<typename T>
+inline constexpr __device__ bool is_atomic(interval<T> x)
+{
+    return empty(x) || is_singleton(x) || (intrinsic::next_floating(inf(x)) == sup(x));
+}
+
+//
+// Cancellative functions
+//
+
 template<typename T>
 inline constexpr __device__ interval<T> cancel_minus(interval<T> x, interval<T> y)
 {
@@ -720,6 +673,47 @@ inline constexpr __device__ interval<T> cancel_plus(interval<T> x, interval<T> y
     return cancel_minus(x, -y);
 }
 
+//
+// Utility functions
+//
+
+template<typename T>
+inline constexpr __device__ T width(interval<T> x)
+{
+    if (empty(x)) {
+        return intrinsic::nan<T>();
+    }
+    return intrinsic::sub_up(x.ub, x.lb);
+}
+
+template<typename T>
+inline constexpr __device__ T inf(interval<T> x) { return x.lb; }
+
+template<typename T>
+inline constexpr __device__ T sup(interval<T> x) { return x.ub; }
+
+template<typename T>
+inline constexpr __device__ T mid(interval<T> x)
+{
+    using namespace intrinsic;
+
+    if (empty(x)) {
+        return nan<T>();
+    } else if (entire(x)) {
+        return static_cast<T>(0);
+    } else if (x.lb == neg_inf<T>()) {
+        return std::numeric_limits<T>::lowest();
+    } else if (x.ub == pos_inf<T>()) {
+        return std::numeric_limits<T>::max();
+    } else {
+        return mul_down(0.5, x.lb) + mul_up(0.5, x.ub);
+    }
+}
+
+//
+// Set functions
+//
+
 template<typename T>
 inline constexpr __device__ interval<T> intersection(interval<T> x, interval<T> y)
 {
@@ -753,6 +747,10 @@ inline constexpr __device__ interval<T> hull(interval<T> x, interval<T> y)
 {
     return convex_hull(x, y);
 }
+
+//
+// Integer functions
+//
 
 template<typename T>
 inline constexpr __device__ interval<T> ceil(interval<T> x)
@@ -818,52 +816,6 @@ inline constexpr __device__ interval<T> sign(interval<T> x)
              (x.ub != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.ub) };
 }
 
-// we define isinf for an interval to mean that one of its bounds is infinity.
-template<typename T>
-inline constexpr __device__ __host__ bool isinf(interval<T> x)
-{
-    return x.lb == intrinsic::neg_inf<T>() || x.ub == intrinsic::pos_inf<T>();
-}
-
-// is not an interval
-template<typename T>
-inline constexpr __device__ __host__ bool isnai(interval<T> x)
-{
-    return x.lb != x.lb && x.ub != x.ub;
-}
-
-template<typename T>
-inline constexpr __device__ bool is_member(T x, interval<T> y)
-{
-    using ::isfinite;
-
-    return isfinite(x) && inf(y) <= x && x <= sup(y);
-}
-
-template<typename T>
-inline constexpr __device__ bool is_singleton(interval<T> x)
-{
-    return x.lb == x.ub;
-}
-
-template<typename T>
-inline constexpr __device__ bool is_common_interval(interval<T> x)
-{
-    return !empty(x) && bounded(x);
-}
-
-template<typename T>
-inline constexpr __device__ bool isnormal(interval<T> x)
-{
-    return is_common_interval(x);
-}
-
-template<typename T>
-inline constexpr __device__ bool is_atomic(interval<T> x)
-{
-    return empty(x) || is_singleton(x) || (intrinsic::next_floating(inf(x)) == sup(x));
-}
-
 template<typename T>
 inline constexpr __device__ interval<T> round_to_nearest_even(interval<T> x)
 {
@@ -875,6 +827,10 @@ inline constexpr __device__ interval<T> round_ties_to_away(interval<T> x)
 {
     return { intrinsic::round_away(x.lb), intrinsic::round_away(x.ub) };
 }
+
+//
+// Power functions
+//
 
 template<typename T>
 inline constexpr __device__ interval<T> exp(interval<T> x)
@@ -1614,6 +1570,48 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
     }
 }
 
+template<typename T>
+inline constexpr __device__ interval<T> cot(interval<T> x)
+{
+    auto cot = [](T x) -> T { using std::tan; return 1 / tan(x); };
+
+    if (empty(x)) {
+        return x;
+    }
+
+    constexpr auto pi = pi_v<interval<T>>;
+
+    T w = width(x);
+
+    if (w >= sup(pi)) {
+        // interval contains at least one full period -> return range of cot
+        return entire<T>();
+    }
+
+    auto quadrant_lb     = quadrant(x.lb);
+    auto quadrant_ub     = quadrant(x.ub);
+    auto quadrant_lb_mod = quadrant_lb % 2;
+    auto quadrant_ub_mod = quadrant_ub % 2;
+
+    if ((quadrant_lb_mod == 1 && quadrant_ub_mod == 0)
+        || (quadrant_lb_mod == quadrant_ub_mod && quadrant_lb != quadrant_ub)) {
+
+        // NOTE: some test cases treat an interval [-1, 0] in such a way that 0 is only approached from the left and thus
+        //       the output range should have -infinity as lower bound. This check covers this special case.
+        //       For other similar scenarios with [x, k * pi] we do not have this issue because in floating point precision
+        //       we never exactly reach k * pi, i.e. float64(k * pi) < k * pi.
+        if (sup(x) == 0) {
+            return { intrinsic::neg_inf<T>(), intrinsic::next_floating(intrinsic::next_floating(cot(x.lb))) };
+        }
+
+        // crossing an asymptote -> return range of cot
+        return entire<T>();
+    } else {
+        return { intrinsic::prev_floating(intrinsic::prev_floating(cot(x.ub))),
+                 intrinsic::next_floating(intrinsic::next_floating(cot(x.lb))) };
+    }
+}
+
 //
 // Hyperbolic functions
 //
@@ -1716,45 +1714,75 @@ inline constexpr __device__ interval<T> atanh(interval<T> x)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> cot(interval<T> x)
+inline constexpr __device__ interval<T> coth(interval<T> a)
 {
-    auto cot = [](T x) -> T { using std::tan; return 1 / tan(x); };
+    // same logic as recip. In fact could just be:
+    //
+    // return recip(tanh(a));
+    //
+    // but that is much less tight than the below implementation
 
-    if (empty(x)) {
-        return x;
+    if (empty(a)) {
+        return a;
     }
 
-    constexpr auto pi = pi_v<interval<T>>;
+    using intrinsic::prev_floating, intrinsic::next_floating, intrinsic::next_after;
+    using std::expm1;
 
-    T w = width(x);
+    constexpr T zero = 0.;
+    constexpr T one  = 1.;
+    constexpr T inf  = std::numeric_limits<T>::infinity();
 
-    if (w >= sup(pi)) {
-        // interval contains at least one full period -> return range of cot
-        return entire<T>();
-    }
+    auto coth_down = [](T x) {
+        T exp2xm1 = expm1(2.0 * x);
 
-    auto quadrant_lb     = quadrant(x.lb);
-    auto quadrant_ub     = quadrant(x.ub);
-    auto quadrant_lb_mod = quadrant_lb % 2;
-    auto quadrant_ub_mod = quadrant_ub % 2;
-
-    if ((quadrant_lb_mod == 1 && quadrant_ub_mod == 0)
-        || (quadrant_lb_mod == quadrant_ub_mod && quadrant_lb != quadrant_ub)) {
-
-        // NOTE: some test cases treat an interval [-1, 0] in such a way that 0 is only approached from the left and thus
-        //       the output range should have -infinity as lower bound. This check covers this special case.
-        //       For other similar scenarios with [x, k * pi] we do not have this issue because in floating point precision
-        //       we never exactly reach k * pi, i.e. float64(k * pi) < k * pi.
-        if (sup(x) == 0) {
-            return { intrinsic::neg_inf<T>(), intrinsic::next_floating(intrinsic::next_floating(cot(x.lb))) };
+        if (exp2xm1 == inf) {
+            return one;
         }
+        return intrinsic::div_down(intrinsic::add_down(exp2xm1, 2.0), exp2xm1);
+    };
 
-        // crossing an asymptote -> return range of cot
-        return entire<T>();
-    } else {
-        return { intrinsic::prev_floating(intrinsic::prev_floating(cot(x.ub))),
-                 intrinsic::next_floating(intrinsic::next_floating(cot(x.lb))) };
+    auto coth_up = [](T x) {
+        T exp2xm1 = expm1(2.0 * x);
+
+        if (exp2xm1 == inf) {
+            return one;
+        }
+        return intrinsic::div_up(intrinsic::add_up(exp2xm1, 2.0), exp2xm1);
+    };
+
+    if (contains(a, zero)) {
+        if (a.lb < zero && zero == a.ub) {
+            return { -inf, next_after(coth_up(a.lb), -one) };
+        } else if (a.lb == zero && zero < a.ub) {
+            return { next_after(coth_down(a.ub), one), inf };
+        } else if (a.lb < zero && zero < a.ub) {
+            return entire<T>();
+        } else if (a.lb == zero && zero == a.ub) {
+            return empty<T>();
+        }
     }
+    return { prev_floating(coth_down(a.ub)), next_floating(coth_up(a.lb)) };
+}
+
+//
+// Special functions
+//
+
+template<typename T>
+inline constexpr __device__ interval<T> hypot(interval<T> x, interval<T> y)
+{
+    if (empty(x) || empty(y)) {
+        return empty<T>();
+    }
+
+    // not using builtin CUDA hypot functions as it has a maximum ulp error of 2,
+    // whereas sqr and sqrt have intrinsic rounded operations with 0 ulp error.
+    auto hypot = [](interval<T> a, interval<T> b) {
+        return sqrt(sqr(a) + sqr(b));
+    };
+
+    return hypot(x, y);
 }
 
 template<typename T>
