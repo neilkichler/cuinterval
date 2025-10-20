@@ -1,0 +1,27 @@
+---
+const { id } = Astro.props;
+---
+
+<details class="details" id={id}>
+  <summary> Details </summary>
+
+  <slot name="brief"/>
+  <slot />
+  { Astro.slots.has("implementation") && (
+    <h4>Implementation</h4>
+    <slot name="implementation"/>
+  )}
+</details>
+
+<!-- NOTE: If the current page fragment matches the details section, we open it automatically.
+           So, if you come from the API page, click on `add`, you now are at `basic#add` and
+           the details for `add` will open up automatically. -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const hash = window.location.hash.slice(1);
+  if (!hash) return;
+
+  const details = document.querySelector(`details[id="${hash}"]`);
+  if (details) (details as HTMLDetailsElement).open = true;
+});
+</script>

@@ -1,0 +1,59 @@
+---
+title: Limitations
+description: Limitations of interval arithmetic.
+---
+
+import { Centered } from "@components";
+
+Interval Arithmetic has some major limitations that one must be aware of.
+You can find a detailed analysis of its shortcomings in many places on the web (see [1](https://en.wikipedia.org/wiki/Interval_arithmetic#Dependency_problem), 2). The following
+gives a brief summary of the most common pitfalls and how to potentially address them.
+
+### Dependency problem
+Different expressions of the same function, e.g.,
+
+  <Centered>
+  $$f(x)=x^2 - 4x =  (x-2)^2 - 4 = x(x-4)$$
+  </Centered>
+
+  may result in intervals of varying tightness. This is because the dependency that the two instantiations of x must have the same value is not accurately tracked. 
+
+  :::note[By-hand function rewriting.]
+  As a rule of thumb, the fewer instances of a variable in an expression, the tighter the resulting interval will end up being.
+
+  In this example, $(x-2)^2 - 4$ results in the tightest output interval.
+  :::
+
+  Not all such dependency problems can be resolved using symbolic rewriting, however.
+  If such scenarios lead to unsatisfactory results, a different arithmetic like Affine Arithmetic should probably be prefered.
+  Sometimes, through clever algorithmic adjustments or constraint propagation the intervals can still lead to useful bounds. 
+  Also, if only the relative width between different intervals is of interest (e.g., in verified neural network optimization), pure
+  interval arithmetic can still be surprisingly effective (see [here](https://www.sri.inf.ethz.ch/blog/paradox)).
+
+### Wrapping Effect
+
+In iterative solvers the interval width can increase in each iteration resulting in a blow-up.
+
+  :::tip[Relaxations of fixed-point iterations and implicit functions.]
+  Special purpose methods have been designed over the years to address this. See, 
+  [1](https://doi.org/10.1080/10556788.2014.924514), [2](https://doi.org/10.1007/s10898-023-01281-0). {/* TODO: add current */}
+  :::
+
+  :::tip[Relaxations of ODE integrators.]
+  Special purpose methods have been designed over the years to address this. See, 
+  [1](https://doi.org/10.1007/s10898-012-9909-0), [2](https://doi.org/10.1007/s10107-021-01654-x), [3](https://doi.org/10.1016/j.apnum.2011.01.009).
+  :::
+
+### Hardware limitations
+
+The hardware might not support rounded intrinsic operations.
+
+  :::caution[CUDA supporting hardware]
+  CUDA luckily has [rounded intrinsics](https://docs.nvidia.com/cuda/cuda-math-api/cuda_math_api/group__CUDA__MATH__INTRINSIC__DOUBLE.html#) for the basic operations (`add`, `sub`, `mul`, `div`, `sqrt`), including variants for rounding towards ±∞.
+  However, operations like `exp`, `sin`, `cos`, etc. often incur a couple [ulp](https://en.wikipedia.org/wiki/Unit_in_the_last_place) error which leads to further rounding. 
+  For more details see: [On rounding of intervals](../rounding).
+  :::
+    {/* This will be an issue for all arithmetics that are based on IEEE 754 floating point numbers and try to bound the calculations.
+    Alternative representations for floating numbers have been proposed (Posits, ) but hardware adoption is almost nonexistent. An exact dot product would already help a bunch for many scientific applications but 
+    unfortunately -- despite the apparent feasible of an exact dot product without much more required die space (reference: TODO cite Kulisch) -- almost no hardware has it due to some initial legal barriers (cite: TODO: also Kulisch). The general trend towards probabilistic and stochastic computing with ever smaller floating-point numbers (4 bit floats now on GB100's Tensor core) and thus increased interest in mixed-precision computation, certainly did not help either. */}
+

@@ -1,0 +1,963 @@
+[functions]
+
+[functions.neg]
+args = ['I']
+ret = 'I'
+ulp_error = 0
+code_name = 'neg'
+latex_name = '-'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L37'
+group = 'Basic'
+brief = 'Returns the additive inverse of the interval $$-x$$.'
+
+[functions.add]
+args = ['I', 'I']
+ret = 'I'
+ulp_error = 0
+code_name = 'add'
+latex_name = '+'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L43'
+group = 'Basic'
+brief = 'Returns the interval sum $$a + b$$.'
+
+[functions.sub]
+args = ['I', 'I']
+ret = 'I'
+ulp_error = 0
+code_name = 'sub'
+latex_name = '-'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L49'
+group = 'Basic'
+brief = 'Returns the interval difference $$a - b$$.'
+
+[functions.mul]
+args = ['I', 'I']
+ret = 'I'
+ulp_error = 0
+code_name = 'mul'
+latex_name = '\times'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L55'
+group = 'Basic'
+brief = 'Returns the interval product $$a \times b$$.'
+
+[functions.div]
+args = ['I', 'I']
+ret = 'I'
+ulp_error = 0
+code_name = 'div'
+latex_name = '\div'
+arg_names = ['x', 'y']
+source = 'include/cuinterval/arithmetic/basic.cuh#L151'
+group = 'Basic'
+brief = 'Returns the interval quotient $$x / y$$.'
+
+[functions.recip]
+args = ['I']
+ret = 'I'
+ulp_error = 0
+code_name = 'recip'
+latex_name = '1/x'
+arg_names = ['a']
+source = 'include/cuinterval/arithmetic/basic.cuh#L127'
+group = 'Basic'
+brief = 'Returns the reciprocal interval $$1/x$$.'
+
+[functions.sqr]
+args = ['I']
+ret = 'I'
+ulp_error = 0
+code_name = 'sqr'
+latex_name = 'x^2'
+arg_names = ['x']
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L93'
+group = 'Basic'
+brief = 'Returns the interval square $$x^2$$.'
+
+[functions.sqrt]
+args = ['I']
+ret = 'I'
+ulp_error = 0
+code_name = 'sqrt'
+latex_name = '\sqrt{x}'
+arg_names = ['x']
+constraints = ['_{\ge \mathbf{0}}', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L108'
+group = 'Basic'
+brief = 'Returns the interval square root $$\sqrt{x}$$.'
+
+[functions.fma]
+args = ['I', 'I', 'I']
+ret = 'I'
+ulp_error = 0
+code_name = 'fma'
+latex_name = 'x\cdot y + z'
+arg_names = ['x', 'y', 'z']
+source = 'include/cuinterval/arithmetic/basic.cuh#L76'
+group = 'Basic'
+brief = 'Returns the fused multiply-add $$x \cdot y + z$$.'
+
+[functions.mig]
+args = ['I']
+ret = 'T'
+ulp_error = 0
+code_name = 'mig'
+latex_name = '\mathrm{mig}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L217'
+group = 'Basic'
+brief = 'Returns the midpoint-inclusion generator for interval $$x$$.'
+
+[functions.mag]
+args = ['I']
+ret = 'T'
+ulp_error = 0
+code_name = 'mag'
+latex_name = '\mathrm{mag}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L206'
+group = 'Basic'
+brief = 'Returns the magnitude (maximum absolute value) of interval $$x$$.'
+
+[functions.inf]
+args = ['I']
+ret = 'T'
+code_name = 'inf'
+latex_name = '\inf'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L690'
+group = 'Utility'
+brief = 'Returns the infimum (lower bound) of interval $$x$$.'
+
+[functions.sup]
+args = ['I']
+ret = 'T'
+code_name = 'sup'
+latex_name = '\sup'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L693'
+group = 'Utility'
+brief = 'Returns the supremum (upper bound) of interval $$x$$.'
+
+[functions.mid]
+args = ['I']
+ret = 'T'
+code_name = 'mid'
+latex_name = '\mathrm{mid}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L696'
+group = 'Utility'
+brief = 'Returns the midpoint of interval $$x$$.'
+
+[functions.rad]
+args = ['I']
+ret = 'T'
+code_name = 'rad'
+latex_name = '\mathrm{rad}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L235'
+group = 'Basic'
+brief = 'Returns the radius (half-width) of interval $$x$$.'
+
+[functions.floor]
+args = ['I']
+ret = 'I'
+code_name = 'floor'
+latex_name = '\lfloor\cdot\rfloor'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L762'
+group = 'Integer'
+brief = 'Returns the interval containing $$\lfloor x \rfloor$$.'
+
+[functions.ceil]
+args = ['I']
+ret = 'I'
+code_name = 'ceil'
+latex_name = '\lceil\cdot\rceil'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L756'
+group = 'Integer'
+brief = 'Returns the interval containing $$\lceil x \rceil$$.'
+
+[functions.abs]
+args = ['I']
+ret = 'I'
+code_name = 'abs'
+latex_name = '\left|x\right|'
+arg_names = ['x']
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L254'
+group = 'Basic'
+brief = 'Returns the absolute value interval $$|x|$$.'
+
+[functions.min]
+args = ['I', 'I']
+ret = 'I'
+code_name = 'min'
+latex_name = '\min'
+arg_names = ['x', 'y']
+source = 'include/cuinterval/arithmetic/basic.cuh#L302'
+group = 'Basic'
+brief = 'Returns the interval minimum of $$x$$ and $$y$$.'
+
+[functions.max]
+args = ['I', 'I']
+ret = 'I'
+code_name = 'max'
+latex_name = '\max'
+arg_names = ['x', 'y']
+source = 'include/cuinterval/arithmetic/basic.cuh#L266'
+group = 'Basic'
+brief = 'Returns the interval maximum of $$x$$ and $$y$$.'
+
+[functions.trunc]
+args = ['I']
+ret = 'I'
+code_name = 'trunc'
+latex_name = '\mathrm{trunc}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L768'
+group = 'Integer'
+brief = 'Returns the interval containing truncated values of $$x$$.'
+
+[functions.sign]
+args = ['I']
+ret = 'I'
+code_name = 'sign'
+latex_name = '\mathrm{sign}'
+arg_names = ['x']
+constraints = ['', '\{-1, 0, 1\}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L809'
+group = 'Integer'
+brief = 'Returns the sign interval of $$x$$.'
+
+[functions.intersection]
+args = ['I', 'I']
+ret = 'I'
+code_name = 'intersection'
+latex_name = '\cap'
+arg_names = ['x', 'y']
+source = 'include/cuinterval/arithmetic/basic.cuh#L718'
+group = 'Set'
+brief = 'Returns the intersection of intervals $$x$$ and $$y$$.'
+
+[functions.equal]
+args = ['I', 'I']
+ret = 'B'
+code_name = 'equal'
+latex_name = '='
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L526'
+group = 'Boolean'
+brief = 'Returns true if intervals $$a$$ and $$b$$ are equal.'
+
+[functions.subset]
+args = ['I', 'I']
+ret = 'B'
+code_name = 'subset'
+latex_name = '\subseteq'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L544'
+group = 'Boolean'
+brief = 'Returns true if $$a$$ is a subset of $$b$$.'
+
+[functions.interior]
+args = ['I', 'I']
+ret = 'B'
+code_name = 'interior'
+latex_name = '\mathrm{interior}'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L550'
+group = 'Boolean'
+brief = 'Returns true if $$a$$ is in the interior of $$b$$.'
+
+[functions.disjoint]
+args = ['I', 'I']
+ret = 'B'
+code_name = 'disjoint'
+latex_name = '\mathrm{disjoint}'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L556'
+group = 'Boolean'
+brief = 'Returns true if intervals $$a$$ and $$b$$ are disjoint.'
+
+[functions.less]
+args = ['I', 'I']
+ret = 'B'
+code_name = 'less'
+latex_name = '<'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L566'
+group = 'Boolean'
+brief = 'Returns true if $$a < b$$ for intervals.'
+
+[functions.precedes]
+args = ['I', 'I']
+ret = 'B'
+code_name = 'precedes'
+latex_name = '\preceq'
+arg_names = ['a', 'b']
+source = 'include/cuinterval/arithmetic/basic.cuh#L578'
+group = 'Boolean'
+brief = 'Returns true if $$a$$ precedes $$b$$.'
+
+[functions.cbrt]
+args = ['I']
+ret = 'I'
+ulp_error = 1
+code_name = 'cbrt'
+latex_name = '\sqrt[3]{x}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L114'
+group = 'Basic'
+brief = 'Returns the interval cube root $$\sqrt[3]{x}$$.'
+
+[functions.exp]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'exp'
+latex_name = '\exp'
+arg_names = ['x']
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L836'
+group = 'Power'
+brief = 'Returns the interval exponential $$\exp(x)$$.'
+
+[functions.exp2]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'exp2'
+latex_name = '\exp_2'
+arg_names = ['x']
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L848'
+group = 'Power'
+brief = 'Returns the interval base-2 exponential $$2^x$$.'
+
+[functions.exp10]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'exp10'
+latex_name = '\exp_{10}'
+arg_names = ['x']
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L859'
+group = 'Power'
+brief = 'Returns the interval base-10 exponential $$10^x$$.'
+
+[functions.expm1]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'expm1'
+latex_name = '\exp(x)-1'
+arg_names = ['x']
+constraints = ['', '_{\ge \mathbf{-1}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L870'
+group = 'Power'
+brief = 'Returns the interval $$\exp(x) - 1$$.'
+
+[functions.log]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'log'
+latex_name = '\log'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L906'
+group = 'Power'
+brief = 'Returns the interval natural logarithm $$\log(x)$$.'
+
+[functions.log2]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'log2'
+latex_name = '\log_2'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L922'
+group = 'Power'
+brief = 'Returns the interval base-2 logarithm $$\log_2(x)$$.'
+
+[functions.log10]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'log10'
+latex_name = '\log_{10}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L936'
+group = 'Power'
+brief = 'Returns the interval base-10 logarithm $$\log_{10}(x)$$.'
+
+[functions.log1p]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'log1p'
+latex_name = '\log(1+x)'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L950'
+group = 'Power'
+brief = 'Returns the interval $$\log(1 + x)$$.'
+
+[functions.sin]
+args = ['I']
+ret = 'I'
+ulp_error = 2
+code_name = 'sin'
+latex_name = '\sin'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1177'
+group = 'Trigonometric'
+brief = 'Returns the interval sine $$\sin(x)$$.'
+
+[functions.cos]
+args = ['I']
+ret = 'I'
+ulp_error = 2
+code_name = 'cos'
+latex_name = '\cos'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1304'
+group = 'Trigonometric'
+brief = 'Returns the interval cosine $$\cos(x)$$.'
+
+[functions.tan]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'tan'
+latex_name = '\tan'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1405'
+group = 'Trigonometric'
+brief = 'Returns the interval tangent $$\tan(x)$$.'
+
+[functions.asin]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'asin'
+latex_name = '\arcsin'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1438'
+group = 'Trigonometric'
+brief = 'Returns the interval arcsine $$\arcsin(x)$$.'
+
+[functions.acos]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'acos'
+latex_name = '\arccos'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1455'
+group = 'Trigonometric'
+brief = 'Returns the interval arccosine $$\arccos(x)$$.'
+
+[functions.atan]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'atan'
+latex_name = '\arctan'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1472'
+group = 'Trigonometric'
+brief = 'Returns the interval arctangent $$\arctan(x)$$.'
+
+[functions.atan2]
+args = ['I', 'I']
+ret = 'I'
+ulp_error = 3
+code_name = 'atan2'
+latex_name = '\arctan2'
+arg_names = ['y', 'x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1487'
+group = 'Trigonometric'
+brief = 'Returns the interval two-argument arctangent $$\arctan2(y, x)$$.'
+
+[functions.sinh]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'sinh'
+latex_name = '\sinh'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1620'
+group = 'Hyperbolic'
+brief = 'Returns the interval hyperbolic sine $$\sinh(x)$$.'
+
+[functions.cosh]
+args = ['I']
+ret = 'I'
+ulp_error = 2
+code_name = 'cosh'
+latex_name = '\cosh'
+arg_names = ['x']
+constraints = ['', '_{\ge \mathbf{1}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1633'
+group = 'Hyperbolic'
+brief = 'Returns the interval hyperbolic cosine $$\cosh(x)$$.'
+
+[functions.cot]
+args = ['I']
+ret = 'I'
+ulp_error = 4
+code_name = 'cot'
+latex_name = '\cot'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1574'
+group = 'Trigonometric'
+brief = 'Returns the interval cotangent $$\cot(x)$$.'
+
+[functions.coth]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'coth'
+latex_name = '\coth'
+arg_names = ['a']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1717'
+group = 'Hyperbolic'
+brief = 'Returns the interval hyperbolic cotangent $$\coth(x)$$.'
+
+[functions.tanh]
+args = ['I']
+ret = 'I'
+ulp_error = 2
+code_name = 'tanh'
+latex_name = '\tanh'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1648'
+group = 'Hyperbolic'
+brief = 'Returns the interval hyperbolic tangent $$\tanh(x)$$.'
+
+[functions.asinh]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'arcsinh'
+latex_name = '\mathrm{arcsinh}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1663'
+group = 'Hyperbolic'
+brief = 'Returns the interval inverse hyperbolic sine $$\mathrm{arcsinh}(x)$$.'
+
+[functions.acosh]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'arccosh'
+latex_name = '\mathrm{arccosh}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1676'
+group = 'Hyperbolic'
+brief = 'Returns the interval inverse hyperbolic cosine $$\mathrm{arccosh}(x)$$.'
+
+[functions.atanh]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'arctanh'
+latex_name = '\mathrm{arctanh}'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1694'
+group = 'Hyperbolic'
+brief = 'Returns the interval inverse hyperbolic tangent $$\mathrm{arctanh}(x)$$.'
+
+[functions.sinpi]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'sinpi'
+latex_name = '\sin(\pi x)'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1254'
+group = 'Trigonometric'
+brief = 'Returns the interval sine of $$\pi x$$.'
+
+[functions.cospi]
+args = ['I']
+ret = 'I'
+ulp_error = 3
+code_name = 'cospi'
+latex_name = '\cos(\pi x)'
+arg_names = ['x']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1356'
+group = 'Trigonometric'
+brief = 'Returns the interval cosine of $$\pi x$$.'
+
+[functions.pown]
+args = ['I', 'Z']
+ret = 'I'
+ulp_error = 1
+code_name = 'pown'
+latex_name = '\mathrm{pown}'
+arg_names = ['x', 'n']
+source = 'include/cuinterval/arithmetic/basic.cuh#L982'
+group = 'Power'
+brief = 'Returns the interval $$x^n$$ for integer $$n$$.'
+
+[functions.pow]
+args = ['I', 'T']
+ret = 'I'
+ulp_error = 1
+code_name = 'pow'
+latex_name = 'x^y'
+arg_names = ['x', 'y']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1146'
+group = 'Power'
+brief = 'Returns the interval $$x^y$$.'
+
+[functions.rootn]
+args = ['I', 'Z']
+ret = 'I'
+ulp_error = 2
+code_name = 'rootn'
+latex_name = '\sqrt[n]{x}'
+arg_names = ['x', 'n']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1089'
+group = 'Power'
+brief = 'Returns the interval $$n$$-th root $$\sqrt[n]{x}$$.'
+
+[functions.hypot]
+args = ['I', 'I']
+ret = 'I'
+ulp_error = 0
+code_name = 'hypot'
+latex_name = '\sqrt{x^2 + y^2}'
+arg_names = ['x', 'y']
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1773'
+group = 'Special'
+brief = 'Returns the interval hypotenuse $$\sqrt{x^2 + y^2}$$.'
+
+[functions.empty]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+latex_name = '\mathrm{isEmpty}'
+source = 'include/cuinterval/arithmetic/basic.cuh#L488'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is empty.'
+
+[functions.entire]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+latex_name = '\mathrm{isEntire}'
+source = 'include/cuinterval/arithmetic/basic.cuh#L506'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is entire (covers all values).'
+
+[functions.just_zero]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L494'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is exactly zero.'
+
+[functions.fabs]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+latex_name = '\left|x\right|'
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L260'
+group = 'Basic'
+brief = 'Returns the interval absolute value $$|x|$$.'
+
+[functions.fmax]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L278'
+group = 'Basic'
+brief = 'Returns the interval maximum of $$x$$ and $$y$$.'
+
+[functions.fmin]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L290'
+group = 'Basic'
+brief = 'Returns the interval minimum of $$x$$ and $$y$$.'
+
+[functions.contains]
+args = ['I', 'T']
+arg_names = ['x', 'y']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L500'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ contains value $$y$$.'
+
+[functions.bounded]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L512'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is bounded.'
+
+[functions.isfinite]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L520'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is finite.'
+
+[functions.width]
+args = ['I']
+arg_names = ['x']
+ret = 'T'
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L681'
+group = 'Utility'
+brief = 'Returns the width of interval $$x$$.'
+
+[functions.strict_less_or_both_inf]
+args = ['T', 'T']
+arg_names = ['x', 'y']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L538'
+group = 'Boolean'
+brief = 'Returns true if $$x < y$$ or both are infinite.'
+
+[functions.strict_less]
+args = ['I', 'I']
+arg_names = ['a', 'b']
+ret = 'B'
+latex_name = '<'
+source = 'include/cuinterval/arithmetic/basic.cuh#L572'
+group = 'Boolean'
+brief = 'Returns true if $$a < b$$ strictly.'
+
+[functions.strict_precedes]
+args = ['I', 'I']
+arg_names = ['a', 'b']
+ret = 'B'
+latex_name = '\prec'
+source = 'include/cuinterval/arithmetic/basic.cuh#L584'
+group = 'Boolean'
+brief = 'Returns true if $$a$$ strictly precedes $$b$$.'
+
+[functions.cancel_minus]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+latex_name = '\mathrm{cancelMinus}'
+source = 'include/cuinterval/arithmetic/basic.cuh#L640'
+group = 'Cancellative'
+brief = 'Returns the interval result of cancelling minus operation.'
+
+[functions.cancel_plus]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+latex_name = '\mathrm{cancelPlus}'
+source = 'include/cuinterval/arithmetic/basic.cuh#L671'
+group = 'Cancellative'
+brief = 'Returns the interval result of cancelling plus operation.'
+
+[functions.convex_hull]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+ulp_error = 0
+latex_name = '\mathrm{convexHull}'
+source = 'include/cuinterval/arithmetic/basic.cuh#L731'
+group = 'Set'
+brief = 'Returns the convex hull of intervals $$x$$ and $$y$$.'
+
+[functions.hull]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L746'
+group = 'Set'
+brief = 'Returns the hull (smallest interval containing $$x$$ and $$y$$).'
+
+[functions.round]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L778'
+group = 'Integer'
+brief = 'Returns the interval containing rounded values of $$x$$.'
+
+[functions.nearbyint]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L784'
+group = 'Integer'
+brief = 'Returns the interval containing nearby integer values of $$x$$.'
+
+[functions.rint]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L791'
+group = 'Integer'
+brief = 'Returns the interval containing rounded integer values of $$x$$.'
+
+[functions.fdim]
+args = ['I', 'I']
+arg_names = ['x', 'y']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L799'
+group = 'Integer'
+brief = 'Returns the interval positive difference $$\max(x-y, 0)$$.'
+
+[functions.isinf]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L591'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is infinite.'
+
+[functions.isnai]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L598'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is Not an Interval (NAI).'
+
+[functions.is_member]
+args = ['T', 'I']
+arg_names = ['x', 'y']
+ret = 'B'
+latex_name = '\in'
+source = 'include/cuinterval/arithmetic/basic.cuh#L604'
+group = 'Boolean'
+brief = 'Returns true if $$x \in y$$.'
+
+[functions.is_singleton]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L612'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is a singleton.'
+
+[functions.is_common_interval]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L618'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is a common interval.'
+
+[functions.isnormal]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L624'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is normal.'
+
+[functions.is_atomic]
+args = ['I']
+arg_names = ['x']
+ret = 'B'
+source = 'include/cuinterval/arithmetic/basic.cuh#L630'
+group = 'Boolean'
+brief = 'Returns true if interval $$x$$ is atomic.'
+
+[functions.round_to_nearest_even]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+latex_name = '\mathrm{roundTiesToEven}'
+source = 'include/cuinterval/arithmetic/basic.cuh#L820'
+group = 'Integer'
+brief = 'Returns the interval rounded to nearest even integer.'
+
+[functions.round_ties_to_away]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+latex_name = '\mathrm{roundTiesToAway}'
+source = 'include/cuinterval/arithmetic/basic.cuh#L826'
+group = 'Integer'
+brief = 'Returns the interval rounded away from zero.'
+
+[functions.ldexp]
+args = ['I', 'Z']
+arg_names = ['x', 'exp']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L882'
+group = 'Power'
+brief = 'Returns the interval $$x \times 2^{exp}$$.'
+
+[functions.scalbln]
+args = ['I', 'Z']
+arg_names = ['x', 'n']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L890'
+group = 'Power'
+brief = 'Returns the interval $$x \times 2^n$$.'
+
+[functions.scalbn]
+args = ['I', 'Z']
+arg_names = ['x', 'n']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L898'
+group = 'Power'
+brief = 'Returns the interval $$x \times 2^n$$.'
+
+[functions.logb]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+source = 'include/cuinterval/arithmetic/basic.cuh#L963'
+group = 'Power'
+brief = 'Returns the interval exponent of $$x$$.'
+
+[functions.erf]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+ulp_error = 2
+source = 'include/cuinterval/arithmetic/basic.cuh#L1789'
+group = 'Special'
+brief = 'Returns the interval error function $$\mathrm{erf}(x)$$.'
+
+[functions.erfc]
+args = ['I']
+arg_names = ['x']
+ret = 'I'
+ulp_error = 5
+constraints = ['', '_{\ge \mathbf{0}}']
+source = 'include/cuinterval/arithmetic/basic.cuh#L1803'
+group = 'Special'
+brief = 'Returns the interval complementary error function $$\mathrm{erfc}(x)$$.'
+
+[functions.bisect]
+args = ['I', 'T']
+arg_names = ['x', 'split_ratio']
+ret = 'T'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1818'
+group = 'Special'
+brief = 'Bisects interval $$x$$ at given split ratio.'
+
+[functions.mince]
+args = ['I', 'I', 'N']
+arg_names = ['x', 'xs', 'out_xs_size']
+ret = 'T'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1861'
+group = 'Special'
+brief = 'Divides interval $$x$$ into $$out\_xs\_size$$ subintervals.'

@@ -1,0 +1,55 @@
+---
+title: Formatting
+description: Formatting an interval
+---
+The interval can be formatted using the stream operator `<<`
+
+```cpp
+#include <cuinterval/cuinterval.h>
+#include <cuinterval/format.h>
+
+#include <iostream>
+
+int main() {
+    cu::interval<double> x{1.0, 2.0};
+    std::cout << x << "\n"; // [1, 2]
+}
+```
+
+or using `std::format`
+
+```cpp
+#include <cuinterval/cuinterval.h>  
+#include <cuinterval/format.h>
+
+#include <format>
+#include <iostream>
+
+int main() {
+    cu::interval<double> x{1.0, 2.0};
+    std::cout << std::format("{}", x) << "\n"; // [1, 2]
+}
+```
+
+:::note
+The header `<cuinterval/format.h>` is not included by default to allow for custom formatting rules.
+:::
+
+The output can be customized using format specifiers:
+
+```cpp
+#include <cuinterval/cuinterval.h>
+#include <cuinterval/format.h>
+
+#include <format>
+#include <iostream>
+#include <print> // C++23
+int main() {
+    cu::interval<double> x{1.0/3.0, 2.0/3.0};
+    std::println("{:.3}", x); // [0.333, 0.667]
+    std::println("{:.5}", x); // [0.33333, 0.66667]
+    std::println("{:.10}", x); // [0.3333333333, 0.6666666667]
+}
+```
+
+The format specifier is passed to the underlying floating point type and thus supports all of its specifiers. See [cppreference](https://en.cppreference.com/w/cpp/utility/format/spec.html) for more information.

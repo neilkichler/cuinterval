@@ -1,0 +1,413 @@
+---
+title: Basic
+description: An overview of the basic operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## neg
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L37" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> neg(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="neg">
+  <FunctionBrief error="0" slot="brief">
+    Returns the additive inverse of the interval $$-x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$-: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## add
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L43" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> add(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="add">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval sum $$a + b$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$+: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## sub
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L49" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> sub(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="sub">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval difference $$a - b$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$-: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## mul
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L55" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> mul(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="mul">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval product $$a \times b$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\times: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## div
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L151" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> div(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="div">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval quotient $$x / y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\div: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## recip
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L127" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> recip(<IntervalRef /> a)
+</FunctionDeclaration>
+
+<FunctionDetails id="recip">
+  <FunctionBrief error="0" slot="brief">
+    Returns the reciprocal interval $$1/x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$1/x: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## sqr
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L93" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> sqr(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="sqr">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval square $$x^2$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$x^2: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## sqrt
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L108" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> sqrt(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="sqrt">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval square root $$\sqrt{x}$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sqrt{x}: \mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## fma
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L76" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> fma(<IntervalRef /> x, <IntervalRef /> y, <IntervalRef /> z)
+</FunctionDeclaration>
+
+<FunctionDetails id="fma">
+  <FunctionBrief error="0" slot="brief">
+    Returns the fused multiply-add $$x \cdot y + z$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$x\cdot y + z: \mathbb{IR}\times\mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## mig
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L217" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T mig(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="mig">
+  <FunctionBrief error="0" slot="brief">
+    Returns the midpoint-inclusion generator for interval $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{mig}: \mathbb{IR} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## mag
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L206" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T mag(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="mag">
+  <FunctionBrief error="0" slot="brief">
+    Returns the magnitude (maximum absolute value) of interval $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{mag}: \mathbb{IR} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## rad
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L235" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T rad(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="rad">
+  <FunctionBrief error="0" slot="brief">
+    Returns the radius (half-width) of interval $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{rad}: \mathbb{IR} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## abs
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L254" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> abs(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="abs">
+  <FunctionBrief error="0" slot="brief">
+    Returns the absolute value interval $$|x|$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\left|x\right|: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## min
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L302" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> min(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="min">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval minimum of $$x$$ and $$y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\min: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## max
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L266" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> max(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="max">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval maximum of $$x$$ and $$y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\max: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## cbrt
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L114" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> cbrt(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="cbrt">
+  <FunctionBrief error="1" slot="brief">
+    Returns the interval cube root $$\sqrt[3]{x}$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sqrt[3]{x}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## fabs
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L260" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> fabs(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="fabs">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval absolute value $$|x|$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\left|x\right|: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## fmax
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L278" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> fmax(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="fmax">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval maximum of $$x$$ and $$y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{fmax}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## fmin
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L290" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> fmin(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="fmin">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval minimum of $$x$$ and $$y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{fmin}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

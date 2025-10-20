@@ -1,0 +1,476 @@
+---
+title: Boolean
+description: An overview of the boolean operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## equal
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L526" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool equal(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="equal">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if intervals $$a$$ and $$b$$ are equal.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$=: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## subset
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L544" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool subset(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="subset">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$a$$ is a subset of $$b$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\subseteq: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## interior
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L550" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool interior(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="interior">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$a$$ is in the interior of $$b$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{interior}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## disjoint
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L556" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool disjoint(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="disjoint">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if intervals $$a$$ and $$b$$ are disjoint.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{disjoint}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## less
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L566" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool less(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="less">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$a < b$$ for intervals.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$<: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## precedes
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L578" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool precedes(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="precedes">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$a$$ precedes $$b$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\preceq: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## empty
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L488" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool empty(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="empty">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is empty.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isEmpty}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## entire
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L506" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool entire(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="entire">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is entire (covers all values).
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isEntire}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## just_zero
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L494" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool just_zero(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="just_zero">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is exactly zero.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{justZero}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## contains
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L500" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool contains(<IntervalRef /> x, T y)
+</FunctionDeclaration>
+
+<FunctionDetails id="contains">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ contains value $$y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{contains}: \mathbb{IR}\times\mathbb{R} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## bounded
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L512" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool bounded(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="bounded">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is bounded.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{bounded}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## isfinite
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L520" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool isfinite(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="isfinite">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is finite.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isfinite}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## strict_less_or_both_inf
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L538" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool strict_less_or_both_inf(T x, T y)
+</FunctionDeclaration>
+
+<FunctionDetails id="strict_less_or_both_inf">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$x < y$$ or both are infinite.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{strictLessOrBothInf}: \mathbb{R}\times\mathbb{R} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## strict_less
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L572" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool strict_less(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="strict_less">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$a < b$$ strictly.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$<: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## strict_precedes
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L584" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool strict_precedes(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDetails id="strict_precedes">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$a$$ strictly precedes $$b$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\prec: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## isinf
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L591" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool isinf(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="isinf">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is infinite.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isinf}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## isnai
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L598" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool isnai(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="isnai">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is Not an Interval (NAI).
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isnai}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## is_member
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L604" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool is_member(T x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="is_member">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if $$x \in y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\in: \mathbb{R}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## is_singleton
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L612" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool is_singleton(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="is_singleton">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is a singleton.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isSingleton}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## is_common_interval
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L618" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool is_common_interval(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="is_common_interval">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is a common interval.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isCommonInterval}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## isnormal
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L624" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool isnormal(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="isnormal">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is normal.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isnormal}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## is_atomic
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L630" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  bool is_atomic(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="is_atomic">
+  <FunctionBrief error="0" slot="brief">
+    Returns true if interval $$x$$ is atomic.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{isAtomic}: \mathbb{IR} \rightarrow \mathbb{B}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

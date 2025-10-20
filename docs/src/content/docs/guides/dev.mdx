@@ -1,0 +1,121 @@
+---
+title: Development Setup
+description: An overview of the supported operations.
+---
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+We work with CMake for building and testing the project. The usual things apply. We also have different CMake presets for using sanitizers and different compilers etc.
+
+## Build
+
+<Steps>
+
+1. Build requirements   
+    :::note
+    We require C++20, CMake v3.25.2+, and a recent C++ and CUDA compiler.
+    :::
+
+   <Tabs>
+    <TabItem label="Ubuntu">
+     ```bash
+     apt install cmake gcc ninja-build
+     ```
+    </TabItem>
+
+    <TabItem label="Cluster">
+     ```bash
+     module load CMake CUDA GCC Ninja
+     ```
+    </TabItem>
+   </Tabs>
+
+2. Build and run tests
+   <Tabs>
+    <TabItem label="Using regular CMake">
+    ```bash
+    cmake -S . -B build -GNinja
+    cmake --build build
+    ./build/tests/tests
+    ```
+    </TabItem>
+
+    <TabItem label="Using Presets">
+    ```bash
+    cmake --preset debug
+    cmake --build --preset debug
+    ctest --preset debug
+    ```
+    </TabItem>
+
+    <TabItem label="Using Workflows">
+    ```bash
+    cmake --workflow --preset dev
+    ```
+    </TabItem>
+   </Tabs>
+
+</Steps>
+
+## Tests
+
+<Steps>
+
+1. Build
+
+   ```bash
+   cmake --build build --target tests
+   ```
+
+2. Run
+
+   The tests can be run using [`ctest`](https://cmake.org/cmake/help/latest/manual/ctest.1.html)
+
+   ```bash
+   ctest --test-dir build
+   ```
+
+   or just
+   ```bash
+   ./build/tests/tests
+   ```
+   :::note
+   The tests can be run using OpenMP (it must be installed on your system).
+   :::
+</Steps>
+
+Tests can be written in an `.itl` or directly in CUDA C++.
+
+<Tabs>
+   <TabItem label="Automatic test generation from .itl files">
+   Most tests are generated using the `test_converter.py` script. Simply do:
+   ```bash
+   python tests/test_converter.py
+   ```
+   The tests are written in [ITL](https://github.com/oheim/ITF1788?tab=readme-ov-file#itl--interval-test-libraries). They come from various other interval arithmetic libraries.
+   To write new ones, add a new file into the [`itl`](https://github.com/neilkichler/cuinterval/tree/main/tests/itl) folder and provide tests in the ITL format. E.g.,
+
+   ```
+   /* 
+      Multiline comment
+   */
+   // regular comment
+   testcase section.test1 {
+      add [10.0, 20.0] [13.0, 17.0] = [23.0, 37.0];
+      sub [10.0, 20.0] [13.0, 16.0] = [-6.0, 7.0];
+      neg [-infinity, infinity] = [-infinity, infinity];
+      pos [10.0, 20.0] = [10.0, 20.0];
+   }
+
+   testcase test_outside_of_section {
+      isEmpty [nai] = false; // nai stands for not-an-interval
+      isEmpty [empty] = true;
+      convexHull [1.0,3.0] [entire] = [entire]; // entire = [-∞, ∞]
+      cbrt [0x40p0, 0x7dp0] = [4.0, 5.0]; // hexfloat supported
+   }
+   ```
+   </TabItem>
+
+   <TabItem label="Creating new C++ tests">
+   All handwritten tests need to be included in the `tests_additional.h` header and should follow a similar structure as the existing tests.
+   </TabItem>
+</Tabs>

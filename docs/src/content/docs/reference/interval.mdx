@@ -1,0 +1,110 @@
+---
+title: Interval
+description: Interval struct
+---
+
+The interval struct consists of `lb` and `ub`, the lower and upper bound of the interval, respectively.
+A sketch of the struct is given below.
+
+```cpp
+template<typename T>
+struct interval
+{
+    struct initializer { T lb; T ub; };
+
+    T lb;
+    T ub;
+};
+
+```
+
+The attributes can directly be accessed and modified. Alternatively, one can access `lb` with `inf()` (*infimum*) and `ub` with `sup()` (*supremum*).
+
+## Constructors 
+Constructing an interval can be done in several ways:
+
+```cpp
+cu::interval<double> x{};         // [0, 0]
+cu::interval<double> y{1.0, 2.0}; // [1, 2]
+cu::interval<double> z{1.0};      // [1, 1]
+```
+
+with constructors
+
+```cpp
+// auto-generated constructors (default, copy, move, etc.)
+constexpr interval(T p) : lb(p), ub(p) { } // point interval
+constexpr interval(T lb, T ub) : lb(lb), ub(ub) { } // from members
+```
+In addition, the constructor
+```cpp
+constexpr interval(initializer init) : lb(init.lb), ub(init.ub) { }
+```
+allows for designated-initializer like construction:
+```cpp
+cu::interval<double> x{ { .lb = 1.0, .ub = 2.0 } };
+```
+
+:::note
+The order of arguments cannot be swapped in C++.
+:::
+
+## Comparisons
+The typical comparison operators are supported
+```cpp
+cu::interval<double> x{0.0, 0.5};
+cu::interval<double> y{1.0, 4.0};
+cu::interval<double> z{0.0, 4.0};
+
+x == x; // true
+x == y; // false
+x < y;  // true
+x > y;  // false
+x <= y; // true
+x >= y; // false
+
+// overlapping
+x < z;  // false
+```
+
+## Splitting intervals
+Splitting an interval into several subintervals is a common operation for bisection and branch and bound type global optimization methods.
+
+### Bisect
+The `bisect` function is defined to split the provided interval in two at the given split ratio.
+
+```cpp
+template<typename T>
+inline constexpr __device__ split<T> bisect(interval<T> x, T split_ratio)
+```
+
+The `split` struct holds the two resulting intervals and is defined by
+```cpp
+template<typename T>
+struct split
+{
+    interval<T> lower_half;
+    interval<T> upper_half;
+
+    auto operator<=>(const split &) const = default;
+};
+```
+
+### Mincing
+If more than one split is required, the `mince` function might be of use.
+It splits an interval `x` into `out_xs_size` number of intervals with equal width.
+
+```cpp
+inline constexpr __device__ void mince(
+    interval<T> x,
+    interval<T> *xs,
+    std::size_t out_xs_size
+)
+```
+
+:::note
+The array `xs` must already be allocated from the outside with place to hold at least
+`out_xs_size` number of intervals.
+:::
+
+{/* TODO: add example where mince and biset is used */}

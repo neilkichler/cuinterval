@@ -1,0 +1,329 @@
+---
+title: Power
+description: An overview of the power operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## exp
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L836" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> exp(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="exp">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval exponential $$\exp(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\exp: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## exp2
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L848" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> exp2(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="exp2">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval base-2 exponential $$2^x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\exp_2: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## exp10
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L859" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> exp10(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="exp10">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval base-10 exponential $$10^x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\exp_{10}: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## expm1
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L870" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> expm1(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="expm1">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval $$\exp(x) - 1$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\exp(x)-1: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{-1}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## log
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L906" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> log(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="log">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval natural logarithm $$\log(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\log: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## log2
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L922" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> log2(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="log2">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval base-2 logarithm $$\log_2(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\log_2: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## log10
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L936" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> log10(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="log10">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval base-10 logarithm $$\log_{10}(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\log_{10}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## log1p
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L950" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> log1p(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="log1p">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval $$\log(1 + x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\log(1+x): \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## pown
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L982" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> pown(<IntervalRef /> x, <Integral /> n)
+</FunctionDeclaration>
+
+<FunctionDetails id="pown">
+  <FunctionBrief error="1" slot="brief">
+    Returns the interval $$x^n$$ for integer $$n$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{pown}: \mathbb{IR}\times\mathbb{Z} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## pow
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1146" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> pow(<IntervalRef /> x, T y)
+</FunctionDeclaration>
+
+<FunctionDetails id="pow">
+  <FunctionBrief error="1" slot="brief">
+    Returns the interval $$x^y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$x^y: \mathbb{IR}\times\mathbb{R} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## rootn
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1089" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> rootn(<IntervalRef /> x, <Integral /> n)
+</FunctionDeclaration>
+
+<FunctionDetails id="rootn">
+  <FunctionBrief error="2" slot="brief">
+    Returns the interval $$n$$-th root $$\sqrt[n]{x}$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sqrt[n]{x}: \mathbb{IR}\times\mathbb{Z} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## ldexp
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L882" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> ldexp(<IntervalRef /> x, <Integral /> exp)
+</FunctionDeclaration>
+
+<FunctionDetails id="ldexp">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval $$x \times 2^{exp}$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{ldexp}: \mathbb{IR}\times\mathbb{Z} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## scalbln
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L890" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> scalbln(<IntervalRef /> x, <Integral /> n)
+</FunctionDeclaration>
+
+<FunctionDetails id="scalbln">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval $$x \times 2^n$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{scalbln}: \mathbb{IR}\times\mathbb{Z} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## scalbn
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L898" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> scalbn(<IntervalRef /> x, <Integral /> n)
+</FunctionDeclaration>
+
+<FunctionDetails id="scalbn">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval $$x \times 2^n$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{scalbn}: \mathbb{IR}\times\mathbb{Z} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## logb
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L963" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> logb(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="logb">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval exponent of $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{logb}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

@@ -1,0 +1,161 @@
+---
+title: Hyperbolic
+description: An overview of the hyperbolic operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## sinh
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1620" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> sinh(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="sinh">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval hyperbolic sine $$\sinh(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sinh: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## cosh
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1633" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> cosh(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="cosh">
+  <FunctionBrief error="2" slot="brief">
+    Returns the interval hyperbolic cosine $$\cosh(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\cosh: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{1}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## coth
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1717" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> coth(<IntervalRef /> a)
+</FunctionDeclaration>
+
+<FunctionDetails id="coth">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval hyperbolic cotangent $$\coth(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\coth: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## tanh
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1648" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> tanh(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="tanh">
+  <FunctionBrief error="2" slot="brief">
+    Returns the interval hyperbolic tangent $$\tanh(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\tanh: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## asinh
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1663" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> arcsinh(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="arcsinh">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval inverse hyperbolic sine $$\mathrm{arcsinh}(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{arcsinh}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## acosh
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1676" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> arccosh(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="arccosh">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval inverse hyperbolic cosine $$\mathrm{arccosh}(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{arccosh}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## atanh
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1694" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> arctanh(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="arctanh">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval inverse hyperbolic tangent $$\mathrm{arctanh}(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{arctanh}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

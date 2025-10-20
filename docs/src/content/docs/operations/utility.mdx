@@ -1,0 +1,98 @@
+---
+title: Utility
+description: An overview of the utility operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## inf
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L690" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T inf(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="inf">
+  <FunctionBrief error="0" slot="brief">
+    Returns the infimum (lower bound) of interval $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\inf: \mathbb{IR} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## sup
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L693" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T sup(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="sup">
+  <FunctionBrief error="0" slot="brief">
+    Returns the supremum (upper bound) of interval $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sup: \mathbb{IR} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## mid
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L696" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T mid(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="mid">
+  <FunctionBrief error="0" slot="brief">
+    Returns the midpoint of interval $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{mid}: \mathbb{IR} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## width
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L681" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T width(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="width">
+  <FunctionBrief error="0" slot="brief">
+    Returns the width of interval $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{width}: \mathbb{IR} \rightarrow \mathbb{R}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

@@ -1,0 +1,25 @@
+---
+title: Numbers
+description: Overview of built-in numbers in CuInterval.
+---
+
+Transcendental numbers can be bounded so that the true value is guaranteed to lie within the interval. 
+For the predefined floating point numbers in [`std::numbers`](https://en.cppreference.com/w/cpp/symbol_index/numbers), we provide the smallest floating point interval that still contains the number.
+
+```cpp
+auto pi = cu::numbers::pi_v<cu::interval<double>>;
+```
+
+It allows the use of `std::numbers` in generic code.
+```cpp
+#include <numbers>
+#include <cuinterval/cuinterval.h>
+
+template <typename T>
+__device__ T area_of_circle(T r) {
+    return std::numbers::pi_v<T> * r * r;
+}
+// usage (inside kernel)
+auto area = area_of_circle(cu::interval<double>{2.0});
+//   area = [12.566370614359172, 12.566370614359174]
+```

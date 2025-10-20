@@ -1,0 +1,18 @@
+---
+import { Badge } from "@astrojs/starlight/components";
+
+const {
+  error,
+} = Astro.props;
+
+let error_in_ulps = "±" + error + " ulps";
+---
+
+<Fragment slot="brief">
+<div style="justify-content: space-between; display: flex;">
+  <slot />
+  <a href="../all" title="maximum over-approximation that can occur">
+    <Badge text={error_in_ulps} variant="caution" size="medium" />
+  </a>
+</div>
+</Fragment>

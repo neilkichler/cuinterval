@@ -1,0 +1,224 @@
+---
+title: Integer
+description: An overview of the integer operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## floor
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L762" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> floor(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="floor">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval containing $$\lfloor x \rfloor$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\lfloor\cdot\rfloor: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## ceil
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L756" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> ceil(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="ceil">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval containing $$\lceil x \rceil$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\lceil\cdot\rceil: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## trunc
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L768" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> trunc(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="trunc">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval containing truncated values of $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{trunc}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## sign
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L809" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> sign(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="sign">
+  <FunctionBrief error="0" slot="brief">
+    Returns the sign interval of $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{sign}: \mathbb{IR} \rightarrow \{-1, 0, 1\}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## round
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L778" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> round(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="round">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval containing rounded values of $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{round}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## nearbyint
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L784" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> nearbyint(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="nearbyint">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval containing nearby integer values of $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{nearbyint}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## rint
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L791" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> rint(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="rint">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval containing rounded integer values of $$x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{rint}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## fdim
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L799" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> fdim(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="fdim">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval positive difference $$\max(x-y, 0)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{fdim}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## round_to_nearest_even
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L820" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> round_to_nearest_even(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="round_to_nearest_even">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval rounded to nearest even integer.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{roundTiesToEven}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## round_ties_to_away
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L826" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> round_ties_to_away(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="round_ties_to_away">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval rounded away from zero.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{roundTiesToAway}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

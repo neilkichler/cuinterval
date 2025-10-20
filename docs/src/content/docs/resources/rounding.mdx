@@ -1,0 +1,50 @@
+---
+title: On rounding of intervals
+description: Details on the way we round operations in cuinterval
+---
+
+import { CardGrid, Card } from '@astrojs/starlight/components';
+
+CuInterval makes use of the [built-in CUDA math functions](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#mathematical-functions-appendix) which use round-to-nearest-even.
+Since some math functions are not fully accurate up to machine presicion -- they do not conform to [IEEE754](https://en.wikipedia.org/wiki/IEEE_754) -- we have to perform additional outward rounding to cover the worst-cases of the specified maximum ulp-error of an intrinsic function.
+
+:::note
+Outward rounding applies rounding towards -∞ for lower bounds and rounding towards +∞ for upper bounds.
+Since most math functions do not have corresponing operations that round towards ±∞, we make use of nextafter(x, ±∞). Sometimes, we know that the function is bounded (e.g., $$x^2 > 0$$). In those cases, we apply `nextafter(x, 0)` or similar tighter outward roundings whenever possible.
+:::
+
+The CUDA math functions use round-to-nearest-even and thus pick the even floating point number if the number would land exactly between two floating point values, otherwise it picks the nearest available value between two floating point values.
+
+If the intrinsic function has a reported max. error of 1 ulp, then the resulting interval output will have a max. error of 2.5 ulps. To see why, let's look at all the scenarios that could be possible:
+
+<CardGrid columns="2">
+    ![Rounding to nearest one error closer to even left](@assets/rounding/rounding-to-nearest-one-error-closer-to-even-left.webp)
+
+    ![Rounding to nearest one error closer to even right](@assets/rounding/rounding-to-nearest-one-error-closer-to-even-right.webp)
+
+    ![Rounding to nearest one error closer to odd left](@assets/rounding/rounding-to-nearest-one-error-closer-to-odd-left.webp)
+
+    ![Rounding to nearest one error closer to odd right](@assets/rounding/rounding-to-nearest-one-error-closer-to-odd-right.webp)
+
+    ![Rounding to nearest one error closer to exact even](@assets/rounding/rounding-to-nearest-one-error-exact-even.webp)
+
+    ![Rounding to nearest one error closer to exact odd](@assets/rounding/rounding-to-nearest-one-error-exact-odd.webp)
+
+    ![Rounding to nearest one error halfway above](@assets/rounding/rounding-to-nearest-one-error-halfway-odd-above.webp)
+
+    ![Rounding to nearest one error halfway below](@assets/rounding/rounding-to-nearest-one-error-halfway-odd-below.webp)
+</CardGrid>
+
+We denote the absolute error from the true floating point value by $\Delta\text{ulp}$. A $\Delta\text{ulp}$ of 0.5 indicates that the value is 0.5 ulps away from the correct floating point value because it is not representable as, e.g., a 64 bit floating point number.
+
+:::caution[Conservative Rounding]
+This is rather conservative form of rounding.
+Consider upper-bounding for the scenario in the bottom-right picture: It assumes that even if the output value is halfway between an odd value -1 (below) and an even value 0 (above) that it could end up landing at 1 (above) as the reference of CUDA does not specify anything beyond the max. error for most functions.
+The function output could, however, also land on -1, in which case we must round upwards once.
+Since we do not make any assumption as to when either scenario happens, rounding upwards is always performed, leading to
+a maximum error of 2.5 ulps.
+:::
+
+So,
+$$|\inf(F_{\text{analytic}}(X)) - \inf(F(X))| \leq 2.5 \text{ ulps}$$
+is what we guarantee in this case.

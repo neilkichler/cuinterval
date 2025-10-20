@@ -1,0 +1,52 @@
+---
+import LogoCUDA from "@assets/cuda.svg";
+
+const {
+  detailUrl,
+  sourceUrl,
+  sourceBaseUrl = "https://github.com/neilkichler/cuinterval/blob/main/",
+  nvidiaUrl,
+  nvidiaBaseUrl = "https://docs.nvidia.com/cuda/cuda-math-api/cuda_math_api/",
+} = Astro.props;
+---
+
+<div class="function">
+  <code>
+    <slot />
+    <span style="display: flex; gap: 0.5rem;">
+      {
+        detailUrl && (
+          <a href={detailUrl} title="View Details">
+            [more]
+          </a>
+        )
+      }
+      {
+        sourceUrl && (
+          <a href={sourceBaseUrl + sourceUrl} title="View Source">
+            [source]
+          </a>
+        )
+      }
+      {
+        nvidiaUrl && (
+          <a
+            href={nvidiaBaseUrl + nvidiaUrl}
+            title="Nvidia Docs"
+            aria-label="link to Nvidia CUDA documentation for related function."
+          >
+            <LogoCUDA />
+          </a>
+        )
+      }
+    </span>
+  </code>
+</div>
+
+<style>
+  .function code {
+    background: none;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
