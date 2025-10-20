@@ -1,0 +1,119 @@
+---
+title: Special
+description: An overview of the special operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## hypot
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1773" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> hypot(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="hypot">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval hypotenuse $$\sqrt{x^2 + y^2}$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sqrt{x^2 + y^2}: \mathbb{IR}\times\mathbb{IR}_{\ge \mathbf{0}} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## erf
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1789" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> erf(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="erf">
+  <FunctionBrief error="2" slot="brief">
+    Returns the interval error function $$\mathrm{erf}(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{erf}: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## erfc
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1803" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> erfc(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="erfc">
+  <FunctionBrief error="5" slot="brief">
+    Returns the interval complementary error function $$\mathrm{erfc}(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{erfc}: \mathbb{IR} \rightarrow \mathbb{IR}_{\ge \mathbf{0}}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## bisect
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1818" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T bisect(<IntervalRef /> x, T split_ratio)
+</FunctionDeclaration>
+
+<FunctionDetails id="bisect">
+  <FunctionBrief error="0" slot="brief">
+    Bisects interval $$x$$ at given split ratio.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{bisect}: \mathbb{IR}\times\mathbb{R} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## mince
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1861" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  T mince(<IntervalRef /> x, <IntervalRef /> xs, <Integral /> out_xs_size)
+</FunctionDeclaration>
+
+<FunctionDetails id="mince">
+  <FunctionBrief error="0" slot="brief">
+    Divides interval $$x$$ into $$out\_xs\_size$$ subintervals.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{mince}: \mathbb{IR}\times\mathbb{IR}\times\mathbb{N} \rightarrow \mathbb{R}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

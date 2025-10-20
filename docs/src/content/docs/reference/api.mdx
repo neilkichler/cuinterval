@@ -1,0 +1,597 @@
+---
+title: API
+description: A list of all functions and structs in CuInterval.
+---
+
+import { 
+  FunctionDeclaration,
+  IntervalRef,
+  Integral,
+  Link
+} from '@components';
+
+:::note
+Functions are templatized on `T` (omitted for visual clarity). 
+:::
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L49"
+>
+  <IntervalRef /> <Link name="neg" link="../../operations/basic/#neg" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L55"
+>
+  <IntervalRef /> <Link name="add" link="../../operations/basic/#add" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L61"
+>
+  <IntervalRef /> <Link name="sub" link="../../operations/basic/#sub" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L67"
+>
+  <IntervalRef /> <Link name="mul" link="../../operations/basic/#mul" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L215"
+>
+  <IntervalRef /> <Link name="div" link="../../operations/basic/#div" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L139"
+>
+  <IntervalRef /> <Link name="recip" link="../../operations/basic/#recip" />(<IntervalRef /> a)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L105"
+>
+  <IntervalRef /> <Link name="sqr" link="../../operations/basic/#sqr" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L120"
+>
+  <IntervalRef /> <Link name="sqrt" link="../../operations/basic/#sqrt" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L88"
+>
+  <IntervalRef /> <Link name="fma" link="../../operations/basic/#fma" />(<IntervalRef /> x, <IntervalRef /> y, <IntervalRef /> z)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L281"
+>
+  T <Link name="mig" link="../../operations/basic/#mig" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L270"
+>
+  T <Link name="mag" link="../../operations/basic/#mag" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L758"
+>
+  T <Link name="inf" link="../../operations/utility/#inf" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L761"
+>
+  T <Link name="sup" link="../../operations/utility/#sup" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L764"
+>
+  T <Link name="mid" link="../../operations/utility/#mid" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L299"
+>
+  T <Link name="rad" link="../../operations/basic/#rad" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L830"
+>
+  <IntervalRef /> <Link name="floor" link="../../operations/integer/#floor" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L824"
+>
+  <IntervalRef /> <Link name="ceil" link="../../operations/integer/#ceil" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L318"
+>
+  <IntervalRef /> <Link name="abs" link="../../operations/basic/#abs" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L366"
+>
+  <IntervalRef /> <Link name="min" link="../../operations/basic/#min" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L330"
+>
+  <IntervalRef /> <Link name="max" link="../../operations/basic/#max" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L836"
+>
+  <IntervalRef /> <Link name="trunc" link="../../operations/integer/#trunc" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L877"
+>
+  <IntervalRef /> <Link name="sign" link="../../operations/integer/#sign" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L786"
+>
+  <IntervalRef /> <Link name="intersection" link="../../operations/set/#intersection" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L594"
+>
+  bool <Link name="equal" link="../../operations/boolean/#equal" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L612"
+>
+  bool <Link name="subset" link="../../operations/boolean/#subset" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L618"
+>
+  bool <Link name="interior" link="../../operations/boolean/#interior" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L624"
+>
+  bool <Link name="disjoint" link="../../operations/boolean/#disjoint" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L634"
+>
+  bool <Link name="less" link="../../operations/boolean/#less" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L646"
+>
+  bool <Link name="precedes" link="../../operations/boolean/#precedes" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L126"
+>
+  <IntervalRef /> <Link name="cbrt" link="../../operations/basic/#cbrt" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L904"
+>
+  <IntervalRef /> <Link name="exp" link="../../operations/power/#exp" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L916"
+>
+  <IntervalRef /> <Link name="exp2" link="../../operations/power/#exp2" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L927"
+>
+  <IntervalRef /> <Link name="exp10" link="../../operations/power/#exp10" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L938"
+>
+  <IntervalRef /> <Link name="expm1" link="../../operations/power/#expm1" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L974"
+>
+  <IntervalRef /> <Link name="log" link="../../operations/power/#log" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L990"
+>
+  <IntervalRef /> <Link name="log2" link="../../operations/power/#log2" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1004"
+>
+  <IntervalRef /> <Link name="log10" link="../../operations/power/#log10" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1018"
+>
+  <IntervalRef /> <Link name="log1p" link="../../operations/power/#log1p" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1245"
+>
+  <IntervalRef /> <Link name="sin" link="../../operations/trigonometric/#sin" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1372"
+>
+  <IntervalRef /> <Link name="cos" link="../../operations/trigonometric/#cos" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1473"
+>
+  <IntervalRef /> <Link name="tan" link="../../operations/trigonometric/#tan" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1506"
+>
+  <IntervalRef /> <Link name="asin" link="../../operations/trigonometric/#asin" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1523"
+>
+  <IntervalRef /> <Link name="acos" link="../../operations/trigonometric/#acos" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1540"
+>
+  <IntervalRef /> <Link name="atan" link="../../operations/trigonometric/#atan" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1555"
+>
+  <IntervalRef /> <Link name="atan2" link="../../operations/trigonometric/#atan2" />(<IntervalRef /> y, <IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1646"
+>
+  <IntervalRef /> <Link name="sinh" link="../../operations/hyperbolic/#sinh" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1659"
+>
+  <IntervalRef /> <Link name="cosh" link="../../operations/hyperbolic/#cosh" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1743"
+>
+  <IntervalRef /> <Link name="cot" link="../../operations/hyperbolic/#cot" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L163"
+>
+  <IntervalRef /> <Link name="coth" link="../../operations/basic/#coth" />(<IntervalRef /> a)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1674"
+>
+  <IntervalRef /> <Link name="tanh" link="../../operations/hyperbolic/#tanh" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1689"
+>
+  <IntervalRef /> <Link name="arcsinh" link="../../operations/hyperbolic/#arcsinh" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1702"
+>
+  <IntervalRef /> <Link name="arccosh" link="../../operations/hyperbolic/#arccosh" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1720"
+>
+  <IntervalRef /> <Link name="arctanh" link="../../operations/hyperbolic/#arctanh" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1322"
+>
+  <IntervalRef /> <Link name="sinpi" link="../../operations/trigonometric/#sinpi" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1424"
+>
+  <IntervalRef /> <Link name="cospi" link="../../operations/trigonometric/#cospi" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1050"
+>
+  <IntervalRef /> <Link name="pown" link="../../operations/power/#pown" />(<IntervalRef /> x, T n)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1214"
+>
+  <IntervalRef /> <Link name="pow" link="../../operations/power/#pow" />(<IntervalRef /> x, T y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1157"
+>
+  <IntervalRef /> <Link name="rootn" link="../../operations/power/#rootn" />(<IntervalRef /> x, T n)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L378"
+>
+  <IntervalRef /> <Link name="hypot" link="../../operations/basic/#hypot" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L33"
+>
+  bool <Link name="empty" link="../../operations/constant/#empty" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L574"
+>
+  bool <Link name="entire" link="../../operations/boolean/#entire" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L39"
+>
+  bool <Link name="just_zero" link="../../operations/constant/#just_zero" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L324"
+>
+  <IntervalRef /> <Link name="fabs" link="../../operations/basic/#fabs" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L342"
+>
+  <IntervalRef /> <Link name="fmax" link="../../operations/basic/#fmax" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L354"
+>
+  <IntervalRef /> <Link name="fmin" link="../../operations/basic/#fmin" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L568"
+>
+  bool <Link name="contains" link="../../operations/boolean/#contains" />(<IntervalRef /> x, T y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L580"
+>
+  bool <Link name="bounded" link="../../operations/boolean/#bounded" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L588"
+>
+  bool <Link name="isfinite" link="../../operations/boolean/#isfinite" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L749"
+>
+  T <Link name="width" link="../../operations/utility/#width" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L606"
+>
+  bool <Link name="strict_less_or_both_inf" link="../../operations/boolean/#strict_less_or_both_inf" />(T x, T y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L640"
+>
+  bool <Link name="strict_less" link="../../operations/boolean/#strict_less" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L652"
+>
+  bool <Link name="strict_precedes" link="../../operations/boolean/#strict_precedes" />(<IntervalRef /> a, <IntervalRef /> b)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L708"
+>
+  <IntervalRef /> <Link name="cancel_minus" link="../../operations/cancellative/#cancel_minus" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L739"
+>
+  <IntervalRef /> <Link name="cancel_plus" link="../../operations/cancellative/#cancel_plus" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L799"
+>
+  <IntervalRef /> <Link name="convex_hull" link="../../operations/set/#convex_hull" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L814"
+>
+  <IntervalRef /> <Link name="hull" link="../../operations/set/#hull" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L846"
+>
+  <IntervalRef /> <Link name="round" link="../../operations/integer/#round" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L852"
+>
+  <IntervalRef /> <Link name="nearbyint" link="../../operations/integer/#nearbyint" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L859"
+>
+  <IntervalRef /> <Link name="rint" link="../../operations/integer/#rint" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L867"
+>
+  <IntervalRef /> <Link name="fdim" link="../../operations/integer/#fdim" />(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L659"
+>
+  bool <Link name="isinf" link="../../operations/boolean/#isinf" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L666"
+>
+  bool <Link name="isnai" link="../../operations/boolean/#isnai" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L672"
+>
+  bool <Link name="is_member" link="../../operations/boolean/#is_member" />(T x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L680"
+>
+  bool <Link name="is_singleton" link="../../operations/boolean/#is_singleton" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L686"
+>
+  bool <Link name="is_common_interval" link="../../operations/boolean/#is_common_interval" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L692"
+>
+  bool <Link name="isnormal" link="../../operations/boolean/#isnormal" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L698"
+>
+  bool <Link name="is_atomic" link="../../operations/boolean/#is_atomic" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L888"
+>
+  <IntervalRef /> <Link name="round_to_nearest_even" link="../../operations/integer/#round_to_nearest_even" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L894"
+>
+  <IntervalRef /> <Link name="round_ties_to_away" link="../../operations/integer/#round_ties_to_away" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L950"
+>
+  <IntervalRef /> <Link name="ldexp" link="../../operations/power/#ldexp" />(<IntervalRef /> x, <Integral /> exp)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L958"
+>
+  <IntervalRef /> <Link name="scalbln" link="../../operations/power/#scalbln" />(<IntervalRef /> x, <Integral /> n)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L966"
+>
+  <IntervalRef /> <Link name="scalbn" link="../../operations/power/#scalbn" />(<IntervalRef /> x, <Integral /> n)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1031"
+>
+  <IntervalRef /> <Link name="logb" link="../../operations/power/#logb" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1789"
+>
+  <IntervalRef /> <Link name="erf" link="../../operations/special/#erf" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1803"
+>
+  <IntervalRef /> <Link name="erfc" link="../../operations/special/#erfc" />(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1818"
+>
+  T <Link name="bisect" link="../../operations/special/#bisect" />(<IntervalRef /> x, T split_ratio)
+</FunctionDeclaration>
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1861"
+>
+  T <Link name="mince" link="../../operations/special/#mince" />(<IntervalRef /> x, <IntervalRef /> xs, <Integral /> out_xs_size)
+</FunctionDeclaration>

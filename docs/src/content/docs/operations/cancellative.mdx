@@ -1,0 +1,56 @@
+---
+title: Cancellative
+description: An overview of the cancellative operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## cancel_minus
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L640" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> cancel_minus(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="cancel_minus">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval result of cancelling minus operation.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{cancelMinus}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## cancel_plus
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L671" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> cancel_plus(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="cancel_plus">
+  <FunctionBrief error="0" slot="brief">
+    Returns the interval result of cancelling plus operation.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{cancelPlus}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

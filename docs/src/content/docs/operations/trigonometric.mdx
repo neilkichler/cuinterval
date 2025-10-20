@@ -1,0 +1,224 @@
+---
+title: Trigonometric
+description: An overview of the trigonometric operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## sin
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1177" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> sin(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="sin">
+  <FunctionBrief error="2" slot="brief">
+    Returns the interval sine $$\sin(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sin: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## cos
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1304" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> cos(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="cos">
+  <FunctionBrief error="2" slot="brief">
+    Returns the interval cosine $$\cos(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\cos: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## tan
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1405" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> tan(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="tan">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval tangent $$\tan(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\tan: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## asin
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1438" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> asin(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="asin">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval arcsine $$\arcsin(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\arcsin: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## acos
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1455" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> acos(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="acos">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval arccosine $$\arccos(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\arccos: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## atan
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1472" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> atan(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="atan">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval arctangent $$\arctan(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\arctan: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## atan2
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1487" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> atan2(<IntervalRef /> y, <IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="atan2">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval two-argument arctangent $$\arctan2(y, x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\arctan2: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## cot
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1574" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> cot(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="cot">
+  <FunctionBrief error="4" slot="brief">
+    Returns the interval cotangent $$\cot(x)$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\cot: \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## sinpi
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1254" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> sinpi(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="sinpi">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval sine of $$\pi x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\sin(\pi x): \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## cospi
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L1356" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> cospi(<IntervalRef /> x)
+</FunctionDeclaration>
+
+<FunctionDetails id="cospi">
+  <FunctionBrief error="3" slot="brief">
+    Returns the interval cosine of $$\pi x$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\cos(\pi x): \mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

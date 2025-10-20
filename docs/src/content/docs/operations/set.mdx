@@ -1,0 +1,77 @@
+---
+title: Set
+description: An overview of the set operations.
+---
+
+import { 
+  FunctionDetails, 
+  FunctionDeclaration, 
+  FunctionSignature, 
+  FunctionBrief,
+  IntervalRef,
+  Integral
+} from '@components';
+
+## intersection
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L718" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> intersection(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="intersection">
+  <FunctionBrief error="0" slot="brief">
+    Returns the intersection of intervals $$x$$ and $$y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\cap: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## convex_hull
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L731" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> convex_hull(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="convex_hull">
+  <FunctionBrief error="0" slot="brief">
+    Returns the convex hull of intervals $$x$$ and $$y$$.
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{convexHull}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---
+## hull
+
+<FunctionDeclaration
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L746" 
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+>
+  <IntervalRef /> hull(<IntervalRef /> x, <IntervalRef /> y)
+</FunctionDeclaration>
+
+<FunctionDetails id="hull">
+  <FunctionBrief error="0" slot="brief">
+    Returns the hull (smallest interval containing $$x$$ and $$y$$).
+  </FunctionBrief>
+  
+  <FunctionSignature>
+    $$\mathrm{hull}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{IR}$$
+  </FunctionSignature>
+  
+</FunctionDetails>
+
+---

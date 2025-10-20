@@ -1,0 +1,128 @@
+---
+title: Installation
+description: An overview of the supported operations.
+tableOfContents: false
+---
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+:::note
+We require C++20, CMake v3.25.2+, and a recent C++ and CUDA compiler.
+:::
+
+<Tabs>
+  <TabItem label="CMake Project">
+Integration with CMake is done in the usual ways:
+
+<Steps>
+
+1. Fetch the library.
+
+   <Tabs>
+
+   <TabItem label="CPM">
+    If you use [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake), just add the following.
+    ```cmake title="CMakelists.txt"
+    CPMAddPackage("gh:neilkichler/cuinterval@0.2.0")
+    ```
+
+   </TabItem>
+
+   <TabItem label="FetchContent">
+    [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html) is built-in to recent CMake.
+    Ensure once at the top of your `CMakelists.txt` you have at least version `3.14` as a requirement.
+    ```cmake title="CMakelists.txt"
+    cmake_minimum_required(VERSION 3.14)
+    ```
+    And you need to include it somewhere.
+    ```cmake title="CMakelists.txt"
+       include(FetchContent)
+    ```
+    Now all dependencies can be added using [FetchContent_Declare](https://cmake.org/cmake/help/latest/module/FetchContent.html#command:fetchcontent_declare)
+    and [FetchContent_MakeAvailable](https://cmake.org/cmake/help/latest/module/FetchContent.html#command:fetchcontent_makeavailable). Here shown for `cuinterval`.
+    ```cmake title="CMakelists.txt"
+    FetchContent_Declare(
+      cuinterval
+      GIT_REPOSITORY git@github.com:neilkichler/cuinterval.git
+      GIT_TAG main
+    )
+    FetchContent_MakeAvailable(cuinterval)
+    ```
+
+   </TabItem>
+
+   <TabItem label="System-wide">
+      A system-wide install is currently only possible by building from source.
+      ```bash
+      git clone https://github.com/neilkichler/cuinterval.git
+      cd cuinterval
+      cmake --preset release
+      cmake --build build
+      cmake --install build
+      ```
+
+      :::note
+      By default we make use of Ninja for building.
+      :::
+
+      You also need to add `find_package(cuinterval)` before linking to the library.
+      ```cmake title="CMakelists.txt"
+      find_package(cuinterval)
+      ```
+   </TabItem>
+
+   
+   <TabItem label="Git submodule">
+    To manage the dependency as Git submodule, you can add it as follows.
+
+    ```bash
+      git submodule add https://github.com/neilkichler/cuinterval.git
+    ```
+
+   :::note
+   If you want to change things, a fork of the cuinterval library is probably your best option. Then, the submodule should link to your fork.
+   :::
+
+   Now you just need to add the subdirectory.
+   ```cmake title="CMakelists.txt"
+    add_subdirectory(path/to/cuinterval)
+   ```
+   </TabItem>
+
+   </Tabs>
+
+2. Add the library as a link dependency to your project.
+    ```cmake title="CMakelists.txt"
+    target_link_libraries(${PROJECT_NAME} PUBLIC cuinterval)
+    ```
+
+3. Take a look at the [example](/starlight-docs-example/guides/example) to get started.
+
+</Steps>
+  
+  </TabItem>
+
+  <TabItem label="Header-only">
+  You can directly include the [header folder](https://github.com/neilkichler/cuinterval/tree/main/include/cuinterval) into your project.
+  
+  The latest header-only version is available in the `header-only` branch:
+  https://github.com/neilkichler/cuinterval/archive/header-only.zip
+  
+  :::note
+  Previous versions can be found in [GitHub Releases](https://github.com/neilkichler/cuinterval/releases).
+  :::
+  </TabItem>
+
+  <TabItem label="Single Header">
+  Download the latest [amalgamated single header version of the library](https://raw.githubusercontent.com/neilkichler/cuinterval/refs/heads/single-header/cuinterval.cuh).
+  
+  ```bash
+  curl -o cuinterval.cuh https://raw.githubusercontent.com/neilkichler/cuinterval/refs/heads/single-header/cuinterval.cuh
+  ```
+
+  :::note
+  Previous versions can be found in [GitHub Releases](https://github.com/neilkichler/cuinterval/releases).
+  :::
+  </TabItem>
+  
+</Tabs>
