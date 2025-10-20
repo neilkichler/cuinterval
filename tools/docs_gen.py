@@ -126,7 +126,7 @@ if __name__ == '__main__':
         extra = note + implementation
 
         details = f"""
-<FunctionDetails>
+<FunctionDetails id="{code_name}">
   <FunctionBrief error="{ulp_error}" slot="brief">
     {brief}
   </FunctionBrief>
