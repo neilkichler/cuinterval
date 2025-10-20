@@ -10,7 +10,7 @@ import starlightThemeFlexoki from 'starlight-theme-flexoki'
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://neilkichler.github.io',
-	base: '/starlight-docs-example',
+	base: '/cuinterval',
 	image: {
 		service: passthroughImageService(),
 	},
