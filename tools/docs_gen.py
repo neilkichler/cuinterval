@@ -17,13 +17,14 @@ def snake_to_camel(snake_str):
     parts = snake_str.split('_')
     return parts[0] + ''.join(word.capitalize() for word in parts[1:])
 
-# Load supported mapping from supported.toml. The TOML file places functions under a top-level
+# Load supported functions from functions.toml. The TOML file places functions under a top-level
 # table named "functions". We normalise the loaded structure into the same shape the rest of
 # the script expects: a dict mapping name -> dict with keys args, ret, ulp_error, code_name, latex_name.
+fname = 'functions.toml'
 supported = {}
-toml_path = os.path.join(os.path.dirname(__file__), '../docs/supported.toml')
+toml_path = os.path.join(os.path.dirname(__file__), f'../docs/{fname}')
 if not os.path.exists(toml_path):
-    raise FileNotFoundError(f"supported.toml not found at {toml_path}")
+    raise FileNotFoundError(f"{fname} not found at {toml_path}")
 
 with open(toml_path, 'rb') as f:
     data = tomllib.load(f)

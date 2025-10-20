@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Extract function argument types and names from include headers (exclude intrinsic.cuh)
-and update supported.toml with args, arg_names, and ret fields.
+Extract function information (argument types, ulp error, signature, etc.) from
+include headers and update functions.toml with args, arg_names, and ret fields.
 
 Usage: python3 tools/extract_args.py
 """
@@ -13,7 +13,8 @@ import os
 
 ROOT = Path(__file__).resolve().parents[1]
 INCLUDE = ROOT / 'include' / 'cuinterval'
-TOML = ROOT / 'supported.toml'
+FNAME = 'functions.toml'
+TOML = ROOT / 'docs' / FNAME
 
 # Functions to skip from extraction
 SKIP_FUNCTIONS = {'quadrant', 'quadrant_pi'}
@@ -188,7 +189,7 @@ def write_toml(data, path: Path):
         lines.append(f'[functions.{fname}]')
         for k, v in fdata.items():
             if isinstance(v, list):
-                arr = ', '.join(repr(x) for x in v)
+                arr = ', '.join(f"'{x}'" for x in v)
                 lines.append(f'{k} = [{arr}]')
             elif isinstance(v, str):
                 lines.append(f"{k} = '{v}'")
@@ -203,7 +204,7 @@ def write_toml(data, path: Path):
             lines.append(f'[functions.{group_name}.{fname}]')
             for k, v in fdata.items():
                 if isinstance(v, list):
-                    arr = ', '.join(repr(x) for x in v)
+                    arr = ', '.join(f"'{x}'" for x in v)
                     lines.append(f'{k} = [{arr}]')
                 elif isinstance(v, str):
                     lines.append(f"{k} = '{v}'")
@@ -218,7 +219,7 @@ def main():
         print('include directory not found', INCLUDE, file=sys.stderr)
         sys.exit(1)
     if not TOML.exists():
-        print('supported.toml not found', TOML, file=sys.stderr)
+        print(f'{FNAME} not found', TOML, file=sys.stderr)
         sys.exit(1)
 
     all_found = {}
