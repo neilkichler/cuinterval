@@ -2,6 +2,12 @@
 # SPDX-License-Identifier: MIT
 # Document generator. Requires Python 3.11+
 
+"""
+Generate documentation entries for functions using (generated) functions.toml.
+
+Usage: python3 gen/gen_docs.py
+"""
+
 import tomllib
 import os
 from collections import defaultdict
@@ -22,7 +28,7 @@ def snake_to_camel(snake_str):
 # the script expects: a dict mapping name -> dict with keys args, ret, ulp_error, code_name, latex_name.
 fname = 'functions.toml'
 supported = {}
-toml_path = os.path.join(os.path.dirname(__file__), f'../docs/{fname}')
+toml_path = os.path.join(os.path.dirname(__file__), f'{fname}')
 if not os.path.exists(toml_path):
     raise FileNotFoundError(f"{fname} not found at {toml_path}")
 

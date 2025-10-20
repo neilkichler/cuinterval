@@ -3,7 +3,7 @@
 Extract function information (argument types, ulp error, signature, etc.) from
 include headers and update functions.toml with args, arg_names, and ret fields.
 
-Usage: python3 tools/extract_args.py
+Usage: python3 gen/gen_functions.py
 """
 
 from pathlib import Path
@@ -11,10 +11,10 @@ import re
 import sys
 import os
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 INCLUDE = ROOT / 'include' / 'cuinterval'
 FNAME = 'functions.toml'
-TOML = ROOT / 'docs' / FNAME
+TOML = ROOT / 'docs' / 'gen' / FNAME
 
 # Functions to skip from extraction
 SKIP_FUNCTIONS = {'quadrant', 'quadrant_pi'}
