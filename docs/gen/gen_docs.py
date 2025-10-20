@@ -27,6 +27,7 @@ def snake_to_camel(snake_str):
 # table named "functions". We normalise the loaded structure into the same shape the rest of
 # the script expects: a dict mapping name -> dict with keys args, ret, ulp_error, code_name, latex_name.
 fname = 'functions.toml'
+base_path = '/cuinterval'
 supported = {}
 toml_path = os.path.join(os.path.dirname(__file__), f'{fname}')
 if not os.path.exists(toml_path):
@@ -117,7 +118,7 @@ if __name__ == '__main__':
         def add_constraint(type, constraint):
             return type + constraint if not constraint or constraint[0] == '_' else constraint
 
-        link_to_details = f"../{group.lower()}/#{code_name}"
+        link_to_details = f"{base_path}/operations/{group.lower()}/#{code_name}"
         latex_inputs = "\\times".join(add_constraint(latex_type[arg], constraints[i]) for i,arg in enumerate(args))
         latex_output = add_constraint(latex_type[ret], constraints[-1])
         groups_table[group][code_name] = {
@@ -155,7 +156,7 @@ if __name__ == '__main__':
 <FunctionDeclaration
   sourceUrl="{sourceUrl}"
 >
-  {code_type[ret]} <Link name="{code_name}" link="../{link_to_details}" />({code_inputs})
+  {code_type[ret]} <Link name="{code_name}" link="{link_to_details}" />({code_inputs})
 </FunctionDeclaration>
 """
 
