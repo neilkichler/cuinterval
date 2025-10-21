@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import path from "node:path";
 import starlight from '@astrojs/starlight';
 import starlightLinksValidator from 'starlight-links-validator';
@@ -11,9 +11,6 @@ import starlightThemeFlexoki from 'starlight-theme-flexoki'
 export default defineConfig({
 	site: 'https://neilkichler.github.io',
 	base: '/cuinterval',
-	image: {
-		service: passthroughImageService(),
-	},
 	prefetch: {
 		prefetchAll: true
 	},
