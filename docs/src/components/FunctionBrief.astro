@@ -11,7 +11,11 @@ let error_in_ulps = "±" + error + " ulps";
 <Fragment slot="brief">
 <div style="justify-content: space-between; display: flex;">
   <slot />
-  <a href="../all" title="maximum over-approximation that can occur">
+  <a
+      href="../all"
+      title="maximum over-approximation that can occur"
+      aria-label="more information about ulp-error"
+  >
     <Badge text={error_in_ulps} variant="caution" size="medium" />
   </a>
 </div>
