@@ -1,11 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 
-const { src, alt = "", class: className = "theme-image" } = Astro.props;
+const { src, alt = "", class: className = "theme-image", priority = false, layout = 'constrained' } = Astro.props;
 
 ---
 
-<Image class={className} src={src} alt={alt} />
+<Image class={className} src={src} alt={alt} priority={priority} layout={layout} />
 
 <style>
   :global(html[data-theme="dark"]) img {
