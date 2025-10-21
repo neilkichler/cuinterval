@@ -6,3 +6,4 @@ export { default as FunctionSignature } from './FunctionSignature.astro';
 export { default as IntervalRef } from './IntervalRef.astro';
 export { default as Integral } from './Integral.astro';
 export { default as Link } from './Link.astro';
+export { default as ThemeImage } from './ThemeImage.astro';

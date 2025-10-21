@@ -1,0 +1,14 @@
+---
+import { Image } from 'astro:assets';
+
+const { src, alt = "", class: className = "theme-image" } = Astro.props;
+
+---
+
+<Image class={className} src={src} alt={alt} />
+
+<style>
+  :global(html[data-theme="dark"]) img {
+    filter: invert(1);
+  }
+</style>
