@@ -1,12 +1,10 @@
 include(FetchContent)
 
-set(BOOST_UT_DISABLE_MODULE ON)
-
 # Testing library
 FetchContent_Declare(
   ut
   GIT_REPOSITORY https://github.com/boost-ext/ut.git
-  GIT_TAG v2.1.1
+  GIT_TAG v2.3.1
   EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(ut)
