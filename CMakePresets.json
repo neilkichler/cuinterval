@@ -50,6 +50,18 @@
       "hidden": true
     },
     {
+      "name": "icpx",
+      "hidden": true,
+      "displayName": "Intel LLVM (icpx) + CUDA",
+      "description": "Use icpx as both C++ and CUDA host compiler with libstdc++ linkage",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "icpx",
+        "CMAKE_CUDA_HOST_COMPILER": "icpx",
+        "CMAKE_CUDA_FLAGS": "-allow-unsupported-compiler --compiler-options=-stdlib=libstdc++",
+        "CMAKE_EXE_LINKER_FLAGS": "-lstdc++"
+      }
+    },
+    {
       "name": "msvc",
       "hidden": true,
       "cacheVariables": {
@@ -153,6 +165,23 @@
       "inherits": [
         "linux-release",
         "gcc"
+      ]
+    },
+    {
+      "name": "linux-icpx-debug",
+      "inherits": [
+        "linux-debug",
+        "icpx"
+      ],
+      "cacheVariables": {
+        "CMAKE_CUDA_FLAGS_DEBUG": "-O0"
+      }
+    },
+    {
+      "name": "linux-icpx-release",
+      "inherits": [
+        "linux-release",
+        "icpx"
       ]
     },
     {
