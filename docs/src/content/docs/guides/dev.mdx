@@ -8,53 +8,89 @@ We work with CMake for building and testing the project. The usual things apply.
 
 ## Build
 
-<Steps>
 
-1. Build requirements   
+<Tabs>
+   <TabItem label="Default">
+    <Steps>
+
+    1. Build requirements
+        :::note
+        We require C++20, CMake v3.25.2+, and a recent C++ and CUDA compiler.
+        :::
+
+       <Tabs>
+        <TabItem label="Ubuntu">
+         ```bash
+         apt install cmake gcc ninja-build
+         ```
+        </TabItem>
+
+        <TabItem label="Cluster">
+         ```bash
+         module load GCC CUDA Ninja CMake
+         ```
+        </TabItem>
+       </Tabs>
+
+    2. Build and run tests
+       <Tabs>
+        <TabItem label="Using regular CMake">
+        ```bash
+        cmake -B build -G Ninja
+        cmake --build build
+        ./build/tests/tests
+        ```
+        </TabItem>
+
+        <TabItem label="Using Presets">
+        ```bash
+        cmake --preset debug
+        cmake --build --preset debug
+        ctest --preset debug
+        ```
+        </TabItem>
+
+        <TabItem label="Using Workflows">
+        ```bash
+        cmake --workflow --preset dev
+        ```
+        </TabItem>
+       </Tabs>
+
+    </Steps>
+
+   </TabItem>
+
+   <TabItem label="Compiler specific">
     :::note
-    We require C++20, CMake v3.25.2+, and a recent C++ and CUDA compiler.
+    Consider using the presets in CMakePresets.json for various compilers.
+    You can query the available presets using:
+
+    ```bash
+    cmake --list-presets
+    ```
     :::
 
-   <Tabs>
-    <TabItem label="Ubuntu">
-     ```bash
-     apt install cmake gcc ninja-build
-     ```
-    </TabItem>
-
-    <TabItem label="Cluster">
-     ```bash
-     module load CMake CUDA GCC Ninja
-     ```
-    </TabItem>
-   </Tabs>
-
-2. Build and run tests
-   <Tabs>
-    <TabItem label="Using regular CMake">
+    #### Intel-LLVM
     ```bash
-    cmake -S . -B build -GNinja
-    cmake --build build
-    ./build/tests/tests
+    module load intel-compilers/2024.2.0 GCCcore/14.3.0 CUDA/12.8.0 Ninja/1.13.0 CMake/4.0.3
     ```
-    </TabItem>
 
-    <TabItem label="Using Presets">
     ```bash
-    cmake --preset debug
-    cmake --build --preset debug
-    ctest --preset debug
+    cmake --preset linux-icpx-debug
     ```
-    </TabItem>
 
-    <TabItem label="Using Workflows">
+    #### Clang
     ```bash
-    cmake --workflow --preset dev
+    module load GCCcore/13.3.0 Clang CUDA Ninja CMake
     ```
-    </TabItem>
-   </Tabs>
 
-</Steps>
+    ```bash
+    cmake --preset linux-clang-debug
+    ```
+   </TabItem>
+</Tabs>
+
 
 ## Tests
 
