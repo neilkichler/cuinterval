@@ -2,11 +2,6 @@
 
 #include <cuinterval/cuinterval.h>
 
-// #include <thrust/execution_policy.h>
-// #include <thrust/fill.h>
-// #include <thrust/functional.h>
-// #include <thrust/sequence.h>
-
 #include <thrust/copy.h>
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
