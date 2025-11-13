@@ -130,7 +130,7 @@ inline constexpr __device__ interval<T> recip(interval<T> a)
         return a;
     }
 
-    constexpr auto zero = static_cast<T>(0);
+    constexpr auto zero = zero_v<T>;
 
     if (contains(a, zero)) {
         if (a.lb < zero && zero == a.ub) {
@@ -224,7 +224,7 @@ inline constexpr __device__ T mig(interval<T> x)
         return intrinsic::nan<T>();
     }
 
-    if (contains(x, static_cast<T>(0))) {
+    if (contains(x, zero_v<T>)) {
         return {};
     }
 
@@ -394,7 +394,7 @@ inline constexpr __device__ interval<T> operator*(T a, interval<T> b)
         return empty<T>();
     }
 
-    constexpr auto zero = static_cast<T>(0);
+    constexpr auto zero = zero_v<T>;
 
     if (a < zero) {
         return { intrinsic::mul_down(a, b.ub), intrinsic::mul_up(a, b.lb) };
@@ -438,7 +438,7 @@ inline constexpr __device__ interval<T> operator/(T a, interval<T> b)
 template<typename T>
 inline constexpr __device__ interval<T> operator/(interval<T> a, T b)
 {
-    constexpr auto zero = static_cast<T>(0);
+    constexpr auto zero = zero_v<T>;
     if (empty(a) || isnan(b) || b == zero) {
         return empty<T>();
     }
@@ -700,7 +700,7 @@ inline constexpr __device__ T mid(interval<T> x)
     if (empty(x)) {
         return nan<T>();
     } else if (entire(x)) {
-        return static_cast<T>(0);
+        return zero_v<T>;
     } else if (x.lb == neg_inf<T>()) {
         return std::numeric_limits<T>::lowest();
     } else if (x.ub == pos_inf<T>()) {
@@ -800,8 +800,8 @@ inline constexpr __device__ interval<T> fdim(interval<T> x, interval<T> y)
 {
     using std::max;
 
-    constexpr T zero {};
-    auto xmy = x - y;
+    constexpr T zero = zero_v<T>;
+    auto xmy         = x - y;
     return { max(xmy.lb, zero), max(xmy.ub, zero) };
 }
 
@@ -812,8 +812,8 @@ inline constexpr __device__ interval<T> sign(interval<T> x)
         return x;
     }
 
-    return { (x.lb != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.lb),
-             (x.ub != static_cast<T>(0)) * intrinsic::copy_sign(static_cast<T>(1), x.ub) };
+    return { (x.lb != zero_v<T>)*intrinsic::copy_sign(one_v<T>, x.lb),
+             (x.ub != zero_v<T>)*intrinsic::copy_sign(one_v<T>, x.ub) };
 }
 
 template<typename T>
@@ -840,7 +840,7 @@ inline constexpr __device__ interval<T> exp(interval<T> x)
         return x;
     }
 
-    return { intrinsic::next_after(intrinsic::exp(x.lb), static_cast<T>(0)),
+    return { intrinsic::next_after(intrinsic::exp(x.lb), zero_v<T>),
              intrinsic::next_floating(intrinsic::exp(x.ub)) };
 }
 
@@ -851,7 +851,7 @@ inline constexpr __device__ interval<T> exp2(interval<T> x)
         return x;
     }
 
-    return { intrinsic::next_after(intrinsic::exp2(x.lb), static_cast<T>(0)),
+    return { intrinsic::next_after(intrinsic::exp2(x.lb), zero_v<T>),
              intrinsic::next_floating(intrinsic::exp2(x.ub)) };
 }
 
@@ -862,7 +862,7 @@ inline constexpr __device__ interval<T> exp10(interval<T> x)
         return x;
     }
 
-    return { intrinsic::next_after(intrinsic::exp10(x.lb), static_cast<T>(0)),
+    return { intrinsic::next_after(intrinsic::exp10(x.lb), zero_v<T>),
              intrinsic::next_floating(intrinsic::exp10(x.ub)) };
 }
 
@@ -875,7 +875,7 @@ inline constexpr __device__ interval<T> expm1(interval<T> x)
         return x;
     }
 
-    return { intrinsic::next_after(expm1(x.lb), static_cast<T>(-1)), intrinsic::next_floating(expm1(x.ub)) };
+    return { intrinsic::next_after(expm1(x.lb), -one_v<T>), intrinsic::next_floating(expm1(x.ub)) };
 }
 
 template<typename T>
@@ -911,7 +911,7 @@ inline constexpr __device__ interval<T> log(interval<T> x)
         return empty<T>();
     }
 
-    auto z = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
+    auto z = intersection(x, { zero_v<T>, intrinsic::pos_inf<T>() });
     return { intrinsic::prev_floating(log(z.lb)), intrinsic::next_floating(log(z.ub)) };
 }
 
@@ -926,7 +926,7 @@ inline constexpr __device__ interval<T> log2(interval<T> x)
         return empty<T>();
     }
 
-    auto z = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
+    auto z = intersection(x, { zero_v<T>, intrinsic::pos_inf<T>() });
     return { (x.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(log2(z.lb))),
              (x.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(log2(z.ub))) };
 }
@@ -940,7 +940,7 @@ inline constexpr __device__ interval<T> log10(interval<T> x)
         return empty<T>();
     }
 
-    auto z = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
+    auto z = intersection(x, { zero_v<T>, intrinsic::pos_inf<T>() });
     return { (x.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(log10(z.lb))),
              (x.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(log10(z.ub))) };
 }
@@ -954,7 +954,7 @@ inline constexpr __device__ interval<T> log1p(interval<T> x)
         return empty<T>();
     }
 
-    auto z = intersection(x, { static_cast<T>(-1), intrinsic::pos_inf<T>() });
+    auto z = intersection(x, { -one_v<T>, intrinsic::pos_inf<T>() });
     return { intrinsic::prev_floating(log1p(z.lb)), intrinsic::next_floating(log1p(z.ub)) };
 }
 
@@ -963,7 +963,7 @@ inline constexpr __device__ interval<T> logb(interval<T> x)
 {
     using std::logb, std::max;
 
-    constexpr T zero {};
+    constexpr T zero = zero_v<T>;
 
     if (empty(x)) {
         return x;
@@ -1102,7 +1102,7 @@ inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto 
             return sqrt(y);
         } else {
             bool is_odd = m % 2;
-            interval<T> domain { is_odd ? intrinsic::neg_inf<T>() : static_cast<T>(0),
+            interval<T> domain { is_odd ? intrinsic::neg_inf<T>() : zero_v<T>,
                                  intrinsic::pos_inf<T>() };
 
             y = intersection(y, domain);
@@ -1129,7 +1129,7 @@ inline constexpr __device__ interval<T> pow(interval<T> x, interval<T> y)
         return empty<T>();
     }
 
-    interval<T> domain { static_cast<T>(0), intrinsic::pos_inf<T>() };
+    interval<T> domain { zero_v<T>, intrinsic::pos_inf<T>() };
     x = intersection(x, domain);
 
     if (empty(x)) {
@@ -1157,7 +1157,7 @@ inline constexpr __device__ unsigned int quadrant(T v)
     int quotient;
     T pi_4 { std::numbers::pi_v<T> / 4 };
     T pi_2 { std::numbers::pi_v<T> / 2 };
-    T vv  = intrinsic::next_after(intrinsic::sub_down(v, pi_4), static_cast<T>(0));
+    T vv  = intrinsic::next_after(intrinsic::sub_down(v, pi_4), zero_v<T>);
     T rem = remquo(vv, pi_2, &quotient);
     return static_cast<unsigned>(quotient) % 4;
 };
@@ -1166,7 +1166,7 @@ template<typename T>
 inline constexpr __device__ unsigned int quadrant_pi(T v)
 {
     int quotient;
-    T vv  = intrinsic::next_after(intrinsic::sub_down(v, 0.25), static_cast<T>(0));
+    T vv  = intrinsic::next_after(intrinsic::sub_down(v, 0.25), zero_v<T>);
     T rem = remquo(vv, 0.5, &quotient);
     return static_cast<unsigned>(quotient) % 4;
 };
@@ -1184,8 +1184,8 @@ inline constexpr __device__ interval<T> sin(interval<T> x)
     constexpr auto pi  = pi_v<interval<T>>;
     constexpr auto tau = tau_v<interval<T>>;
 
-    T sin_min = static_cast<T>(-1);
-    T sin_max = static_cast<T>(1);
+    T sin_min = -one_v<T>;
+    T sin_max = one_v<T>;
 
     T w           = width(x);
     T full_period = sup(tau);
@@ -1258,8 +1258,8 @@ inline constexpr __device__ interval<T> sinpi(interval<T> x)
         return x;
     }
 
-    T sin_min = static_cast<T>(-1);
-    T sin_max = static_cast<T>(1);
+    T sin_min = -one_v<T>;
+    T sin_max = one_v<T>;
 
     T w           = width(x);
     T full_period = 2;
@@ -1311,8 +1311,8 @@ inline constexpr __device__ interval<T> cos(interval<T> x)
     constexpr auto pi  = pi_v<interval<T>>;
     constexpr auto tau = tau_v<interval<T>>;
 
-    T cos_min = static_cast<T>(-1);
-    T cos_max = static_cast<T>(1);
+    T cos_min = -one_v<T>;
+    T cos_max = one_v<T>;
 
     T w           = width(x);
     T full_period = sup(tau);
@@ -1360,8 +1360,8 @@ inline constexpr __device__ interval<T> cospi(interval<T> x)
         return x;
     }
 
-    T cos_min = static_cast<T>(-1);
-    T cos_max = static_cast<T>(1);
+    T cos_min = -one_v<T>;
+    T cos_max = one_v<T>;
 
     T w           = width(x);
     T full_period = 2;
@@ -1443,7 +1443,7 @@ inline constexpr __device__ interval<T> asin(interval<T> x)
     }
 
     constexpr auto pi_2_ub = pi_2_v<interval<T>>.ub;
-    constexpr interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
+    constexpr interval<T> domain { -one_v<T>, one_v<T> };
 
     auto xx = intersection(x, domain);
     return { (xx.lb != 0) * intrinsic::next_after(intrinsic::next_after(asin(xx.lb), -pi_2_ub), -pi_2_ub),
@@ -1460,10 +1460,10 @@ inline constexpr __device__ interval<T> acos(interval<T> x)
     }
 
     constexpr auto pi = pi_v<interval<T>>;
-    constexpr interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
+    constexpr interval<T> domain { -one_v<T>, one_v<T> };
 
     auto xx = intersection(x, domain);
-    return { intrinsic::next_after(intrinsic::next_after(acos(xx.ub), static_cast<T>(0)), static_cast<T>(0)),
+    return { intrinsic::next_after(intrinsic::next_after(acos(xx.ub), zero_v<T>), zero_v<T>),
              intrinsic::next_after(intrinsic::next_after(acos(xx.lb), pi.ub), pi.ub) };
 }
 
@@ -1492,7 +1492,7 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
     }
 
     constexpr auto pi_2 = pi_2_v<interval<T>>;
-    constexpr auto pi = pi_v<interval<T>>;
+    constexpr auto pi   = pi_v<interval<T>>;
     interval<T> range { -pi.ub, pi.ub };
     interval<T> half_range { -pi_2.ub, pi_2.ub };
 
@@ -1637,7 +1637,7 @@ inline constexpr __device__ interval<T> cosh(interval<T> x)
         return x;
     }
 
-    interval<T> range { static_cast<T>(1), intrinsic::pos_inf<T>() };
+    interval<T> range { one_v<T>, intrinsic::pos_inf<T>() };
 
     return { intrinsic::next_after(cosh(mig(x)), range.lb),
              intrinsic::next_after(cosh(mag(x)), range.ub) };
@@ -1652,10 +1652,8 @@ inline constexpr __device__ interval<T> tanh(interval<T> x)
         return x;
     }
 
-    interval<T> range { static_cast<T>(-1), static_cast<T>(1) };
-
-    return { intrinsic::next_after(tanh(x.lb), range.lb),
-             intrinsic::next_after(tanh(x.ub), range.ub) };
+    return { intrinsic::next_after(tanh(x.lb), -one_v<T>),
+             intrinsic::next_after(tanh(x.ub), one_v<T>) };
 }
 
 template<typename T>
@@ -1680,8 +1678,8 @@ inline constexpr __device__ interval<T> acosh(interval<T> x)
         return x;
     }
 
-    interval<T> range { static_cast<T>(0), intrinsic::pos_inf<T>() };
-    interval<T> domain { static_cast<T>(1), intrinsic::pos_inf<T>() };
+    interval<T> range { zero_v<T>, intrinsic::pos_inf<T>() };
+    interval<T> domain { one_v<T>, intrinsic::pos_inf<T>() };
 
     auto xx = intersection(x, domain);
 
@@ -1699,7 +1697,7 @@ inline constexpr __device__ interval<T> atanh(interval<T> x)
     }
 
     interval<T> range { intrinsic::neg_inf<T>(), intrinsic::pos_inf<T>() };
-    interval<T> domain { static_cast<T>(-1), static_cast<T>(1) };
+    interval<T> domain { -one_v<T>, one_v<T> };
 
     auto xx = intersection(x, domain);
 
@@ -1794,8 +1792,8 @@ inline constexpr __device__ interval<T> erf(interval<T> x)
     }
 
     // TODO: account for 2 ulp error
-    return { intrinsic::next_after(erf(x.lb), static_cast<T>(-1)),
-             intrinsic::next_after(erf(x.ub), static_cast<T>(1)) };
+    return { intrinsic::next_after(erf(x.lb), -one_v<T>),
+             intrinsic::next_after(erf(x.ub), one_v<T>) };
 }
 
 template<typename T>
@@ -1808,8 +1806,8 @@ inline constexpr __device__ interval<T> erfc(interval<T> x)
     }
 
     // TODO: account for 5 ulp error
-    return { intrinsic::next_after(erfc(x.ub), static_cast<T>(0)),
-             intrinsic::next_after(erfc(x.lb), static_cast<T>(2)) };
+    return { intrinsic::next_after(erfc(x.ub), zero_v<T>),
+             intrinsic::next_after(erfc(x.lb), two_v<T>) };
 }
 
 // split the interval in two at the given split_ratio

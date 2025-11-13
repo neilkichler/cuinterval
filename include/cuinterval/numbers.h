@@ -159,6 +159,17 @@ template<>
 inline constexpr interval<float>
     tau_v<interval<float>> = { 0x1.921fb4p+2f, 0x1.921fb6p+2f };
 
+template<typename T>
+inline constexpr T zero_v = { 0 };
+template<typename T>
+inline constexpr T one_v = { 1 };
+template<typename T>
+inline constexpr T two_v = { 2 };
+
+inline constexpr double zero = zero_v<double>;
+inline constexpr double one  = one_v<double>;
+inline constexpr double two  = two_v<double>;
+
 } // namespace cu
 
 #endif // CUINTERVAL_NUMBERS_H
