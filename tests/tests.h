@@ -25,6 +25,7 @@
 #include <format>
 #include <source_location>
 #include <span>
+#include <sstream>
 #include <string_view>
 #include <vector>
 
@@ -79,6 +80,10 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::st
 
     auto colors = boost::ut::colors();
 
+    std::stringstream error_msg;
+    error_msg << "\nFailed in " << fn_name << ":";
+    bool overall_success = true;
+
     for (size_t i = 0; i < h_ref.size(); ++i) {
         if (h_res[i] != h_res[i] && h_ref[i] != h_ref[i]) // both are NaN
             continue;
@@ -94,17 +99,20 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::st
                 auto delta_lb = std::fabs(h_res[i].lb - h_ref[i].lb);
                 auto delta_ub = std::fabs(h_res[i].ub - h_ref[i].ub);
 
-                auto out = expect(eq(lb_within_ulps && ub_within_ulps, true), location)
-                    << std::format("\nFailed at case {}:{}, {}{:a}{} != {:a}"
-                                   "\nwith:"
-                                   "\n   delta: [{:a}, {:a}]"
-                                   "\n   input:",
-                                   fn_name, i, colors.fail, h_res[i], colors.none, h_ref[i], delta_lb, delta_ub);
+                bool case_success = lb_within_ulps && ub_within_ulps;
+                if (!case_success) {
+                    error_msg << std::format("\nat case {}:{}, {}{:a}{} != {:a}"
+                                             "\nwith:"
+                                             "\n   delta: [{:a}, {:a}]"
+                                             "\n   input:",
+                                             fn_name, i, colors.fail, h_res[i], colors.none, h_ref[i], delta_lb, delta_ub);
 
-                out << std::hexfloat;
-                show_inputs(out, std::forward<Args>(args)[i]...);
-                out << "=" << std::defaultfloat;
-                show_inputs(out, std::forward<Args>(args)[i]...);
+                    error_msg << std::hexfloat;
+                    show_inputs(error_msg, std::forward<Args>(args)[i]...);
+                    error_msg << "=" << std::defaultfloat;
+                    show_inputs(error_msg, std::forward<Args>(args)[i]...);
+                }
+                overall_success &= case_success;
             }
         } else {
             auto out = expect(eq(h_res[i], h_ref[i]), location);
@@ -114,6 +122,7 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::st
             show_inputs(out, std::forward<Args>(args)[i]...);
         }
     }
+    expect(eq(overall_success, true), location) << error_msg.str();
 }
 
 #endif // CUDA_INTERVAL_TESTS_H
