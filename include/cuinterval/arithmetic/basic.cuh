@@ -911,9 +911,8 @@ inline constexpr __device__ interval<T> log(interval<T> x)
         return empty<T>();
     }
 
-    auto xx = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
-
-    return { intrinsic::prev_floating(log(xx.lb)), intrinsic::next_floating(log(xx.ub)) };
+    auto z = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
+    return { intrinsic::prev_floating(log(z.lb)), intrinsic::next_floating(log(z.ub)) };
 }
 
 // NOTE: The overestimation on the lower and upper bound is at most 2 ulps (unit in the last place)
@@ -927,9 +926,9 @@ inline constexpr __device__ interval<T> log2(interval<T> x)
         return empty<T>();
     }
 
-    auto xx = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
-    return { (xx.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(log2(xx.lb))),
-             (xx.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(log2(xx.ub))) };
+    auto z = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
+    return { (x.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(log2(z.lb))),
+             (x.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(log2(z.ub))) };
 }
 
 template<typename T>
@@ -941,9 +940,9 @@ inline constexpr __device__ interval<T> log10(interval<T> x)
         return empty<T>();
     }
 
-    auto xx = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
-    return { (xx.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(log10(xx.lb))),
-             (xx.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(log10(xx.ub))) };
+    auto z = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
+    return { (x.lb != 1) * intrinsic::prev_floating(intrinsic::prev_floating(log10(z.lb))),
+             (x.ub != 1) * intrinsic::next_floating(intrinsic::next_floating(log10(z.ub))) };
 }
 
 template<typename T>
@@ -952,11 +951,11 @@ inline constexpr __device__ interval<T> log1p(interval<T> x)
     using std::log1p;
 
     if (empty(x) || sup(x) == -1) {
-        return x;
+        return empty<T>();
     }
 
-    auto xx = intersection(x, { static_cast<T>(-1), intrinsic::pos_inf<T>() });
-    return { intrinsic::prev_floating(log1p(x.lb)), intrinsic::next_floating(log1p(x.ub)) };
+    auto z = intersection(x, { static_cast<T>(-1), intrinsic::pos_inf<T>() });
+    return { intrinsic::prev_floating(log1p(z.lb)), intrinsic::next_floating(log1p(z.ub)) };
 }
 
 template<typename T>
