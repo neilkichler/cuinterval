@@ -125,10 +125,10 @@ Tests can be written in an `.itl` or directly in CUDA C++.
    <TabItem label="Automatic test generation from .itl files">
    Most tests are generated using the `test_converter.py` script. Simply do:
    ```bash
-   python tests/test_converter.py
+   python3 tests/test_converter.py
    ```
-   The tests are written in [ITL](https://github.com/oheim/ITF1788?tab=readme-ov-file#itl--interval-test-libraries). They come from various other interval arithmetic libraries.
-   To write new ones, add a new file into the [`itl`](https://github.com/neilkichler/cuinterval/tree/main/tests/itl) folder and provide tests in the ITL format. E.g.,
+   The tests are written in [ITL](https://github.com/oheim/ITF1788?tab=readme-ov-file#itl--interval-test-libraries). Most come from various other interval arithmetic libraries.
+   To write new ones, add a new file into the [`itl`](https://github.com/neilkichler/cuinterval/tree/main/tests/itl) folder, provide tests in the ITL format, and rerun the script. E.g.,
 
    ```
    /* 
