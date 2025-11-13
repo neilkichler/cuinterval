@@ -1155,8 +1155,8 @@ template<typename T>
 inline constexpr __device__ unsigned int quadrant(T v)
 {
     int quotient;
-    T pi_4 { std::numbers::pi / 4 };
-    T pi_2 { std::numbers::pi / 2 };
+    T pi_4 { std::numbers::pi_v<T> / 4 };
+    T pi_2 { std::numbers::pi_v<T> / 2 };
     T vv  = intrinsic::next_after(intrinsic::sub_down(v, pi_4), static_cast<T>(0));
     T rem = remquo(vv, pi_2, &quotient);
     return static_cast<unsigned>(quotient) % 4;
