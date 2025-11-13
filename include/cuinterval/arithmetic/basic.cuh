@@ -150,13 +150,9 @@ inline constexpr __device__ interval<T> recip(interval<T> a)
 template<typename T>
 inline constexpr __device__ interval<T> div(interval<T> x, interval<T> y)
 {
-    // return mul(a, recip(b));
-
     if (empty(x) || empty(y) || (y.lb == 0 && y.ub == 0)) {
         return empty<T>();
     }
-
-    // test_equal(div(I{-infinity,-15.0}, {-3.0, 0.0}), I{5.0,infinity});
 
     if (y.lb > 0) {
         if (x.lb >= 0) {
