@@ -25,5 +25,5 @@ void tests_powf(cudaStream_t stream, cudaEvent_t event)
     std::vector<I> out         = compute_powf(stream, xs, exponents);
     std::array<I, n> ref { I { 1.0, 1.0 }, { 0.0, 1.0 }, { 1.0, 4.0 }, { 8.0, 27.0 }, { 81.0, 256.0 } };
 
-    check_all_equal<I, n>(out.data(), ref, max_ulp_diff, std::source_location::current(), xs.data(), exponents.data());
+    check_all_equal<I, n>(out.data(), ref, max_ulp_diff, "powf", std::source_location::current(), xs.data(), exponents.data());
 }

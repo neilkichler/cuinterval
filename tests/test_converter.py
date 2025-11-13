@@ -225,7 +225,7 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
                     cuda_code += indent_two + 'CUDA_CHECK(cudaEventSynchronize(event));\n'
 
                     cuda_code += indent_two + f'int max_ulp_diff = {max_ulp_diff};\n'
-                    cuda_code += indent_two + f'check_all_equal<{var_types[n_args]}, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), {host_input_vars});\n'
+                    cuda_code += indent_two + f'check_all_equal<{var_types[n_args]}, n>(h_res, h_ref, max_ulp_diff, "{instr}", std::source_location::current(), {host_input_vars});\n'
                     cuda_code += indent_one + '};\n\n'
 
                     largest_n = max(n_ops, largest_n)

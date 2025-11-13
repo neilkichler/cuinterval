@@ -76,7 +76,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sinpi", std::source_location::current(), h_xs);
     };
 
     {
@@ -122,7 +122,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "cospi", std::source_location::current(), h_xs);
     };
 
     {
@@ -152,7 +152,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "tan", std::source_location::current(), h_xs);
     };
 
     {
@@ -213,7 +213,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 2;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "rootn", std::source_location::current(), h_xs, h_ys);
     };
 
 }

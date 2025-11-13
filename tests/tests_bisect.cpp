@@ -99,7 +99,7 @@ void tests_bisect(cuda_buffer buffer, cuda_streams streams, cuda_events events)
             CUDA_CHECK(cudaStreamSynchronize(stream));
         }
         int max_ulp_diff = 0;
-        check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<split<T>, n>(h_res, h_ref, max_ulp_diff, "bisect", std::source_location::current(), h_xs, h_ys);
     };
 }
 
@@ -182,7 +182,7 @@ void tests_mince(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n_results>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n_results>(h_res, h_ref, max_ulp_diff, "mince", std::source_location::current(), h_xs);
     };
 }
 

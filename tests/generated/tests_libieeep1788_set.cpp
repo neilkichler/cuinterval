@@ -73,7 +73,7 @@ void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "intersection", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -116,7 +116,7 @@ void tests_libieeep1788_set(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "convexHull", std::source_location::current(), h_xs, h_ys);
     };
 
 }

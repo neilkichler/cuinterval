@@ -15,7 +15,7 @@ __global__ void test_overload(auto &&f, cu::interval<T> *x,
 }
 
 template<typename T>
-void test_compare_fns(auto &&fn_a, auto &&fn_b, cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
+void test_compare_fns(auto &&fn_a, auto &&fn_b, const char *name, cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
 {
     using I = cu::interval<T>;
 
@@ -86,7 +86,7 @@ void test_compare_fns(auto &&fn_a, auto &&fn_b, cuda_buffer buffer, cudaStream_t
     CUDA_CHECK(cudaEventSynchronize(event));
 
     int max_ulp_diff = 0;
-    check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+    check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, name, std::source_location::current(), h_xs);
 };
 
 void tests_operator_overloading(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event)
@@ -133,13 +133,13 @@ void tests_operator_overloading(cuda_buffer buffer, cudaStream_t stream, cudaEve
         return x / y;
     };
 
-    auto compare_fns = [&](auto &&fn_a, auto &&fn_b) {
-        test_compare_fns<float>(fn_a, fn_b, buffer, stream, event);
-        test_compare_fns<double>(fn_a, fn_b, buffer, stream, event);
+    auto compare_fns = [&](auto &&fn_a, auto &&fn_b, const char *name) {
+        test_compare_fns<float>(fn_a, fn_b, name, buffer, stream, event);
+        test_compare_fns<double>(fn_a, fn_b, name, buffer, stream, event);
     };
 
-    compare_fns(add_assign, add);
-    compare_fns(sub_assign, sub);
-    compare_fns(mul_assign, mul);
-    compare_fns(div_assign, div);
+    compare_fns(add_assign, add, "add");
+    compare_fns(sub_assign, sub, "sub");
+    compare_fns(mul_assign, mul, "mul");
+    compare_fns(div_assign, div, "div");
 }

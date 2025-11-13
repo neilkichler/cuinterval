@@ -76,7 +76,7 @@ void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream, cudaEv
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "isCommonInterval", std::source_location::current(), h_xs);
     };
 
     {
@@ -128,7 +128,7 @@ void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream, cudaEv
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "isSingleton", std::source_location::current(), h_xs);
     };
 
     {
@@ -261,7 +261,7 @@ void tests_libieeep1788_rec_bool(cuda_buffer buffer, cudaStream_t stream, cudaEv
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "isMember", std::source_location::current(), h_xs, h_ys);
     };
 
 }

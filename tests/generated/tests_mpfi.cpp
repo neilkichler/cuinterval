@@ -76,7 +76,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "abs", std::source_location::current(), h_xs);
     };
 
     {
@@ -114,7 +114,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "acos", std::source_location::current(), h_xs);
     };
 
     {
@@ -146,7 +146,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "acosh", std::source_location::current(), h_xs);
     };
 
     {
@@ -231,7 +231,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "add", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -355,7 +355,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "add", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -393,7 +393,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "asin", std::source_location::current(), h_xs);
     };
 
     {
@@ -453,7 +453,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "asinh", std::source_location::current(), h_xs);
     };
 
     {
@@ -513,7 +513,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "atan", std::source_location::current(), h_xs);
     };
 
     {
@@ -595,7 +595,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "atan2", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -635,7 +635,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "atanh", std::source_location::current(), h_xs);
     };
 
     {
@@ -689,7 +689,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "isCommonInterval", std::source_location::current(), h_xs);
     };
 
     {
@@ -731,7 +731,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 1;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "cbrt", std::source_location::current(), h_xs);
     };
 
     {
@@ -845,7 +845,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 2;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "cos", std::source_location::current(), h_xs);
     };
 
     {
@@ -895,7 +895,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 2;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "cosh", std::source_location::current(), h_xs);
     };
 
     {
@@ -953,7 +953,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 4;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "cot", std::source_location::current(), h_xs);
     };
 
     {
@@ -1007,7 +1007,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "coth", std::source_location::current(), h_xs);
     };
 
     {
@@ -1125,7 +1125,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "div", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -1167,7 +1167,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, "wid", std::source_location::current(), h_xs);
     };
 
     {
@@ -1381,7 +1381,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "div", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -1484,7 +1484,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "div", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -1608,7 +1608,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sub", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -1654,7 +1654,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "exp", std::source_location::current(), h_xs);
     };
 
     {
@@ -1702,7 +1702,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "exp2", std::source_location::current(), h_xs);
     };
 
     {
@@ -1748,7 +1748,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "expm1", std::source_location::current(), h_xs);
     };
 
     {
@@ -1827,7 +1827,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "hypot", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -1897,7 +1897,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "intersection", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -1941,7 +1941,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "recip", std::source_location::current(), h_xs);
     };
 
     {
@@ -2017,7 +2017,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "precedes", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -2093,7 +2093,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "less", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -2169,7 +2169,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "less", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -2245,7 +2245,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "precedes", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -2321,7 +2321,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "strictPrecedes", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -2397,7 +2397,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<B, n>(h_res, h_ref, max_ulp_diff, "strictPrecedes", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -2433,7 +2433,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "log", std::source_location::current(), h_xs);
     };
 
     {
@@ -2469,7 +2469,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "log1p", std::source_location::current(), h_xs);
     };
 
     {
@@ -2503,7 +2503,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "log2", std::source_location::current(), h_xs);
     };
 
     {
@@ -2539,7 +2539,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "log10", std::source_location::current(), h_xs);
     };
 
     {
@@ -2581,7 +2581,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, "mag", std::source_location::current(), h_xs);
     };
 
     {
@@ -2625,7 +2625,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, "mid", std::source_location::current(), h_xs);
     };
 
     {
@@ -2667,7 +2667,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<T, n>(h_res, h_ref, max_ulp_diff, "mig", std::source_location::current(), h_xs);
     };
 
     {
@@ -2845,7 +2845,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "mul", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -3008,7 +3008,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "mul", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -3046,7 +3046,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "neg", std::source_location::current(), h_xs);
     };
 
     {
@@ -3083,7 +3083,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "convexHull", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -3361,7 +3361,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 2;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sin", std::source_location::current(), h_xs);
     };
 
     {
@@ -3409,7 +3409,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sinh", std::source_location::current(), h_xs);
     };
 
     {
@@ -3453,7 +3453,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sqr", std::source_location::current(), h_xs);
     };
 
     {
@@ -3489,7 +3489,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sqrt", std::source_location::current(), h_xs);
     };
 
     {
@@ -3574,7 +3574,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sub", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -3698,7 +3698,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sub", std::source_location::current(), h_xs, h_ys);
     };
 
     {
@@ -3976,7 +3976,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "tan", std::source_location::current(), h_xs);
     };
 
     {
@@ -4026,7 +4026,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 2;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "tanh", std::source_location::current(), h_xs);
     };
 
     {
@@ -4093,7 +4093,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 0;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs, h_ys);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "convexHull", std::source_location::current(), h_xs, h_ys);
     };
 
 }

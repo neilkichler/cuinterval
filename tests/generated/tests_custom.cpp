@@ -66,7 +66,7 @@ void tests_custom(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "log", std::source_location::current(), h_xs);
     };
 
     {
@@ -98,7 +98,7 @@ void tests_custom(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
         int max_ulp_diff = 3;
-        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, std::source_location::current(), h_xs);
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "log1p", std::source_location::current(), h_xs);
     };
 
 }

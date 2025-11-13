@@ -22,8 +22,10 @@
 #include <cuinterval/interval.h>
 
 #include <cmath>
+#include <format>
 #include <source_location>
 #include <span>
+#include <string_view>
 #include <vector>
 
 template<typename T>
@@ -58,14 +60,13 @@ template<typename T>
 inline constexpr bool is_interval_v = is_interval<T>::value;
 
 template<typename T, int N, typename... Args>
-void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::source_location location, Args &&...args)
+void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::string_view fn_name, std::source_location location, Args &&...args)
 {
     using namespace boost::ut;
 
     std::vector<size_t> failed_ids;
 
     auto show_inputs = [](auto &out, auto &&...args) {
-        out << "with input:";
         ((out << "\n\t"
               << args),
          ...);
@@ -75,6 +76,8 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::so
     auto empty = [](auto &&x) {
         return !(x.lb <= x.ub);
     };
+
+    auto colors = boost::ut::colors();
 
     for (size_t i = 0; i < h_ref.size(); ++i) {
         if (h_res[i] != h_res[i] && h_ref[i] != h_ref[i]) // both are NaN
@@ -88,11 +91,19 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::so
                 bool lb_within_ulps = check_within_ulps(h_res[i].lb, h_ref[i].lb, max_ulps_diff, -inf);
                 bool ub_within_ulps = check_within_ulps(h_res[i].ub, h_ref[i].ub, max_ulps_diff, inf);
 
+                auto delta_lb = std::fabs(h_res[i].lb - h_ref[i].lb);
+                auto delta_ub = std::fabs(h_res[i].ub - h_ref[i].ub);
+
                 auto out = expect(eq(lb_within_ulps && ub_within_ulps, true), location)
-                    << std::hexfloat << '\n'
-                    << "Failed at case" << i << ": " << h_res[i] << "!= " << h_ref[i] << '\n'
-                    << '\t' << "with delta: [" << std::fabs(h_res[i].lb - h_ref[i].lb)
-                    << ", " << std::fabs(h_res[i].ub - h_ref[i].ub) << "]\n\t";
+                    << std::format("\nFailed at case {}:{}, {}{:a}{} != {:a}"
+                                   "\nwith:"
+                                   "\n   delta: [{:a}, {:a}]"
+                                   "\n   input:",
+                                   fn_name, i, colors.fail, h_res[i], colors.none, h_ref[i], delta_lb, delta_ub);
+
+                out << std::hexfloat;
+                show_inputs(out, std::forward<Args>(args)[i]...);
+                out << "=" << std::defaultfloat;
                 show_inputs(out, std::forward<Args>(args)[i]...);
             }
         } else {
