@@ -1,0 +1,38 @@
+// Tests log(x) when x
+testcase custom.log {
+    // surrounds critical point 0
+    log [-10.0, 1.0] = [-infinity, 0.0];
+
+    // boundary is at 0
+    log [-10.0, 0.0] = [empty];
+    log [0.0, 1.0] = [-infinity, 0.0];
+
+    // completely out of domain
+    log [-10.0, -1.0] = [empty];
+
+    // inside domain
+    log [1.0, infinity] = [0.0, infinity];
+
+    // point interval
+    log [0.0, 0.0] = [empty];
+    log [1.0, 1.0] = [0.0, 0.0];
+}
+
+// Tests log1p(x)
+testcase custom.log1p {
+    // surrounds critical point -1
+    log1p [-10.0, 0.0] = [-infinity, 0.0];
+
+    // boundary is at -1
+    log1p [-10.0, -1.0] = [empty];
+    log1p [-1.0, 0.0] = [-infinity, 0.0];
+
+    // completely out of domain
+    log1p [-10.0, -2.0] = [empty];
+
+    // inside domain
+    log1p [0.0, infinity] = [0.0, infinity];
+
+    // point interval
+    log1p [0.0, 0.0] = [empty];
+}

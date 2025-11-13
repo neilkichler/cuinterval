@@ -10,6 +10,7 @@ set(generated_test_files
     generated/tests_libieeep1788_num.cpp
     generated/tests_libieeep1788_bool.cpp
     generated/tests_atan2.cpp
+    generated/tests_custom.cpp
     generated/tests_intervalarithmeticjl.cpp
     generated/tests_libieeep1788_rec_bool.cpp
 )
