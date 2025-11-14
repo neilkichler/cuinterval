@@ -4,7 +4,8 @@ description: An overview of the supported operations.
 tableOfContents: false
 ---
 
-import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Code, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+import { PUBLIC_VERSION } from "astro:env/client";
 
 :::note
 We require C++20, CMake v3.25.2+, and a recent C++ and CUDA compiler.
@@ -22,9 +23,8 @@ Integration with CMake is done in the usual ways:
 
    <TabItem label="CPM">
     If you use [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake), just add the following.
-    ```cmake title="CMakelists.txt"
-    CPMAddPackage("gh:neilkichler/cuinterval@0.2.0")
-    ```
+
+    <Code code={`CPMAddPackage("gh:neilkichler/cuinterval@${PUBLIC_VERSION}")`} lang="cmake" title="CMakeLists.txt"/>
 
    </TabItem>
 
@@ -35,7 +35,7 @@ Integration with CMake is done in the usual ways:
     cmake_minimum_required(VERSION 3.14)
     ```
     And you need to include it somewhere.
-    ```cmake title="CMakelists.txt"
+    ```cmake title="CMakeLists.txt"
        include(FetchContent)
     ```
     Now all dependencies can be added using [FetchContent_Declare](https://cmake.org/cmake/help/latest/module/FetchContent.html#command:fetchcontent_declare)
