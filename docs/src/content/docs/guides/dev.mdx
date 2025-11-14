@@ -155,3 +155,15 @@ Tests can be written in an `.itl` or directly in CUDA C++.
    All handwritten tests need to be included in the `tests_additional.h` header and should follow a similar structure as the existing tests.
    </TabItem>
 </Tabs>
+
+## Release
+When creating a new release, ensure that the version numbers in all locations are updated correctly.
+This can be achieved by running:
+
+```bash
+./tools/bump-version.sh <version>
+```
+
+Ensure that the version has `v` as a prefix, e.g., `v1.2.3`.
+
+Once a release is created on GitHub with the corresponding tag the new documentation is automatically generated and deployed. 
