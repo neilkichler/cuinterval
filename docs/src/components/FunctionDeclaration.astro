@@ -1,11 +1,11 @@
 ---
 import LogoCUDA from "@assets/cuda.svg";
-import { VERSION } from "astro:env/client";
+import { PUBLIC_VERSION } from "astro:env/client";
 
 const {
   detailUrl,
   sourceUrl,
-  sourceBaseUrl = "https://github.com/neilkichler/cuinterval/blob/" + VERSION + "/",
+  sourceBaseUrl = "https://github.com/neilkichler/cuinterval/blob/" + PUBLIC_VERSION + "/",
   nvidiaUrl,
   nvidiaBaseUrl = "https://docs.nvidia.com/cuda/cuda-math-api/cuda_math_api/",
 } = Astro.props;
