@@ -4,9 +4,13 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "predev": "sh gen/gen.sh",
     "start": "astro dev",
+    "prestart": "sh gen/gen.sh",
     "build": "astro build",
+    "prebuild": "sh gen/gen.sh",
     "preview": "astro preview",
+    "preserve": "sh gen/gen.sh",
     "astro": "astro"
   },
   "dependencies": {
