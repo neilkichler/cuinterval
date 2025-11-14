@@ -382,7 +382,7 @@ ulp_error = 3
 code_name = 'log2'
 latex_name = '\log_2'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L922'
+source = 'include/cuinterval/arithmetic/basic.cuh#L921'
 group = 'Power'
 brief = 'Returns the interval base-2 logarithm $$\log_2(x)$$.'
 
@@ -393,7 +393,7 @@ ulp_error = 3
 code_name = 'log10'
 latex_name = '\log_{10}'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L936'
+source = 'include/cuinterval/arithmetic/basic.cuh#L935'
 group = 'Power'
 brief = 'Returns the interval base-10 logarithm $$\log_{10}(x)$$.'
 
@@ -404,7 +404,7 @@ ulp_error = 3
 code_name = 'log1p'
 latex_name = '\log(1+x)'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L950'
+source = 'include/cuinterval/arithmetic/basic.cuh#L949'
 group = 'Power'
 brief = 'Returns the interval $$\log(1 + x)$$.'
 
@@ -415,7 +415,7 @@ ulp_error = 2
 code_name = 'sin'
 latex_name = '\sin'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1177'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1176'
 group = 'Trigonometric'
 brief = 'Returns the interval sine $$\sin(x)$$.'
 
@@ -426,7 +426,7 @@ ulp_error = 2
 code_name = 'cos'
 latex_name = '\cos'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1304'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1303'
 group = 'Trigonometric'
 brief = 'Returns the interval cosine $$\cos(x)$$.'
 
@@ -437,7 +437,7 @@ ulp_error = 3
 code_name = 'tan'
 latex_name = '\tan'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1405'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1404'
 group = 'Trigonometric'
 brief = 'Returns the interval tangent $$\tan(x)$$.'
 
@@ -448,7 +448,7 @@ ulp_error = 3
 code_name = 'asin'
 latex_name = '\arcsin'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1438'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1437'
 group = 'Trigonometric'
 brief = 'Returns the interval arcsine $$\arcsin(x)$$.'
 
@@ -459,7 +459,7 @@ ulp_error = 3
 code_name = 'acos'
 latex_name = '\arccos'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1455'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1454'
 group = 'Trigonometric'
 brief = 'Returns the interval arccosine $$\arccos(x)$$.'
 
@@ -470,7 +470,7 @@ ulp_error = 3
 code_name = 'atan'
 latex_name = '\arctan'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1472'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1471'
 group = 'Trigonometric'
 brief = 'Returns the interval arctangent $$\arctan(x)$$.'
 
@@ -481,7 +481,7 @@ ulp_error = 3
 code_name = 'atan2'
 latex_name = '\arctan2'
 arg_names = ['y', 'x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1487'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1486'
 group = 'Trigonometric'
 brief = 'Returns the interval two-argument arctangent $$\arctan2(y, x)$$.'
 
@@ -492,7 +492,7 @@ ulp_error = 3
 code_name = 'sinh'
 latex_name = '\sinh'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1620'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1619'
 group = 'Hyperbolic'
 brief = 'Returns the interval hyperbolic sine $$\sinh(x)$$.'
 
@@ -504,7 +504,7 @@ code_name = 'cosh'
 latex_name = '\cosh'
 arg_names = ['x']
 constraints = ['', '_{\ge \mathbf{1}}']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1633'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1632'
 group = 'Hyperbolic'
 brief = 'Returns the interval hyperbolic cosine $$\cosh(x)$$.'
 
@@ -515,7 +515,7 @@ ulp_error = 4
 code_name = 'cot'
 latex_name = '\cot'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1574'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1573'
 group = 'Trigonometric'
 brief = 'Returns the interval cotangent $$\cot(x)$$.'
 
@@ -526,7 +526,7 @@ ulp_error = 3
 code_name = 'coth'
 latex_name = '\coth'
 arg_names = ['a']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1717'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1716'
 group = 'Hyperbolic'
 brief = 'Returns the interval hyperbolic cotangent $$\coth(x)$$.'
 
@@ -537,7 +537,7 @@ ulp_error = 2
 code_name = 'tanh'
 latex_name = '\tanh'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1648'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1647'
 group = 'Hyperbolic'
 brief = 'Returns the interval hyperbolic tangent $$\tanh(x)$$.'
 
@@ -548,7 +548,7 @@ ulp_error = 3
 code_name = 'arcsinh'
 latex_name = '\mathrm{arcsinh}'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1663'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1662'
 group = 'Hyperbolic'
 brief = 'Returns the interval inverse hyperbolic sine $$\mathrm{arcsinh}(x)$$.'
 
@@ -559,7 +559,7 @@ ulp_error = 3
 code_name = 'arccosh'
 latex_name = '\mathrm{arccosh}'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1676'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1675'
 group = 'Hyperbolic'
 brief = 'Returns the interval inverse hyperbolic cosine $$\mathrm{arccosh}(x)$$.'
 
@@ -570,7 +570,7 @@ ulp_error = 3
 code_name = 'arctanh'
 latex_name = '\mathrm{arctanh}'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1694'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1693'
 group = 'Hyperbolic'
 brief = 'Returns the interval inverse hyperbolic tangent $$\mathrm{arctanh}(x)$$.'
 
@@ -581,7 +581,7 @@ ulp_error = 3
 code_name = 'sinpi'
 latex_name = '\sin(\pi x)'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1254'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1253'
 group = 'Trigonometric'
 brief = 'Returns the interval sine of $$\pi x$$.'
 
@@ -592,7 +592,7 @@ ulp_error = 3
 code_name = 'cospi'
 latex_name = '\cos(\pi x)'
 arg_names = ['x']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1356'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1355'
 group = 'Trigonometric'
 brief = 'Returns the interval cosine of $$\pi x$$.'
 
@@ -603,7 +603,7 @@ ulp_error = 1
 code_name = 'pown'
 latex_name = '\mathrm{pown}'
 arg_names = ['x', 'n']
-source = 'include/cuinterval/arithmetic/basic.cuh#L982'
+source = 'include/cuinterval/arithmetic/basic.cuh#L981'
 group = 'Power'
 brief = 'Returns the interval $$x^n$$ for integer $$n$$.'
 
@@ -614,7 +614,7 @@ ulp_error = 1
 code_name = 'pow'
 latex_name = 'x^y'
 arg_names = ['x', 'y']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1146'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1145'
 group = 'Power'
 brief = 'Returns the interval $$x^y$$.'
 
@@ -625,7 +625,7 @@ ulp_error = 2
 code_name = 'rootn'
 latex_name = '\sqrt[n]{x}'
 arg_names = ['x', 'n']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1089'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1088'
 group = 'Power'
 brief = 'Returns the interval $$n$$-th root $$\sqrt[n]{x}$$.'
 
@@ -637,7 +637,7 @@ code_name = 'hypot'
 latex_name = '\sqrt{x^2 + y^2}'
 arg_names = ['x', 'y']
 constraints = ['', '_{\ge \mathbf{0}}']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1773'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1772'
 group = 'Special'
 brief = 'Returns the interval hypotenuse $$\sqrt{x^2 + y^2}$$.'
 
@@ -923,7 +923,7 @@ brief = 'Returns the interval $$x \times 2^n$$.'
 args = ['I']
 arg_names = ['x']
 ret = 'I'
-source = 'include/cuinterval/arithmetic/basic.cuh#L963'
+source = 'include/cuinterval/arithmetic/basic.cuh#L962'
 group = 'Power'
 brief = 'Returns the interval exponent of $$x$$.'
 
@@ -932,7 +932,7 @@ args = ['I']
 arg_names = ['x']
 ret = 'I'
 ulp_error = 2
-source = 'include/cuinterval/arithmetic/basic.cuh#L1789'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1788'
 group = 'Special'
 brief = 'Returns the interval error function $$\mathrm{erf}(x)$$.'
 
@@ -942,7 +942,7 @@ arg_names = ['x']
 ret = 'I'
 ulp_error = 5
 constraints = ['', '_{\ge \mathbf{0}}']
-source = 'include/cuinterval/arithmetic/basic.cuh#L1803'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1802'
 group = 'Special'
 brief = 'Returns the interval complementary error function $$\mathrm{erfc}(x)$$.'
 
@@ -950,7 +950,7 @@ brief = 'Returns the interval complementary error function $$\mathrm{erfc}(x)$$.
 args = ['I', 'T']
 arg_names = ['x', 'split_ratio']
 ret = 'T'
-source = 'include/cuinterval/arithmetic/basic.cuh#L1818'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1817'
 group = 'Special'
 brief = 'Bisects interval $$x$$ at given split ratio.'
 
@@ -958,6 +958,6 @@ brief = 'Bisects interval $$x$$ at given split ratio.'
 args = ['I', 'I', 'N']
 arg_names = ['x', 'xs', 'out_xs_size']
 ret = 'T'
-source = 'include/cuinterval/arithmetic/basic.cuh#L1861'
+source = 'include/cuinterval/arithmetic/basic.cuh#L1860'
 group = 'Special'
 brief = 'Divides interval $$x$$ into $$out\_xs\_size$$ subintervals.'
