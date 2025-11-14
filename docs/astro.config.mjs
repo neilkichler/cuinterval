@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import path from "node:path";
 import starlight from '@astrojs/starlight';
 import starlightLinksValidator from 'starlight-links-validator';
@@ -13,6 +13,16 @@ export default defineConfig({
 	base: '/cuinterval',
 	prefetch: {
 		prefetchAll: true
+	},
+	env: {
+		schema: {
+			VERSION: envField.string({
+				context: 'server',
+				access: 'public',
+				optional: false
+			})
+		},
+		validateSecrets: true
 	},
 	vite: {
 		resolve: {
