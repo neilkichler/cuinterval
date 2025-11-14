@@ -289,11 +289,11 @@ brief = 'Returns true if intervals $$a$$ and $$b$$ are disjoint.'
 args = ['I', 'I']
 ret = 'B'
 code_name = 'less'
-latex_name = '<'
+latex_name = '\leq'
 arg_names = ['a', 'b']
 source = 'include/cuinterval/arithmetic/basic.cuh#L566'
 group = 'Boolean'
-brief = 'Returns true if $$a < b$$ for intervals.'
+brief = 'Returns true if $$a \leq b$$ for intervals.'
 
 [functions.precedes]
 args = ['I', 'I']
