@@ -187,7 +187,7 @@ The error for a particular operation is given below.
 Every [release](https://github.com/neilkichler/cuinterval/releases/) creates a single-header version.
 The latest one can directly be downloaded using, e.g.:
 ```bash
-wget https://github.com/neilkichler/cuinterval/releases/download/v0.2.0/cuinterval.cuh
+wget https://github.com/neilkichler/cuinterval/releases/download/v0.2.1/cuinterval.cuh
 ```
 
 ### Header-only folder
@@ -207,7 +207,7 @@ cmake --install build
 
 #### [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake)
 ```cmake
-CPMAddPackage("gh:neilkichler/cuinterval@0.2.0")
+CPMAddPackage("gh:neilkichler/cuinterval@0.2.1")
 ```
 
 #### [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html)
@@ -216,7 +216,7 @@ include(FetchContent)
 FetchContent_Declare(
   cuinterval
   GIT_REPOSITORY https://github.com/neilkichler/cuinterval.git
-  GIT_TAG v0.2.0
+  GIT_TAG v0.2.1
 )
 FetchContent_MakeAvailable(cuinterval)
 ```
