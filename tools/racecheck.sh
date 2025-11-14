@@ -1,2 +1,2 @@
 #!/bin/sh
-compute-sanitizer --tool racecheck $1
+compute-sanitizer --tool racecheck "$1"

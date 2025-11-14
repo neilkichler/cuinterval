@@ -1,2 +1,2 @@
 #!/bin/sh
-compute-sanitizer --tool synccheck $1
+compute-sanitizer --tool synccheck "$1"
