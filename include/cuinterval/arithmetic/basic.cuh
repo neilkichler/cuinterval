@@ -544,13 +544,7 @@ inline constexpr __device__ bool isfinite(interval<T> x)
 template<typename T>
 inline constexpr __device__ bool equal(interval<T> a, interval<T> b)
 {
-    return (empty(a) && empty(b)) || (a.lb == b.lb && a.ub == b.ub);
-}
-
-template<typename T>
-inline constexpr __device__ bool operator!=(interval<T> a, interval<T> b)
-{
-    return !equal(a, b);
+    return a == b;
 }
 
 template<typename T>

@@ -21,17 +21,11 @@ struct interval
     constexpr interval(T lb, T ub) : lb(lb), ub(ub) { }
     constexpr interval(initializer init) : lb(init.lb), ub(init.ub) { }
 
+    constexpr bool operator==(const interval &rhs) const = default;
+
     T lb;
     T ub;
 };
-
-template<typename T>
-constexpr bool operator==(interval<T> lhs, interval<T> rhs)
-{
-    auto empty = [](interval<T> x) { return !(x.lb <= x.ub); };
-
-    return (empty(lhs) && empty(rhs)) || (lhs.lb == rhs.lb && lhs.ub == rhs.ub);
-}
 
 template<typename T>
 struct split
