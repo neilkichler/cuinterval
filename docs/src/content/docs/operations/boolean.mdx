@@ -4,6 +4,7 @@ description: An overview of the boolean operations.
 ---
 
 import { 
+  Centered,
   FunctionDetails, 
   FunctionDeclaration, 
   FunctionSignature, 
@@ -15,7 +16,7 @@ import {
 ## equal
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L526" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L545" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool equal(<IntervalRef /> a, <IntervalRef /> b)
@@ -36,7 +37,7 @@ import {
 ## subset
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L544" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L557" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool subset(<IntervalRef /> a, <IntervalRef /> b)
@@ -57,7 +58,7 @@ import {
 ## interior
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L550" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L563" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool interior(<IntervalRef /> a, <IntervalRef /> b)
@@ -78,7 +79,7 @@ import {
 ## disjoint
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L556" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L569" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool disjoint(<IntervalRef /> a, <IntervalRef /> b)
@@ -99,7 +100,7 @@ import {
 ## less
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L566" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L579" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool less(<IntervalRef /> a, <IntervalRef /> b)
@@ -107,20 +108,34 @@ import {
 
 <FunctionDetails id="less">
   <FunctionBrief error="0" slot="brief">
-    Returns true if $$a \leq b$$ for intervals.
+    Returns true if $$a \leq b$$.
   </FunctionBrief>
   
   <FunctionSignature>
     $$\leq: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{a} \leq \underline{b} \land \bar{a} \leq \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \leq b$ |
+    |:---------------:|:---------------:|:----------:|
+    |      $0$        |      $1$        |     $0$    |
+    |      $1$        |      $0$        |     $0$    |
+    |      $1$        |      $1$        |     $1$    |
+</div>
+
 </FunctionDetails>
 
 ---
 ## precedes
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L578" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L591" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool precedes(<IntervalRef /> a, <IntervalRef /> b)
@@ -141,7 +156,7 @@ import {
 ## empty
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L488" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L505" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool empty(<IntervalRef /> x)
@@ -162,7 +177,7 @@ import {
 ## entire
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L506" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L523" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool entire(<IntervalRef /> x)
@@ -183,7 +198,7 @@ import {
 ## just_zero
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L494" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L511" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool just_zero(<IntervalRef /> x)
@@ -204,7 +219,7 @@ import {
 ## contains
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L500" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L517" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool contains(<IntervalRef /> x, T y)
@@ -225,7 +240,7 @@ import {
 ## bounded
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L512" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L530" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool bounded(<IntervalRef /> x)
@@ -246,7 +261,7 @@ import {
 ## isfinite
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L520" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L539" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool isfinite(<IntervalRef /> x)
@@ -267,7 +282,7 @@ import {
 ## strict_less_or_both_inf
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L538" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L551" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool strict_less_or_both_inf(T x, T y)
@@ -288,7 +303,7 @@ import {
 ## strict_less
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L572" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L585" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool strict_less(<IntervalRef /> a, <IntervalRef /> b)
@@ -296,20 +311,34 @@ import {
 
 <FunctionDetails id="strict_less">
   <FunctionBrief error="0" slot="brief">
-    Returns true if $$a < b$$ strictly.
+    Returns true if $$a < b$$.
   </FunctionBrief>
   
   <FunctionSignature>
     $$<: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{a} < \underline{b} \land \bar{a} < \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a < b$ |
+    |:---------------:|:---------------:|:-------:|
+    |      $0$        |      $1$        |   $0$   |
+    |      $1$        |      $0$        |   $0$   |
+    |      $1$        |      $1$        |   $1$   |
+</div>
+
 </FunctionDetails>
 
 ---
 ## strict_precedes
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L584" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L597" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool strict_precedes(<IntervalRef /> a, <IntervalRef /> b)
@@ -330,7 +359,7 @@ import {
 ## isinf
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L591" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L604" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool isinf(<IntervalRef /> x)
@@ -351,7 +380,7 @@ import {
 ## isnai
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L598" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L612" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool isnai(<IntervalRef /> x)
@@ -372,7 +401,7 @@ import {
 ## is_member
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L604" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L618" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool is_member(T x, <IntervalRef /> y)
@@ -393,7 +422,7 @@ import {
 ## is_singleton
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L612" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L626" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool is_singleton(<IntervalRef /> x)
@@ -414,7 +443,7 @@ import {
 ## is_common_interval
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L618" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L632" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool is_common_interval(<IntervalRef /> x)
@@ -435,7 +464,7 @@ import {
 ## isnormal
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L624" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L638" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool isnormal(<IntervalRef /> x)
@@ -456,7 +485,7 @@ import {
 ## is_atomic
 
 <FunctionDeclaration
-  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L630" 
+  sourceUrl="include/cuinterval/arithmetic/basic.cuh#L644" 
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
 >
   bool is_atomic(<IntervalRef /> x)

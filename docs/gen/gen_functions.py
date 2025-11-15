@@ -172,6 +172,25 @@ def load_toml(path: Path):
         raise RuntimeError('tomllib (py3.11) or tomli required')
 
 
+def fmt_str(s: str) -> str:
+    # If string contains newlines, prefer TOML literal multiline string
+    # (triple single quotes) so backslashes are preserved as single backslashes
+    if '\n' in s:
+        if "'''" not in s:
+            return "'''" + s + "'''"
+        # fallback: if the body contains triple single quotes, use triple-double
+        # basic string and escape triple double quotes and backslashes.
+        body = s.replace('\\', '\\\\')
+        body = body.replace('"""', '\\"\\"\\"')
+        return f'"""{body}"""'
+    # single-line: prefer single-quoted literal if it contains no single-quote
+    if "'" not in s:
+        return f"'{s}'"
+    # otherwise use double-quoted with backslash escapes for backslashes and quotes
+    body = s.replace('\\', '\\\\').replace('"', '\\"')
+    return f'"{body}"'
+
+
 def write_toml(data, path: Path):
     if tomli_w is not None:
         with open(path, 'wb') as f:
@@ -189,10 +208,10 @@ def write_toml(data, path: Path):
         lines.append(f'[functions.{fname}]')
         for k, v in fdata.items():
             if isinstance(v, list):
-                arr = ', '.join(f"'{x}'" for x in v)
+                arr = ', '.join(fmt_str(x) for x in v)
                 lines.append(f'{k} = [{arr}]')
             elif isinstance(v, str):
-                lines.append(f"{k} = '{v}'")
+                lines.append(f"{k} = {fmt_str(v)}")
             else:
                 lines.append(f'{k} = {v}')
     # Emit grouped functions, e.g., functions.SectionName.func
@@ -204,10 +223,10 @@ def write_toml(data, path: Path):
             lines.append(f'[functions.{group_name}.{fname}]')
             for k, v in fdata.items():
                 if isinstance(v, list):
-                    arr = ', '.join(f"'{x}'" for x in v)
+                    arr = ', '.join(fmt_str(x) for x in v)
                     lines.append(f'{k} = [{arr}]')
                 elif isinstance(v, str):
-                    lines.append(f"{k} = '{v}'")
+                    lines.append(f"{k} = {fmt_str(v)}")
                 else:
                     lines.append(f'{k} = {v}')
     with open(path, 'w', encoding='utf-8') as f:

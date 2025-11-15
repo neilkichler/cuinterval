@@ -48,6 +48,7 @@ for name, item in functions.items():
         'source': item.get('source', ''),
         'group': item.get('group'),
         'brief': item.get('brief', ''),
+        'description': item.get('description', ''),
         'constraints': item.get('constraints', [''] * len(item.get('args', []))),
     }
 
@@ -62,6 +63,7 @@ if __name__ == '__main__':
     overview_buffer = ""
 
     imports = r"""import { 
+  Centered,
   FunctionDetails, 
   FunctionDeclaration, 
   FunctionSignature, 
@@ -89,6 +91,7 @@ if __name__ == '__main__':
         group = v.get('group')
         brief = v.get('brief')
         constraints = v.get('constraints')
+        description = v.get('description')
 
         header = f"## {k}\n"
 
@@ -130,8 +133,7 @@ if __name__ == '__main__':
 
         signature = f"$${latex_name}: " + latex_inputs + R" \rightarrow " + latex_output + "$$"
         note = ""
-        implementation = ""
-        extra = note + implementation
+        extra = note + description
 
         details = f"""
 <FunctionDetails id="{code_name}">
