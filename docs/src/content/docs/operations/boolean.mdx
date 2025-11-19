@@ -30,7 +30,21 @@ import {
   <FunctionSignature>
     $$=: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{a} = \underline{b} \land \bar{a} = \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a = b$ |
+    |:---------------:|:---------------:|:-------:|
+    |      $0$        |      $1$        |   $0$   |
+    |      $1$        |      $0$        |   $0$   |
+    |      $1$        |      $1$        |   $1$   |
+</div>
+
 </FunctionDetails>
 
 ---
@@ -51,7 +65,21 @@ import {
   <FunctionSignature>
     $$\subseteq: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{b} \leq \underline{a} \land \bar{a} \leq \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \subseteq b$ |
+    |:---------------:|:---------------:|:---------------:|
+    |      $0$        |      $1$        |       $0$       |
+    |      $1$        |      $0$        |       $1$       |
+    |      $1$        |      $1$        |       $1$       |
+</div>
+
 </FunctionDetails>
 
 ---
@@ -72,7 +100,21 @@ import {
   <FunctionSignature>
     $$\mathrm{interior}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{b} < \underline{a} \land \bar{a} < \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \subset b$ |
+    |:---------------:|:---------------:|:-------------:|
+    |      $0$        |      $1$        |      $0$      |
+    |      $1$        |      $0$        |      $1$      |
+    |      $1$        |      $1$        |      $1$      |
+</div>
+
 </FunctionDetails>
 
 ---
@@ -93,7 +135,21 @@ import {
   <FunctionSignature>
     $$\mathrm{disjoint}: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\bar{a} < \underline{b} \lor \bar{b} < \underline{a}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 40%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \cap b = \emptyset$ |
+    |:---------------:|:---------------:|:----------------------:|
+    |      $0$        |      $1$        |           $1$          |
+    |      $1$        |      $0$        |           $1$          |
+    |      $1$        |      $1$        |           $1$          |
+</div>
+
 </FunctionDetails>
 
 ---
@@ -149,7 +205,21 @@ Otherwise:
   <FunctionSignature>
     $$\preceq: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\bar{a} \leq \underline{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \preceq b$ |
+    |:---------------:|:---------------:|:-------------:|
+    |      $0$        |      $1$        |      $1$      |
+    |      $1$        |      $0$        |      $1$      |
+    |      $1$        |      $1$        |      $1$      |
+</div>
+
 </FunctionDetails>
 
 ---
@@ -311,11 +381,11 @@ Otherwise:
 
 <FunctionDetails id="strict_less">
   <FunctionBrief error="0" slot="brief">
-    Returns true if $$a < b$$.
+    Returns true if $$a \lt b$$.
   </FunctionBrief>
   
   <FunctionSignature>
-    $$<: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
+    $$\lt: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
   For $a, b\neq \emptyset$:
 
@@ -352,7 +422,21 @@ Otherwise:
   <FunctionSignature>
     $$\prec: \mathbb{IR}\times\mathbb{IR} \rightarrow \mathbb{B}$$
   </FunctionSignature>
-  
+  For $a, b\neq \emptyset$:
+
+<Centered>
+    $\bar{a} < \underline{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \prec b$ |
+    |:---------------:|:---------------:|:----------:|
+    |      $0$        |      $1$        |     $1$    |
+    |      $1$        |      $0$        |     $1$    |
+    |      $1$        |      $1$        |     $1$    |
+</div>
+
 </FunctionDetails>
 
 ---

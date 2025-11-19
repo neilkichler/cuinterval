@@ -254,6 +254,21 @@ arg_names = ['a', 'b']
 source = 'include/cuinterval/arithmetic/basic.cuh#L545'
 group = 'Boolean'
 brief = 'Returns true if intervals $$a$$ and $$b$$ are equal.'
+description = '''For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{a} = \underline{b} \land \bar{a} = \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a = b$ |
+    |:---------------:|:---------------:|:-------:|
+    |      $0$        |      $1$        |   $0$   |
+    |      $1$        |      $0$        |   $0$   |
+    |      $1$        |      $1$        |   $1$   |
+</div>
+'''
 
 [functions.subset]
 args = ['I', 'I']
@@ -264,6 +279,21 @@ arg_names = ['a', 'b']
 source = 'include/cuinterval/arithmetic/basic.cuh#L557'
 group = 'Boolean'
 brief = 'Returns true if $$a$$ is a subset of $$b$$.'
+description = '''For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{b} \leq \underline{a} \land \bar{a} \leq \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \subseteq b$ |
+    |:---------------:|:---------------:|:---------------:|
+    |      $0$        |      $1$        |       $0$       |
+    |      $1$        |      $0$        |       $1$       |
+    |      $1$        |      $1$        |       $1$       |
+</div>
+'''
 
 [functions.interior]
 args = ['I', 'I']
@@ -274,6 +304,21 @@ arg_names = ['a', 'b']
 source = 'include/cuinterval/arithmetic/basic.cuh#L563'
 group = 'Boolean'
 brief = 'Returns true if $$a$$ is in the interior of $$b$$.'
+description = '''For $a, b\neq \emptyset$:
+
+<Centered>
+    $\underline{b} < \underline{a} \land \bar{a} < \bar{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \subset b$ |
+    |:---------------:|:---------------:|:-------------:|
+    |      $0$        |      $1$        |      $0$      |
+    |      $1$        |      $0$        |      $1$      |
+    |      $1$        |      $1$        |      $1$      |
+</div>
+'''
 
 [functions.disjoint]
 args = ['I', 'I']
@@ -284,6 +329,21 @@ arg_names = ['a', 'b']
 source = 'include/cuinterval/arithmetic/basic.cuh#L569'
 group = 'Boolean'
 brief = 'Returns true if intervals $$a$$ and $$b$$ are disjoint.'
+description = '''For $a, b\neq \emptyset$:
+
+<Centered>
+    $\bar{a} < \underline{b} \lor \bar{b} < \underline{a}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 40%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \cap b = \emptyset$ |
+    |:---------------:|:---------------:|:----------------------:|
+    |      $0$        |      $1$        |           $1$          |
+    |      $1$        |      $0$        |           $1$          |
+    |      $1$        |      $1$        |           $1$          |
+</div>
+'''
 
 [functions.less]
 args = ['I', 'I']
@@ -319,6 +379,21 @@ arg_names = ['a', 'b']
 source = 'include/cuinterval/arithmetic/basic.cuh#L591'
 group = 'Boolean'
 brief = 'Returns true if $$a$$ precedes $$b$$.'
+description = '''For $a, b\neq \emptyset$:
+
+<Centered>
+    $\bar{a} \leq \underline{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \preceq b$ |
+    |:---------------:|:---------------:|:-------------:|
+    |      $0$        |      $1$        |      $1$      |
+    |      $1$        |      $0$        |      $1$      |
+    |      $1$        |      $1$        |      $1$      |
+</div>
+'''
 
 [functions.cbrt]
 args = ['I']
@@ -753,10 +828,10 @@ brief = 'Returns true if $$x < y$$ or both are infinite.'
 args = ['I', 'I']
 arg_names = ['a', 'b']
 ret = 'B'
-latex_name = '<'
+latex_name = '\lt'
 source = 'include/cuinterval/arithmetic/basic.cuh#L585'
 group = 'Boolean'
-brief = 'Returns true if $$a < b$$.'
+brief = 'Returns true if $$a \lt b$$.'
 description = '''For $a, b\neq \emptyset$:
 
 <Centered>
@@ -781,6 +856,21 @@ latex_name = '\prec'
 source = 'include/cuinterval/arithmetic/basic.cuh#L597'
 group = 'Boolean'
 brief = 'Returns true if $$a$$ strictly precedes $$b$$.'
+description = '''For $a, b\neq \emptyset$:
+
+<Centered>
+    $\bar{a} < \underline{b}$.
+</Centered>
+
+Otherwise:
+<div style="margin-left: auto; margin-right: auto; width: 35%">
+    | $a = \emptyset$ | $b = \emptyset$ | $a \prec b$ |
+    |:---------------:|:---------------:|:----------:|
+    |      $0$        |      $1$        |     $1$    |
+    |      $1$        |      $0$        |     $1$    |
+    |      $1$        |      $1$        |     $1$    |
+</div>
+'''
 
 [functions.cancel_minus]
 args = ['I', 'I']
