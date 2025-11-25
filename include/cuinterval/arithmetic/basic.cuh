@@ -81,18 +81,23 @@ inline constexpr __device__ interval<T> mul(interval<T> a, interval<T> b)
 template<typename T>
 inline constexpr __device__ interval<T> fma(interval<T> x, interval<T> y, interval<T> z)
 {
-    return (x * y) + z;
-    // interval<T> res;
-    // res.lb = min(min(intrinsic::fma_down(x.lb, y.lb, z.lb),
-    //                  intrinsic::fma_down(x.lb, y.ub, z.lb)),
-    //              min(intrinsic::fma_down(x.ub, y.lb, z.lb),
-    //                  intrinsic::fma_down(x.ub, y.ub, z.lb)));
-    //
-    // res.ub = max(max(intrinsic::fma_up(x.lb, y.lb, z.ub),
-    //                  intrinsic::fma_up(x.lb, y.ub, z.ub)),
-    //              max(intrinsic::fma_up(x.ub, y.lb, z.ub),
-    //                  intrinsic::fma_up(x.ub, y.ub, z.ub)));
-    // return res;
+    using intrinsic::fma_down, intrinsic::fma_up;
+
+    if (empty(x) || empty(y) || empty(z)) {
+        return empty<T>();
+    }
+
+    if (just_zero(x) || just_zero(y)) {
+        return z;
+    }
+
+    interval<T> res;
+    res.lb = min(min(fma_down(x.lb, y.lb, z.lb), fma_down(x.lb, y.ub, z.lb)),
+                 min(fma_down(x.ub, y.lb, z.lb), fma_down(x.ub, y.ub, z.lb)));
+
+    res.ub = max(max(fma_up(x.lb, y.lb, z.ub), fma_up(x.lb, y.ub, z.ub)),
+                 max(fma_up(x.ub, y.lb, z.ub), fma_up(x.ub, y.ub, z.ub)));
+    return res;
 }
 
 template<typename T>
