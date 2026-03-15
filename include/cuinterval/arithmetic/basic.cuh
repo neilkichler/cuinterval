@@ -1185,6 +1185,66 @@ inline constexpr __device__ interval<T> pow(interval<T> x, auto y)
     return pown(x, y);
 }
 
+// IA for pow(x, double/float p)
+template<typename T>
+inline constexpr __device__ interval<T> powt(interval<T> x, T y)
+{
+    // return exp(y * log(x));
+    using intrinsic::next_floating, intrinsic::prev_floating;
+    using std::lrint, std::pow, std::sqrt;
+    
+    // Handle empty input
+    if (empty(x)) {
+        return x;
+    }
+    
+    // Check domain: must be non-negative
+    if (inf(x) < 0) {
+        // Restrict to non-negative part
+        x = intersection(x, { static_cast<T>(0), intrinsic::pos_inf<T>() });
+        if (empty(x)) {
+            return empty<T>();
+        }
+    }
+    
+    // Handle zero in interval with negative exponent
+    if (inf(x) == 0 && y < 0) {
+        // [0, b]^(-y) where y < 0
+        // = [b^(-y), +inf]  (since 0^(-y) = +inf)
+        if (sup(x) == 0) {
+            // [0, 0]^(-y) = undefined
+            return empty<T>();
+        } else {
+            // [0, b]^(-y) = [b^(-y), +inf]
+            return {intrinsic::prev_floating(pow(sup(x), y)), intrinsic::pos_inf<T>()};
+        }
+    }
+    
+    // Handle exactly zero with positive exponent
+    if (sup(x) == 0 && y > 0) {
+        return { 0, 0 };
+    }
+    
+    // At this point: inf(x) > 0 (no zero issues)
+    
+    if (rint(y) == y) {
+        // Integer exponent (including negative)
+        return pown(x, lrint(y));
+    } else if (y == 0.5) {
+        return sqrt(x);
+    } else if (y == -0.5) {
+        // Special case: x^(-0.5) = 1/sqrt(x)
+        return recip(sqrt(x));
+    } else {
+        // General non-integer exponent (positive or negative)
+        interval<T> lb { prev_floating(pow(inf(x), y)), next_floating(pow(inf(x), y)) };
+        interval<T> ub { prev_floating(pow(sup(x), y)), next_floating(pow(sup(x), y)) };
+        return convex_hull(lb, ub);
+    }
+
+    return {};
+}
+
 //
 // Trigonometric functions
 //
