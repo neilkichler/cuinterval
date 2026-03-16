@@ -731,7 +731,8 @@ inline constexpr __device__ T mid(interval<T> x)
     } else if (x.ub == pos_inf<T>()) {
         return std::numeric_limits<T>::max();
     } else {
-        return mul_down(0.5, x.lb) + mul_up(0.5, x.ub);
+        constexpr T one_half = 0.5;
+        return mul_down(one_half, x.lb) + mul_up(one_half, x.ub);
     }
 }
 
