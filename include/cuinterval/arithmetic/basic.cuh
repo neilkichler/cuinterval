@@ -1181,9 +1181,15 @@ inline constexpr __device__ interval<T> pow(interval<T> x, interval<T> y)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> pow(interval<T> x, auto y)
+inline constexpr __device__ interval<T> pow(interval<T> x, std::integral auto y)
 {
     return pown(x, y);
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> pow(interval<T> x, std::floating_point auto y)
+{
+    return pow(x, { y, y });
 }
 
 //

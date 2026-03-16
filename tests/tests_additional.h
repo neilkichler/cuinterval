@@ -4,7 +4,7 @@
 #include "tests_common.h"
 #include "tests_loop.h"
 #include "tests_operator_overloading.h"
-#include "tests_powf.h"
+#include "tests_pow.h"
 
 #include <omp.h>
 
@@ -28,7 +28,7 @@ void tests_additional(cuda_buffers buffers, cuda_streams streams, cuda_events ev
             #pragma omp task depend(inout:buffers[1].host,buffers[1].device)
             tests_operator_overloading(buffers[1], streams[1], events[1]);
             #pragma omp task depend(inout:buffers[2].host,buffers[2].device)
-            tests_powf(streams[2], events[2]);
+            tests_pow(streams[2], events[2]);
         }
     }
 }

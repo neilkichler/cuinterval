@@ -4,6 +4,6 @@
 
 #include <cuda_runtime.h>
 
-void tests_powf(cudaStream_t stream, cudaEvent_t event);
+void tests_pow(cudaStream_t stream, cudaEvent_t event);
 
 #endif // CUDA_INTERVAL_TESTS_POWF_H

@@ -25,9 +25,9 @@ add_executable(tests
     tests_loop.cpp
     tests_operator_overloading.h
     tests_operator_overloading.cu
-    tests_powf.h
-    tests_powf.cu
-    tests_powf.cpp
+    tests_pow.h
+    tests_pow.cu
+    tests_pow.cpp
     ${generated_test_files}
 )
 
