@@ -7,7 +7,9 @@ const {
   sourceUrl,
   sourceBaseUrl = "https://github.com/neilkichler/cuinterval/blob/" + PUBLIC_VERSION + "/",
   nvidiaUrl,
-  nvidiaBaseUrl = "https://docs.nvidia.com/cuda/cuda-math-api/cuda_math_api/",
+  nvidiaBaseUrl = "https://docs.nvidia.com/cuda/archive/",
+  nvidiaDocsVersion = "12.9.1",
+  nvidiaMathApi = "/cuda-math-api/cuda_math_api/"
 } = Astro.props;
 ---
 
@@ -32,7 +34,7 @@ const {
       {
         nvidiaUrl && (
           <a
-            href={nvidiaBaseUrl + nvidiaUrl}
+            href={nvidiaBaseUrl + nvidiaDocsVersion + nvidiaMathApi + nvidiaUrl}
             title="Nvidia Docs"
             aria-label="link to Nvidia CUDA documentation for related function."
           >

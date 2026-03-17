@@ -8,6 +8,7 @@ Generate documentation entries for functions using (generated) functions.toml.
 Usage: python3 gen/gen_docs.py
 """
 
+import json
 import tomllib
 import os
 from collections import defaultdict
@@ -58,6 +59,13 @@ code_type = { T: "T", I: r"<IntervalRef />", B: "bool", Z: "<Integral />", N: "<
 
 
 if __name__ == '__main__':
+    with open("cuda_version.txt") as f:
+        cuda_version = f.read().strip()
+
+    nvidia_math_version_file = f"nvidia_docs_{cuda_version}.json"
+    with open(nvidia_math_version_file, "r", encoding="utf-8") as f:
+        nvidia_math_versions = json.load(f)
+
     buffer = ""
     api_buffer = ""
     overview_buffer = ""
@@ -79,7 +87,7 @@ if __name__ == '__main__':
         code_name = v['code_name']
         groups_table[group][code_name] = {'inputs': '', 'output': '', 'error': 0, 'link': ''}
 
-    for k, v in supported.items():
+    for name, v in supported.items():
         # Unpack fields explicitly to avoid relying on dict ordering
         args = v.get('args', [])
         ret = v.get('ret')
@@ -93,7 +101,10 @@ if __name__ == '__main__':
         constraints = v.get('constraints')
         description = v.get('description')
 
-        header = f"## {k}\n"
+        nvidia_docs_name = name + "d"
+        nvidia_version = nvidia_math_versions.get(nvidia_docs_name, "")
+
+        header = f"## {name}\n"
 
         # Build code argument list. If arg_names are provided and non-empty, use them
         # to create typed parameters like "<IntervalRef /> x". Otherwise fall back to
@@ -113,7 +124,7 @@ if __name__ == '__main__':
         declaration = f"""
 <FunctionDeclaration
   sourceUrl="{sourceUrl}" 
-  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#_CPPv43sind"
+  nvidiaUrl="group__CUDA__MATH__DOUBLE.html#{nvidia_version}{nvidia_docs_name}"
 >
   {code_type[ret]} {code_name}({code_inputs})
 </FunctionDeclaration>
