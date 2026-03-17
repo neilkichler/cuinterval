@@ -137,8 +137,16 @@ using std::numbers::pi_v;
 using std::numbers::sqrt2_v;
 using std::numbers::sqrt3_v;
 
+#ifndef CU_NUMBERS_PRIMARY_DEFINED
+#define CU_NUMBERS_PRIMARY_DEFINED
+
 template<typename T>
 inline constexpr T pi_2_v; // = pi / 2
+
+template<typename T>
+inline constexpr T tau_v; // = 2 * pi
+
+#endif // CU_NUMBERS_PRIMARY_DEFINED
 
 template<>
 inline constexpr interval<double>
@@ -147,9 +155,6 @@ inline constexpr interval<double>
 template<>
 inline constexpr interval<float>
     pi_2_v<interval<float>> = { 0x1.921fb4p+0f, 0x1.921fb6p+0f };
-
-template<typename T>
-inline constexpr T tau_v; // = 2 * pi
 
 template<>
 inline constexpr interval<double>
