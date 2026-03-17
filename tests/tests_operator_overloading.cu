@@ -93,53 +93,53 @@ void tests_operator_overloading(cuda_buffer buffer, cudaStream_t stream, cudaEve
 {
     using namespace boost::ut;
 
-    auto add_assign = [] __device__(auto x, auto y) {
-        auto z = x;
-        z += y;
-        return z;
-    };
-
-    auto add = [] __device__(auto x, auto y) {
-        return x + y;
-    };
-
-    auto sub_assign = [] __device__(auto x, auto y) {
-        auto z = x;
-        z -= y;
-        return z;
-    };
-
-    auto sub = [] __device__(auto x, auto y) {
-        return x - y;
-    };
-
-    auto mul_assign = [] __device__(auto x, auto y) {
-        auto z = x;
-        z *= y;
-        return z;
-    };
-
-    auto mul = [] __device__(auto x, auto y) {
-        return x * y;
-    };
-
-    auto div_assign = [] __device__(auto x, auto y) {
-        auto z = x;
-        z /= y;
-        return z;
-    };
-
-    auto div = [] __device__(auto x, auto y) {
-        return x / y;
-    };
-
     auto compare_fns = [&](auto &&fn_a, auto &&fn_b, const char *name) {
         test_compare_fns<float>(fn_a, fn_b, name, buffer, stream, event);
         test_compare_fns<double>(fn_a, fn_b, name, buffer, stream, event);
     };
 
+    auto add_assign = [] __device__(auto x, auto y) { auto z = x; z += y; return z; };
+    auto sub_assign = [] __device__(auto x, auto y) { auto z = x; z -= y; return z; };
+    auto mul_assign = [] __device__(auto x, auto y) { auto z = x; z *= y; return z; };
+    auto div_assign = [] __device__(auto x, auto y) { auto z = x; z /= y; return z; };
+
+    auto add = [] __device__(auto x, auto y) { return x + y; };
+    auto sub = [] __device__(auto x, auto y) { return x - y; };
+    auto mul = [] __device__(auto x, auto y) { return x * y; };
+    auto div = [] __device__(auto x, auto y) { return x / y; };
+
     compare_fns(add_assign, add, "add");
     compare_fns(sub_assign, sub, "sub");
     compare_fns(mul_assign, mul, "mul");
     compare_fns(div_assign, div, "div");
+
+    auto add_int = [] __device__(auto x, auto y) { return x + 1; };
+    auto sub_int = [] __device__(auto x, auto y) { return x - 1; };
+    auto mul_int = [] __device__(auto x, auto y) { return x * 1; };
+    auto div_int = [] __device__(auto x, auto y) { return x / 1; };
+
+    auto add_float = [] __device__(auto x, auto y) { return x + 1.0f; };
+    auto sub_float = [] __device__(auto x, auto y) { return x - 1.0f; };
+    auto mul_float = [] __device__(auto x, auto y) { return x * 1.0f; };
+    auto div_float = [] __device__(auto x, auto y) { return x / 1.0f; };
+
+    compare_fns(add_int, add_float, "add_constant");
+    compare_fns(sub_int, sub_float, "sub_constant");
+    compare_fns(mul_int, mul_float, "mul_constant");
+    compare_fns(div_int, div_float, "div_constant");
+
+    auto int_add = [] __device__(auto x, auto y) { return 1 + x; };
+    auto int_sub = [] __device__(auto x, auto y) { return 1 - x; };
+    auto int_mul = [] __device__(auto x, auto y) { return 1 * x; };
+    auto int_div = [] __device__(auto x, auto y) { return 1 / x; };
+
+    auto float_add = [] __device__(auto x, auto y) { return 1.0f + x; };
+    auto float_sub = [] __device__(auto x, auto y) { return 1.0f - x; };
+    auto float_mul = [] __device__(auto x, auto y) { return 1.0f * x; };
+    auto float_div = [] __device__(auto x, auto y) { return 1.0f / x; };
+
+    compare_fns(int_add, float_add, "constant_add");
+    compare_fns(int_sub, float_sub, "constant_sub");
+    compare_fns(int_mul, float_mul, "constant_mul");
+    compare_fns(int_div, float_div, "constant_div");
 }
