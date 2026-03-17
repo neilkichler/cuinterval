@@ -15,7 +15,7 @@ Other flavors, including decorations are not supported.
 
 The following operations are implemented as CUDA kernels. All operations are correctly-rounded, given the limitations of the precision of the underlying [CUDA operation](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#id200). The tightest interval is always a subset
 of the computed interval. The lower and upper bounds of the basic operations are at most 3 [ulps](https://en.wikipedia.org/wiki/Unit_in_the_last_place) away from the lower and upper bounds of the tightest interval, respectively.
-The error for a particular operation is given below.
+The error for a particular operation is given below. Also, check out the [documentation](https://neilkichler.github.io/cuinterval/)!
 
 <details>
 <summary>Basic Operations</summary>
