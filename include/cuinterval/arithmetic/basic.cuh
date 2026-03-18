@@ -930,14 +930,14 @@ inline constexpr __device__ interval<T> fdim(interval<T> x, interval<T> y)
 template<typename T>
 inline constexpr __device__ interval<T> sign(interval<T> x)
 {
-    using intrinsic::copy_sign;
+    using std::copysign;
 
     if (empty(x)) {
         return x;
     }
 
-    return { (x.lb != zero_v<T>)*copy_sign(one_v<T>, x.lb),
-             (x.ub != zero_v<T>)*copy_sign(one_v<T>, x.ub) };
+    return { (x.lb != zero_v<T>)*copysign(one_v<T>, x.lb),
+             (x.ub != zero_v<T>)*copysign(one_v<T>, x.ub) };
 }
 
 template<typename T>

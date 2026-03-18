@@ -29,7 +29,6 @@ namespace cu::intrinsic
     template<typename T> inline __device__ T median    (T x, T y);
     template<typename T> inline __device__ T min       (T x, T y);
     template<typename T> inline __device__ T max       (T x, T y);
-    template<typename T> inline __device__ T copy_sign (T x, T y);
     template<typename T> inline __device__ T next_after(T x, T y);
     template<typename T> inline __device__ T rcp_down  (T x);
     template<typename T> inline __device__ T rcp_up    (T x);
@@ -62,7 +61,6 @@ namespace cu::intrinsic
     template<> inline __device__ double median    (double x, double y) { return (x + y) * .5; }
     template<> inline __device__ double min       (double x, double y) { return fmin(x, y); }
     template<> inline __device__ double max       (double x, double y) { return fmax(x, y); }
-    template<> inline __device__ double copy_sign (double x, double y) { return copysign(x, y); }
     template<> inline __device__ double next_after(double x, double y) { return nextafter(x, y); }
     template<> inline __device__ double rcp_down  (double x)           { return __drcp_rd(x); }
     template<> inline __device__ double rcp_up    (double x)           { return __drcp_ru(x); }
@@ -95,7 +93,6 @@ namespace cu::intrinsic
     template<> inline __device__ float median     (float x, float y)   { return (x + y) * .5f; }
     template<> inline __device__ float min        (float x, float y)   { return fminf(x, y); }
     template<> inline __device__ float max        (float x, float y)   { return fmaxf(x, y); }
-    template<> inline __device__ float copy_sign  (float x, float y)   { return copysignf(x, y); }
     template<> inline __device__ float next_after (float x, float y)   { return nextafterf(x, y); }
     template<> inline __device__ float rcp_down   (float x)            { return __frcp_rd(x); }
     template<> inline __device__ float rcp_up     (float x)            { return __frcp_ru(x); }
