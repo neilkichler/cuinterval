@@ -28,9 +28,9 @@ combined_headers = set()
 
 # Adjust patterns to your needs
 internal_include_parser = re.compile(r"\s*#include <(cuinterval/.*)>.*")
-include_guard_start_parser = re.compile(r"\s*#ifndef\s+([A-Za-z_][A-Za-z_0-9]*)")
-include_guard_define_parser = re.compile(r"\s*#define\s+([A-Za-z_][A-Za-z_0-9]*)")
-include_guard_end_parser = re.compile(r"\s*#endif\s+\/\/\s+[A-Za-z_][A-Za-z_0-9]*")
+include_guard_start_parser = re.compile(r"\s*#ifndef\s+CUINTERVAL([A-Za-z_][A-Za-z_0-9]*)")
+include_guard_define_parser = re.compile(r"\s*#define\s+CUINTERVAL([A-Za-z_][A-Za-z_0-9]*)")
+include_guard_end_parser = re.compile(r"\s*#endif\s+\/\/\s+CUINTERVAL[A-Za-z_][A-Za-z_0-9]*")
 
 
 def combine_files(out, filename: str) -> int:
