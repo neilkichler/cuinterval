@@ -941,6 +941,25 @@ inline constexpr __device__ interval<T> sign(interval<T> x)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> copysign(std::floating_point auto mag, interval<T> sgn)
+{
+    using std::copysign;
+
+    return { copysign(mag, sgn.lb), copysign(mag, sgn.ub) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> copysign(interval<T> mag, std::floating_point auto sgn)
+{
+    using std::copysign, std::min, std::max;
+
+    T a = copysign(mag.lb, sgn);
+    T b = copysign(mag.ub, sgn);
+
+    return { min(a, b), max(a, b) };
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> round_to_nearest_even(interval<T> x)
 {
     using intrinsic::round_even;
