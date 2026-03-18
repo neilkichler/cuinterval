@@ -64,4 +64,24 @@ void tests_pow(cudaStream_t stream, cudaEvent_t event)
 
         check_all_equal<I, n>(out.data(), ref, max_ulp_diff, "pow", std::source_location::current(), xs.data(), exponents.data());
     }
+
+    { // Negative float exponents
+        std::vector<I> xs = { { +1.0, +1.0 },
+                              { +0.0, +1.0 },
+                              { +4.0, +16.0 },
+                              { +0.0, +4.0 },
+                              { +0.0, +1.0 },
+                              { +0.0, +2.0 } };
+
+        std::vector<float> exponents = { -0.0, -0.5, -0.5, -1.0, -1.5, -2.0 };
+        std::vector<I> out           = compute_pow(stream, xs, exponents);
+        std::array<I, n> ref { I { 1.0, 1.0 },
+                               { 1.0, infinity },
+                               { 0.25, 0.5 },
+                               { 0.25, infinity },
+                               { 1.0, infinity },
+                               { 0.25, infinity } };
+
+        check_all_equal<I, n>(out.data(), ref, max_ulp_diff, "pow", std::source_location::current(), xs.data(), exponents.data());
+    }
 }
