@@ -702,6 +702,13 @@ inline constexpr __device__ __host__ bool isnai(interval<T> x)
     return x.lb != x.lb && x.ub != x.ub;
 }
 
+// is not a number is equivalent to isnai
+template<typename T>
+inline constexpr __device__ __host__ bool isnan(interval<T> x)
+{
+    return isnai(x);
+}
+
 template<typename T>
 inline constexpr __device__ bool is_member(T x, interval<T> y)
 {
