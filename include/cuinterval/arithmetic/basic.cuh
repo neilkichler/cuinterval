@@ -373,7 +373,19 @@ inline constexpr __device__ interval<T> operator+(std::integral auto a, interval
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator+(interval<T> a, auto b)
+inline constexpr __device__ interval<T> operator+(interval<T> a, T b)
+{
+    return b + a;
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> operator+(interval<T> a, std::floating_point auto b)
+{
+    return b + a;
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> operator+(interval<T> a, std::integral auto b)
 {
     return b + a;
 }
@@ -397,13 +409,13 @@ inline constexpr __device__ interval<T> operator-(T a, interval<T> b)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator-(std::integral auto a, interval<T> b)
+inline constexpr __device__ interval<T> operator-(std::floating_point auto a, interval<T> b)
 {
     return static_cast<T>(a) - b;
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator-(std::floating_point auto a, interval<T> b)
+inline constexpr __device__ interval<T> operator-(std::integral auto a, interval<T> b)
 {
     return static_cast<T>(a) - b;
 }
@@ -421,6 +433,12 @@ inline constexpr __device__ interval<T> operator-(interval<T> a, T b)
 }
 
 template<typename T>
+inline constexpr __device__ interval<T> operator-(interval<T> a, std::floating_point auto b)
+{
+    return a - static_cast<T>(b);
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> operator-(interval<T> a, std::integral auto b)
 {
     using namespace intrinsic;
@@ -429,23 +447,6 @@ inline constexpr __device__ interval<T> operator-(interval<T> a, std::integral a
     }
 
     return { sub_down(a.lb, static_cast<T>(b)), sub_up(a.ub, static_cast<T>(b)) };
-}
-
-template<typename T>
-inline constexpr __device__ interval<T> operator-(interval<T> a, auto b)
-{
-    using namespace intrinsic;
-    if (empty(a) || isnan(b)) {
-        return empty<T>();
-    }
-
-    return { sub_down(a.lb, b), sub_up(a.ub, b) };
-}
-
-template<typename T>
-inline constexpr __device__ interval<T> operator-(interval<T> a, std::floating_point auto b)
-{
-    return a - static_cast<T>(b);
 }
 
 template<typename T>
@@ -475,21 +476,9 @@ inline constexpr __device__ interval<T> operator*(T a, interval<T> b)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator*(interval<T> a, T b)
+inline constexpr __device__ interval<T> operator*(std::floating_point auto a, interval<T> b)
 {
-    return b * a;
-}
-
-template<typename T>
-inline constexpr __device__ interval<T> operator*(interval<T> a, std::integral auto b)
-{
-    return a * static_cast<T>(b);
-}
-
-template<typename T>
-inline constexpr __device__ interval<T> operator*(interval<T> a, std::floating_point auto b)
-{
-    return a * static_cast<T>(b);
+    return static_cast<T>(a) * b;
 }
 
 template<typename T>
@@ -499,9 +488,21 @@ inline constexpr __device__ interval<T> operator*(std::integral auto a, interval
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator*(std::floating_point auto a, interval<T> b)
+inline constexpr __device__ interval<T> operator*(interval<T> a, T b)
 {
-    return static_cast<T>(a) * b;
+    return b * a;
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> operator*(interval<T> a, std::floating_point auto b)
+{
+    return a * static_cast<T>(b);
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> operator*(interval<T> a, std::integral auto b)
+{
+    return a * static_cast<T>(b);
 }
 
 template<typename T>
@@ -517,13 +518,13 @@ inline constexpr __device__ interval<T> operator/(T a, interval<T> b)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator/(std::integral auto a, interval<T> b)
+inline constexpr __device__ interval<T> operator/(std::floating_point auto a, interval<T> b)
 {
     return static_cast<T>(a) / b;
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator/(std::floating_point auto a, interval<T> b)
+inline constexpr __device__ interval<T> operator/(std::integral auto a, interval<T> b)
 {
     return static_cast<T>(a) / b;
 }
@@ -546,13 +547,13 @@ inline constexpr __device__ interval<T> operator/(interval<T> a, T b)
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator/(interval<T> a, std::integral auto b)
+inline constexpr __device__ interval<T> operator/(interval<T> a, std::floating_point auto b)
 {
     return a / static_cast<T>(b);
 }
 
 template<typename T>
-inline constexpr __device__ interval<T> operator/(interval<T> a, std::floating_point auto b)
+inline constexpr __device__ interval<T> operator/(interval<T> a, std::integral auto b)
 {
     return a / static_cast<T>(b);
 }
