@@ -1,7 +1,9 @@
 #include <cuinterval/cuinterval.h>
 
 #include <cuinterval/limits.h>
+#include <cuinterval/format.h>
 
+#include <format>
 #include <iostream>
 #include <limits>
 

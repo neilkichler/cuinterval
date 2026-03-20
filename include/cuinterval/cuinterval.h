@@ -4,7 +4,6 @@
 #include <cuinterval/arithmetic/basic.cuh>
 #include <cuinterval/arithmetic/intrinsic.cuh>
 #include <cuinterval/compare.h>
-#include <cuinterval/format.h>
 #include <cuinterval/interval.h>
 #include <cuinterval/numbers.h>
 

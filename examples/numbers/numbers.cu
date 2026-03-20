@@ -1,5 +1,7 @@
 #include <cuinterval/cuinterval.h>
 
+#include <cstdio>
+
 #include <cuda_runtime.h>
 
 #define CUDA_CHECK(x)                                                                \
