@@ -17,7 +17,7 @@ SCRIPT_DIR=$(dirname -- "$(readlink -f -- "$0")")
 BASE_DIR=${SCRIPT_DIR}/..
 ENV_FILE=${BASE_DIR}/docs/.env.production
 HEADER="# This is the version tag of the code used when running pnpm run build\n"
-VERSION_TXT="VERSION=\"${VERSION}\""
+VERSION_TXT="PUBLIC_VERSION=\"${VERSION}\""
 TXT="${HEADER}${VERSION_TXT}"
 echo "$TXT" > "${ENV_FILE}"
 
