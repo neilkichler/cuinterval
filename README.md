@@ -4,7 +4,7 @@
 [![CUDA Version](https://img.shields.io/badge/CUDA-12+-8A2BE2?logo=nvidia)](https://github.com/neilkichler/cuinterval/tree/main?tab=readme-ov-file#build-requirements)
 [![CMake Version](https://img.shields.io/badge/CMake-3.25.2+-blue?logo=cmake)](https://github.com/neilkichler/cuinterval/tree/main?tab=readme-ov-file#build-requirements)
 [![Docs](https://img.shields.io/badge/documentation-latest-8A2BE2)](https://neilkichler.github.io/cuinterval)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15813967.svg)](https://doi.org/10.5281/zenodo.15813967)
+[![DOI](https://img.shields.io/badge/doi-10.5281/zenodo.15813967-blue?logo=doi)](https://doi.org/10.5281/zenodo.15813967)
 [![GitHub License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/neilkichler/cuinterval/blob/main/LICENSE)
 
 </h1>
