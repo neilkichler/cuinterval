@@ -114,28 +114,27 @@ namespace cu::intrinsic
     template<> inline __device__ float next_floating(float x)          { return nextafterf(x, intrinsic::pos_inf<float>()); }
     template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
 
-    template<int N = 1>
-    inline constexpr __device__ auto round_towards(auto x, double to)
+    template<int N = 1, typename T = double>
+    inline constexpr __device__ T round_towards(T x, T to)
     {
-        using std::nextafter;
-
         for (int i = 0; i < N; i++) {
-            x = nextafter(x, to);
+            // we use next_after so that other libraries (e.g., CuTangent) can overload it
+            x = next_after(x, to);
         }
 
         return x;
     }
 
-    template<int N = 1>
-    inline constexpr __device__ auto round_down(auto x, double to = -std::numeric_limits<double>::infinity())
+    template<int N = 1, typename T = double>
+    inline constexpr __device__ T round_down(T x, T to = -std::numeric_limits<T>::infinity())
     {
-        return round_towards<N>(x, to);
+        return round_towards<N, T>(x, to);
     }
 
-    template<int N = 1>
-    inline constexpr __device__ auto round_up(auto x, double to = std::numeric_limits<double>::infinity())
+    template<int N = 1, typename T = double>
+    inline constexpr __device__ T round_up(T x, T to = std::numeric_limits<T>::infinity())
     {
-        return round_towards<N>(x, to);
+        return round_towards<N, T>(x, to);
     }
 
 // clang-format on
