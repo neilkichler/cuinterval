@@ -1,6 +1,7 @@
 #ifndef CUINTERVAL_ARITHMETIC_BASIC_CUH
 #define CUINTERVAL_ARITHMETIC_BASIC_CUH
 
+#include <cuinterval/arithmetic/info.cuh>
 #include <cuinterval/arithmetic/intrinsic.cuh>
 #include <cuinterval/interval.h>
 #include <cuinterval/numbers.h>
@@ -126,13 +127,14 @@ inline constexpr __device__ interval<T> sqrt(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cbrt(interval<T> x)
 {
-    using std::cbrt, intrinsic::next_floating, intrinsic::prev_floating;
+    using std::cbrt, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    return { prev_floating(cbrt(x.lb)), next_floating(cbrt(x.ub)) };
+    constexpr int n = info::cbrt<T>::max_ulp_error;
+    return { round_down<n>(cbrt(x.lb)), round_up<n>(cbrt(x.ub)) };
 }
 
 template<typename T>
@@ -222,6 +224,7 @@ inline constexpr __device__ T mag(interval<T> x)
     if (empty(x)) {
         return nan<T>();
     }
+
     return max(abs(x.lb), abs(x.ub));
 }
 
@@ -230,8 +233,6 @@ inline constexpr __device__ T mig(interval<T> x)
 {
     using std::min, intrinsic::nan;
 
-    // TODO: we might want to split up the function into the bare interval operation and this part.
-    //       we could perhaps use a monad for either result or empty using expected?
     if (empty(x)) {
         return nan<T>();
     }
@@ -981,50 +982,54 @@ inline constexpr __device__ interval<T> round_ties_to_away(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> exp(interval<T> x)
 {
-    using std::exp, intrinsic::next_after, intrinsic::next_floating;
+    using std::exp, intrinsic::round_down, intrinsic::round_up;
 
     // NOTE: would not be needed if empty was using nan instead of inf
     if (empty(x)) {
         return x;
     }
 
-    return { next_after(exp(x.lb), zero_v<T>), next_floating(exp(x.ub)) };
+    constexpr int n = info::exp<T>::max_ulp_error;
+    return { round_down<n>(exp(x.lb), zero_v<T>), round_up<n>(exp(x.ub)) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> exp2(interval<T> x)
 {
-    using std::exp2, intrinsic::next_after, intrinsic::next_floating;
+    using std::exp2, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    return { next_after(exp2(x.lb), zero_v<T>), next_floating(exp2(x.ub)) };
+    constexpr int n = info::exp2<T>::max_ulp_error;
+    return { round_down<n>(exp2(x.lb), zero_v<T>), round_up<n>(exp2(x.ub)) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> exp10(interval<T> x)
 {
-    using intrinsic::exp10, intrinsic::next_after, intrinsic::next_floating;
+    using intrinsic::exp10, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    return { next_after(exp10(x.lb), zero_v<T>), next_floating(exp10(x.ub)) };
+    constexpr int n = info::exp10<T>::max_ulp_error;
+    return { round_down<n>(exp10(x.lb), zero_v<T>), round_up<n>(exp10(x.ub)) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> expm1(interval<T> x)
 {
-    using std::expm1, intrinsic::next_after, intrinsic::next_floating;
+    using std::expm1, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    return { next_after(expm1(x.lb), -one_v<T>), next_floating(expm1(x.ub)) };
+    constexpr int n = info::expm1<T>::max_ulp_error;
+    return { round_down<n>(expm1(x.lb), -one_v<T>), round_up<n>(expm1(x.ub)) };
 }
 
 template<typename T>
@@ -1054,57 +1059,63 @@ inline constexpr __device__ interval<T> scalbn(interval<T> x, int n)
 template<typename T>
 inline constexpr __device__ interval<T> log(interval<T> x)
 {
-    using std::log, intrinsic::pos_inf, intrinsic::prev_floating, intrinsic::next_floating;
+    using std::log, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x) || sup(x) == 0) {
         return empty<T>();
     }
 
     auto z = intersection(x, { zero_v<T>, pos_inf<T>() });
-    return { prev_floating(log(z.lb)), next_floating(log(z.ub)) };
+
+    constexpr int n = info::log<T>::max_ulp_error;
+    return { round_down<n>(log(z.lb)), round_up<n>(log(z.ub)) };
 }
 
-// NOTE: The overestimation on the lower and upper bound is at most 2 ulps (unit in the last place)
-//       (due to underlying function having error of at most 1 ulp).
 template<typename T>
 inline constexpr __device__ interval<T> log2(interval<T> x)
 {
-    using std::log2, intrinsic::prev_floating, intrinsic::next_floating;
+    using std::log2, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x) || sup(x) == 0) {
         return empty<T>();
     }
 
     auto z = intersection(x, { zero_v<T>, intrinsic::pos_inf<T>() });
-    return { (x.lb != 1) * prev_floating(prev_floating(log2(z.lb))),
-             (x.ub != 1) * next_floating(next_floating(log2(z.ub))) };
+
+    constexpr int n = info::log2<T>::max_ulp_error;
+    return { (x.lb != 1) * round_down<n>(log2(z.lb)),
+             (x.ub != 1) * round_up<n>(log2(z.ub)) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> log10(interval<T> x)
 {
-    using std::log10, intrinsic::prev_floating, intrinsic::next_floating;
+    using std::log10, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x) || sup(x) == 0) {
         return empty<T>();
     }
 
     auto z = intersection(x, { zero_v<T>, intrinsic::pos_inf<T>() });
-    return { (x.lb != 1) * prev_floating(prev_floating(log10(z.lb))),
-             (x.ub != 1) * next_floating(next_floating(log10(z.ub))) };
+
+    constexpr int n = info::log10<T>::max_ulp_error;
+    return { (x.lb != 1) * round_down<n>(log10(z.lb)),
+             (x.ub != 1) * round_up<n>(log10(z.ub)) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> log1p(interval<T> x)
 {
-    using std::log1p, intrinsic::pos_inf, intrinsic::prev_floating, intrinsic::next_floating;
+    using std::log1p, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x) || sup(x) == -1) {
         return empty<T>();
     }
 
     auto z = intersection(x, { -one_v<T>, pos_inf<T>() });
-    return { prev_floating(log1p(z.lb)), next_floating(log1p(z.ub)) };
+
+    constexpr int n = info::log1p<T>::max_ulp_error;
+    return { round_down<n>(log1p(z.lb)), round_up<n>(log1p(z.ub)) };
 }
 
 template<typename T>
@@ -1128,10 +1139,11 @@ inline constexpr __device__ interval<T> logb(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n)
 {
-    using intrinsic::next_after, intrinsic::next_floating, intrinsic::prev_floating;
+    using intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
 
     auto pow = [](T x, std::integral auto n) -> T {
-        // The default std::pow implementation returns a double for std::pow(float, int). We want a float.
+        // The default std::pow implementation returns a double for std::pow(float, int).
+        // We want a float.
         if constexpr (std::is_same_v<T, float>) {
             return powf(x, n);
         } else {
@@ -1152,6 +1164,8 @@ inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n
         return empty<T>();
     }
 
+    constexpr int e = info::pow<T>::max_ulp_error;
+
     if (n % 2) { // odd power
         if (entire(x)) {
             return x;
@@ -1159,24 +1173,24 @@ inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n
 
         if (n > 0) {
             if (inf(x) == 0) {
-                return { 0, next_floating(pow(sup(x), n)) };
+                return { 0, round_up<e>(pow(sup(x), n)) };
             } else if (sup(x) == 0) {
-                return { prev_floating(pow(inf(x), n)), 0 };
+                return { round_down<e>(pow(inf(x), n)), 0 };
             } else {
-                return { prev_floating(pow(inf(x), n)), next_floating(pow(sup(x), n)) };
+                return { round_down<e>(pow(inf(x), n)), round_up<e>(pow(sup(x), n)) };
             }
         } else {
             if (inf(x) >= 0) {
                 if (inf(x) == 0) {
-                    return { prev_floating(pow(sup(x), n)), next_floating(intrinsic::pos_inf<T>()) };
+                    return { round_down<e>(pow(sup(x), n)), round_up<e>(pos_inf<T>()) };
                 } else {
-                    return { prev_floating(pow(sup(x), n)), next_floating(pow(inf(x), n)) };
+                    return { round_down<e>(pow(sup(x), n)), round_up<e>(pow(inf(x), n)) };
                 }
             } else if (sup(x) <= 0) {
                 if (sup(x) == 0) {
-                    return { prev_floating(intrinsic::neg_inf<T>()), next_floating(pow(inf(x), n)) };
+                    return { round_down<e>(neg_inf<T>()), round_up<e>(pow(inf(x), n)) };
                 } else {
-                    return { prev_floating(pow(sup(x), n)), next_floating(pow(inf(x), n)) };
+                    return { round_down<e>(pow(sup(x), n)), round_up<e>(pow(inf(x), n)) };
                 }
             } else {
                 return entire<T>();
@@ -1185,19 +1199,19 @@ inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n
     } else { // even power
         if (n > 0) {
             if (inf(x) >= 0) {
-                return { next_after(pow(inf(x), n), T { 0.0 }), next_floating(pow(sup(x), n)) };
+                return { round_down<e>(pow(inf(x), n), T { 0.0 }), round_up<e>(pow(sup(x), n)) };
             } else if (sup(x) <= 0) {
-                return { next_after(pow(sup(x), n), T { 0.0 }), next_floating(pow(inf(x), n)) };
+                return { round_down<e>(pow(sup(x), n), T { 0.0 }), round_up<e>(pow(inf(x), n)) };
             } else {
-                return { next_after(pow(mig(x), n), T { 0.0 }), next_floating(pow(mag(x), n)) };
+                return { round_down<e>(pow(mig(x), n), T { 0.0 }), round_up<e>(pow(mag(x), n)) };
             }
         } else {
             if (inf(x) >= 0) {
-                return { prev_floating(pow(sup(x), n)), next_floating(pow(inf(x), n)) };
+                return { round_down<e>(pow(sup(x), n)), round_up<e>(pow(inf(x), n)) };
             } else if (sup(x) <= 0) {
-                return { prev_floating(pow(inf(x), n)), next_floating(pow(sup(x), n)) };
+                return { round_down<e>(pow(inf(x), n)), round_up<e>(pow(sup(x), n)) };
             } else {
-                return { prev_floating(pow(mag(x), n)), next_floating(pow(mig(x), n)) };
+                return { round_down<e>(pow(mag(x), n)), round_up<e>(pow(mig(x), n)) };
             }
         }
     }
@@ -1208,7 +1222,7 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
 {
     assert(inf(x) >= 0);
 
-    using intrinsic::next_floating, intrinsic::prev_floating;
+    using intrinsic::round_down, intrinsic::round_up;
     using std::rint, std::lrint, std::pow, std::sqrt;
 
     if (sup(x) == 0) {
@@ -1223,19 +1237,21 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
         } else if (y == 0.5) {
             return sqrt(x);
         } else {
-            interval<T> lb { prev_floating(pow(inf(x), y)), next_floating(pow(inf(x), y)) };
-            interval<T> ub { prev_floating(pow(sup(x), y)), next_floating(pow(sup(x), y)) };
-            return convex_hull(lb, ub);
+            constexpr int n = info::pow<T>::max_ulp_error;
+            interval<T> lb { pow(inf(x), y), pow(inf(x), y) };
+            interval<T> ub { pow(sup(x), y), pow(sup(x), y) };
+            interval<T> res = convex_hull(lb, ub);
+            return { round_down<n>(res.lb), round_up<n>(res.ub) };
         }
     }
 
-    return {};
+    return {}; // unreachable
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto n)
 {
-    using std::pow, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::next_after;
+    using std::pow, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1257,8 +1273,8 @@ inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto 
                 return empty<T>();
             }
 
-            return { next_after(pow(inf(y), 1.0 / m), domain.lb),
-                     next_after(pow(sup(y), 1.0 / m), domain.ub) };
+            return { round_down(pow(inf(y), 1.0 / m), domain.lb),
+                     round_up(pow(sup(y), 1.0 / m), domain.ub) };
         }
     };
 
@@ -1334,7 +1350,7 @@ inline constexpr __device__ unsigned int quadrant_pi(T v)
 template<typename T>
 inline constexpr __device__ interval<T> sin(interval<T> x)
 {
-    using std::max, std::min, std::sin, intrinsic::next_after;
+    using std::max, std::min, std::sin, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1383,26 +1399,28 @@ inline constexpr __device__ interval<T> sin(interval<T> x)
     auto quadrant_lb = quadrant(x.lb);
     auto quadrant_ub = quadrant(x.ub);
 
+    constexpr auto n = info::sin<T>::max_ulp_error;
+
     if (quadrant_lb == quadrant_ub) {
         if (w >= half_period) { // beyond single quadrant -> full range
             return { -1, 1 };
         } else if (quadrant_lb == 1 || quadrant_lb == 2) { // decreasing
-            return { next_after(sin(x.ub), sin_min),
-                     next_after(sin(x.lb), sin_max) };
+            return { round_down<n>(sin(x.ub), sin_min),
+                     round_up<n>(sin(x.lb), sin_max) };
         } else { // increasing
-            return { next_after(sin(x.lb), sin_min),
-                     next_after(sin(x.ub), sin_max) };
+            return { round_down<n>(sin(x.lb), sin_min),
+                     round_up<n>(sin(x.ub), sin_max) };
         }
     } else if (quadrant_lb == 3 && quadrant_ub == 0) { // increasing
-        return { next_after(sin(x.lb), sin_min),
-                 next_after(sin(x.ub), sin_max) };
+        return { round_down<n>(sin(x.lb), sin_min),
+                 round_up<n>(sin(x.ub), sin_max) };
     } else if (quadrant_lb == 1 && quadrant_ub == 2) { // decreasing
-        return { next_after(sin(x.ub), sin_min),
-                 next_after(sin(x.lb), sin_max) };
+        return { round_down<n>(sin(x.ub), sin_min),
+                 round_up<n>(sin(x.lb), sin_max) };
     } else if ((quadrant_lb == 3 || quadrant_lb == 0) && (quadrant_ub == 1 || quadrant_ub == 2)) {
-        return { next_after(min(sin(x.lb), sin(x.ub)), sin_min), 1 };
+        return { round_down<n>(min(sin(x.lb), sin(x.ub)), sin_min), 1 };
     } else if ((quadrant_lb == 1 || quadrant_lb == 2) && (quadrant_ub == 3 || quadrant_ub == 0)) {
-        return { -1, next_after(max(sin(x.lb), sin(x.ub)), sin_max) };
+        return { -1, round_up<n>(max(sin(x.lb), sin(x.ub)), sin_max) };
     } else {
         return { -1, 1 };
     }
@@ -1411,7 +1429,7 @@ inline constexpr __device__ interval<T> sin(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> sinpi(interval<T> x)
 {
-    using ::sinpi, std::max, std::min, intrinsic::next_after;
+    using ::sinpi, std::max, std::min, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1432,26 +1450,28 @@ inline constexpr __device__ interval<T> sinpi(interval<T> x)
     auto quadrant_lb = quadrant_pi(x.lb);
     auto quadrant_ub = quadrant_pi(x.ub);
 
+    constexpr auto n = info::sinpi<T>::max_ulp_error;
+
     if (quadrant_lb == quadrant_ub) {
         if (w >= half_period) { // beyond single quadrant -> full range
             return { -1, 1 };
         } else if (quadrant_lb == 1 || quadrant_lb == 2) { // decreasing
-            return { next_after(sinpi(x.ub), sin_min),
-                     next_after(sinpi(x.lb), sin_max) };
+            return { round_down<n>(sinpi(x.ub), sin_min),
+                     round_up<n>(sinpi(x.lb), sin_max) };
         } else { // increasing
-            return { next_after(sinpi(x.lb), sin_min),
-                     next_after(sinpi(x.ub), sin_max) };
+            return { round_down<n>(sinpi(x.lb), sin_min),
+                     round_up<n>(sinpi(x.ub), sin_max) };
         }
     } else if (quadrant_lb == 3 && quadrant_ub == 0) { // increasing
-        return { next_after(sinpi(x.lb), sin_min),
-                 next_after(sinpi(x.ub), sin_max) };
+        return { round_down<n>(sinpi(x.lb), sin_min),
+                 round_up<n>(sinpi(x.ub), sin_max) };
     } else if (quadrant_lb == 1 && quadrant_ub == 2) { // decreasing
-        return { next_after(sinpi(x.ub), sin_min),
-                 next_after(sinpi(x.lb), sin_max) };
+        return { round_down<n>(sinpi(x.ub), sin_min),
+                 round_up<n>(sinpi(x.lb), sin_max) };
     } else if ((quadrant_lb == 3 || quadrant_lb == 0) && (quadrant_ub == 1 || quadrant_ub == 2)) {
-        return { next_after(min(sinpi(x.lb), sinpi(x.ub)), sin_min), 1 };
+        return { round_down<n>(min(sinpi(x.lb), sinpi(x.ub)), sin_min), 1 };
     } else if ((quadrant_lb == 1 || quadrant_lb == 2) && (quadrant_ub == 3 || quadrant_ub == 0)) {
-        return { -1, next_after(max(sinpi(x.lb), sinpi(x.ub)), sin_max) };
+        return { -1, round_up<n>(max(sinpi(x.lb), sinpi(x.ub)), sin_max) };
     } else {
         return { -1, 1 };
     }
@@ -1461,12 +1481,13 @@ inline constexpr __device__ interval<T> sinpi(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cos(interval<T> x)
 {
-    using std::cos, std::max, std::min, intrinsic::next_after;
+    using std::cos, std::max, std::min, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
+    constexpr auto n   = info::cos<T>::max_ulp_error;
     constexpr auto pi  = pi_v<interval<T>>;
     constexpr auto tau = tau_v<interval<T>>;
 
@@ -1489,22 +1510,22 @@ inline constexpr __device__ interval<T> cos(interval<T> x)
         if (w >= half_period) { // beyond single quadrant -> full range
             return { -1, 1 };
         } else if (quadrant_lb == 2 || quadrant_lb == 3) { // increasing
-            return { next_after(cos(x.lb), cos_min),
-                     next_after(cos(x.ub), cos_max) };
+            return { round_down<n>(cos(x.lb), cos_min),
+                     round_up<n>(cos(x.ub), cos_max) };
         } else { // decreasing
-            return { next_after(cos(x.ub), cos_min),
-                     next_after(cos(x.lb), cos_max) };
+            return { round_down<n>(cos(x.ub), cos_min),
+                     round_up<n>(cos(x.lb), cos_max) };
         }
     } else if (quadrant_lb == 2 && quadrant_ub == 3) { // increasing
-        return { next_after(cos(x.lb), cos_min),
-                 next_after(cos(x.ub), cos_max) };
+        return { round_down<n>(cos(x.lb), cos_min),
+                 round_up<n>(cos(x.ub), cos_max) };
     } else if (quadrant_lb == 0 && quadrant_ub == 1) { // decreasing
-        return { next_after(cos(x.ub), cos_min),
-                 next_after(cos(x.lb), cos_max) };
+        return { round_down<n>(cos(x.ub), cos_min),
+                 round_up<n>(cos(x.lb), cos_max) };
     } else if ((quadrant_lb == 2 || quadrant_lb == 3) && (quadrant_ub == 0 || quadrant_ub == 1)) {
-        return { next_after(min(cos(x.lb), cos(x.ub)), cos_min), 1 };
+        return { round_down<n>(min(cos(x.lb), cos(x.ub)), cos_min), 1 };
     } else if ((quadrant_lb == 0 || quadrant_lb == 1) && (quadrant_ub == 2 || quadrant_ub == 3)) {
-        return { -1, next_after(max(cos(x.lb), cos(x.ub)), cos_max) };
+        return { -1, round_up<n>(max(cos(x.lb), cos(x.ub)), cos_max) };
     } else {
         return { -1, 1 };
     }
@@ -1513,7 +1534,7 @@ inline constexpr __device__ interval<T> cos(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cospi(interval<T> x)
 {
-    using ::cospi, std::max, std::min, intrinsic::next_after;
+    using ::cospi, std::max, std::min, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1534,26 +1555,28 @@ inline constexpr __device__ interval<T> cospi(interval<T> x)
     auto quadrant_lb = quadrant_pi(x.lb);
     auto quadrant_ub = quadrant_pi(x.ub);
 
+    constexpr auto n = info::cospi<T>::max_ulp_error;
+
     if (quadrant_lb == quadrant_ub) {
         if (w >= half_period) { // beyond single quadrant -> full range
             return { -1, 1 };
         } else if (quadrant_lb == 2 || quadrant_lb == 3) { // increasing
-            return { next_after(cospi(x.lb), cos_min),
-                     next_after(cospi(x.ub), cos_max) };
+            return { round_down<n>(cospi(x.lb), cos_min),
+                     round_up<n>(cospi(x.ub), cos_max) };
         } else { // decreasing
-            return { next_after(cospi(x.ub), cos_min),
-                     next_after(cospi(x.lb), cos_max) };
+            return { round_down<n>(cospi(x.ub), cos_min),
+                     round_up<n>(cospi(x.lb), cos_max) };
         }
     } else if (quadrant_lb == 2 && quadrant_ub == 3) { // increasing
-        return { next_after(cospi(x.lb), cos_min),
-                 next_after(cospi(x.ub), cos_max) };
+        return { round_down<n>(cospi(x.lb), cos_min),
+                 round_up<n>(cospi(x.ub), cos_max) };
     } else if (quadrant_lb == 0 && quadrant_ub == 1) { // decreasing
-        return { next_after(cospi(x.ub), cos_min),
-                 next_after(cospi(x.lb), cos_max) };
+        return { round_down<n>(cospi(x.ub), cos_min),
+                 round_up<n>(cospi(x.lb), cos_max) };
     } else if ((quadrant_lb == 2 || quadrant_lb == 3) && (quadrant_ub == 0 || quadrant_ub == 1)) {
-        return { next_after(min(cospi(x.lb), cospi(x.ub)), cos_min), 1 };
+        return { round_down<n>(min(cospi(x.lb), cospi(x.ub)), cos_min), 1 };
     } else if ((quadrant_lb == 0 || quadrant_lb == 1) && (quadrant_ub == 2 || quadrant_ub == 3)) {
-        return { -1, next_after(max(cospi(x.lb), cospi(x.ub)), cos_max) };
+        return { -1, round_up<n>(max(cospi(x.lb), cospi(x.ub)), cos_max) };
     } else {
         return { -1, 1 };
     }
@@ -1562,7 +1585,7 @@ inline constexpr __device__ interval<T> cospi(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> tan(interval<T> x)
 {
-    using std::tan, intrinsic::prev_floating, intrinsic::next_floating;
+    using std::tan, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1587,15 +1610,15 @@ inline constexpr __device__ interval<T> tan(interval<T> x)
         // crossing an asymptote -> return range of tan
         return entire<T>();
     } else {
-        return { prev_floating(prev_floating(tan(x.lb))),
-                 next_floating(next_floating(tan(x.ub))) };
+        constexpr int n = info::tan<T>::max_ulp_error;
+        return { round_down<n>(tan(x.lb)), round_up<n>(tan(x.ub)) };
     }
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> asin(interval<T> x)
 {
-    using std::asin, intrinsic::next_after;
+    using std::asin, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1603,16 +1626,17 @@ inline constexpr __device__ interval<T> asin(interval<T> x)
 
     constexpr auto pi_2_ub = pi_2_v<interval<T>>.ub;
     constexpr interval<T> domain { -one_v<T>, one_v<T> };
+    constexpr int n = info::asin<T>::max_ulp_error;
 
     auto xx = intersection(x, domain);
-    return { (xx.lb != 0) * next_after(next_after(asin(xx.lb), -pi_2_ub), -pi_2_ub),
-             (xx.ub != 0) * next_after(next_after(asin(xx.ub), pi_2_ub), pi_2_ub) };
+    return { (xx.lb != 0) * round_down<n>(asin(xx.lb), -pi_2_ub),
+             (xx.ub != 0) * round_up<n>(asin(xx.ub), pi_2_ub) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> acos(interval<T> x)
 {
-    using std::acos, intrinsic::next_after;
+    using std::acos, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1620,16 +1644,17 @@ inline constexpr __device__ interval<T> acos(interval<T> x)
 
     constexpr auto pi = pi_v<interval<T>>;
     constexpr interval<T> domain { -one_v<T>, one_v<T> };
+    constexpr int n = info::acos<T>::max_ulp_error;
 
     auto xx = intersection(x, domain);
-    return { next_after(next_after(acos(xx.ub), zero_v<T>), zero_v<T>),
-             next_after(next_after(acos(xx.lb), pi.ub), pi.ub) };
+    return { round_down<n>(acos(xx.ub), zero_v<T>),
+             round_up<n>(acos(xx.lb), pi.ub) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> atan(interval<T> x)
 {
-    using std::atan, intrinsic::next_after;
+    using std::atan, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1637,14 +1662,15 @@ inline constexpr __device__ interval<T> atan(interval<T> x)
 
     constexpr auto pi_2_ub = pi_2_v<interval<T>>.ub;
 
-    return { next_after(next_after(atan(x.lb), -pi_2_ub), -pi_2_ub),
-             next_after(next_after(atan(x.ub), pi_2_ub), pi_2_ub) };
+    constexpr int n = info::atan<T>::max_ulp_error;
+    return { round_down<n>(atan(x.lb), -pi_2_ub),
+             round_up<n>(atan(x.ub), pi_2_ub) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
 {
-    using std::abs, std::atan2, intrinsic::next_after;
+    using std::abs, std::atan2, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x) || empty(y)) {
         return empty<T>();
@@ -1652,6 +1678,7 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
 
     constexpr auto pi_2 = pi_2_v<interval<T>>;
     constexpr auto pi   = pi_v<interval<T>>;
+    constexpr auto n    = info::atan2<T>::max_ulp_error;
     interval<T> range { -pi.ub, pi.ub };
     interval<T> half_range { -pi_2.ub, pi_2.ub };
 
@@ -1669,24 +1696,24 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
         if (just_zero(y)) {
             return y;
         } else if (y.lb >= 0) {
-            return { next_after(next_after(atan2(y.lb, x.ub), range.lb), range.lb),
-                     next_after(next_after(atan2(y.ub, x.lb), range.ub), range.ub) };
+            return { round_down<n>(atan2(y.lb, x.ub), range.lb),
+                     round_up<n>(atan2(y.ub, x.lb), range.ub) };
         } else if (y.ub <= 0) {
-            return { next_after(next_after(atan2(y.lb, x.lb), range.lb), range.lb),
-                     next_after(next_after(atan2(y.ub, x.ub), range.ub), range.ub) };
+            return { round_down<n>(atan2(y.lb, x.lb), range.lb),
+                     round_up<n>(atan2(y.ub, x.ub), range.ub) };
         } else {
-            return { next_after(next_after(atan2(y.lb, x.lb), range.lb), range.lb),
-                     next_after(next_after(atan2(y.ub, x.lb), range.ub), range.ub) };
+            return { round_down<n>(atan2(y.lb, x.lb), range.lb),
+                     round_up<n>(atan2(y.ub, x.lb), range.ub) };
         }
     } else if (x.ub < 0) {
         if (just_zero(y)) {
             return pi;
         } else if (y.lb >= 0) {
-            return { next_after(next_after(atan2(y.ub, x.ub), range.lb), range.lb),
-                     next_after(next_after(abs(atan2(y.lb, x.lb)), range.ub), range.ub) };
+            return { round_down<n>(atan2(y.ub, x.ub), range.lb),
+                     round_up<n>(abs(atan2(y.lb, x.lb)), range.ub) };
         } else if (y.ub < 0) {
-            return { next_after(next_after(atan2(y.ub, x.lb), range.lb), range.lb),
-                     next_after(next_after(atan2(y.lb, x.ub), range.ub), range.ub) };
+            return { round_down<n>(atan2(y.ub, x.lb), range.lb),
+                     round_up<n>(atan2(y.lb, x.ub), range.ub) };
         } else {
             return range;
         }
@@ -1695,10 +1722,10 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
             if (just_zero(y)) {
                 return y;
             } else if (y.lb >= 0) {
-                return { next_after(next_after(atan2(y.lb, x.ub), range.lb), range.lb),
+                return { round_down<n>(atan2(y.lb, x.ub), range.lb),
                          pi_2.ub };
             } else if (y.ub <= 0) {
-                return { -pi_2.ub, next_after(next_after(atan2(y.ub, x.ub), range.ub), range.ub) };
+                return { -pi_2.ub, round_up<n>(atan2(y.ub, x.ub), range.ub) };
             } else {
                 return half_range;
             }
@@ -1706,19 +1733,19 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
             if (just_zero(y)) {
                 return pi;
             } else if (y.lb >= 0) {
-                return { pi_2.lb, next_after(next_after(abs(atan2(y.lb, x.lb)), range.ub), range.ub) };
+                return { pi_2.lb, round_up<n>(abs(atan2(y.lb, x.lb)), range.ub) };
             } else if (y.ub < 0) {
-                return { next_after(next_after(atan2(y.ub, x.lb), range.lb), range.lb), -pi_2.lb };
+                return { round_down<n>(atan2(y.ub, x.lb), range.lb), -pi_2.lb };
             } else {
                 return range;
             }
         } else {
             if (y.lb >= 0) {
-                return { next_after(next_after(atan2(y.lb, x.ub), range.lb), range.lb),
-                         next_after(next_after(abs(atan2(y.lb, x.lb)), range.ub), range.ub) };
+                return { round_down<n>(atan2(y.lb, x.ub), range.lb),
+                         round_up<n>(abs(atan2(y.lb, x.lb)), range.ub) };
             } else if (y.ub < 0) {
-                return { next_after(next_after(atan2(y.ub, x.lb), range.lb), range.lb),
-                         next_after(next_after(atan2(y.ub, x.ub), range.ub), range.ub) };
+                return { round_down<n>(atan2(y.ub, x.lb), range.lb),
+                         round_up<n>(atan2(y.ub, x.ub), range.ub) };
             } else {
                 return range;
             }
@@ -1729,7 +1756,7 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cot(interval<T> x)
 {
-    using intrinsic::neg_inf, intrinsic::next_floating, intrinsic::prev_floating;
+    using intrinsic::neg_inf, intrinsic::round_down, intrinsic::round_up;
 
     auto cot = [](T x) -> T { using std::tan; return 1 / tan(x); };
 
@@ -1751,6 +1778,8 @@ inline constexpr __device__ interval<T> cot(interval<T> x)
     auto quadrant_lb_mod = quadrant_lb % 2;
     auto quadrant_ub_mod = quadrant_ub % 2;
 
+    constexpr int n = info::tan<T>::max_ulp_error;
+
     if ((quadrant_lb_mod == 1 && quadrant_ub_mod == 0)
         || (quadrant_lb_mod == quadrant_ub_mod && quadrant_lb != quadrant_ub)) {
 
@@ -1759,14 +1788,13 @@ inline constexpr __device__ interval<T> cot(interval<T> x)
         //       For other similar scenarios with [x, k * pi] we do not have this issue because in floating point precision
         //       we never exactly reach k * pi, i.e. float64(k * pi) < k * pi.
         if (sup(x) == 0) {
-            return { neg_inf<T>(), next_floating(next_floating(cot(x.lb))) };
+            return { neg_inf<T>(), round_up<n>(cot(x.lb)) };
         }
 
         // crossing an asymptote -> return range of cot
         return entire<T>();
     } else {
-        return { prev_floating(prev_floating(cot(x.ub))),
-                 next_floating(next_floating(cot(x.lb))) };
+        return { round_down<n>(cot(x.ub)), round_up<n>(cot(x.lb)) };
     }
 }
 
@@ -1777,20 +1805,20 @@ inline constexpr __device__ interval<T> cot(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> sinh(interval<T> x)
 {
-    using std::sinh, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::next_after;
+    using std::sinh, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    return { next_after(next_after(sinh(x.lb), neg_inf<T>()), neg_inf<T>()),
-             next_after(next_after(sinh(x.ub), pos_inf<T>()), pos_inf<T>()) };
+    constexpr int n = info::sinh<T>::max_ulp_error;
+    return { round_down<n>(sinh(x.lb)), round_up<n>(sinh(x.ub)) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> cosh(interval<T> x)
 {
-    using std::cosh, intrinsic::next_after, intrinsic::pos_inf;
+    using std::cosh, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1798,39 +1826,40 @@ inline constexpr __device__ interval<T> cosh(interval<T> x)
 
     interval<T> range { one_v<T>, intrinsic::pos_inf<T>() };
 
-    return { next_after(cosh(mig(x)), range.lb),
-             next_after(cosh(mag(x)), range.ub) };
+    constexpr int n = info::cosh<T>::max_ulp_error;
+    return { round_down<n>(cosh(mig(x)), range.lb), round_up<n>(cosh(mag(x)), range.ub) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> tanh(interval<T> x)
 {
-    using std::tanh, intrinsic::next_after;
+    using std::tanh, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    return { next_after(tanh(x.lb), -one_v<T>), next_after(tanh(x.ub), one_v<T>) };
+    constexpr int n = info::tanh<T>::max_ulp_error;
+    return { round_down<n>(tanh(x.lb), -one_v<T>), round_up<n>(tanh(x.ub), one_v<T>) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> asinh(interval<T> x)
 {
-    using std::asinh, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::next_after;
+    using std::asinh, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    return { next_after(next_after(asinh(x.lb), neg_inf<T>()), neg_inf<T>()),
-             next_after(next_after(asinh(x.ub), pos_inf<T>()), pos_inf<T>()) };
+    constexpr int n = info::asinh<T>::max_ulp_error;
+    return { round_down<n>(asinh(x.lb)), round_up<n>(asinh(x.ub)) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> acosh(interval<T> x)
 {
-    using std::acosh, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::next_after;
+    using std::acosh, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1841,20 +1870,21 @@ inline constexpr __device__ interval<T> acosh(interval<T> x)
 
     auto xx = intersection(x, domain);
 
-    return { next_after(next_after(acosh(inf(xx)), range.lb), range.lb),
-             next_after(next_after(acosh(sup(xx)), range.ub), range.ub) };
+    constexpr int n = info::acosh<T>::max_ulp_error;
+    return { round_down<n>(acosh(inf(xx)), range.lb),
+             round_up<n>(acosh(sup(xx)), range.ub) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> atanh(interval<T> x)
 {
-    using std::atanh, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::next_after;
+    using std::atanh, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    interval<T> range { neg_inf<T>(), pos_inf<T>() };
+    interval<T> range = entire<T>();
     interval<T> domain { -one_v<T>, one_v<T> };
 
     auto xx = intersection(x, domain);
@@ -1864,8 +1894,9 @@ inline constexpr __device__ interval<T> atanh(interval<T> x)
         return empty<T>();
     }
 
-    return { next_after(next_after(atanh(inf(xx)), range.lb), range.lb),
-             next_after(next_after(atanh(sup(xx)), range.ub), range.ub) };
+    constexpr int n = info::atanh<T>::max_ulp_error;
+    return { round_down<n>(atanh(inf(xx)), range.lb),
+             round_up<n>(atanh(sup(xx)), range.ub) };
 }
 
 template<typename T>
@@ -1917,6 +1948,7 @@ inline constexpr __device__ interval<T> coth(interval<T> a)
             return empty<T>();
         }
     }
+
     return { prev_floating(coth_down(a.ub)), next_floating(coth_up(a.lb)) };
 }
 
@@ -1943,27 +1975,27 @@ inline constexpr __device__ interval<T> hypot(interval<T> x, interval<T> y)
 template<typename T>
 inline constexpr __device__ interval<T> erf(interval<T> x)
 {
-    using std::erf, intrinsic::next_after;
+    using std::erf, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    // TODO: account for 2 ulp error
-    return { next_after(erf(x.lb), -one_v<T>), next_after(erf(x.ub), one_v<T>) };
+    constexpr int n = info::erf<T>::max_ulp_error;
+    return { round_down<n>(erf(x.lb), -one_v<T>), round_up<n>(erf(x.ub), one_v<T>) };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> erfc(interval<T> x)
 {
-    using std::erfc, intrinsic::next_after;
+    using std::erfc, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    // TODO: account for 5 ulp error
-    return { next_after(erfc(x.ub), zero_v<T>), next_after(erfc(x.lb), two_v<T>) };
+    constexpr int n = info::erfc<T>::max_ulp_error;
+    return { round_down<n>(erfc(x.ub), zero_v<T>), round_up<n>(erfc(x.lb), two_v<T>) };
 }
 
 // split the interval in two at the given split_ratio

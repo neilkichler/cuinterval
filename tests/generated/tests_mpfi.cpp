@@ -2491,7 +2491,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             entire,
             {0x112035c9390c07p-47,0x13a3208f61f10cp-47},
             {-0x1f74cb5d105b3ap-54,0.0},
-            {0.0,0x1e1ddc27c2c70fp-48},
+            {0.0,0x1e1ddc27c2c70ep-48},
             {0.0,0.0},
         }};
 

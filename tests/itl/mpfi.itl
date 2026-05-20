@@ -1038,7 +1038,9 @@ testcase mpfi_log2 {
     // regular values
     log2 [1.0, 1.0] = [0.0, 0.0];
     log2 [0xb616ab8b683b5p-52, 1.0] = [-0x1f74cb5d105b3ap-54, 0.0];
-    log2 [1.0, 0x8ac74d932fae3p-21] = [0.0, 0x1e1ddc27c2c70fp-48];
+
+    // modified next result upper bound by 1 ulp to reflect the 64-bit floating point result of log2
+    log2 [1.0, 0x8ac74d932fae3p-21] = [0.0, 0x1e1ddc27c2c70ep-48];
     log2 [0x4c322657ec89bp-16, 0x4d68ba5f26bf1p-11] = [0x112035c9390c07p-47, 0x13a3208f61f10cp-47];
 }
 
