@@ -1,6 +1,8 @@
 #ifndef CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
 #define CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
 
+#include <limits>
+
 namespace cu::intrinsic
 {
 // clang-format off
@@ -111,6 +113,30 @@ namespace cu::intrinsic
     template<> inline __device__ float pos_inf() { return __int_as_float(0x7f800000); }
     template<> inline __device__ float next_floating(float x)          { return nextafterf(x, intrinsic::pos_inf<float>()); }
     template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
+
+    template<int N = 1>
+    inline constexpr __device__ auto round_towards(auto x, double to)
+    {
+        using std::nextafter;
+
+        for (int i = 0; i < N; i++) {
+            x = nextafter(x, to);
+        }
+
+        return x;
+    }
+
+    template<int N = 1>
+    inline constexpr __device__ auto round_down(auto x, double to = -std::numeric_limits<double>::infinity())
+    {
+        return round_towards<N>(x, to);
+    }
+
+    template<int N = 1>
+    inline constexpr __device__ auto round_up(auto x, double to = std::numeric_limits<double>::infinity())
+    {
+        return round_towards<N>(x, to);
+    }
 
 // clang-format on
 } // namespace cu::intrinsic

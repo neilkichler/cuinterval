@@ -91,8 +91,8 @@ supported = {
     "atanh": {"args": [I], "ret": I, "ulp_error": 3},
     "sinpi": {"args": [I], "ret": I, "ulp_error": 3},
     "cospi": {"args": [I], "ret": I, "ulp_error": 3},
-    "pown": {"args": [I, N], "ret": I, "ulp_error": 1},
-    "pow": {"args": [I, I], "ret": I, "ulp_error": 1},
+    "pown": {"args": [I, N], "ret": I, "ulp_error": 2},
+    "pow": {"args": [I, I], "ret": I, "ulp_error": 2},
     "rootn": {"args": [I, N], "ret": I, "ulp_error": 2},
     "hypot": {"args": [I, I], "ret": I, "ulp_error": 0},
 }

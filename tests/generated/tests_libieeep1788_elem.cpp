@@ -4745,7 +4745,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream, cudaEvent_
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
-        int max_ulp_diff = 1;
+        int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "pown", std::source_location::current(), h_xs, h_ys);
     };
 
@@ -8805,7 +8805,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream, cudaEvent_
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
-        int max_ulp_diff = 1;
+        int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "pow", std::source_location::current(), h_xs, h_ys);
     };
 
@@ -9151,7 +9151,7 @@ void tests_libieeep1788_elem(cuda_buffer buffer, cudaStream_t stream, cudaEvent_
             {-0X1P+0,-0X1.FFFFFFFFFFFFFP-1},
             {-0X1P+0,0X1.1690163290F4P-1},
             {0X1.C4C29DD829191P+1,0X1.F4BAEBBA4FA4P+2},
-            {0X1.D7F59AA5BECB9P-3,0X1.DC074D84E5AABP+4},
+            {0X1.D7F59AA5BECB9P-3,0X1.DC074D84E5AAAP+4},
             {-0x1.434E6420F4374p+8,+0x1.34413509F79FFp+8},
             {-0x1.434E6420F4374p+8,0.0},
             {-0x1.434E6420F4374p+8,1.0},

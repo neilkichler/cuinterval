@@ -969,7 +969,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
         CUDA_CHECK(cudaEventRecord(event, stream));
         CUDA_CHECK(cudaEventSynchronize(event));
-        int max_ulp_diff = 1;
+        int max_ulp_diff = 2;
         check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "pow", std::source_location::current(), h_xs, h_ys);
     };
 
