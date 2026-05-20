@@ -14,13 +14,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.37.7",
-    "astro": "^5.18.1",
-    "katex": "^0.16.41",
+    "@astrojs/starlight": "^0.39.2",
+    "astro": "^6.3.5",
+    "katex": "^0.16.47",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.5",
-    "starlight-links-validator": "^0.19.2",
+    "starlight-links-validator": "^0.24.0",
     "starlight-showcases": "^0.3.2",
     "starlight-theme-flexoki": "^0.2.2",
     "starlight-versions": "^0.6.0"

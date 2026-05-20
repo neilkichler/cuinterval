@@ -20,7 +20,7 @@ Since some math functions are not fully accurate up to machine presicion -- they
 
 :::note
 Outward rounding applies rounding towards -∞ for lower bounds and rounding towards +∞ for upper bounds.
-Since most math functions do not have corresponing operations that round towards ±∞, we make use of nextafter(x, ±∞). Sometimes, we know that the function is bounded (e.g., $$x^2 > 0$$). In those cases, we apply `nextafter(x, 0)` or similar tighter outward roundings whenever possible.
+Since most math functions do not have corresponing operations that round towards ±∞, we make use of nextafter(x, ±∞). Sometimes, we know that the function is bounded (e.g., $$\exp(x) > 0$$). In those cases, we apply `nextafter(x, 0)` or similar tighter outward roundings whenever possible.
 :::
 
 The CUDA math functions use round-to-nearest-even and thus pick the even floating point number if the number would land exactly between two floating point values, otherwise it picks the nearest available value between two floating point values.
