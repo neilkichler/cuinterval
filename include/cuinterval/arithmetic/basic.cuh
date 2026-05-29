@@ -1253,35 +1253,55 @@ inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto 
 {
     using std::pow, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x)) {
+    if (n == 0) {
+        return empty<T>();
+    } else if (n == 1) {
         return x;
-    }
-
-    auto rootn_pos_n = [](interval<T> y, std::integral auto m) -> interval<T> {
-        if (m == 0) {
-            return empty<T>();
-        } else if (m == 1) {
-            return y;
-        } else if (m == 2) {
-            return sqrt(y);
-        } else {
-            bool is_odd = m % 2;
-            interval<T> domain { is_odd ? neg_inf<T>() : zero_v<T>, pos_inf<T>() };
-
-            y = intersection(y, domain);
-            if (empty(y)) {
-                return empty<T>();
-            }
-
-            return { round_down(pow(inf(y), 1.0 / m), domain.lb),
-                     round_up(pow(sup(y), 1.0 / m), domain.ub) };
-        }
-    };
-
-    if (n < 0) {
-        return recip(rootn_pos_n(x, -n));
+    } else if (n == 2) {
+        return sqrt(x);
+    } else if (n == 3) {
+        return cbrt(x);
+    } else if (n == -1) {
+        return recip(x);
     } else {
-        return rootn_pos_n(x, n);
+        bool is_odd = n % 2;
+
+        interval<T> domain { is_odd ? neg_inf<T>() : zero_v<T>, pos_inf<T>() };
+
+        x = intersection(x, domain);
+        if (empty(x)) {
+            return empty<T>();
+        }
+
+        bool positive_exponent = n > 0;
+        bool negative_domain   = sup(x) <= 0;
+
+        if (!positive_exponent && !is_odd && negative_domain) {
+            return empty<T>();
+        }
+
+        // cannot use contains(x, 0) because we need to cross 0, not just touch it
+        if (!positive_exponent && inf(x) < zero_v<T> && sup(x) > zero_v<T>) {
+            return entire<T>();
+        }
+
+        T lb = positive_exponent ? inf(x) : sup(x);
+        T ub = positive_exponent ? sup(x) : inf(x);
+
+        bool flip_sign = is_odd && negative_domain;
+
+        lb = flip_sign ? -lb : lb;
+        ub = flip_sign ? -ub : ub;
+
+        T e      = 1.0 / n;
+        T pow_lb = pow(lb, e);
+        T pow_ub = pow(ub, e);
+
+        pow_lb = flip_sign ? -pow_lb : pow_lb;
+        pow_ub = flip_sign ? -pow_ub : pow_ub;
+
+        return { round_down(pow_lb, domain.lb),
+                 round_up(pow_ub, domain.ub) };
     }
 }
 
