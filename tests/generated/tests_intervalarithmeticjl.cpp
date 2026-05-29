@@ -21,7 +21,7 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
     I entire   = { -infinity, infinity };
     T NaN = ::nan("");
 
-    const int n = 12; // count of largest test array
+    const int n = 28; // count of largest test array
     const int n_bytes   = n * sizeof(I);
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
@@ -157,14 +157,31 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
 
     {
         char *h_buffer = buffer.host;
-        constexpr int n = 11;
+        constexpr int n = 28;
         I *h_xs = new (h_buffer) I[n]{
+            {-27,-8},
+            {-27,-8},
+            {-27,0},
+            {-27,0},
+            {-27,27},
+            {-27,27},
+            {-81,-16},
+            {-81,-16},
+            {-81,0},
+            {-81,0},
+            {-81,1},
+            {-81,81},
+            {-81,81},
             {0,27},
+            {0,27},
+            {0,81},
             {0,81},
             {1,2},
             {1,7},
             {16,81},
+            {16,81},
             {5,8},
+            {8,27},
             {8,27},
             empty,
             empty,
@@ -174,12 +191,29 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
 
         h_buffer += align_to(n * sizeof(I), alignof(N));
         N *h_ys = new (h_buffer) N[n]{
+            -3,
             3,
+            -3,
+            3,
+            -3,
+            3,
+            -4,
+            4,
+            -4,
+            4,
+            1,
+            -4,
+            4,
+            -3,
+            3,
+            -4,
             4,
             0,
             0,
+            -4,
             4,
             0,
+            -3,
             3,
             -3,
             -4,
@@ -190,12 +224,29 @@ void tests_intervalarithmeticjl(cuda_buffer buffer, cudaStream_t stream, cudaEve
         h_buffer += align_to(n * sizeof(N), alignof(I));
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
+            {-1./2.,-1./3.},
+            {-3,-2},
+            {-infinity,-1./3.},
+            {-3,0},
+            {-infinity,infinity},
+            {-3,3},
+            empty,
+            empty,
+            empty,
+            {0,0},
+            {-81,1},
+            {1./3.,infinity},
             {0,3},
+            {1./3.,infinity},
+            {0,3},
+            {1./3.,infinity},
             {0,3},
             empty,
             empty,
+            {1./3.,1./2.},
             {2,3},
             empty,
+            {1./3.,1./2.},
             {2,3},
             empty,
             empty,
