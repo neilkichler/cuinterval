@@ -1,6 +1,10 @@
 #ifndef CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
 #define CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
 
+#include <bit>
+#include <cmath>
+#include <concepts>
+#include <cstdint>
 #include <limits>
 
 namespace cu::intrinsic
@@ -114,15 +118,49 @@ namespace cu::intrinsic
     template<> inline __device__ float next_floating(float x)          { return nextafterf(x, intrinsic::pos_inf<float>()); }
     template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
 
-    template<int N = 1, typename T = double>
+    template<int N = 1, std::floating_point T = double>
     inline constexpr __device__ T round_towards(T x, T to)
     {
-        for (int i = 0; i < N; i++) {
-            // we use next_after so that other libraries (e.g., CuTangent) can overload it
-            x = next_after(x, to);
-        }
+        if constexpr (N > 0) {
+            using std::bit_cast, std::isnan;
+            using u32 = std::uint32_t;
+            using u64 = std::uint64_t;
+            using s32 = std::int32_t;
+            using s64 = std::int64_t;
 
-        return x;
+            using uint = std::conditional_t<sizeof(T) == 4, u32, u64>;
+            using sint = std::conditional_t<sizeof(T) == 4, s32, s64>;
+
+            auto y = to;
+
+            uint ux = bit_cast<uint>(x);
+            uint uy = bit_cast<uint>(y);
+
+            if (isnan(x) || isnan(y))
+                return x;
+
+            if (x == y)
+                return y; // prefer y for correct sign if x = +-0
+
+            // set most-significant bit to 1 (sign bit)
+            uint msb = uint(1) << (std::numeric_limits<uint>::digits - 1);
+
+            // transform to monotonically increasing integers (for negative numbers)
+            sint ox = (ux < msb) ? ux : (msb - ux);
+            sint oy = (uy < msb) ? uy : (msb - uy);
+
+            bool step_positive = ox < oy;
+            uint abs_diff = step_positive ? (uint)oy - (uint)ox
+                                          : (uint)ox - (uint)oy;
+
+            uint clamped_step = (abs_diff < (uint)N) ? abs_diff : N;
+
+            ox = step_positive ? (uint)ox + clamped_step
+                               : (uint)ox - clamped_step;
+
+            uint fx = (ox < 0) ? (msb - ox) : ox;
+            return bit_cast<T>(fx);
+        }
     }
 
     template<int N = 1, typename T = double>
