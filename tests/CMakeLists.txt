@@ -28,6 +28,9 @@ add_executable(tests
     tests_pow.h
     tests_pow.cu
     tests_pow.cpp
+    tests_rounding.h
+    tests_rounding.cu
+    tests_rounding.cpp
     ${generated_test_files}
 )
 
