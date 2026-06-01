@@ -36,6 +36,7 @@ namespace cu::intrinsic
     template<typename T> inline __device__ T min       (T x, T y);
     template<typename T> inline __device__ T max       (T x, T y);
     template<typename T> inline __device__ T next_after(T x, T y);
+    template<typename T> inline __device__ T round_towards(T x, T to, unsigned int n);
     template<typename T> inline __device__ T rcp_down  (T x);
     template<typename T> inline __device__ T rcp_up    (T x);
     template<typename T> inline __device__ T sqrt_down (T x);
@@ -118,61 +119,59 @@ namespace cu::intrinsic
     template<> inline __device__ float next_floating(float x)          { return nextafterf(x, intrinsic::pos_inf<float>()); }
     template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
 
-    template<int N = 1, std::floating_point T = double>
-    inline constexpr __device__ T round_towards(T x, T to)
+    template<std::floating_point T = double>
+    inline constexpr __device__ T round_towards(T x, T to, unsigned int n)
     {
-        if constexpr (N > 0) {
-            using std::bit_cast, std::isnan;
-            using u32 = std::uint32_t;
-            using u64 = std::uint64_t;
-            using s32 = std::int32_t;
-            using s64 = std::int64_t;
+        using std::bit_cast, std::isnan;
+        using u32 = std::uint32_t;
+        using u64 = std::uint64_t;
+        using s32 = std::int32_t;
+        using s64 = std::int64_t;
 
-            using uint = std::conditional_t<sizeof(T) == 4, u32, u64>;
-            using sint = std::conditional_t<sizeof(T) == 4, s32, s64>;
+        using uint = std::conditional_t<sizeof(T) == 4, u32, u64>;
+        using sint = std::conditional_t<sizeof(T) == 4, s32, s64>;
 
-            auto y = to;
+        auto y = to;
 
-            uint ux = bit_cast<uint>(x);
-            uint uy = bit_cast<uint>(y);
+        uint ux = bit_cast<uint>(x);
+        uint uy = bit_cast<uint>(y);
 
-            if (isnan(x) || isnan(y))
-                return x;
+        if (isnan(x) || isnan(y))
+            return x;
 
-            if (x == y)
-                return y; // prefer y for correct sign if x = +-0
+        if (x == y)
+            return y; // prefer y for correct sign if x = +-0
 
-            // set most-significant bit to 1 (sign bit)
-            uint msb = uint(1) << (std::numeric_limits<uint>::digits - 1);
+        // set most-significant bit to 1 (sign bit)
+        uint msb = uint(1) << (std::numeric_limits<uint>::digits - 1);
 
-            // transform to monotonically increasing integers (for negative numbers)
-            sint ox = (ux < msb) ? ux : (msb - ux);
-            sint oy = (uy < msb) ? uy : (msb - uy);
+        // transform to monotonically increasing integers (for negative numbers)
+        sint ox = (ux < msb) ? ux : (msb - ux);
+        sint oy = (uy < msb) ? uy : (msb - uy);
 
-            bool step_positive = ox < oy;
-            uint abs_diff = step_positive ? (uint)oy - (uint)ox
-                                          : (uint)ox - (uint)oy;
+        bool step_positive = ox < oy;
+        uint abs_diff = step_positive ? (uint)oy - (uint)ox
+                                      : (uint)ox - (uint)oy;
 
-            uint clamped_step = (abs_diff < (uint)N) ? abs_diff : N;
+        uint clamped_step = (abs_diff < (uint)n) ? abs_diff : n;
 
-            ox = step_positive ? (uint)ox + clamped_step
-                               : (uint)ox - clamped_step;
+        ox = step_positive ? (uint)ox + clamped_step
+                           : (uint)ox - clamped_step;
 
-            uint fx = (ox < 0) ? (msb - ox) : ox;
-            return bit_cast<T>(fx);
-        }
+        uint fx = (ox < 0) ? (msb - ox) : ox;
+        return bit_cast<T>(fx);
     }
 
     template<int N = 1, typename T = double>
     inline constexpr __device__ T round_down(T x, T to = -std::numeric_limits<T>::infinity())
     {
-        return round_towards<N, T>(x, to);
+        return round_towards(x, to, N);
     }
 
     template<int N = 1, typename T = double>
     inline constexpr __device__ T round_up(T x, T to = std::numeric_limits<T>::infinity())
     {
-        return round_towards<N, T>(x, to);
+        return round_towards(x, to, N);
     }
 
 // clang-format on
