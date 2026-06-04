@@ -16,7 +16,10 @@ INCLUDE = ROOT / 'include' / 'cuinterval'
 FNAME = 'functions.toml'
 TOML = ROOT / 'docs' / 'gen' / FNAME
 
-# Functions to skip from extraction
+# Files to skip during extraction
+SKIP_FILES = {'intrinsic.cuh'}
+
+# Functions to skip during extraction
 SKIP_FUNCTIONS = {'quadrant', 'quadrant_pi'}
 
 try:
@@ -243,6 +246,8 @@ def main():
 
     all_found = {}
     for p in INCLUDE.rglob('*'):
+        if str(p).endswith(tuple(SKIP_FILES)):
+            continue
         if p.is_file() and p.suffix in ('.h', '.hpp', '.cuh'):
             try:
                 res = parse_file(p)
