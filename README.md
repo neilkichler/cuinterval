@@ -13,9 +13,9 @@ CuInterval is a CUDA [interval arithmetic](https://en.wikipedia.org/wiki/Interva
 Other flavors, including decorations are not supported. 
 ## Supported Operations
 
-The following operations are implemented as CUDA kernels. All operations are correctly-rounded, given the limitations of the precision of the underlying [CUDA operation](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#id200). The tightest interval is always a subset
-of the computed interval. The lower and upper bounds of the basic operations are at most 3 [ulps](https://en.wikipedia.org/wiki/Unit_in_the_last_place) away from the lower and upper bounds of the tightest interval, respectively.
-The error for a particular operation is given below. Also, check out the [documentation](https://neilkichler.github.io/cuinterval/)!
+The following operations are implemented as CUDA kernels. All operations are outward-rounded, given the limitations of the precision of the underlying [CUDA operation](https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/mathematical-functions.html#cuda-c-mathematical-standard-library-functions). The tightest interval is always a subset
+of the computed interval. The lower and upper bounds of most 64-bit floating-point operations are at most 3 [ulps](https://en.wikipedia.org/wiki/Unit_in_the_last_place) away from the lower and upper bounds of the tightest 64-bit floating-point interval.
+The error for a particular operation is given below. For more details, check out the [documentation](https://neilkichler.github.io/cuinterval/)!
 
 <details>
 <summary>Basic Operations</summary>
