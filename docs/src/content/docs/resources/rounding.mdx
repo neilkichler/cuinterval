@@ -16,16 +16,21 @@ import halfwayAbove from "@assets/rounding/rounding-to-nearest-one-error-halfway
 import halfwayBelow from "@assets/rounding/rounding-to-nearest-one-error-halfway-odd-below.webp";
 
 CuInterval makes use of the [built-in CUDA math functions](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#mathematical-functions-appendix) which use round-to-nearest-even.
-Since some math functions are not fully accurate up to machine presicion -- they do not conform to [IEEE754](https://en.wikipedia.org/wiki/IEEE_754) -- we have to perform additional outward rounding to cover the worst-cases of the specified maximum ulp-error of an intrinsic function.
+Since some math functions are not fully accurate up to machine presicion, they do not conform to [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754), we have to perform additional outward rounding to cover the worst-cases of the specified maximum [ulp](https://en.wikipedia.org/wiki/Unit_in_the_last_place)-error of an intrinsic function.
 
 :::note
 Outward rounding applies rounding towards -∞ for lower bounds and rounding towards +∞ for upper bounds.
-Since most math functions do not have corresponing operations that round towards ±∞, we make use of nextafter(x, ±∞). Sometimes, we know that the function is bounded (e.g., $$\exp(x) > 0$$). In those cases, we apply `nextafter(x, 0)` or similar tighter outward roundings whenever possible.
+Since most math functions in CUDA do not have corresponing operations that round towards ±∞, we make use of `nextafter(x, ±∞)`. Sometimes, we know that the function is bounded (e.g., $$\exp(x) > 0$$). In those cases, we apply `nextafter(x, 0)` or similar tighter outward roundings whenever possible.
 :::
 
 The CUDA math functions use round-to-nearest-even and thus pick the even floating point number if the number would land exactly between two floating point values, otherwise it picks the nearest available value between two floating point values.
 
-If the intrinsic function has a reported max. error of 1 ulp, then the resulting interval output will have a max. error of 2.5 ulps. To see why, let's look at all the scenarios that could be possible:
+We use the same maximum ulp error terminology as [CUDA](https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/mathematical-functions.html#cuda-c-mathematical-standard-library-functions):
+The maximum difference (in ulps) of the correctly rounded operation using round-to-nearest-ties-to-even
+and the obtained values from the implemented operation.
+
+If the intrinsic function has a reported max. error of 1 ulp, then the resulting interval output will have a max. error of 2 ulps compared to the correctly rounded operation and
+2.5 ulps compared to the real analytic value. To see why, let's look at all the scenarios that could be possible:
 
 <CardGrid columns="2">
   <ThemeImage src={evenLeft} alt="Rounding to nearest one error closer to even left." />
@@ -38,16 +43,36 @@ If the intrinsic function has a reported max. error of 1 ulp, then the resulting
   <ThemeImage src={halfwayBelow} alt="Rounding to nearest one error halfway below." />
 </CardGrid>
 
-We denote the absolute error from the true floating point value by $\Delta\text{ulp}$. A $\Delta\text{ulp}$ of 0.5 indicates that the value is 0.5 ulps away from the correct floating point value because it is not representable as, e.g., a 64 bit floating point number.
+We denote the absolute error from the true floating point value by $\Delta\text{ulp}$. A $\Delta\text{ulp}$ of 0.5 indicates that the value is 0.5 ulps away from the real analytic  value because it is not representable as, e.g., a 64-bit floating point number.
 
-:::caution[Conservative Rounding]
-This is rather conservative form of rounding.
+:::note[Conservative Rounding]
+This is a rather conservative form of rounding.
 Consider upper-bounding for the scenario in the bottom-right picture: It assumes that even if the output value is halfway between an odd value -1 (below) and an even value 0 (above) that it could end up landing at 1 (above) as the reference of CUDA does not specify anything beyond the max. error for most functions.
 The function output could, however, also land on -1, in which case we must round upwards once.
 Since we do not make any assumption as to when either scenario happens, rounding upwards is always performed, leading to
-a maximum error of 2.5 ulps.
+a maximum error of 2 ulps to the correctly rounded operation and 2.5 ulps to the real analytic value.
 :::
 
 So,
-$$|\inf(F_{\text{analytic}}(X)) - \inf(F(X))| \leq 2.5 \text{ ulps}$$
-is what we guarantee in this case.
+
+$$
+\begin{aligned}
+\bigl|\inf(F(X)) - \inf(\hat{F}(X))\bigr|
+    &\leq 2.5\ \text{ulps} \\
+\bigl|\sup(F(X)) - \sup(\hat{F}(X))\bigr|
+    &\leq 2.5\ \text{ulps}
+\end{aligned}
+$$
+
+is what we guarantee in this case, where $F$ is the analytic function
+and $\hat{F}$ represents the implemented interval operation.
+
+
+:::caution[Inclusion of real values]
+By default, no rigorous rounding is performed in the sense that it is guaranteed,
+that the true analytic result is contained in the resulting interval.
+It is only assured that the corresponding floating point representation of that
+real value is contained. It would require an additional rounding, which in
+the vast majority of scenarios would lead to unnecessary rounding. In the above scenario
+a max. ulp error of 3.5 ulps could occur.
+:::
