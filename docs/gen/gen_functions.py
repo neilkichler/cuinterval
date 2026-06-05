@@ -16,8 +16,11 @@ INCLUDE = ROOT / 'include' / 'cuinterval'
 FNAME = 'functions.toml'
 TOML = ROOT / 'docs' / 'gen' / FNAME
 
+# File where most operations are stored
+OP_FILE = 'operations.cuh'
+
 # Files to skip during extraction
-SKIP_FILES = {'intrinsic.cuh'}
+SKIP_FILES = {'intrinsics.cuh'}
 
 # Functions to skip during extraction
 SKIP_FUNCTIONS = {'quadrant', 'quadrant_pi'}
@@ -113,9 +116,9 @@ def parse_args(argtext: str):
 
 def parse_file(path: Path):
     original = path.read_text(encoding='utf-8')
-    # detect triple-line section headers in basic.cuh: three consecutive comment lines
+    # detect triple-line section headers: three consecutive comment lines
     sections = []  # list of (line_no, section_word)
-    if path.name == 'basic.cuh':
+    if path.name == OP_FILE:
         lines = original.splitlines()
         for i in range(0, len(lines) - 4):
             empty1 = lines[i].strip()
@@ -150,8 +153,8 @@ def parse_file(path: Path):
             'ret': map_type(ret),
             'source': f"{rel}#L{line_no}",
         }
-        # determine section group if in basic.cuh
-        if path.name == 'basic.cuh' and sections:
+        # determine section group if in operations file
+        if path.name == OP_FILE and sections:
             sec_name = None
             for sec_line, sec_word in sections:
                 if sec_line < line_no:
