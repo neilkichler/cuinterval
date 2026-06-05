@@ -1,5 +1,5 @@
-#ifndef CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
-#define CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
+#ifndef CUINTERVAL_ARITHMETIC_INTRINSICS_CUH
+#define CUINTERVAL_ARITHMETIC_INTRINSICS_CUH
 
 #include <bit>
 #include <cmath>
@@ -177,4 +177,4 @@ namespace cu::intrinsic
 // clang-format on
 } // namespace cu::intrinsic
 
-#endif // CUINTERVAL_ARITHMETIC_INTRINSIC_CUH
+#endif // CUINTERVAL_ARITHMETIC_INTRINSICS_CUH

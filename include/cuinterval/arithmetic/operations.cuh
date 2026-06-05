@@ -1,8 +1,8 @@
-#ifndef CUINTERVAL_ARITHMETIC_BASIC_CUH
-#define CUINTERVAL_ARITHMETIC_BASIC_CUH
+#ifndef CUINTERVAL_ARITHMETIC_OPERATIONS_CUH
+#define CUINTERVAL_ARITHMETIC_OPERATIONS_CUH
 
 #include <cuinterval/arithmetic/info.cuh>
-#include <cuinterval/arithmetic/intrinsic.cuh>
+#include <cuinterval/arithmetic/intrinsics.cuh>
 #include <cuinterval/interval.h>
 #include <cuinterval/numbers.h>
 
@@ -2083,4 +2083,4 @@ inline constexpr __device__ void mince(interval<T> x, interval<T> *xs, std::size
 
 } // namespace cu
 
-#endif // CUINTERVAL_ARITHMETIC_BASIC_CUH
+#endif // CUINTERVAL_ARITHMETIC_OPERATIONS_CUH
