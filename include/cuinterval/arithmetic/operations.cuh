@@ -59,7 +59,7 @@ inline constexpr __device__ interval<T> sub(interval<T> a, interval<T> b)
 template<typename T>
 inline constexpr __device__ interval<T> mul(interval<T> a, interval<T> b)
 {
-    using intrinsic::mul_down, intrinsic::mul_up;
+    using intrinsic::max, intrinsic::min, intrinsic::mul_down, intrinsic::mul_up;
 
     if (empty(a) || empty(b)) {
         return empty<T>();
@@ -104,7 +104,7 @@ inline constexpr __device__ interval<T> fma(interval<T> x, interval<T> y, interv
 template<typename T>
 inline constexpr __device__ interval<T> sqr(interval<T> x)
 {
-    using intrinsic::mul_down, intrinsic::mul_up;
+    using intrinsic::max, intrinsic::mul_down, intrinsic::mul_up;
 
     if (empty(x)) {
         return x;
@@ -219,7 +219,7 @@ inline constexpr __device__ interval<T> div(interval<T> x, interval<T> y)
 template<typename T>
 inline constexpr __device__ T mag(interval<T> x)
 {
-    using std::max, std::abs, intrinsic::nan;
+    using std::abs, std::max, intrinsic::nan;
 
     if (empty(x)) {
         return nan<T>();
@@ -231,7 +231,7 @@ inline constexpr __device__ T mag(interval<T> x)
 template<typename T>
 inline constexpr __device__ T mig(interval<T> x)
 {
-    using std::min, intrinsic::nan;
+    using std::abs, std::min, intrinsic::nan;
 
     if (empty(x)) {
         return nan<T>();
@@ -346,7 +346,7 @@ inline constexpr __device__ interval<T> operator+(interval<T> a, interval<T> b)
 template<typename T>
 inline constexpr __device__ interval<T> operator+(T a, interval<T> b)
 {
-    using intrinsic::add_down, intrinsic::add_up;
+    using std::isnan, intrinsic::add_down, intrinsic::add_up;
 
     if (isnan(a) || empty(b)) {
         return empty<T>();
@@ -400,7 +400,7 @@ inline constexpr __device__ interval<T> operator-(interval<T> a, interval<T> b)
 template<typename T>
 inline constexpr __device__ interval<T> operator-(T a, interval<T> b)
 {
-    using intrinsic::sub_down, intrinsic::sub_up;
+    using std::isnan, intrinsic::sub_down, intrinsic::sub_up;
 
     if (isnan(a) || empty(b)) {
         return empty<T>();
@@ -424,7 +424,7 @@ inline constexpr __device__ interval<T> operator-(std::integral auto a, interval
 template<typename T>
 inline constexpr __device__ interval<T> operator-(interval<T> a, T b)
 {
-    using intrinsic::sub_down, intrinsic::sub_up;
+    using std::isnan, intrinsic::sub_down, intrinsic::sub_up;
 
     if (empty(a) || isnan(b)) {
         return empty<T>();
@@ -459,7 +459,7 @@ inline constexpr __device__ interval<T> operator*(interval<T> a, interval<T> b)
 template<typename T>
 inline constexpr __device__ interval<T> operator*(T a, interval<T> b)
 {
-    using intrinsic::mul_down, intrinsic::mul_up;
+    using std::isnan, intrinsic::mul_down, intrinsic::mul_up;
 
     if (isnan(a) || empty(b)) {
         return empty<T>();
@@ -533,7 +533,8 @@ inline constexpr __device__ interval<T> operator/(std::integral auto a, interval
 template<typename T>
 inline constexpr __device__ interval<T> operator/(interval<T> a, T b)
 {
-    using intrinsic::div_down, intrinsic::div_up;
+    using std::isnan, intrinsic::div_down, intrinsic::div_up;
+
     constexpr auto zero = zero_v<T>;
     if (empty(a) || isnan(b) || b == zero) {
         return empty<T>();
