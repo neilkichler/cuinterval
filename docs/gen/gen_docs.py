@@ -43,6 +43,8 @@ for name, item in functions.items():
         'args': item.get('args', []),
         'ret': item.get('ret'),
         'ulp_error': item.get('ulp_error', 0),
+        'ulp_error_fp32': item.get('ulp_error_fp32', item.get('ulp_error', 0)),
+        'ulp_error_fp64': item.get('ulp_error_fp64', item.get('ulp_error', 0)),
         'code_name': item.get('code_name', name),
         'latex_name': item.get('latex_name', r'\mathrm{' + snake_to_camel(name) + "}"),
         'arg_names': item.get('arg_names', []),
@@ -85,13 +87,15 @@ if __name__ == '__main__':
     for k, v in supported.items():
         group = v['group']
         code_name = v['code_name']
-        groups_table[group][code_name] = {'inputs': '', 'output': '', 'error': 0, 'link': ''}
+        groups_table[group][code_name] = {'inputs': '', 'output': '', 'error': { 'fp32': 0, 'fp64': 0 }, 'link': ''}
 
     for name, v in supported.items():
         # Unpack fields explicitly to avoid relying on dict ordering
         args = v.get('args', [])
         ret = v.get('ret')
         ulp_error = v.get('ulp_error', 0)
+        ulp_error_fp32 = v.get('ulp_error_fp32', ulp_error)
+        ulp_error_fp64 = v.get('ulp_error_fp64', ulp_error)
         code_name = v.get('code_name')
         latex_name = v.get('latex_name')
         arg_names = v.get('arg_names', [])
@@ -135,10 +139,11 @@ if __name__ == '__main__':
         link_to_details = f"{base_path}/operations/{group.lower()}/#{code_name}"
         latex_inputs = "\\times".join(add_constraint(latex_type[arg], constraints[i]) for i,arg in enumerate(args))
         latex_output = add_constraint(latex_type[ret], constraints[-1])
+        errors = { 'fp32': ulp_error_fp32, 'fp64': ulp_error_fp64 }
         groups_table[group][code_name] = {
             'inputs': f"{latex_type[args[0]]}^{len(args)}" if len(set(args)) == 1 and len(args) > 1 else latex_inputs,
             'output': latex_output,
-            'error': ulp_error,
+            'error': errors,
             'link': link_to_details
         }
 
@@ -148,7 +153,7 @@ if __name__ == '__main__':
 
         details = f"""
 <FunctionDetails id="{code_name}">
-  <FunctionBrief error="{ulp_error}" slot="brief">
+  <FunctionBrief error={{ {errors} }} slot="brief">
     {brief}
   </FunctionBrief>
   
@@ -192,12 +197,12 @@ The error for a particular operation is given below.
 """
     for group_name, functions in groups_table.items():
         overview_buffer += f"## {group_name}\n\n"
-        overview_buffer += "| Operation | Function Description | Error [ulps] |\n"
-        overview_buffer += "|-----------|----------------------|--------------|\n"
+        overview_buffer += "| Operation | Function Description | FP32 Error [ulps] | FP64 Error [ulps] |\n"
+        overview_buffer += "|-----------|----------------------|-------------------|-------------------|\n"
         for func_name, func_info in functions.items():
             op = f"[{func_name}]({func_info['link']})"
             decl = f"${func_info['inputs']} \\rightarrow {func_info['output']}$"
-            overview_buffer += f"| {op:<80} | {decl:<40} | {func_info['error']} |\n"
+            overview_buffer += f"| {op:<80} | {decl:<40} | {func_info['error']['fp32']} | {func_info['error']['fp64']} |\n"
         overview_buffer += "\n"
 
 

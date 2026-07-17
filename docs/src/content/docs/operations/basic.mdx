@@ -23,7 +23,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="neg">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the additive inverse of the interval $$-x$$.
   </FunctionBrief>
   
@@ -44,7 +44,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="add">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval sum $$a + b$$.
   </FunctionBrief>
   
@@ -65,7 +65,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="sub">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval difference $$a - b$$.
   </FunctionBrief>
   
@@ -86,7 +86,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="mul">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval product $$a \times b$$.
   </FunctionBrief>
   
@@ -107,7 +107,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="div">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval quotient $$x / y$$.
   </FunctionBrief>
   
@@ -128,7 +128,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="recip">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the reciprocal interval $$1/x$$.
   </FunctionBrief>
   
@@ -149,7 +149,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="sqr">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval square $$x^2$$.
   </FunctionBrief>
   
@@ -170,7 +170,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="sqrt">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval square root $$\sqrt{x}$$.
   </FunctionBrief>
   
@@ -191,7 +191,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="fma">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the fused multiply-add $$x \cdot y + z$$.
   </FunctionBrief>
   
@@ -212,7 +212,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="mig">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the midpoint-inclusion generator for interval $$x$$.
   </FunctionBrief>
   
@@ -233,7 +233,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="mag">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the magnitude (maximum absolute value) of interval $$x$$.
   </FunctionBrief>
   
@@ -254,7 +254,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="rad">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the radius (half-width) of interval $$x$$.
   </FunctionBrief>
   
@@ -275,7 +275,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="abs">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the absolute value interval $$|x|$$.
   </FunctionBrief>
   
@@ -296,7 +296,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="min">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval minimum of $$x$$ and $$y$$.
   </FunctionBrief>
   
@@ -317,7 +317,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="max">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval maximum of $$x$$ and $$y$$.
   </FunctionBrief>
   
@@ -338,7 +338,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="cbrt">
-  <FunctionBrief error="1" slot="brief">
+  <FunctionBrief error={ {'fp32': 1, 'fp64': 1} } slot="brief">
     Returns the interval cube root $$\sqrt[3]{x}$$.
   </FunctionBrief>
   
@@ -359,7 +359,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="fabs">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval absolute value $$|x|$$.
   </FunctionBrief>
   
@@ -380,7 +380,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="fmax">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval maximum of $$x$$ and $$y$$.
   </FunctionBrief>
   
@@ -401,7 +401,7 @@ import {
 </FunctionDeclaration>
 
 <FunctionDetails id="fmin">
-  <FunctionBrief error="0" slot="brief">
+  <FunctionBrief error={ {'fp32': 0, 'fp64': 0} } slot="brief">
     Returns the interval minimum of $$x$$ and $$y$$.
   </FunctionBrief>
   

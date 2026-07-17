@@ -501,7 +501,8 @@ brief = 'Returns the interval $$\log(1 + x)$$.'
 [functions.sin]
 args = ['I']
 ret = 'I'
-ulp_error = 2
+ulp_error_fp32 = 2
+ulp_error_fp64 = 2
 code_name = 'sin'
 latex_name = '\sin'
 arg_names = ['x']
@@ -512,7 +513,8 @@ brief = 'Returns the interval sine $$\sin(x)$$.'
 [functions.cos]
 args = ['I']
 ret = 'I'
-ulp_error = 2
+ulp_error_fp32 = 2
+ulp_error_fp64 = 2
 code_name = 'cos'
 latex_name = '\cos'
 arg_names = ['x']
@@ -523,7 +525,8 @@ brief = 'Returns the interval cosine $$\cos(x)$$.'
 [functions.tan]
 args = ['I']
 ret = 'I'
-ulp_error = 3
+ulp_error_fp32 = 4
+ulp_error_fp64 = 2
 code_name = 'tan'
 latex_name = '\tan'
 arg_names = ['x']

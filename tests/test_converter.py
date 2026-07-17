@@ -21,6 +21,7 @@ B = 'B' # boolean
 T = 'T' # type
 N = 'N' # number
 
+# NOTE: Tests right now only cover FP64 based versions.
 supported = {
     "pos": {"args": [I], "ret": I, "ulp_error": 0},
     "neg": {"args": [I], "ret": I, "ulp_error": 0},

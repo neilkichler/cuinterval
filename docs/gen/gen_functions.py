@@ -9,7 +9,6 @@ Usage: python3 gen/gen_functions.py
 from pathlib import Path
 import re
 import sys
-import os
 
 ROOT = Path(__file__).resolve().parents[2]
 INCLUDE = ROOT / 'include' / 'cuinterval'
