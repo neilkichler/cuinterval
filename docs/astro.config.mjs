@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, envField } from "astro/config";
+import { unified } from '@astrojs/markdown-remark';
 import path from "node:path";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
@@ -33,8 +34,10 @@ export default defineConfig({
         },
     },
     markdown: {
-        remarkPlugins: [remarkMath],
-        rehypePlugins: [rehypeKatex],
+        processor: unified({
+            remarkPlugins: [remarkMath],
+            rehypePlugins: [rehypeKatex],
+        }),
     },
     integrations: [
         starlight({
