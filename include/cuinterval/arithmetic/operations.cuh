@@ -14,20 +14,6 @@
 namespace cu
 {
 
-// is not an interval
-template<typename T>
-inline constexpr __device__ __host__ bool isnai(interval<T> x)
-{
-    return x.lb != x.lb && x.ub != x.ub;
-}
-
-// is not a number is equivalent to isnai
-template<typename T>
-inline constexpr __device__ __host__ bool isnan(interval<T> x)
-{
-    return isnai(x);
-}
-
 //
 // Constant intervals
 //
@@ -710,6 +696,20 @@ inline constexpr __device__ __host__ bool isinf(interval<T> x)
 {
     using intrinsic::neg_inf, intrinsic::pos_inf;
     return x.lb == neg_inf<T>() || x.ub == pos_inf<T>();
+}
+
+// is not an interval
+template<typename T>
+inline constexpr __device__ __host__ bool isnai(interval<T> x)
+{
+    return x.lb != x.lb && x.ub != x.ub;
+}
+
+// is not a number is equivalent to isnai
+template<typename T>
+inline constexpr __device__ __host__ bool isnan(interval<T> x)
+{
+    return isnai(x);
 }
 
 template<typename T>
