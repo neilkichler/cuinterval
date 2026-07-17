@@ -66,18 +66,18 @@ namespace cu::intrinsic
     template<> inline __device__ double div_down  (double x, double y) { return __ddiv_rd(x, y); }
     template<> inline __device__ double div_up    (double x, double y) { return __ddiv_ru(x, y); }
     template<> inline __device__ double median    (double x, double y) { return (x + y) * .5; }
-    template<> inline __device__ double min       (double x, double y) { return fmin(x, y); }
-    template<> inline __device__ double max       (double x, double y) { return fmax(x, y); }
-    template<> inline __device__ double next_after(double x, double y) { return nextafter(x, y); }
+    template<> inline __device__ double min       (double x, double y) { return ::fmin(x, y); }
+    template<> inline __device__ double max       (double x, double y) { return ::fmax(x, y); }
+    template<> inline __device__ double next_after(double x, double y) { return ::nextafter(x, y); }
     template<> inline __device__ double rcp_down  (double x)           { return __drcp_rd(x); }
     template<> inline __device__ double rcp_up    (double x)           { return __drcp_ru(x); }
     template<> inline __device__ double sqrt_down (double x)           { return __dsqrt_rd(x); }
     template<> inline __device__ double sqrt_up   (double x)           { return __dsqrt_ru(x); }
-    template<> inline __device__ double int_down  (double x)           { return floor(x); }
-    template<> inline __device__ double int_up    (double x)           { return ceil(x); }
+    template<> inline __device__ double int_down  (double x)           { return ::floor(x); }
+    template<> inline __device__ double int_up    (double x)           { return ::ceil(x); }
     template<> inline __device__ double trunc     (double x)           { return ::trunc(x); }
-    template<> inline __device__ double round_away(double x)           { return round(x); }
-    template<> inline __device__ double round_even(double x)           { return nearbyint(x); }
+    template<> inline __device__ double round_away(double x)           { return ::round(x); }
+    template<> inline __device__ double round_even(double x)           { return ::nearbyint(x); }
     template<> inline __device__ double exp       (double x)           { return ::exp(x); }
     template<> inline __device__ double exp10     (double x)           { return ::exp10(x); }
     template<> inline __device__ double exp2      (double x)           { return ::exp2(x); }
@@ -98,18 +98,18 @@ namespace cu::intrinsic
     template<> inline __device__ float div_down   (float x, float y)   { return __fdiv_rd(x, y); }
     template<> inline __device__ float div_up     (float x, float y)   { return __fdiv_ru(x, y); }
     template<> inline __device__ float median     (float x, float y)   { return (x + y) * .5f; }
-    template<> inline __device__ float min        (float x, float y)   { return fminf(x, y); }
-    template<> inline __device__ float max        (float x, float y)   { return fmaxf(x, y); }
-    template<> inline __device__ float next_after (float x, float y)   { return nextafterf(x, y); }
+    template<> inline __device__ float min        (float x, float y)   { return ::fminf(x, y); }
+    template<> inline __device__ float max        (float x, float y)   { return ::fmaxf(x, y); }
+    template<> inline __device__ float next_after (float x, float y)   { return ::nextafterf(x, y); }
     template<> inline __device__ float rcp_down   (float x)            { return __frcp_rd(x); }
     template<> inline __device__ float rcp_up     (float x)            { return __frcp_ru(x); }
     template<> inline __device__ float sqrt_down  (float x)            { return __fsqrt_rd(x); }
     template<> inline __device__ float sqrt_up    (float x)            { return __fsqrt_ru(x); }
-    template<> inline __device__ float int_down   (float x)            { return floorf(x); }
-    template<> inline __device__ float int_up     (float x)            { return ceilf(x); }
-    template<> inline __device__ float trunc      (float x)            { return truncf(x); }
-    template<> inline __device__ float round_away (float x)            { return roundf(x); }
-    template<> inline __device__ float round_even (float x)            { return nearbyintf(x); }
+    template<> inline __device__ float int_down   (float x)            { return ::floorf(x); }
+    template<> inline __device__ float int_up     (float x)            { return ::ceilf(x); }
+    template<> inline __device__ float trunc      (float x)            { return ::truncf(x); }
+    template<> inline __device__ float round_away (float x)            { return ::roundf(x); }
+    template<> inline __device__ float round_even (float x)            { return ::nearbyintf(x); }
     template<> inline __device__ float exp        (float x)            { return ::expf(x); }
     template<> inline __device__ float exp10      (float x)            { return ::exp10f(x); }
     template<> inline __device__ float exp2       (float x)            { return ::exp2f(x); }
