@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Extract function information (argument types, ulp error, signature, etc.) from
-include headers and update functions.toml with args, arg_names, and ret fields.
+Extract function information (argument types, signature, etc.) from include
+headers and update functions.toml with args, arg_names, and ret fields.
 
 Usage: python3 gen/gen_functions.py
 """
