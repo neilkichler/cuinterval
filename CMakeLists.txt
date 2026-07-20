@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25.2)
 
 project(
     cuinterval
-    VERSION 0.3.0
+    VERSION 0.4.0
     DESCRIPTION "CUDA interval library"
     LANGUAGES CXX CUDA)
 
