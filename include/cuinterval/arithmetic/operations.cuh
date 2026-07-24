@@ -601,7 +601,8 @@ inline constexpr __device__ __host__ bool empty(interval<T> x)
 template<typename T>
 inline constexpr __device__ bool just_zero(interval<T> x)
 {
-    return x.lb == 0 && x.ub == 0;
+    constexpr T zero {};
+    return x.lb == zero && x.ub == zero;
 }
 
 template<typename T>
