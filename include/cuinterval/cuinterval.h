@@ -6,5 +6,6 @@
 #include <cuinterval/compare.h>
 #include <cuinterval/interval.h>
 #include <cuinterval/numbers.h>
+#include <cuinterval/traits.h>
 
 #endif // CUINTERVAL_H

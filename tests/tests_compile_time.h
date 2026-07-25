@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cuinterval/interval.h>
+#include <cuinterval/traits.h>
 
 #include <concepts>
 

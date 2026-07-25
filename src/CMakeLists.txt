@@ -10,6 +10,7 @@ set(headers
     "${LIB_PATH}/format.h"
     "${LIB_PATH}/numbers.h"
     "${LIB_PATH}/limits.h"
+    "${LIB_PATH}/traits.h"
 )
 
 add_library(cuinterval "main.cu" ${headers})
