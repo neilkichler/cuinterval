@@ -52,8 +52,6 @@ namespace cu::intrinsic
     template<typename T> inline __device__ T exp10     (T x);
     template<typename T> inline __device__ T exp2      (T x);
     template<typename T> inline __device__ __host__ T nan();
-    template<typename T> inline __device__ T pos_inf();
-    template<typename T> inline __device__ T neg_inf();
     template<typename T> inline __device__ T next_floating(T x);
     template<typename T> inline __device__ T prev_floating(T x);
 
@@ -84,10 +82,8 @@ namespace cu::intrinsic
     template<> inline __device__ double exp10     (double x)           { return ::exp10(x); }
     template<> inline __device__ double exp2      (double x)           { return ::exp2(x); }
     template<> inline __device__ __host__ double nan()                 { return ::nan(""); }
-    template<> inline __device__ double neg_inf() { return __longlong_as_double(0xfff0000000000000ull); }
-    template<> inline __device__ double pos_inf() { return __longlong_as_double(0x7ff0000000000000ull); }
-    template<> inline __device__ double next_floating(double x)        { return nextafter(x, intrinsic::pos_inf<double>()); }
-    template<> inline __device__ double prev_floating(double x)        { return nextafter(x, intrinsic::neg_inf<double>()); }
+    template<> inline __device__ double next_floating(double x)        { return nextafter(x, std::numeric_limits<double>::infinity()); }
+    template<> inline __device__ double prev_floating(double x)        { return nextafter(x, -std::numeric_limits<double>::infinity()); }
 
     template<> inline __device__ float fma_down   (float x, float y, float z) { return __fmaf_rd(x, y, z); }    
     template<> inline __device__ float fma_up     (float x, float y, float z) { return __fmaf_ru(x, y, z); } 
@@ -116,10 +112,8 @@ namespace cu::intrinsic
     template<> inline __device__ float exp10      (float x)            { return ::exp10f(x); }
     template<> inline __device__ float exp2       (float x)            { return ::exp2f(x); }
     template<> inline __device__ __host__ float nan()                  { return ::nanf(""); }
-    template<> inline __device__ float neg_inf() { return __int_as_float(0xff800000); }
-    template<> inline __device__ float pos_inf() { return __int_as_float(0x7f800000); }
-    template<> inline __device__ float next_floating(float x)          { return nextafterf(x, intrinsic::pos_inf<float>()); }
-    template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
+    template<> inline __device__ float next_floating(float x)          { return nextafterf(x, std::numeric_limits<float>::infinity()); }
+    template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, -std::numeric_limits<float>::infinity()); }
 
     // For an unknown type the default is to use the regular version of the function
     template<typename T> inline __device__ T add_down  (T x, T y) { return x + y; }
@@ -169,12 +163,6 @@ namespace cu::intrinsic
     template<typename T> inline __device__ interval<T> rcp_up    (interval<T> x)                { return recip(x); }
     template<typename T> inline __device__ interval<T> sqrt_down (interval<T> x)                { return sqrt(x); }
     template<typename T> inline __device__ interval<T> sqrt_up   (interval<T> x)                { return sqrt(x); }
-
-    template<> inline __device__ interval<float> neg_inf<interval<float>>() { return neg_inf<float>(); }
-    template<> inline __device__ interval<float> pos_inf<interval<float>>() { return pos_inf<float>(); }
-
-    template<> inline __device__ interval<double> neg_inf<interval<double>>() { return neg_inf<double>(); }
-    template<> inline __device__ interval<double> pos_inf<interval<double>>() { return pos_inf<double>(); }
 
     template<std::floating_point T = double>
     inline constexpr __device__ T round_towards(T x, T to, unsigned int n)

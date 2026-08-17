@@ -14,6 +14,20 @@
 namespace cu
 {
 
+// internal helper to get -infinity
+template<typename T>
+inline constexpr __device__ __host__ T neg_inf()
+{
+    return -std::numeric_limits<T>::infinity();
+}
+
+// internal helper to get +infinity
+template<typename T>
+inline constexpr __device__ __host__ T pos_inf()
+{
+    return std::numeric_limits<T>::infinity();
+}
+
 //
 // Constant intervals
 //
@@ -21,14 +35,12 @@ namespace cu
 template<typename T>
 inline constexpr __device__ interval<T> empty()
 {
-    using intrinsic::neg_inf, intrinsic::pos_inf;
     return { pos_inf<T>(), neg_inf<T>() };
 }
 
 template<typename T>
 inline constexpr __device__ interval<T> entire()
 {
-    using intrinsic::neg_inf, intrinsic::pos_inf;
     return { neg_inf<T>(), pos_inf<T>() };
 }
 
@@ -140,7 +152,7 @@ inline constexpr __device__ interval<T> cbrt(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> recip(interval<T> a)
 {
-    using intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::rcp_up, intrinsic::rcp_down;
+    using intrinsic::rcp_up, intrinsic::rcp_down;
 
     if (empty(a)) {
         return a;
@@ -166,7 +178,7 @@ inline constexpr __device__ interval<T> recip(interval<T> a)
 template<typename T>
 inline constexpr __device__ interval<T> div(interval<T> x, interval<T> y)
 {
-    using intrinsic::div_down, intrinsic::div_up, intrinsic::pos_inf, intrinsic::neg_inf;
+    using intrinsic::div_down, intrinsic::div_up;
 
     if (empty(x) || empty(y) || (y.lb == 0 && y.ub == 0)) {
         return empty<T>();
@@ -247,7 +259,7 @@ inline constexpr __device__ T mig(interval<T> x)
 template<typename T>
 inline constexpr __device__ T rad(interval<T> x)
 {
-    using intrinsic::nan, intrinsic::pos_inf;
+    using intrinsic::nan;
 
     if (empty(x)) {
         return nan<T>();
@@ -614,14 +626,12 @@ inline constexpr __device__ __host__ bool contains(interval<T> x, T y)
 template<typename T>
 inline constexpr __device__ bool entire(interval<T> x)
 {
-    using intrinsic::neg_inf, intrinsic::pos_inf;
     return neg_inf<T>() == x.lb && pos_inf<T>() == x.ub;
 }
 
 template<typename T>
 inline constexpr __device__ bool bounded(interval<T> x)
 {
-    using intrinsic::neg_inf, intrinsic::pos_inf;
     // return (isfinite(x.lb) && isfinite(x.ub)) || empty(x);
     // if empty is given by +inf,-inf then the below is true
     return x.lb > neg_inf<T>() && x.ub < pos_inf<T>();
@@ -695,7 +705,6 @@ inline constexpr __device__ bool strict_precedes(interval<T> a, interval<T> b)
 template<typename T>
 inline constexpr __device__ __host__ bool isinf(interval<T> x)
 {
-    using intrinsic::neg_inf, intrinsic::pos_inf;
     return x.lb == neg_inf<T>() || x.ub == pos_inf<T>();
 }
 
@@ -1061,7 +1070,7 @@ inline constexpr __device__ interval<T> scalbn(interval<T> x, int n)
 template<typename T>
 inline constexpr __device__ interval<T> log(interval<T> x)
 {
-    using std::log, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
+    using std::log, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x) || sup(x) == 0) {
         return empty<T>();
@@ -1082,7 +1091,7 @@ inline constexpr __device__ interval<T> log2(interval<T> x)
         return empty<T>();
     }
 
-    auto z = intersection(x, { zero_v<T>, intrinsic::pos_inf<T>() });
+    auto z = intersection(x, { zero_v<T>, pos_inf<T>() });
 
     constexpr int n = info::log2<T>::max_ulp_error;
     return { (x.lb != 1) * round_down<n>(log2(z.lb)),
@@ -1098,7 +1107,7 @@ inline constexpr __device__ interval<T> log10(interval<T> x)
         return empty<T>();
     }
 
-    auto z = intersection(x, { zero_v<T>, intrinsic::pos_inf<T>() });
+    auto z = intersection(x, { zero_v<T>, pos_inf<T>() });
 
     constexpr int n = info::log10<T>::max_ulp_error;
     return { (x.lb != 1) * round_down<n>(log10(z.lb)),
@@ -1108,7 +1117,7 @@ inline constexpr __device__ interval<T> log10(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> log1p(interval<T> x)
 {
-    using std::log1p, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
+    using std::log1p, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x) || sup(x) == -1) {
         return empty<T>();
@@ -1123,7 +1132,7 @@ inline constexpr __device__ interval<T> log1p(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> logb(interval<T> x)
 {
-    using std::logb, std::max, intrinsic::neg_inf;
+    using std::logb, std::max;
 
     constexpr T zero = zero_v<T>;
 
@@ -1141,7 +1150,7 @@ inline constexpr __device__ interval<T> logb(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> pown(interval<T> x, std::integral auto n)
 {
-    using intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
+    using intrinsic::round_down, intrinsic::round_up;
 
     auto pow = [](T x, std::integral auto n) -> T {
         // The default std::pow implementation returns a double for std::pow(float, int).
@@ -1253,7 +1262,7 @@ inline constexpr __device__ interval<T> pow_(interval<T> x, T y)
 template<typename T>
 inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto n)
 {
-    using std::pow, intrinsic::neg_inf, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
+    using std::pow, intrinsic::round_down, intrinsic::round_up;
 
     if (n == 0) {
         return empty<T>();
@@ -1310,8 +1319,6 @@ inline constexpr __device__ interval<T> rootn(interval<T> x, std::integral auto 
 template<typename T>
 inline constexpr __device__ interval<T> pow(interval<T> x, interval<T> y)
 {
-    using intrinsic::pos_inf;
-
     if (empty(y)) {
         return empty<T>();
     }
@@ -1778,7 +1785,7 @@ inline constexpr __device__ interval<T> atan2(interval<T> y, interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cot(interval<T> x)
 {
-    using intrinsic::neg_inf, intrinsic::round_down, intrinsic::round_up;
+    using intrinsic::round_down, intrinsic::round_up;
 
     auto cot = [](T x) -> T { using std::tan; return 1 / tan(x); };
 
@@ -1840,13 +1847,13 @@ inline constexpr __device__ interval<T> sinh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> cosh(interval<T> x)
 {
-    using std::cosh, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
+    using std::cosh, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
     }
 
-    interval<T> range { one_v<T>, intrinsic::pos_inf<T>() };
+    interval<T> range { one_v<T>, pos_inf<T>() };
 
     constexpr int n = info::cosh<T>::max_ulp_error;
     return { round_down<n>(cosh(mig(x)), range.lb), round_up<n>(cosh(mag(x)), range.ub) };
@@ -1881,7 +1888,7 @@ inline constexpr __device__ interval<T> asinh(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> acosh(interval<T> x)
 {
-    using std::acosh, intrinsic::pos_inf, intrinsic::round_down, intrinsic::round_up;
+    using std::acosh, intrinsic::round_down, intrinsic::round_up;
 
     if (empty(x)) {
         return x;
@@ -1937,8 +1944,8 @@ inline constexpr __device__ interval<T> coth(interval<T> a)
     using namespace intrinsic;
     using std::expm1;
 
-    constexpr T zero = 0.;
-    constexpr T one  = 1.;
+    constexpr T zero = zero_v<T>;
+    constexpr T one  = one_v<T>;
     constexpr T inf  = std::numeric_limits<T>::infinity();
 
     auto coth_down = [](T x) {
@@ -2031,8 +2038,8 @@ inline constexpr __device__ split<T> bisect(interval<T> x, T split_ratio)
     }
 
     T split_point;
-    T type_min = intrinsic::neg_inf<T>();
-    T type_max = intrinsic::pos_inf<T>();
+    T type_min = neg_inf<T>();
+    T type_max = pos_inf<T>();
 
     using intrinsic::next_floating, intrinsic::prev_floating;
 
