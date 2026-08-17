@@ -24,7 +24,7 @@ file_header = """\
 
 """
 
-combined_headers = set()
+combined_headers: set[str] = set()
 
 # Adjust patterns to your needs
 internal_include_parser = re.compile(r"\s*#include <(cuinterval/.*)>.*")
@@ -40,9 +40,9 @@ def combine_files(out, filename: str) -> int:
     combined_headers.add(filename)
 
     # Collect lines that are not internal #includes
-    code_lines = []
+    code_lines: list[str] = []
     # Collect the list of internal includes for recursion
-    includes = []
+    includes: list[str] = []
 
     n_combined = 1  # Counting this file
 
@@ -89,15 +89,14 @@ def latest_commit_hash(repo_path="."):
     result = subprocess.run(
         ["git", "rev-parse", "origin/main"],
         cwd=repo_path,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         text=True,
         check=True,
     )
     return result.stdout.strip()
 
 
-def project_version(filepath):
+def project_version(filepath: str):
     with open(filepath, "r") as file:
         content = file.read()
 
@@ -115,8 +114,8 @@ def project_version(filepath):
 
 def formatted_file_header():
     return file_header.format(
-        generation_time=datetime.datetime.now().isoformat(timespec="minutes"),
-        year=datetime.date.today().year,
+        generation_time=datetime.datetime.now(tz=datetime.timezone.utc).isoformat(timespec="minutes"),
+        year=datetime.datetime.now(tz=datetime.timezone.utc).year,
         commit_hash=latest_commit_hash(),
         version=project_version("CMakeLists.txt"),
     )
