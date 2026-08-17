@@ -20,6 +20,7 @@
 
 #include <cuinterval/format.h>
 #include <cuinterval/interval.h>
+#include <cuinterval/compare.h>
 
 #include <cmath>
 #include <format>
@@ -109,7 +110,7 @@ void check_all_equal(T *h_res, std::span<T, N> h_ref, int max_ulps_diff, std::st
 
                     error_msg << std::hexfloat;
                     show_inputs(error_msg, std::forward<Args>(args)[i]...);
-                    error_msg << "=" << std::defaultfloat;
+                    error_msg << "     =" << std::defaultfloat;
                     show_inputs(error_msg, std::forward<Args>(args)[i]...);
                 }
                 overall_success &= case_success;

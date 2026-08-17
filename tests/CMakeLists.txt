@@ -23,6 +23,9 @@ add_executable(tests
     tests_loop.h
     tests_loop.cu
     tests_loop.cpp
+    tests_nested.h
+    tests_nested.cu
+    tests_nested.cpp
     tests_operator_overloading.h
     tests_operator_overloading.cu
     tests_pow.h

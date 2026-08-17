@@ -1,6 +1,8 @@
 #ifndef CUINTERVAL_ARITHMETIC_INTRINSICS_CUH
 #define CUINTERVAL_ARITHMETIC_INTRINSICS_CUH
 
+#include <cuinterval/interval.h>
+
 #include <bit>
 #include <cmath>
 #include <concepts>
@@ -118,6 +120,61 @@ namespace cu::intrinsic
     template<> inline __device__ float pos_inf() { return __int_as_float(0x7f800000); }
     template<> inline __device__ float next_floating(float x)          { return nextafterf(x, intrinsic::pos_inf<float>()); }
     template<> inline __device__ float prev_floating(float x)          { return nextafterf(x, intrinsic::neg_inf<float>()); }
+
+    // For an unknown type the default is to use the regular version of the function
+    template<typename T> inline __device__ T add_down  (T x, T y) { return x + y; }
+    template<typename T> inline __device__ T add_up    (T x, T y) { return x + y; }
+    template<typename T> inline __device__ T sub_down  (T x, T y) { return x - y; }
+    template<typename T> inline __device__ T sub_up    (T x, T y) { return x - y; }
+    template<typename T> inline __device__ T mul_down  (T x, T y) { return x * y; }
+    template<typename T> inline __device__ T mul_up    (T x, T y) { return x * y; }
+    template<typename T> inline __device__ T div_down  (T x, T y) { return x / y; }
+    template<typename T> inline __device__ T div_up    (T x, T y) { return x / y; }
+    template<typename T> inline __device__ T rcp_down  (T x)      { return recip(x); }
+    template<typename T> inline __device__ T rcp_up    (T x)      { return recip(x); }
+    template<typename T> inline __device__ T sqrt_down (T x)      { return sqrt(x); }
+    template<typename T> inline __device__ T sqrt_up   (T x)      { return sqrt(x); }
+
+    using cu::interval;
+
+    template<typename T> inline __device__ interval<T> fma_down(interval<T> x, interval<T> y, interval<T> z) {
+        interval<T> res;
+        res.lb = min(min(fma_down(x.lb, y.lb, z.lb), fma_down(x.lb, y.ub, z.lb)),
+                     min(fma_down(x.ub, y.lb, z.lb), fma_down(x.ub, y.ub, z.lb)));
+
+        res.ub = max(max(fma_up(x.lb, y.lb, z.ub), fma_up(x.lb, y.ub, z.ub)),
+                     max(fma_up(x.ub, y.lb, z.ub), fma_up(x.ub, y.ub, z.ub)));
+        return res;
+    }
+
+    template<typename T> inline __device__ interval<T> fma_up(interval<T> x, interval<T> y, interval<T> z) {
+        interval<double> res;
+        res.lb = min(min(fma_down(x.lb, y.lb, z.lb), fma_down(x.lb, y.ub, z.lb)),
+                     min(fma_down(x.ub, y.lb, z.lb), fma_down(x.ub, y.ub, z.lb)));
+
+        res.ub = max(max(fma_up(x.lb, y.lb, z.ub), fma_up(x.lb, y.ub, z.ub)),
+                     max(fma_up(x.ub, y.lb, z.ub), fma_up(x.ub, y.ub, z.ub)));
+        return res;
+    }
+
+    template<typename T> inline __device__ interval<T> add_down  (interval<T> x, interval<T> y) { return x + y; }
+    template<typename T> inline __device__ interval<T> add_up    (interval<T> x, interval<T> y) { return x + y; }
+    template<typename T> inline __device__ interval<T> sub_down  (interval<T> x, interval<T> y) { return x - y; }
+    template<typename T> inline __device__ interval<T> sub_up    (interval<T> x, interval<T> y) { return x - y; }
+    template<typename T> inline __device__ interval<T> mul_down  (interval<T> x, interval<T> y) { return x * y; }
+    template<typename T> inline __device__ interval<T> mul_up    (interval<T> x, interval<T> y) { return x * y; }
+    template<typename T> inline __device__ interval<T> div_down  (interval<T> x, interval<T> y) { return x / y; }
+    template<typename T> inline __device__ interval<T> div_up    (interval<T> x, interval<T> y) { return x / y; }
+    template<typename T> inline __device__ interval<T> rcp_down  (interval<T> x)                { return recip(x); }
+    template<typename T> inline __device__ interval<T> rcp_up    (interval<T> x)                { return recip(x); }
+    template<typename T> inline __device__ interval<T> sqrt_down (interval<T> x)                { return sqrt(x); }
+    template<typename T> inline __device__ interval<T> sqrt_up   (interval<T> x)                { return sqrt(x); }
+
+    template<> inline __device__ interval<float> neg_inf<interval<float>>() { return neg_inf<float>(); }
+    template<> inline __device__ interval<float> pos_inf<interval<float>>() { return pos_inf<float>(); }
+
+    template<> inline __device__ interval<double> neg_inf<interval<double>>() { return neg_inf<double>(); }
+    template<> inline __device__ interval<double> pos_inf<interval<double>>() { return pos_inf<double>(); }
 
     template<std::floating_point T = double>
     inline constexpr __device__ T round_towards(T x, T to, unsigned int n)

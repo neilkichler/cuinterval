@@ -3,6 +3,7 @@
 #include "tests_bisect.h"
 #include "tests_common.h"
 #include "tests_loop.h"
+#include "tests_nested.h"
 #include "tests_operator_overloading.h"
 #include "tests_pow.h"
 #include "tests_rounding.h"
@@ -32,6 +33,8 @@ void tests_additional(cuda_buffers buffers, cuda_streams streams, cuda_events ev
             tests_pow(streams[2], events[2]);
             #pragma omp task depend(inout:buffers[3].host,buffers[3].device)
             tests_rounding(streams[3], events[3]);
+            #pragma omp task depend(inout:buffers[0].host,buffers[0].device)
+            tests_nested(streams[0], events[0]);
         }
     }
 }
