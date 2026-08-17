@@ -34,7 +34,6 @@ namespace cu::intrinsic
     template<typename T> inline __device__ T mul_up    (T x, T y);
     template<typename T> inline __device__ T div_down  (T x, T y);
     template<typename T> inline __device__ T div_up    (T x, T y);
-    template<typename T> inline __device__ T median    (T x, T y);
     template<typename T> inline __device__ T min       (T x, T y);
     template<typename T> inline __device__ T max       (T x, T y);
     template<typename T> inline __device__ T next_after(T x, T y);
@@ -65,7 +64,6 @@ namespace cu::intrinsic
     template<> inline __device__ double mul_up    (double x, double y) { return __dmul_ru(x, y); }
     template<> inline __device__ double div_down  (double x, double y) { return __ddiv_rd(x, y); }
     template<> inline __device__ double div_up    (double x, double y) { return __ddiv_ru(x, y); }
-    template<> inline __device__ double median    (double x, double y) { return (x + y) * .5; }
     template<> inline __device__ double min       (double x, double y) { return ::fmin(x, y); }
     template<> inline __device__ double max       (double x, double y) { return ::fmax(x, y); }
     template<> inline __device__ double next_after(double x, double y) { return ::nextafter(x, y); }
@@ -95,7 +93,6 @@ namespace cu::intrinsic
     template<> inline __device__ float mul_up     (float x, float y)   { return __fmul_ru(x, y); }
     template<> inline __device__ float div_down   (float x, float y)   { return __fdiv_rd(x, y); }
     template<> inline __device__ float div_up     (float x, float y)   { return __fdiv_ru(x, y); }
-    template<> inline __device__ float median     (float x, float y)   { return (x + y) * .5f; }
     template<> inline __device__ float min        (float x, float y)   { return ::fminf(x, y); }
     template<> inline __device__ float max        (float x, float y)   { return ::fmaxf(x, y); }
     template<> inline __device__ float next_after (float x, float y)   { return ::nextafterf(x, y); }
