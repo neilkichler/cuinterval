@@ -128,7 +128,7 @@ namespace cu::intrinsic
 
     using cu::interval;
 
-    template<typename T> inline __device__ interval<T> fma_down(interval<T> x, interval<T> y, interval<T> z) {
+    template<typename T> inline __device__ interval<T> fma_interval(interval<T> x, interval<T> y, interval<T> z) {
         interval<T> res;
         res.lb = min(min(fma_down(x.lb, y.lb, z.lb), fma_down(x.lb, y.ub, z.lb)),
                      min(fma_down(x.ub, y.lb, z.lb), fma_down(x.ub, y.ub, z.lb)));
@@ -138,15 +138,11 @@ namespace cu::intrinsic
         return res;
     }
 
-    template<typename T> inline __device__ interval<T> fma_up(interval<T> x, interval<T> y, interval<T> z) {
-        interval<double> res;
-        res.lb = min(min(fma_down(x.lb, y.lb, z.lb), fma_down(x.lb, y.ub, z.lb)),
-                     min(fma_down(x.ub, y.lb, z.lb), fma_down(x.ub, y.ub, z.lb)));
+    template<> inline __device__ interval<double> fma_down(interval<double> x, interval<double> y, interval<double> z) { return fma_interval(x, y, z); }
+    template<> inline __device__ interval<double> fma_up  (interval<double> x, interval<double> y, interval<double> z) { return fma_interval(x, y, z); }
 
-        res.ub = max(max(fma_up(x.lb, y.lb, z.ub), fma_up(x.lb, y.ub, z.ub)),
-                     max(fma_up(x.ub, y.lb, z.ub), fma_up(x.ub, y.ub, z.ub)));
-        return res;
-    }
+    template<> inline __device__ interval<float> fma_down(interval<float> x, interval<float> y, interval<float> z) { return fma_interval(x, y, z); }
+    template<> inline __device__ interval<float> fma_up  (interval<float> x, interval<float> y, interval<float> z) { return fma_interval(x, y, z); }
 
     template<typename T> inline __device__ interval<T> add_down  (interval<T> x, interval<T> y) { return x + y; }
     template<typename T> inline __device__ interval<T> add_up    (interval<T> x, interval<T> y) { return x + y; }
