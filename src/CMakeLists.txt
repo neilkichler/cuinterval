@@ -5,6 +5,7 @@ set(headers
     "${LIB_PATH}/arithmetic/info.cuh"
     "${LIB_PATH}/arithmetic/intrinsics.cuh"
     "${LIB_PATH}/arithmetic/operations.cuh"
+    "${LIB_PATH}/arithmetic/operations.h"
     "${LIB_PATH}/compare.h"
     "${LIB_PATH}/cuinterval.h"
     "${LIB_PATH}/format.h"

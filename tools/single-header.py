@@ -66,6 +66,8 @@ def combine_files(out, filename: str) -> int:
             # Match internal #include
             m = internal_include_parser.match(line)
             if m:
+                out.writelines(code_lines)
+                code_lines.clear()
                 includes.append(m.group(1))
             else:
                 # Non-include lines go into a buffer, to be written after recursion
