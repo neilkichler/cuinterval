@@ -161,26 +161,14 @@ struct intrinsics<interval<T>>
 
 namespace cu::intrinsic
 {
-    #define ROUNDED_OP(OP) \
-        template<numeric T> inline __device__ T OP ## _down(const T &x, typename T::value_type y); \
-        template<numeric T> inline __device__ T OP ## _up  (const T &x, typename T::value_type y); \
-        template<numeric T> inline __device__ T OP ## _down(typename T::value_type x, const T &y); \
-        template<numeric T> inline __device__ T OP ## _up  (typename T::value_type x, const T &y); \
-
-    ROUNDED_OP(add)
-    ROUNDED_OP(sub)
-    ROUNDED_OP(mul)
-
-    #undef ROUNDED_OP
-
     template<numeric T> inline __device__ T fma_down  (T x, T y, T z) { return cu::intrinsics<T>::fma_down(x, y, z); }
     template<numeric T> inline __device__ T fma_up    (T x, T y, T z) { return cu::intrinsics<T>::fma_up(x, y, z); }
-    template<numeric T> inline __device__ T add_down  (T x, T y)      { return cu::intrinsics<T>::add_down(x, y); }
-    template<numeric T> inline __device__ T add_up    (T x, T y)      { return cu::intrinsics<T>::add_up(x, y); }
-    template<numeric T> inline __device__ T sub_down  (T x, T y)      { return cu::intrinsics<T>::sub_down(x, y); }
-    template<numeric T> inline __device__ T sub_up    (T x, T y)      { return cu::intrinsics<T>::sub_up(x, y); }
-    template<numeric T> inline __device__ T mul_down  (T x, T y)      { return cu::intrinsics<T>::mul_down(x, y); }
-    template<numeric T> inline __device__ T mul_up    (T x, T y)      { return cu::intrinsics<T>::mul_up(x, y); }
+    template<numeric X, numeric Y = X> inline constexpr __device__ auto add_down(X x, Y y) { return cu::intrinsics<X, Y>::add_down(x, y); }
+    template<numeric X, numeric Y = X> inline constexpr __device__ auto add_up  (X x, Y y) { return cu::intrinsics<X, Y>::add_up(x, y); }
+    template<numeric X, numeric Y = X> inline constexpr __device__ auto sub_down(X x, Y y) { return cu::intrinsics<X, Y>::sub_down(x, y); }
+    template<numeric X, numeric Y = X> inline constexpr __device__ auto sub_up  (X x, Y y) { return cu::intrinsics<X, Y>::sub_up(x, y); }
+    template<numeric X, numeric Y = X> inline constexpr __device__ auto mul_down(X x, Y y) { return cu::intrinsics<X, Y>::mul_down(x, y); }
+    template<numeric X, numeric Y = X> inline constexpr __device__ auto mul_up  (X x, Y y) { return cu::intrinsics<X, Y>::mul_up(x, y); }
     template<numeric T> inline __device__ T div_down  (T x, T y)      { return cu::intrinsics<T>::div_down(x, y); }
     template<numeric T> inline __device__ T div_up    (T x, T y)      { return cu::intrinsics<T>::div_up(x, y); }
     template<numeric T> inline __device__ T min       (T x, T y)      { return cu::intrinsics<T>::min(x, y); }
