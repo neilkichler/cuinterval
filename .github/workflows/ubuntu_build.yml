@@ -2,7 +2,9 @@ name: CUDA Build in Ubuntu Docker images
 
 on:
   push:
-    branches: main
+    branches-ignore:
+      - header-only
+      - single-header
 
 jobs:
   build:
