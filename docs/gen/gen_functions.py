@@ -22,7 +22,7 @@ OP_FILE = 'operations.cuh'
 SKIP_FILES = {'intrinsics.cuh'}
 
 # Functions to skip during extraction
-SKIP_FUNCTIONS = {'quadrant', 'quadrant_pi'}
+SKIP_FUNCTIONS = {'neg_inf', 'pos_inf', 'quadrant', 'quadrant_pi'}
 
 try:
     import tomllib

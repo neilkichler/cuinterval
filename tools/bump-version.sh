@@ -35,6 +35,12 @@ sed -i "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/${VERSION}/g" "${README_FILE}"
 # Replace version without 'v' prefix (for package managers like CPMAddPackage)
 sed -i "s/@[0-9]\+\.[0-9]\+\.[0-9]\+/@${CLEAN_VERSION}/g" "${README_FILE}"
 
+# Update documentation
+cd docs
+pnpm update
+pnpm run build
+cd ..
+
 # Add changes to git and commit
 git -C "$BASE_DIR" add "${ENV_FILE}" "${CMAKE_FILE}" "${README_FILE}"
 git -C "$BASE_DIR" commit -m "bump version to ${VERSION}"

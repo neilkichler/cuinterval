@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e # exit as soon as an error is raised
 base_path=$(CDPATH='' cd -- "$(dirname -- "$0")/../" && pwd -P)
 doc_path="$base_path/src/content/docs"
 gen_path="$base_path/gen"
