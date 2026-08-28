@@ -4,6 +4,7 @@ set(LIB_PATH "${INCLUDE_PATH}/cuinterval")
 set(headers 
     "${LIB_PATH}/arithmetic/info.cuh"
     "${LIB_PATH}/arithmetic/intrinsics.cuh"
+    "${LIB_PATH}/arithmetic/intrinsics_api.h"
     "${LIB_PATH}/arithmetic/operations.cuh"
     "${LIB_PATH}/arithmetic/operations.h"
     "${LIB_PATH}/compare.h"
