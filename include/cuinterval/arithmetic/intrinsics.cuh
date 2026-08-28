@@ -209,13 +209,13 @@ namespace cu::intrinsic
     template<int N = 1, numeric T = double>
     inline constexpr __device__ T round_down(T x, T to = -std::numeric_limits<T>::infinity())
     {
-        return cu::intrinsic::round_towards_(x, to, N);
+        return cu::intrinsics<T>::round_towards(x, to, N);
     }
 
     template<int N = 1, numeric T = double>
     inline constexpr __device__ T round_up(T x, T to = std::numeric_limits<T>::infinity())
     {
-        return cu::intrinsic::round_towards_(x, to, N);
+        return cu::intrinsics<T>::round_towards(x, to, N);
     }
 
 } // namespace cu::intrinsic
