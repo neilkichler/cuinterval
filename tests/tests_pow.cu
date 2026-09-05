@@ -20,8 +20,19 @@ struct pow_fn
     }
 };
 
+template<typename T>
+struct signpow_fn
+{
+    template<typename I>
+    __device__ I operator()(const I &x, T n) const
+    {
+        using cu::signpow;
+        return signpow(x, n);
+    }
+};
+
 template<typename ET>
-std::vector<interval<float>> compute_pow(cudaStream_t stream, std::vector<interval<float>> xs, std::vector<ET> exponents)
+std::vector<interval<float>> compute(auto &&f, cudaStream_t stream, std::vector<interval<float>> xs, std::vector<ET> exponents)
 {
     using T = float;
     using I = interval<T>;
@@ -33,12 +44,27 @@ std::vector<interval<float>> compute_pow(cudaStream_t stream, std::vector<interv
     thrust::device_vector<I> d_res(n);
     thrust::device_vector<I> d_xs         = h_xs;
     thrust::device_vector<ET> d_exponents = h_exponents;
-    thrust::transform(d_xs.begin(), d_xs.end(), d_exponents.begin(), d_res.begin(), pow_fn<ET>());
+    thrust::transform(d_xs.begin(), d_xs.end(), d_exponents.begin(), d_res.begin(), f);
     std::vector<I> h_res(n);
     thrust::copy(d_res.begin(), d_res.end(), h_res.begin());
 
     return h_res;
 }
 
+template<typename ET>
+std::vector<interval<float>> compute_pow(cudaStream_t stream, std::vector<interval<float>> xs, std::vector<ET> exponents)
+{
+    return compute(pow_fn<ET>(), stream, xs, exponents);
+}
+
 template std::vector<interval<float>> compute_pow<int>(cudaStream_t stream, std::vector<interval<float>> xs, std::vector<int> exponents);
 template std::vector<interval<float>> compute_pow<float>(cudaStream_t stream, std::vector<interval<float>> xs, std::vector<float> exponents);
+
+template<typename ET>
+std::vector<interval<float>> compute_signpow(cudaStream_t stream, std::vector<interval<float>> xs, std::vector<ET> exponents)
+{
+    return compute(signpow_fn<ET>(), stream, xs, exponents);
+}
+
+template std::vector<interval<float>> compute_signpow<int>(cudaStream_t stream, std::vector<interval<float>> xs, std::vector<int> exponents);
+template std::vector<interval<float>> compute_signpow<float>(cudaStream_t stream, std::vector<interval<float>> xs, std::vector<float> exponents);

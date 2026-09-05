@@ -1986,6 +1986,102 @@ inline constexpr __device__ interval<T> coth(interval<T> a)
 //
 
 template<typename T>
+inline constexpr __device__ interval<T> sigmoid(interval<T> x)
+{
+    using intrinsic::round_down, intrinsic::round_up;
+
+    if (empty(x)) {
+        return x;
+    }
+
+    interval<T> ex  = exp(-x);
+    constexpr int n = info::exp<T>::max_ulp_error;
+    return { div_down(one_v<T>, add_up(one_v<T>, round_up<n>(sup(ex)))),
+             div_up(one_v<T>, add_down(one_v<T>, round_down<n>(inf(ex), zero_v<T>))) };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> signpow(interval<T> x, T p)
+{
+    using intrinsic::round_down, intrinsic::round_up;
+
+    constexpr int n = info::pow<T>::max_ulp_error;
+
+    if (empty(x)) {
+        return empty<T>();
+    }
+
+    auto signpow_f = [](T x, T p) {
+        using std::abs, std::copysign, std::pow;
+        return copysign(pow(abs(x), p), x);
+    };
+
+    auto signpow_lb = signpow_f(x.lb, p);
+    auto signpow_ub = signpow_f(x.ub, p);
+
+    constexpr auto zero = zero_v<T>;
+    constexpr auto inf  = std::numeric_limits<T>::infinity();
+
+    T lb {};
+    T ub {};
+
+    if (p < zero) {
+        // mimics a reciprocal function
+        if (contains(x, zero)) {
+            if (x.lb < zero && zero == x.ub) {
+                // left plane
+                lb = neg_inf<T>();
+                ub = round_up<n>(signpow_lb);
+            } else if (x.lb == zero && zero < x.ub) {
+                // right plane
+                lb = round_down<n>(signpow_ub, zero);
+                ub = pos_inf<T>();
+            } else if (x.lb < zero && zero < x.ub) {
+                // entire<T>();
+                lb = neg_inf<T>();
+                ub = pos_inf<T>();
+            } else if (x.lb == zero && zero == x.ub) {
+                // empty<T>();
+                lb = pos_inf<T>();
+                ub = neg_inf<T>();
+            }
+        } else {
+            // if 0 not in x, monotonically decreasing
+            lb = round_down<n>(signpow_ub, zero);
+            ub = round_up<n>(signpow_lb);
+        }
+    } else {
+        // p >= 0, monotonically increasing
+        lb = round_down<n>(signpow_lb);
+        ub = round_up<n>(signpow_ub);
+    }
+
+    return { lb, ub };
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> signpow(interval<T> x, std::integral auto p)
+{
+    return signpow(x, static_cast<T>(p));
+}
+
+template<typename T>
+inline constexpr __device__ interval<T> signpow(interval<T> x, interval<T> p)
+{
+    // TODO: Don't forget to update docs!
+    if (empty(p)) {
+        return empty<T>();
+    }
+
+    if (p.lb == p.ub) {
+        // point interval as exponent
+        return signpow(x, p.ub);
+    } else {
+        return hull(signpow(x, p.lb), signpow(x, p.ub));
+    }
+}
+
+template<typename T>
 inline constexpr __device__ interval<T> hypot(interval<T> x, interval<T> y)
 {
     if (empty(x) || empty(y)) {
