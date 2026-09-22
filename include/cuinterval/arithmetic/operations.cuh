@@ -284,6 +284,10 @@ inline constexpr __device__ T rad(interval<T> x)
 template<typename T>
 inline constexpr __device__ interval<T> abs(interval<T> x)
 {
+    if (empty(x)) {
+        return x;
+    }
+
     return { mig(x), mag(x) };
 }
 
