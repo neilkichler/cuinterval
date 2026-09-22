@@ -21,7 +21,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     I entire   = { -infinity, infinity };
     T NaN = ::nan("");
 
-    const int n = 37; // count of largest test array
+    const int n = 38; // count of largest test array
     const int n_bytes   = n * sizeof(I);
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
@@ -35,7 +35,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
-        constexpr int n = 37;
+        constexpr int n = 38;
         I *h_xs = new (h_buffer) I[n]{
             {-0x1p-1022,-0x1p-1022},
             {-0x1p-1022,0.0},
@@ -52,6 +52,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-3.0,-1.0},
             {-3.0,-1.0},
             {-3.0,-1.0},
+            {-5.0,0.0},
             {-5.0,0.0},
             {-infinity,0.0},
             {0.0,0.0},
@@ -94,6 +95,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,2.0},
             {1.0,3.0},
             {-5.0,0.0},
+            {0.0,5.0},
             {0.0,0.0},
             {-infinity,0.0},
             {0.0,0.0},
@@ -136,6 +138,7 @@ void tests_atan2(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-0x1.921FB54442D19p0,-0x1.DAC670561BB4Fp-2},
             {-0x1.3FC176B7A856p0,-0x1.4978FA3269EE1p-2},
             {-0x1.921FB54442D19p1,+0x1.921FB54442D19p1},
+            {-0x1.921FB54442D19p0,0x0p0},
             {-0x1.921FB54442D19p0,-0x1.921FB54442D18p0},
             {0x1.921FB54442D18p1,0x1.921FB54442D19p1},
             empty,

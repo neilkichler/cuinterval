@@ -4031,7 +4031,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
-        constexpr int n = 13;
+        constexpr int n = 14;
         I *h_xs = new (h_buffer) I[n]{
             {-infinity,+8.0},
             {-infinity,-7.0},
@@ -4045,6 +4045,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,0.0},
             {0.0,0.0},
             {0.0,0.0},
+            {0x12p0,0x90p0},
             entire,
         };
 
@@ -4062,6 +4063,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
             {0.0,0.0},
             entire,
+            {-0x0dp0,0x34p0},
             {0.0,+8.0},
         };
 
@@ -4080,6 +4082,7 @@ void tests_mpfi(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0.0,+8.0},
             {0.0,0.0},
             entire,
+            {-0x0dp0,0x90p0},
             entire,
         }};
 

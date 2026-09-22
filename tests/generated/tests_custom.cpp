@@ -119,12 +119,13 @@ void tests_custom(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
-        constexpr int n = 5;
+        constexpr int n = 6;
         I *h_xs = new (h_buffer) I[n]{
             {-1.0,0.0},
             {-10.0,-1.0},
             {-10.0,-2.0},
             {-10.0,0.0},
+            {0.0,0.0},
             {0.0,infinity},
         };
 
@@ -135,6 +136,7 @@ void tests_custom(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             empty,
             empty,
             {-infinity,0.0},
+            empty,
             {0.0,infinity},
         }};
 
