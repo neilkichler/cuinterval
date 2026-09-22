@@ -1076,7 +1076,7 @@ inline constexpr __device__ interval<T> log(interval<T> x)
 {
     using std::log, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x) || sup(x) == 0) {
+    if (empty(x) || sup(x) <= 0) {
         return empty<T>();
     }
 
@@ -1091,7 +1091,7 @@ inline constexpr __device__ interval<T> log2(interval<T> x)
 {
     using std::log2, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x) || sup(x) == 0) {
+    if (empty(x) || sup(x) <= 0) {
         return empty<T>();
     }
 
@@ -1107,7 +1107,7 @@ inline constexpr __device__ interval<T> log10(interval<T> x)
 {
     using std::log10, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x) || sup(x) == 0) {
+    if (empty(x) || sup(x) <= 0) {
         return empty<T>();
     }
 
@@ -1123,7 +1123,7 @@ inline constexpr __device__ interval<T> log1p(interval<T> x)
 {
     using std::log1p, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x) || sup(x) == -1) {
+    if (empty(x) || sup(x) <= -1) {
         return empty<T>();
     }
 
