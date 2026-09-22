@@ -34,5 +34,5 @@ testcase custom.log1p {
     log1p [0.0, infinity] = [0.0, infinity];
 
     // point interval
-    log1p [0.0, 0.0] = [empty];
+    log1p [0.0, 0.0] = [0.0, 0.0];
 }
