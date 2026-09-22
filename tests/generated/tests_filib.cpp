@@ -2058,7 +2058,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
-        constexpr int n = 29;
+        constexpr int n = 30;
         I *h_xs = new (h_buffer) I[n]{
             {-0X1.2789C2D583BCDP-568,-0X1.F2BD89DAD0665P-780},
             {-0X1.32690AAC2472DP-40,-0X8.706EBDCF39C88P-792},
@@ -2081,6 +2081,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {-0XA.12F7783880A78P-124,-0X3.765DF69EE106EP-548},
             {-0XA.644C9D88EA8C8P-152,-0XD.8EC7927926F18P-944},
             {-0XB.B25F8D8BB7FB8P-376,-0X2.017A332F9B05CP-916},
+            {-0XB.CE50D7B2F2868P-236,-0XE.6B08988339B80P-432},
             {-0XB.DD3171FDEEC18P-168,+0X1.069E434EE9E0FP-740},
             {-0XC.1BC7A4C89D440P-256,+0X2.A7F56252D1D34P-608},
             {-0XC.508D29ACB01B8P-52,+0X1.B1E6B793078DDP-664},
@@ -2115,6 +2116,7 @@ void tests_filib(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
             {0X0.0000000000000P+0,0X6.57CBD208B34ACP-244},
             {0X0.0000000000000P+0,0X6.BFD4840B33478P-300},
             {0X0.0000000000000P+0,0X8.8D07F2E827770P-748},
+            {0XC.FE1B0DE21E568P-860,0X8.B6138BE0C5B78P-468},
             {0X0.0000000000000P+0,0X8.CC15E342FC8D8P-332},
             {0X0.0000000000000P+0,0X9.29DBB2B42A988P-508},
             {0X0.0000000000000P+0,0X9.7A69470135FA8P-100},

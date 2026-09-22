@@ -941,8 +941,9 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
 
     {
         char *h_buffer = buffer.host;
-        constexpr int n = 2;
+        constexpr int n = 3;
         I *h_xs = new (h_buffer) I[n]{
+            {2.0,2.0},
             {2.0,2.0},
             {4.0,4.0},
         };
@@ -950,6 +951,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         h_buffer += align_to(n * sizeof(I), alignof(I));
         I *h_ys = new (h_buffer) I[n]{
             {2.0,2.0},
+            {3.0,3.0},
             {5.0,5.0},
         };
 
@@ -957,6 +959,7 @@ void tests_c_xsc(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
         I *h_res = new (h_buffer) I[n]{};
         std::array<I, n> h_ref {{
             {4.0,4.0},
+            {8.0,8.0},
             {1024.0,1024.0},
         }};
 

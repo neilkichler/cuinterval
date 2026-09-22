@@ -152,8 +152,16 @@ void tests_''' + test_name + '''(cuda_buffer buffer, cudaStream_t stream, cudaEv
                 if name.endswith('dec'): # ignore decorated interval tests
                     continue
 
+                # keep exactly the testcase body between its braces; anything
+                # after the closing brace (blank lines, the next testcase's
+                # comment, or nothing at the end of a file) is not a test
+                open_brace, close_brace = body.find('{'), body.rfind('}')
+                if open_brace == -1 or close_brace < open_brace:
+                    continue
+                body = body[open_brace + 1:close_brace]
+
                 body = body.replace('[ ', '[').replace('[', '{').replace(']', '}').replace(' ,', ',').replace(', ', ',').replace('=', ' ')
-                ops = body.splitlines()[1:-2]
+                ops = body.splitlines()
                 ops = [op.lstrip() for op in sorted(ops)]
 
                 subtests = defaultdict(list)
