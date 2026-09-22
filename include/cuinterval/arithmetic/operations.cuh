@@ -1657,15 +1657,15 @@ inline constexpr __device__ interval<T> asin(interval<T> x)
 {
     using std::asin, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x)) {
-        return x;
-    }
-
     constexpr auto pi_2_ub = pi_2_v<interval<T>>.ub;
     constexpr interval<T> domain { -one_v<T>, one_v<T> };
     constexpr int n = info::asin<T>::max_ulp_error;
 
     auto xx = intersection(x, domain);
+    if (empty(xx)) {
+        return xx;
+    }
+
     return { (xx.lb != 0) * round_down<n>(asin(xx.lb), -pi_2_ub),
              (xx.ub != 0) * round_up<n>(asin(xx.ub), pi_2_ub) };
 }
@@ -1675,15 +1675,15 @@ inline constexpr __device__ interval<T> acos(interval<T> x)
 {
     using std::acos, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x)) {
-        return x;
-    }
-
     constexpr auto pi = pi_v<interval<T>>;
     constexpr interval<T> domain { -one_v<T>, one_v<T> };
     constexpr int n = info::acos<T>::max_ulp_error;
 
     auto xx = intersection(x, domain);
+    if (empty(xx)) {
+        return xx;
+    }
+
     return { round_down<n>(acos(xx.ub), zero_v<T>),
              round_up<n>(acos(xx.lb), pi.ub) };
 }
@@ -1898,14 +1898,13 @@ inline constexpr __device__ interval<T> acosh(interval<T> x)
 {
     using std::acosh, intrinsic::round_down, intrinsic::round_up;
 
-    if (empty(x)) {
-        return x;
-    }
-
     interval<T> range { zero_v<T>, pos_inf<T>() };
     interval<T> domain { one_v<T>, pos_inf<T>() };
 
     auto xx = intersection(x, domain);
+    if (empty(xx)) {
+        return xx;
+    }
 
     constexpr int n = info::acosh<T>::max_ulp_error;
     return { round_down<n>(acosh(inf(xx)), range.lb),
@@ -1926,7 +1925,7 @@ inline constexpr __device__ interval<T> atanh(interval<T> x)
 
     auto xx = intersection(x, domain);
 
-    // TODO: this should not be needed and is kind of a hack for now.
+    // needed since the domain is actually (-1, 1) and not [-1, 1]
     if (xx.lb == xx.ub && (xx.lb == domain.lb || xx.lb == domain.ub)) {
         return empty<T>();
     }
