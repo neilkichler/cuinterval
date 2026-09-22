@@ -21,7 +21,7 @@ void tests_custom(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     I entire   = { -infinity, infinity };
     T NaN = ::nan("");
 
-    const int n = 7; // count of largest test array
+    const int n = 13; // count of largest test array
     const int n_bytes   = n * sizeof(I);
     const int blockSize = 256;
     [[maybe_unused]] const int numBlocks = (n + blockSize - 1) / blockSize;
@@ -32,6 +32,54 @@ void tests_custom(cuda_buffer buffer, cudaStream_t stream, cudaEvent_t event) {
     I *d_ys_  = (I *) d_buffer + 1 * n_bytes;
     I *d_zs_  = (I *) d_buffer + 2 * n_bytes;
     I *d_res_ = (I *) d_buffer + 3 * n_bytes;
+
+    {
+        char *h_buffer = buffer.host;
+        constexpr int n = 13;
+        I *h_xs = new (h_buffer) I[n]{
+            {-0.0,-0.0},
+            {-0.0,4.0},
+            {-4.0,-0.0},
+            {-4.0,-1.0},
+            {-4.0,-4.0},
+            {-4.0,0.0},
+            {-4.0,4.0},
+            {-infinity,-1.0},
+            {-infinity,0.0},
+            {0.0,0.0},
+            {0.0,4.0},
+            {1.0,infinity},
+            {4.0,4.0},
+        };
+
+        h_buffer += align_to(n * sizeof(I), alignof(I));
+        I *h_res = new (h_buffer) I[n]{};
+        std::array<I, n> h_ref {{
+            {0.0,0.0},
+            {0.0,2.0},
+            {0.0,0.0},
+            empty,
+            empty,
+            {0.0,0.0},
+            {0.0,2.0},
+            empty,
+            {0.0,0.0},
+            {0.0,0.0},
+            {0.0,2.0},
+            {1.0,infinity},
+            {2.0,2.0},
+        }};
+
+        I *d_res = (I *)d_res_;
+        I *d_xs = (I *)d_xs_;
+        CUDA_CHECK(cudaMemcpyAsync(d_xs, h_xs, n*sizeof(I), cudaMemcpyHostToDevice, stream));
+        tests_sqrt_call(numBlocks, blockSize, stream, n, d_xs, d_res);
+        CUDA_CHECK(cudaMemcpyAsync(h_res, d_res, n*sizeof(I), cudaMemcpyDeviceToHost, stream));
+        CUDA_CHECK(cudaEventRecord(event, stream));
+        CUDA_CHECK(cudaEventSynchronize(event));
+        int max_ulp_diff = 0;
+        check_all_equal<I, n>(h_res, h_ref, max_ulp_diff, "sqrt", std::source_location::current(), h_xs);
+    };
 
     {
         char *h_buffer = buffer.host;
