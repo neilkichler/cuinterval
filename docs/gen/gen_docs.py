@@ -127,7 +127,7 @@ if __name__ == '__main__':
 
         declaration = f"""
 <FunctionDeclaration
-  sourceUrl="{sourceUrl}" 
+  sourceUrl="{sourceUrl}"
   nvidiaUrl="group__CUDA__MATH__DOUBLE.html#{nvidia_version}{nvidia_docs_name}"
 >
   {code_type[ret]} {code_name}({code_inputs})
