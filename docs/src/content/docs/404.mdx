@@ -1,0 +1,59 @@
+---
+title: 'Page not found'
+template: splash
+editUrl: false
+description: Page not found. Check the URL or try using the search bar.
+---
+
+import { Centered } from '@components';
+import { LinkButton } from '@astrojs/starlight/components';
+
+<div
+  style={{
+    minHeight: '80vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  }}
+>
+  <Centered>
+    <div
+      style={{
+        fontSize: 'clamp(5rem, 18vw, 10rem)',
+        fontWeight: 600,
+        lineHeight: 1,
+        marginBottom: '1.5rem',
+      }}
+    >
+      404
+    </div>
+
+    Check the URL or try using the search bar.
+  </Centered>
+
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '1rem',
+      flexWrap: 'wrap',
+      marginTop: '10rem',
+    }}
+  >
+    <Centered>
+      _If a function is not implemented that you would like to see implemented,
+      feel free to create an issue._
+    </Centered>
+
+    <LinkButton href="/cuinterval/operations/all" variant="primary">
+      All operations
+    </LinkButton>
+
+    <LinkButton
+      href="https://github.com/neilkichler/cuinterval/issues/new"
+      variant="secondary"
+    >
+      Create Issue
+    </LinkButton>
+  </div>
+</div>
